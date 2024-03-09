@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Migrations\" />
+    <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
 </Project>

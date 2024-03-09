@@ -13,10 +13,15 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Santa_GiftingGroup> Santa_GiftingGroups => Set<Santa_GiftingGroup>();
-    public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUser => Set<Santa_GiftingGroupUser>();
+    public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUsers => Set<Santa_GiftingGroupUser>();
+    public DbSet<Santa_GiftingGroupYear> Santa_GiftingGroupYears => Set<Santa_GiftingGroupYear>();
+    public DbSet<Santa_Message> Santa_Messages => Set<Santa_Message>();
+    public DbSet<Santa_MessageRecipient> Santa_MessageRecipients => Set<Santa_MessageRecipient>();
+    public DbSet<Santa_MessageReply> Santa_MessageReplies => Set<Santa_MessageReply>();
     public DbSet<Santa_PartnerLink> Santa_Partners => Set<Santa_PartnerLink>();
+    public DbSet<Santa_Suggestion> Santa_Suggestions => Set<Santa_Suggestion>();
     public DbSet<Santa_User> Santa_Users => Set<Santa_User>();
-    public DbSet<Santa_YearGroupUser> Santa_YearGroupUser => Set<Santa_YearGroupUser>();
+    public DbSet<Santa_YearGroupUser> Santa_YearGroupUsers => Set<Santa_YearGroupUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

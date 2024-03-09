@@ -14,20 +14,6 @@ internal static class ModelHelper
             .HasForeignKey<Santa_User>(e => e.GlobalUserId)
             .IsRequired(false);
 
-        modelBuilder.Entity<Santa_YearGroupUser>()
-            .HasOne(e => e.Year)
-            .WithMany(e => e.Users)
-            .HasForeignKey(e => e.YearId)
-            .IsRequired(true)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Santa_YearGroupUser>()
-            .HasOne(e => e.GivingToUser)
-            .WithMany(e => e.GiftingGroupYears)
-            .HasForeignKey(e => e.GivingToUserId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<Santa_GiftingGroupYear>()
             .HasOne(e => e.GiftingGroup)
             .WithMany(e => e.Years)
@@ -50,17 +36,72 @@ internal static class ModelHelper
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_PartnerLink>()
-            .HasOne(e => e.Partner1)
-            .WithMany(e => e.Partner1Links)
-            .HasForeignKey(e => e.Partner1Id)
+            .HasOne(e => e.SuggestedBy)
+            .WithMany(e => e.SuggestedRelationships)
+            .HasForeignKey(e => e.SuggestedById)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_PartnerLink>()
-            .HasOne(e => e.Partner2)
-            .WithMany(e => e.Partner2Links)
-            .HasForeignKey(e => e.Partner2Id)
+            .HasOne(e => e.ConfirmedBy)
+            .WithMany(e => e.ConfirmedRelationships)
+            .HasForeignKey(e => e.ConfirmedById)
             .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Message>()
+            .HasOne(e => e.Sender)
+            .WithMany(e => e.SentMessages) 
+            .HasForeignKey(e => e.SenderId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Message>()
+            .HasOne(e => e.ReplyTo)
+            .WithOne(e => e.ReplyMessage)
+            .HasForeignKey<Santa_MessageReply>(e => e.ReplyMessageId)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Santa_MessageReply>()
+            .HasOne(e => e.OriginalMessage)
+            .WithMany(e => e.Replies)
+            .HasForeignKey(e => e.OriginalMessageId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_MessageRecipient>()
+            .HasOne(e => e.Message)
+            .WithMany(e => e.Recipients)
+            .HasForeignKey(e => e.MessageId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_MessageRecipient>()
+            .HasOne(e => e.Recipient)
+            .WithMany(e => e.ReceivedMessages)
+            .HasForeignKey(e => e.RecipientId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Suggestion>()
+            .HasOne(e => e.Suggester)
+            .WithMany(e => e.Suggestions)
+            .HasForeignKey(e => e.SuggesterId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_YearGroupUser>()
+            .HasOne(e => e.Year)
+            .WithMany(e => e.Users)
+            .HasForeignKey(e => e.YearId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_YearGroupUser>()
+            .HasOne(e => e.GivingToUser)
+            .WithMany(e => e.GiftingGroupYears)
+            .HasForeignKey(e => e.GivingToUserId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -2,5 +2,5 @@ Add-Migration {name} -project "Data" -startupProject "Web" -verbose
 Update-Database -project "Data" -startupProject "Web" -verbose
 
 
-
+// To roll back to a particular target migration
 Update-Database -Migration {name} -project "Data" -startupProject "Web" -verbose
