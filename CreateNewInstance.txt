@@ -1,0 +1,4 @@
+1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details.
+
+dotnet user-secrets set "DatabaseSettings:DevUserId" "{desired-username]" --project "Data"
+dotnet user-secrets set "DatabaseSettings:DevPassword" "{desired-password]" --project "Data"
