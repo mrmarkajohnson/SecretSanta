@@ -1,0 +1,7 @@
+$primary: #009900;
+$white: white;
+@import "../lib/bootstrap/scss/bootstrap.scss";
+
+nav.navbar {
+    background-color: $primary;
+}
