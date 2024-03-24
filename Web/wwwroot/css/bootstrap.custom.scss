@@ -1,7 +1,14 @@
 $primary: #009900;
+$secondary: #ff0000;
 $white: white;
 @import "../lib/bootstrap/scss/bootstrap.scss";
 
 nav.navbar {
-    background-color: $primary;
+    background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
+}
+
+.btn-primary {
+    background: radial-gradient(100% 100% at 100% 0, $primary-bg-subtle 0, $primary 100%);
+    box-shadow: $primary-border-subtle-dark 0 2px 4px, $primary-text-emphasis-dark 0 7px 13px -3px, $primary 0 -3px 0 inset;
+    color: $white;
 }
