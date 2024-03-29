@@ -1,14 +1,169 @@
+@import "../lib/bootstrap/scss/bootstrap.scss";
+
 $primary: #009900;
 $secondary: #ff0000;
 $white: white;
-@import "../lib/bootstrap/scss/bootstrap.scss";
+$gold: #ffd700;
+$gold-glow: #ffd70020;
+$green-gold-glow: #efffcc20;
+$grey-blue-glow: #9999ff10;
+
+$btn-shadow: $primary-border-subtle-dark 0 2px 4px, $primary-text-emphasis-dark 0 7px 13px -3px, $primary 0 -3px 0 inset;
+$gold-shadow: -1px -1px 0 $gold-glow, 1px 0 0 $gold-glow, -1px 1px 0 $gold-glow, 1px 1px 0 $gold-glow;
+$green-gold-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
+$grey-blue-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
+/*
+@keyframes purple {
+    from {
+        color: $purple-400;        
+    }
+
+    to {
+        color: $purple-600;
+    }
+}*/
+
+h1 {
+    color: $secondary;
+    font-weight: 700;
+    text-shadow: $gold-shadow !important;
+    margin-bottom: 10px !important;
+}
+
+h2 {
+    color: $purple;
+    font-weight: 500;
+    text-shadow: $grey-blue-shadow !important;
+    /*animation: purple 4s alternate infinite;*/
+    margin-bottom: 6px !important;
+}
+
+.btn-primary {
+    background: radial-gradient(100% 100% at 100% 0, $primary-bg-subtle 0, $primary 100%);
+    box-shadow: $btn-shadow;
+    color: $white;
+}
+
+.btn-primary:hover {
+    color: $gold;
+    font-weight: 400;
+    text-shadow: $green-gold-shadow;
+}
 
 nav.navbar {
     background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
 }
 
-.btn-primary {
-    background: radial-gradient(100% 100% at 100% 0, $primary-bg-subtle 0, $primary 100%);
-    box-shadow: $primary-border-subtle-dark 0 2px 4px, $primary-text-emphasis-dark 0 7px 13px -3px, $primary 0 -3px 0 inset;
+.nav-link {
     color: $white;
 }
+
+.nav-link:hover {
+    color: $gold;
+    font-weight: 400;
+    text-shadow: $green-gold-shadow;
+}
+
+a {
+    color: $blue;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: $primary;
+    font-weight: 400;
+    text-shadow: $grey-blue-shadow;
+}
+
+//region snow
+
+@keyframes fall {
+    100% {
+        transform: translateX(10vw) translateY(150vh);
+    }
+}
+
+.snow-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(100% 100% at 100% 0, #7397a103 0, #3f2c4104 100%);
+    overflow: hidden;
+}
+
+$snow-1: "";
+$snow-2: "";
+$snow-3: "";
+
+@for $i from 1 through 300 {
+    $snow-1: $snow-1 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fff;
+    $snow-2: $snow-2 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fef;
+    $snow-3: $snow-3 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fff;
+
+    @if $i < 300 {
+        $snow-1: $snow-1 + ",";
+        $snow-2: $snow-2 + ",";
+        $snow-3: $snow-3 + ",";
+    }
+}
+
+.snow {
+    border-radius: 50%;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;    
+}
+
+.snow.snow-layer1 {
+    width: 1.2rem;
+    height: 1.2rem;
+    filter: blur(1.5px);
+    box-shadow: #{$snow-1};
+    opacity: 0.3;
+    animation-duration: 12s;
+    z-index: 1;
+}
+
+.snow.snow-layer1.a {
+    opacity: 0.2;
+    animation-delay: -6s;
+    animation-duration: 13s;
+}
+
+.snow.snow-layer2 {
+    width: 1rem;
+    height: 1rem;
+    filter: blur(2.5px);
+    box-shadow: #{$snow-2};
+    opacity: 0.3;
+    animation-delay: -2s;
+    animation-duration: 11s;
+    z-index: 1;
+}
+
+.snow.snow-layer2.a {
+    opacity: 0.2;
+    animation-delay: -8s;
+    animation-duration: 12s;
+}
+
+.snow.snow-layer3 {
+    width: 0.8rem;
+    height: 0.8rem;
+    filter: blur(4px);
+    box-shadow: #{$snow-3};
+    opacity: 0.3;
+    animation-delay: -3s;
+    animation-duration: 13s;
+    z-index: 1;
+}
+
+.snow.snow-layer3.a {
+    opacity: 0.2;
+    animation-delay: -9s;
+    animation-duration: 14s;
+}
+
+//endregion snow
