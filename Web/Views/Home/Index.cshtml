@@ -1,8 +1,26 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Secret Santa!</h1>
-    @* <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+<div class="text-center">    
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h1>Welcome back to Secret Santa!</h1>
+
+
+
+    }
+    else
+    {
+        <h1>Welcome to Secret Santa!</h1>
+        <p>
+            <br />
+            Please <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">login</a> if you have an account,
+                or <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Page("/", new { area = "" })">register</a> as a new user.
+        </p>
+    }
 </div>
