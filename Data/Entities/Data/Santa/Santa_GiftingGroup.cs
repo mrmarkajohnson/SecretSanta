@@ -20,6 +20,15 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity
     [Required, Length(8, 15)]
     public string JoinerToken { get; set; } = "";
 
+    [Required, Length(3, 8)]
+    public string CultureInfo { get; set; } = "en-GB";
+
+    [MaxLength(4)]
+    public string? CurrencyCodeOverride { get; set; } = "GBP";
+
+    [MaxLength(3)]
+    public string? CurrencySymbolOverride { get; set; } = "£";
+
     public virtual ICollection<Santa_GiftingGroupUser> UserLinks { get; set; }
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
 }

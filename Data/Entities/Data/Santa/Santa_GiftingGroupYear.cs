@@ -13,6 +13,8 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity
     [Required, Length(4, 4)]
     public int Year { get; set; }
 
+    public decimal? Limit { get; set; } 
+
     public int GiftingGroupId { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
