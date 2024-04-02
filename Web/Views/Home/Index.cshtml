@@ -19,8 +19,8 @@
         <h1>Welcome to Secret Santa!</h1>
         <p>
             <br />
-            Please <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">login</a> if you have an account,
-                or <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Page("/", new { area = "" })">register</a> as a new user.
+            Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
+                or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
         </p>
     }
 </div>

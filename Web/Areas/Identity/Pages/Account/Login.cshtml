@@ -42,7 +42,7 @@
                 <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
                 <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 d-flex flex-wrap justify-content-between">
                     <div>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account?</a>
+                        <a asp-area="Account" asp-controller="Manage" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account?</a>
                     </div>
                     <div>
                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
