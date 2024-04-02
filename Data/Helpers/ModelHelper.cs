@@ -1,5 +1,5 @@
-﻿using Data.Entities.Data.Global;
-using Data.Entities.Data.Santa;
+﻿using Data.Entities.Santa;
+using Data.Entities.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Helpers;

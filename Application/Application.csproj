@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Santa\Areas\Account\Commands\" />
+  </ItemGroup>
+
 </Project>

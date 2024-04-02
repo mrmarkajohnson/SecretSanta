@@ -1,4 +1,4 @@
-﻿using Data.Entities.Data.Santa;
+﻿using Data.Entities.Santa;
 using Data.Helpers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

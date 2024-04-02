@@ -1,5 +1,5 @@
-﻿using Application.BaseModels.Santa;
-using Global.Abstractions.Santa;
+﻿using Application.Santa.Areas.Account.BaseModels;
+using Global.Abstractions.Santa.Areas.Account;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
