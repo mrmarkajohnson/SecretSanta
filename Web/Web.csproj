@@ -54,7 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\lib\fontawesome-free\" />
     <Folder Include="wwwroot\lib\bootstrap\js\" />
+    <Folder Include="wwwroot\lib\popper\" />
   </ItemGroup>
 
 </Project>

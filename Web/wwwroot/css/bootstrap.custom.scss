@@ -3,7 +3,12 @@
 $primary: #009900;
 $secondary: #ff0000;
 $white: white;
+$black: black;
 $gold: #ffd700;
+$gold-background: #fff7cc;
+$red-border: #ff3333;
+
+$red-glow: #ff000099; 
 $gold-glow: #ffd70020;
 $green-gold-glow: #efffcc20;
 $grey-blue-glow: #9999ff10;
@@ -66,8 +71,122 @@ a:hover {
     text-shadow: $grey-blue-shadow;
 }
 
-//region snow
+label.control-label {
+    display: block;
+    font-weight: 600 !important;
+    text-align: left !important;
+}
 
+// region info circles for tooltips
+
+.fa.fa-info-circle {
+    color: $gold-background !important;
+    background: $red-glow !important;
+}
+
+.fa.fa-info-circle.fa-border {
+    --fa-border-color: $red-border !important;
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 1px !important;
+    --fa-border-style: solid !important;
+}
+
+.svg-inline--fa.fa-circle-info {
+    color: $gold-background !important;
+    background: $red-glow !important;
+}
+
+.svg-inline--fa.fa-circle-info.fa-border {
+    --fa-border-color: $red-border !important;
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 1px !important;
+    --fa-border-style: solid !important;
+}
+
+.input-group-text svg.svg-inline--fa.fa-circle-info {
+    color: $gold-background !important;
+    background: $red-glow !important;
+}
+
+.input-group-text .fa.fa-info-circle.fa-border {
+    --fa-border-color: $red-glow !important;
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 1px !important;
+}
+
+.input-group-text .fa-circle-info.fa-border {
+    color: $gold-background !important;
+    background: $red-glow !important;
+    --fa-border-color: red !important;
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 1px !important;
+}
+
+.input-group-text svg.svg-inline--fa.fa-circle-info.fa-border {
+    --fa-border-color: red !important;
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 1px !important;
+}
+
+.input-group.input-info div.input-group-text svg.svg-inline--fa.fa-circle-info.fa-border {
+    --fa-border-color: red !important;
+    --fa-border-radius: 50%;
+    --fa-border-padding: 0;
+    --fa-border-width: 1px;
+}
+
+// endregion info circles for tooltips
+
+// region tooltips
+
+.tooltip {
+    --bs-tooltip-zindex: 5000;
+    --bs-tooltip-color: red;
+    --bs-tooltip-bg: $gold-background;
+    --bs-tooltip-border-width: 1px;
+    --bs-tooltip-border-color: red;
+    --bs-tooltip-border-radius: var(--bs-border-radius);
+    --bs-tooltip-opacity: 0.9;
+    --bs-tooltip-arrow-width: 0.8rem;
+    --bs-tooltip-arrow-height: 0.4rem;
+    z-index: 5000;
+    background: $gold-background;
+    border: 1px solid red;
+    border-radius: var(--bs-tooltip-border-radius);
+}
+
+/*.tooltip.bs-tooltip-auto {
+    --bs-tooltip-zindex: 5000;
+    --bs-tooltip-color: red;
+    --bs-tooltip-bg: $gold-background;
+    --bs-tooltip-border-width: 1px;
+    --bs-tooltip-border-color: red;
+    --bs-tooltip-border-radius: var(--bs-border-radius);
+    --bs-tooltip-opacity: 1;
+    --bs-tooltip-arrow-width: 0.8rem;
+    --bs-tooltip-arrow-height: 0.4rem;
+    z-index: 5000;
+    background: $gold-background;
+    border: 1px solid red;
+    border-radius: var(--bs-tooltip-border-radius);
+}*/
+
+.tooltip-arrow {
+    color: red;
+}
+
+.bs-tooltip-top .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
+    top: 0px;
+}
+
+//endregion tooltips
+
+//region snow
 @keyframes fall {
     100% {
         transform: translateX(10vw) translateY(150vh);
@@ -104,7 +223,8 @@ $snow-3: "";
     top: 0;
     animation-name: fall;
     animation-timing-function: linear;
-    animation-iteration-count: infinite;    
+    animation-iteration-count: infinite;
+    z-index: 10000;
 }
 
 .snow.snow-layer1 {
@@ -114,7 +234,7 @@ $snow-3: "";
     box-shadow: #{$snow-1};
     opacity: 0.3;
     animation-duration: 12s;
-    z-index: 1;
+    z-index: 10000;
 }
 
 .snow.snow-layer1.a {
@@ -131,7 +251,7 @@ $snow-3: "";
     opacity: 0.3;
     animation-delay: -2s;
     animation-duration: 11s;
-    z-index: 1;
+    z-index: 10000;
 }
 
 .snow.snow-layer2.a {
@@ -148,7 +268,7 @@ $snow-3: "";
     opacity: 0.3;
     animation-delay: -3s;
     animation-duration: 13s;
-    z-index: 1;
+    z-index: 10000;
 }
 
 .snow.snow-layer3.a {

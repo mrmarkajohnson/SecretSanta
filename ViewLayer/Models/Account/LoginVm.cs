@@ -17,9 +17,9 @@ public class LoginVm
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
     public string? ReturnUrl { get; set; }
-
-    [EmailAddress]
-    public string? Email { get; set; }
+    
+    [Display(Name = "E-mail or Username")]
+    public string? EmailOrUserName { get; set; }
 
     [Required]
     [DataType(DataType.Password)]

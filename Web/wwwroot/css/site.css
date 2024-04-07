@@ -16,3 +16,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.tooltip {
+    z-index: 5000;
+    border-style: solid;
+}
+
+.tooltip.bs-tooltip-auto {   
+    z-index: 5000;
+    border-style: solid;
+}
+
+.input-group.input-info input.form-control {
+    border-right: none !important;
+}
+
+.input-group.input-info div.input-group-text {
+    border-left: none !important;
+    background: #ffffff !important;
+}

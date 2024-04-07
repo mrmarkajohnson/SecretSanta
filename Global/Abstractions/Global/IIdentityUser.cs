@@ -6,6 +6,7 @@ public interface IIdentityUser
 {
     string Id { get; set; }
 
+    [Display(Name = "Username")]
     string? UserName { get; set; }
 
     [Display(Name = "E-mail Address")]

@@ -99,6 +99,29 @@
         "scss/_variables-dark.scss",
         "scss/_variables.scss"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@fortawesome/fontawesome-free@6.5.1",
+      "destination": "wwwroot/lib/fontawesome-free/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "popper.js@2.11.8",
+  "destination": "wwwroot/lib/popper/"
+}
+,
+{
+  "provider": "unpkg",
+  "library": "@popperjs/core@2.11.8",
+  "destination": "wwwroot/lib/popper/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "popper.js@2.11.8",
+  "destination": "wwwroot/lib/popper/popper.js/"
+}
+]
 }
