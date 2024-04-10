@@ -18,12 +18,12 @@ body {
 }
 
 .tooltip {
-    z-index: 5000;
+    z-index: 50000;
     border-style: solid;
 }
 
 .tooltip.bs-tooltip-auto {   
-    z-index: 5000;
+    z-index: 50000;
     border-style: solid;
 }
 

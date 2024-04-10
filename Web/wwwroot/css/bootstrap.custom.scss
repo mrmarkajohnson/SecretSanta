@@ -1,7 +1,7 @@
 @import "../lib/bootstrap/scss/bootstrap.scss";
 
 $primary: #009900;
-$secondary: #ff0000;
+$secondary: #f90000;
 $white: white;
 $black: black;
 $gold: #ffd700;
@@ -13,7 +13,8 @@ $gold-glow: #ffd70020;
 $green-gold-glow: #efffcc20;
 $grey-blue-glow: #9999ff10;
 
-$btn-shadow: $primary-border-subtle-dark 0 2px 4px, $primary-text-emphasis-dark 0 7px 13px -3px, $primary 0 -3px 0 inset;
+$btn-shadow: $primary-border-subtle-dark 0 2px 4px, $primary-text-emphasis-dark 0 5px 9px -3px, $primary 0 -3px 0 inset;
+$purple-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
 $gold-shadow: -1px -1px 0 $gold-glow, 1px 0 0 $gold-glow, -1px 1px 0 $gold-glow, 1px 1px 0 $gold-glow;
 $green-gold-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
 $grey-blue-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
@@ -80,64 +81,29 @@ label.control-label {
 // region info circles for tooltips
 
 .fa.fa-info-circle {
-    color: $gold-background !important;
-    background: $red-glow !important;
+    color: $purple !important;
+    background: $gold-background !important;
 }
 
 .fa.fa-info-circle.fa-border {
-    --fa-border-color: $red-border !important;
+    --fa-border-color: #{$gold};
     --fa-border-radius: 50% !important;
     --fa-border-padding: 0 !important;
     --fa-border-width: 1px !important;
     --fa-border-style: solid !important;
 }
 
-.svg-inline--fa.fa-circle-info {
-    color: $gold-background !important;
-    background: $red-glow !important;
+.fa-circle-info {
+    color: $purple !important;
+    background: $gold-background !important;
 }
 
-.svg-inline--fa.fa-circle-info.fa-border {
-    --fa-border-color: $red-border !important;
+.fa-circle-info.fa-border {
+    --fa-border-color: #{$gold};
     --fa-border-radius: 50% !important;
     --fa-border-padding: 0 !important;
     --fa-border-width: 1px !important;
     --fa-border-style: solid !important;
-}
-
-.input-group-text svg.svg-inline--fa.fa-circle-info {
-    color: $gold-background !important;
-    background: $red-glow !important;
-}
-
-.input-group-text .fa.fa-info-circle.fa-border {
-    --fa-border-color: $red-glow !important;
-    --fa-border-radius: 50% !important;
-    --fa-border-padding: 0 !important;
-    --fa-border-width: 1px !important;
-}
-
-.input-group-text .fa-circle-info.fa-border {
-    color: $gold-background !important;
-    background: $red-glow !important;
-    --fa-border-color: red !important;
-    --fa-border-radius: 50% !important;
-    --fa-border-padding: 0 !important;
-    --fa-border-width: 1px !important;
-}
-
-.input-group-text svg.svg-inline--fa.fa-circle-info.fa-border {
-    --fa-border-color: red !important;
-    --fa-border-radius: 50% !important;
-    --fa-border-padding: 0 !important;
-    --fa-border-width: 1px !important;
-}
-
-.input-group.input-info div.input-group-text svg.svg-inline--fa.fa-circle-info.fa-border {
-    --fa-border-color: red !important;
-    --fa-border-radius: 50%;
-    --fa-border-padding: 0;
-    --fa-border-width: 1px;
 }
 
 // endregion info circles for tooltips
@@ -145,43 +111,32 @@ label.control-label {
 // region tooltips
 
 .tooltip {
-    --bs-tooltip-zindex: 5000;
-    --bs-tooltip-color: red;
-    --bs-tooltip-bg: $gold-background;
+    --bs-tooltip-zindex: 50000;
+    --bs-tooltip-color: #{$purple};
+    --bs-tooltip-bg: #{$gold-background};
     --bs-tooltip-border-width: 1px;
-    --bs-tooltip-border-color: red;
+    --bs-tooltip-border-color: #{$purple};
     --bs-tooltip-border-radius: var(--bs-border-radius);
     --bs-tooltip-opacity: 0.9;
     --bs-tooltip-arrow-width: 0.8rem;
     --bs-tooltip-arrow-height: 0.4rem;
-    z-index: 5000;
+    z-index: 50000;
+    color: $purple;
     background: $gold-background;
-    border: 1px solid red;
+    border: 1px solid $purple;
     border-radius: var(--bs-tooltip-border-radius);
+    box-shadow: $purple-shadow;
 }
 
-/*.tooltip.bs-tooltip-auto {
-    --bs-tooltip-zindex: 5000;
-    --bs-tooltip-color: red;
-    --bs-tooltip-bg: $gold-background;
-    --bs-tooltip-border-width: 1px;
-    --bs-tooltip-border-color: red;
-    --bs-tooltip-border-radius: var(--bs-border-radius);
-    --bs-tooltip-opacity: 1;
-    --bs-tooltip-arrow-width: 0.8rem;
-    --bs-tooltip-arrow-height: 0.4rem;
-    z-index: 5000;
-    background: $gold-background;
-    border: 1px solid red;
-    border-radius: var(--bs-tooltip-border-radius);
-}*/
-
 .tooltip-arrow {
-    color: red;
+    color: $purple;
+    z-index: 50000;
 }
 
 .bs-tooltip-top .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
     top: 0px;
+    border-top-color: $purple;
+    z-index: 50000;
 }
 
 //endregion tooltips
@@ -219,12 +174,12 @@ $snow-3: "";
 .snow {
     border-radius: 50%;
     opacity: 0.9;
-    position: absolute;
+    position: fixed;
     top: 0;
     animation-name: fall;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .snow.snow-layer1 {
@@ -234,7 +189,7 @@ $snow-3: "";
     box-shadow: #{$snow-1};
     opacity: 0.3;
     animation-duration: 12s;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .snow.snow-layer1.a {
@@ -251,7 +206,7 @@ $snow-3: "";
     opacity: 0.3;
     animation-delay: -2s;
     animation-duration: 11s;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .snow.snow-layer2.a {
@@ -268,7 +223,7 @@ $snow-3: "";
     opacity: 0.3;
     animation-delay: -3s;
     animation-duration: 13s;
-    z-index: 10000;
+    z-index: 100;
 }
 
 .snow.snow-layer3.a {
