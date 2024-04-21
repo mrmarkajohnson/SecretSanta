@@ -1,5 +1,4 @@
 ﻿using Data.Entities.Shared;
-using Data.Entities.Shared.Base;
 
 namespace Data.Entities.Santa;
 

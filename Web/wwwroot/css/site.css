@@ -35,3 +35,9 @@ body {
     border-left: none !important;
     background: #ffffff !important;
 }
+
+.field-validation-error {
+    display: block !important;
+    text-align: right;
+    font-size: 14px;
+}

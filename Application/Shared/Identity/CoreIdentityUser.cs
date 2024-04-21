@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
 
-public class IdentityUser : IIdentityUser
+public class CoreIdentityUser : IIdentityUser
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
 

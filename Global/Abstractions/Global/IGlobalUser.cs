@@ -1,15 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Global;
 
-public interface IGlobalUser
-{
-    [Required, Length(2, 250), Display(Name = "Forename(s)")]
+public interface IGlobalUser : IIdentityUser
+{    
     string Forename { get; set; }
 
     [Display(Name = "Middle Names")]
     string? MiddleNames { get; set; }
 
-    [Required, Length(2, 250), Display(Name = "Surname")]
-    public string Surname { get; set; }
+    string Surname { get; set; }
+}
+
+
+public class GlobalUserValidator<T> : IdentityUserValidator<T> where T : IGlobalUser
+{
+    public GlobalUserValidator()
+    {
+        RuleFor(x => x.Forename)
+            .NotEmpty()
+            .Length(2, 50);
+
+        RuleFor(x => x.Surname)
+            .NotEmpty()
+            .Length(2, 50);
+    }
 }

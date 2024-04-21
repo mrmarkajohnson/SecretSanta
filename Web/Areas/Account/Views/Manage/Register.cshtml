@@ -33,7 +33,7 @@
                     <div class="form-group-sm mb-3">
                         <label asp-for="UserName" class="control-label"></label>
                         <div class="input-group input-info">
-                            <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="false" placeholder="username" />
+                            <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="false" placeholder="Create a username" />
                             <div class="input-group-text" data-toggle="tooltip" data-html="true" title="@userNameExplanation">
                                 <i class="fa fa-info-circle fa-border"></i>
                             </div>
@@ -44,18 +44,48 @@
                     </div>
                     <div class="form-group-sm mb-3">
                         <label asp-for="Password" class="control-label">Password</label>
-                        <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Create a new password" />
                         <div>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group-sm mb-3">
                         <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
-                        <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />                        
+                        <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Re-enter your new password" />                        
                         <div>
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
-                    </div>                    
+                    </div>
+                    <div class="form-group-sm mb-3">
+                        <label asp-for="Forename" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="Forename" maxlength="250" class="form-control" autocomplete="forename" aria-required="false" placeholder="Enter your first name here" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="Forename" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group-sm mb-3">
+                        <label asp-for="MiddleNames" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="MiddleNames" maxlength="250" class="form-control" autocomplete="middlenames" aria-required="false" placeholder="Enter any middle names here" />
+                            <div class="input-group-text" data-toggle="tooltip" data-html="true" title="This is optional, but may be helpful if someone else has a similar first name and surname">
+                                <i class="fa fa-info-circle fa-border"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="MiddleNames" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group-sm mb-3">
+                        <label asp-for="Surname" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="false" placeholder="Enter your surname here" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                    </div>
                     <br />
                     <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                 </div>

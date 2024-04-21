@@ -6,15 +6,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Data.Entities.Shared;
 
 [Table("Global_User")]
-public class Global_User : IdentityUser, IGlobalUser
+public class Global_User : IdentityUser, IEntity, IGlobalUser
 {
+    public Global_User()
+    {
+        DateCreated = DateTime.Now;
+    }
+    
     [Required, Length(2, 250)]
     public required string Forename { get; set; }
 
+    [Display(Name = "Middle Names")]
     public string? MiddleNames { get; set; }
 
     [Required, Length(2, 250)]
     public required string Surname { get; set; }
 
     public virtual Santa_User? SantaUser { get; set; }
+
+    public DateTime DateCreated { get; set; }
 }

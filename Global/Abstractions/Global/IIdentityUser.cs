@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Global;
 
@@ -14,4 +15,15 @@ public interface IIdentityUser
 
     //[Display(Name = "Phone Number")]
     //string? PhoneNumber { get; set; }
+}
+
+public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentityUser
+{
+    public IdentityUserValidator()
+    {
+        RuleFor(x => x.UserName)
+            .NotEmpty()
+            .When(x => string.IsNullOrWhiteSpace(x.Email))
+            .WithMessage($"Please provide a Username if no E-mail Address is provided.");
+    }
 }

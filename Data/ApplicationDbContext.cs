@@ -1,17 +1,26 @@
 ﻿using Data.Entities.Santa;
+using Data.Entities.Shared;
 using Data.Helpers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace SecretSanta.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {
+    public ApplicationDbContext() : this(new DbContextOptions<ApplicationDbContext>())
+    {
+    }
+    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {            
     }
 
+    public DbSet<Global_User> Global_Users => Set<Global_User>();
     public DbSet<Santa_GiftingGroup> Santa_GiftingGroups => Set<Santa_GiftingGroup>();
     public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUsers => Set<Santa_GiftingGroupUser>();
     public DbSet<Santa_GiftingGroupYear> Santa_GiftingGroupYears => Set<Santa_GiftingGroupYear>();
@@ -29,21 +38,24 @@ public class ApplicationDbContext : IdentityDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    if (!optionsBuilder.IsConfigured)
-    //    {
-    //        IConfigurationRoot configuration = new ConfigurationBuilder()
-    //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    //        .AddJsonFile("appsettings.json")
-    //        .Build();
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
 
-    //        var connectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
-    //        connectionStringBuilder.UserID = configuration["DatabaseSettings:DevUserId"];
-    //        connectionStringBuilder.Password = configuration["DatabaseSettings:DevPassword"];
-    //        string connectionString = connectionStringBuilder.ConnectionString;
 
-    //        optionsBuilder.UseSqlServer(configuration.GetConnectionString(connectionString));
-    //    }
-    //}
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .Build();
+
+            var connectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
+            connectionStringBuilder.UserID = configuration["DatabaseSettings:DevUserId"];
+            connectionStringBuilder.Password = configuration["DatabaseSettings:DevPassword"];
+            string connectionString = connectionStringBuilder.ConnectionString;
+
+            optionsBuilder.UseSqlServer(connectionString);
+        }
+    }
 }        
