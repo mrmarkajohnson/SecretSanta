@@ -14,7 +14,6 @@ public class ManageController : Controller
     private readonly IUserStore<IdentityUser> _userStore;
     //private readonly SignInManager<IdentityUser> _signInManager;
 
-
     public ManageController(UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
         SignInManager<IdentityUser> signInManager)
@@ -29,11 +28,11 @@ public class ManageController : Controller
     {
         var model = new RegisterVm
         {
-            ReturnUrl = returnUrl,
+            ReturnUrl = returnUrl ?? Url.Content("~/"),
             Forename = "",
             Surname = "",
             Password = "",
-            ConfirmPassword = ""
+            ConfirmPassword = "",
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
         };
 
@@ -58,7 +57,7 @@ public class ManageController : Controller
                 }
                 else
                 {
-                    return RedirectToPage(model.ReturnUrl);
+                    return Redirect(model.ReturnUrl);
                 }
             }
             else

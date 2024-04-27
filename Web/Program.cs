@@ -1,3 +1,4 @@
+using Global;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -20,26 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
 
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    // Password settings.
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 8;
-    options.Password.RequiredUniqueChars = 2;
-
-    // Lockout settings.
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
-
-    // User settings.
-    options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false;
-});
+builder.Services.Configure<IdentityOptions>(IdentityValidation.ConfigureOptions);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -80,8 +62,18 @@ app.MapControllerRoute(
     constraints: new { id = @"\d*" });
 
 app.MapControllerRoute(
-    name: "noarea",
-    pattern: "{controller=Home}/{action=Index}/{id?}",
+    name: "root",
+    pattern: "/{controller:exists}/{action:exists}",
+    defaults: new { area = "" });
+
+app.MapControllerRoute(
+    name: "empty",
+    pattern: "/",
+    defaults: new { area = "", controller = "Home", action = "index" });
+
+app.MapControllerRoute(
+    name: "currentarea",
+    pattern: "{controller=Home}/{action:exists}/{id?}",
     constraints: new { id = @"\d*" });
 
 app.MapRazorPages();

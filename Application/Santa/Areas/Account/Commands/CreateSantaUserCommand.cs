@@ -31,21 +31,24 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
                 Forename = Item.Forename,
                 MiddleNames = Item.MiddleNames,
                 Surname = Item.Surname,
+                Email = string.IsNullOrWhiteSpace(Item.Email) ? Item.Email : null,
                 UserName = string.IsNullOrWhiteSpace(Item.UserName) ? Item.Email : Item.UserName,
             };
-            
+
+            var santaUserDb = new Santa_User
+            {
+                GlobalUserId = globalUserDb.Id,
+                GlobalUser = globalUserDb
+            };
+
+            globalUserDb.SantaUser = santaUserDb;
+
+            ModelContext.ChangeTracker.DetectChanges();
+
             IdentityResult result = await _userManager.CreateAsync(globalUserDb, Item.Password);
 
             if (result.Succeeded)
-            {                
-                var santaUserDb = new Santa_User
-                {
-                    GlobalUserId = globalUserDb.Id,
-                    GlobalUser = globalUserDb
-                };
-
-                globalUserDb.SantaUser = santaUserDb;
-
+            {
                 //ModelContext.Add(santaUserDb); // already added
 
                 await _userStore.SetUserNameAsync(globalUserDb, Item.Email, CancellationToken.None);

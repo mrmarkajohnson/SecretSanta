@@ -1,4 +1,4 @@
-﻿using Data.Entities.Shared.Base;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
 
@@ -15,6 +15,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity
     [Required, Length(4, 4)]
     public int Year { get; set; }
 
+    [Precision(10, 4)]
     public decimal? Limit { get; set; }
 
     public int GiftingGroupId { get; set; }

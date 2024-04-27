@@ -1,4 +1,5 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
+using Global;
 using Global.Abstractions.Santa.Areas.Account;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +11,7 @@ public class RegisterVm : SantaUser, IRegisterSantaUser
 
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = IdentityValidation.PasswordOptions.RequiredLength)]
     [DataType(DataType.Password)]
     [Display(Name = "Password")]
     public required string Password { get; set; }

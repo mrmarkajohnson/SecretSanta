@@ -7,5 +7,5 @@ public abstract class BaseEntity : IEntity
         DateCreated = DateTime.Now;
     }
 
-    public DateTime DateCreated { get; }
+    public DateTime DateCreated { get; set; }
 }

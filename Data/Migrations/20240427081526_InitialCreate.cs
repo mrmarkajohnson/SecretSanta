@@ -59,6 +59,10 @@ namespace Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JoinerToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CultureInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CurrencyCodeOverride = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    CurrencySymbolOverride = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -180,7 +184,8 @@ namespace Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Forename = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleNames = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,21 +199,23 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Santa_GiftingGroupYear",
+                name: "Santa_GiftingGroupYears",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Year = table.Column<int>(type: "int", nullable: false),
+                    Limit = table.Column<decimal>(type: "decimal(10,4)", precision: 10, scale: 4, nullable: true),
                     GiftingGroupId = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Santa_GiftingGroupYear", x => x.Id);
+                    table.PrimaryKey("PK_Santa_GiftingGroupYears", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Santa_GiftingGroupYear_Santa_GiftingGroups_GiftingGroupId",
+                        name: "FK_Santa_GiftingGroupYears_Santa_GiftingGroups_GiftingGroupId",
                         column: x => x.GiftingGroupId,
                         principalTable: "Santa_GiftingGroups",
                         principalColumn: "Id",
@@ -222,6 +229,7 @@ namespace Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GlobalUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -236,27 +244,29 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Santa_GiftingGroupUser",
+                name: "Santa_GiftingGroupUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    GroupAdmin = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     GiftingGroupId = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Santa_GiftingGroupUser", x => x.Id);
+                    table.PrimaryKey("PK_Santa_GiftingGroupUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Santa_GiftingGroupUser_Santa_GiftingGroups_GiftingGroupId",
+                        name: "FK_Santa_GiftingGroupUsers_Santa_GiftingGroups_GiftingGroupId",
                         column: x => x.GiftingGroupId,
                         principalTable: "Santa_GiftingGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Santa_GiftingGroupUser_Santa_Users_GiftingGroupId",
+                        name: "FK_Santa_GiftingGroupUsers_Santa_Users_GiftingGroupId",
                         column: x => x.GiftingGroupId,
                         principalTable: "Santa_Users",
                         principalColumn: "Id",
@@ -264,38 +274,39 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Santa_Partners",
+                name: "Santa_PartnerLinks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Partner1Id = table.Column<int>(type: "int", nullable: false),
-                    Partner2Id = table.Column<int>(type: "int", nullable: false),
+                    SuggestedById = table.Column<int>(type: "int", nullable: false),
+                    ConfirmedById = table.Column<int>(type: "int", nullable: false),
                     ConfirmedByPartner2 = table.Column<bool>(type: "bit", nullable: false),
                     RelationshipEnded = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IgnoreOldRelationship = table.Column<bool>(type: "bit", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Santa_Partners", x => x.Id);
+                    table.PrimaryKey("PK_Santa_PartnerLinks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Santa_Partners_Santa_Users_Partner1Id",
-                        column: x => x.Partner1Id,
+                        name: "FK_Santa_PartnerLinks_Santa_Users_ConfirmedById",
+                        column: x => x.ConfirmedById,
                         principalTable: "Santa_Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Santa_Partners_Santa_Users_Partner2Id",
-                        column: x => x.Partner2Id,
+                        name: "FK_Santa_PartnerLinks_Santa_Users_SuggestedById",
+                        column: x => x.SuggestedById,
                         principalTable: "Santa_Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Santa_YearGroupUser",
+                name: "Santa_YearGroupUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -306,25 +317,129 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Santa_YearGroupUser", x => x.Id);
+                    table.PrimaryKey("PK_Santa_YearGroupUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Santa_YearGroupUser_Santa_GiftingGroupYear_YearId",
+                        name: "FK_Santa_YearGroupUsers_Santa_GiftingGroupYears_YearId",
                         column: x => x.YearId,
-                        principalTable: "Santa_GiftingGroupYear",
+                        principalTable: "Santa_GiftingGroupYears",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Santa_YearGroupUser_Santa_Users_GivingToUserId",
+                        name: "FK_Santa_YearGroupUsers_Santa_Users_GivingToUserId",
                         column: x => x.GivingToUserId,
                         principalTable: "Santa_Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Santa_YearGroupUser_Santa_Users_UserId",
+                        name: "FK_Santa_YearGroupUsers_Santa_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Santa_Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Santa_Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    RecipientTypes = table.Column<int>(type: "int", nullable: false),
+                    HeaderText = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    MessageText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Important = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Santa_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Santa_Messages_Santa_YearGroupUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Santa_YearGroupUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Santa_Suggestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SuggesterId = table.Column<int>(type: "int", nullable: false),
+                    MainSuggestion = table.Column<bool>(type: "bit", nullable: false),
+                    SuggestionText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OtherNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Santa_Suggestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Santa_Suggestions_Santa_YearGroupUsers_SuggesterId",
+                        column: x => x.SuggesterId,
+                        principalTable: "Santa_YearGroupUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Santa_MessageRecipients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageId = table.Column<int>(type: "int", nullable: false),
+                    RecipientId = table.Column<int>(type: "int", nullable: false),
+                    Read = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateArchived = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Santa_MessageRecipients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Santa_MessageRecipients_Santa_GiftingGroupUsers_RecipientId",
+                        column: x => x.RecipientId,
+                        principalTable: "Santa_GiftingGroupUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Santa_MessageRecipients_Santa_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Santa_Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Santa_MessageReplies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OriginalMessageId = table.Column<int>(type: "int", nullable: false),
+                    ReplyMessageId = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Santa_MessageReplies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Santa_MessageReplies_Santa_Messages_OriginalMessageId",
+                        column: x => x.OriginalMessageId,
+                        principalTable: "Santa_Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Santa_MessageReplies_Santa_Messages_ReplyMessageId",
+                        column: x => x.ReplyMessageId,
+                        principalTable: "Santa_Messages",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -367,24 +482,55 @@ namespace Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_GiftingGroupUser_GiftingGroupId",
-                table: "Santa_GiftingGroupUser",
+                name: "IX_Santa_GiftingGroupUsers_GiftingGroupId",
+                table: "Santa_GiftingGroupUsers",
                 column: "GiftingGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_GiftingGroupYear_GiftingGroupId",
-                table: "Santa_GiftingGroupYear",
+                name: "IX_Santa_GiftingGroupYears_GiftingGroupId",
+                table: "Santa_GiftingGroupYears",
                 column: "GiftingGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_Partners_Partner1Id",
-                table: "Santa_Partners",
-                column: "Partner1Id");
+                name: "IX_Santa_MessageRecipients_MessageId",
+                table: "Santa_MessageRecipients",
+                column: "MessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_Partners_Partner2Id",
-                table: "Santa_Partners",
-                column: "Partner2Id");
+                name: "IX_Santa_MessageRecipients_RecipientId",
+                table: "Santa_MessageRecipients",
+                column: "RecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_MessageReplies_OriginalMessageId",
+                table: "Santa_MessageReplies",
+                column: "OriginalMessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_MessageReplies_ReplyMessageId",
+                table: "Santa_MessageReplies",
+                column: "ReplyMessageId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_Messages_SenderId",
+                table: "Santa_Messages",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_PartnerLinks_ConfirmedById",
+                table: "Santa_PartnerLinks",
+                column: "ConfirmedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_PartnerLinks_SuggestedById",
+                table: "Santa_PartnerLinks",
+                column: "SuggestedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Santa_Suggestions_SuggesterId",
+                table: "Santa_Suggestions",
+                column: "SuggesterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Santa_Users_GlobalUserId",
@@ -394,18 +540,18 @@ namespace Data.Migrations
                 filter: "[GlobalUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_YearGroupUser_GivingToUserId",
-                table: "Santa_YearGroupUser",
+                name: "IX_Santa_YearGroupUsers_GivingToUserId",
+                table: "Santa_YearGroupUsers",
                 column: "GivingToUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_YearGroupUser_UserId",
-                table: "Santa_YearGroupUser",
+                name: "IX_Santa_YearGroupUsers_UserId",
+                table: "Santa_YearGroupUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Santa_YearGroupUser_YearId",
-                table: "Santa_YearGroupUser",
+                name: "IX_Santa_YearGroupUsers_YearId",
+                table: "Santa_YearGroupUsers",
                 column: "YearId");
         }
 
@@ -428,19 +574,31 @@ namespace Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Santa_GiftingGroupUser");
+                name: "Santa_MessageRecipients");
 
             migrationBuilder.DropTable(
-                name: "Santa_Partners");
+                name: "Santa_MessageReplies");
 
             migrationBuilder.DropTable(
-                name: "Santa_YearGroupUser");
+                name: "Santa_PartnerLinks");
+
+            migrationBuilder.DropTable(
+                name: "Santa_Suggestions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Santa_GiftingGroupYear");
+                name: "Santa_GiftingGroupUsers");
+
+            migrationBuilder.DropTable(
+                name: "Santa_Messages");
+
+            migrationBuilder.DropTable(
+                name: "Santa_YearGroupUsers");
+
+            migrationBuilder.DropTable(
+                name: "Santa_GiftingGroupYears");
 
             migrationBuilder.DropTable(
                 name: "Santa_Users");

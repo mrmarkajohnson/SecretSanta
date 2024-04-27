@@ -1,6 +1,14 @@
-Add-Migration {name} -project "Data" -startupProject "Web" -verbose
-Update-Database -project "Data" -startupProject "Web" -verbose
+// Create a new migration
+Add-Migration {name} -project "Data"
 
+// Run migrations
+Update-Database -project "Data"
 
-// To roll back to a particular target migration
-Update-Database -Migration {name} -project "Data" -startupProject "Web" -verbose
+// Roll back to a particular target migration
+Update-Database -Migration {name} -project "Data"
+
+// Roll back all migrations
+Update-Database -Migration 0 -project "Data"
+
+// Remove a new migration
+Remove-Migration -project "Data"

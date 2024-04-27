@@ -12,20 +12,20 @@ using SecretSanta.Data;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240309111544_SuggestionsAndMessages")]
-    partial class SuggestionsAndMessages
+    [Migration("20240427081526_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroup", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,22 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CultureInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrencyCodeOverride")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("CurrencySymbolOverride")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -56,7 +71,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_GiftingGroups");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,6 +80,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -86,7 +104,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_GiftingGroupUsers");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupYear", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupYear", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,11 +115,18 @@ namespace Data.Migrations
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("GiftingGroupId")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("Limit")
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal(10,4)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -113,7 +138,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_GiftingGroupYears");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_Message", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,6 +147,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HeaderText")
@@ -148,7 +176,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_Messages");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_MessageRecipient", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_MessageRecipient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,6 +185,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("MessageId")
@@ -177,13 +208,16 @@ namespace Data.Migrations
                     b.ToTable("Santa_MessageRecipients");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_MessageReply", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_MessageReply", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("OriginalMessageId")
                         .HasColumnType("int");
@@ -201,7 +235,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_MessageReplies");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_PartnerLink", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_PartnerLink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -216,6 +250,9 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -236,10 +273,10 @@ namespace Data.Migrations
 
                     b.HasIndex("SuggestedById");
 
-                    b.ToTable("Santa_Partners");
+                    b.ToTable("Santa_PartnerLinks");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_Suggestion", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Suggestion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,6 +285,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("MainSuggestion")
@@ -271,7 +311,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_Suggestions");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_User", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -280,6 +320,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -297,7 +340,7 @@ namespace Data.Migrations
                     b.ToTable("Santa_Users");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_YearGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_YearGroupUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -529,9 +572,12 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Global.Global_User", b =>
+            modelBuilder.Entity("Data.Entities.Shared.Global_User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Forename")
                         .IsRequired()
@@ -547,15 +593,15 @@ namespace Data.Migrations
                     b.ToTable("Global_User");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupUser", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_GiftingGroup", "GiftingGroup")
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroup", "GiftingGroup")
                         .WithMany("UserLinks")
                         .HasForeignKey("GiftingGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_User", "User")
+                    b.HasOne("Data.Entities.Santa.Santa_User", "User")
                         .WithMany("GiftingGroupLinks")
                         .HasForeignKey("GiftingGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -566,9 +612,9 @@ namespace Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupYear", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupYear", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_GiftingGroup", "GiftingGroup")
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroup", "GiftingGroup")
                         .WithMany("Years")
                         .HasForeignKey("GiftingGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -577,9 +623,9 @@ namespace Data.Migrations
                     b.Navigation("GiftingGroup");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_Message", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_YearGroupUser", "Sender")
+                    b.HasOne("Data.Entities.Santa.Santa_YearGroupUser", "Sender")
                         .WithMany("SentMessages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -588,15 +634,15 @@ namespace Data.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_MessageRecipient", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_MessageRecipient", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_Message", "Message")
+                    b.HasOne("Data.Entities.Santa.Santa_Message", "Message")
                         .WithMany("Recipients")
                         .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_GiftingGroupUser", "Recipient")
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroupUser", "Recipient")
                         .WithMany("ReceivedMessages")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -607,32 +653,32 @@ namespace Data.Migrations
                     b.Navigation("Recipient");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_MessageReply", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_MessageReply", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_Message", "OriginalMessage")
+                    b.HasOne("Data.Entities.Santa.Santa_Message", "OriginalMessage")
                         .WithMany("Replies")
                         .HasForeignKey("OriginalMessageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_Message", "ReplyMessage")
+                    b.HasOne("Data.Entities.Santa.Santa_Message", "ReplyMessage")
                         .WithOne("ReplyTo")
-                        .HasForeignKey("Data.Entities.Data.Santa.Santa_MessageReply", "ReplyMessageId");
+                        .HasForeignKey("Data.Entities.Santa.Santa_MessageReply", "ReplyMessageId");
 
                     b.Navigation("OriginalMessage");
 
                     b.Navigation("ReplyMessage");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_PartnerLink", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_PartnerLink", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_User", "ConfirmedBy")
+                    b.HasOne("Data.Entities.Santa.Santa_User", "ConfirmedBy")
                         .WithMany("ConfirmedRelationships")
                         .HasForeignKey("ConfirmedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_User", "SuggestedBy")
+                    b.HasOne("Data.Entities.Santa.Santa_User", "SuggestedBy")
                         .WithMany("SuggestedRelationships")
                         .HasForeignKey("SuggestedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -643,9 +689,9 @@ namespace Data.Migrations
                     b.Navigation("SuggestedBy");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_Suggestion", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Suggestion", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_YearGroupUser", "Suggester")
+                    b.HasOne("Data.Entities.Santa.Santa_YearGroupUser", "Suggester")
                         .WithMany("Suggestions")
                         .HasForeignKey("SuggesterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -654,29 +700,29 @@ namespace Data.Migrations
                     b.Navigation("Suggester");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_User", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_User", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Global.Global_User", "GlobalUser")
+                    b.HasOne("Data.Entities.Shared.Global_User", "GlobalUser")
                         .WithOne("SantaUser")
-                        .HasForeignKey("Data.Entities.Data.Santa.Santa_User", "GlobalUserId");
+                        .HasForeignKey("Data.Entities.Santa.Santa_User", "GlobalUserId");
 
                     b.Navigation("GlobalUser");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_YearGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_YearGroupUser", b =>
                 {
-                    b.HasOne("Data.Entities.Data.Santa.Santa_User", "GivingToUser")
+                    b.HasOne("Data.Entities.Santa.Santa_User", "GivingToUser")
                         .WithMany("GiftingGroupYears")
                         .HasForeignKey("GivingToUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_User", "User")
+                    b.HasOne("Data.Entities.Santa.Santa_User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.Data.Santa.Santa_GiftingGroupYear", "Year")
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroupYear", "Year")
                         .WithMany("Users")
                         .HasForeignKey("YearId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -740,33 +786,33 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Global.Global_User", b =>
+            modelBuilder.Entity("Data.Entities.Shared.Global_User", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithOne()
-                        .HasForeignKey("Data.Entities.Data.Global.Global_User", "Id")
+                        .HasForeignKey("Data.Entities.Shared.Global_User", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroup", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroup", b =>
                 {
                     b.Navigation("UserLinks");
 
                     b.Navigation("Years");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupUser", b =>
                 {
                     b.Navigation("ReceivedMessages");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_GiftingGroupYear", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupYear", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_Message", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
                     b.Navigation("Recipients");
 
@@ -775,7 +821,7 @@ namespace Data.Migrations
                     b.Navigation("ReplyTo");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_User", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_User", b =>
                 {
                     b.Navigation("ConfirmedRelationships");
 
@@ -786,14 +832,14 @@ namespace Data.Migrations
                     b.Navigation("SuggestedRelationships");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Santa.Santa_YearGroupUser", b =>
+            modelBuilder.Entity("Data.Entities.Santa.Santa_YearGroupUser", b =>
                 {
                     b.Navigation("SentMessages");
 
                     b.Navigation("Suggestions");
                 });
 
-            modelBuilder.Entity("Data.Entities.Data.Global.Global_User", b =>
+            modelBuilder.Entity("Data.Entities.Shared.Global_User", b =>
                 {
                     b.Navigation("SantaUser");
                 });

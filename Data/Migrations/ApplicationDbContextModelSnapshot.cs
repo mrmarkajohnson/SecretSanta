@@ -45,6 +45,9 @@ namespace Data.Migrations
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
@@ -74,6 +77,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -106,6 +112,9 @@ namespace Data.Migrations
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
@@ -113,7 +122,8 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Limit")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal(10,4)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -134,6 +144,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HeaderText")
@@ -171,6 +184,9 @@ namespace Data.Migrations
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MessageId")
                         .HasColumnType("int");
 
@@ -196,6 +212,9 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("OriginalMessageId")
                         .HasColumnType("int");
@@ -230,6 +249,9 @@ namespace Data.Migrations
                     b.Property<DateTime?>("DateArchived")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
@@ -248,7 +270,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SuggestedById");
 
-                    b.ToTable("Santa_Partners");
+                    b.ToTable("Santa_PartnerLinks");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_Suggestion", b =>
@@ -260,6 +282,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("MainSuggestion")
@@ -292,6 +317,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")

@@ -6,8 +6,18 @@ namespace Data.Helpers;
 
 internal static class ModelHelper
 {
+    public static void Configure<TEntity>(TEntity entity, ModelBuilder modelBuilder) where TEntity : class, IEntity
+    {
+        modelBuilder.Entity<TEntity>().UseTpcMappingStrategy();
+    }
+
     public static void OnModelCreating(ModelBuilder modelBuilder)
     {
+        foreach (IEntity e in modelBuilder.Model.GetEntityTypes().OfType<IEntity>())
+        {
+            Configure(e, modelBuilder);
+        }
+
         modelBuilder.Entity<Global_User>()
             .HasOne(e => e.SantaUser)
             .WithOne(e => e.GlobalUser)

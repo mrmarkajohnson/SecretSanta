@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="snow-wrapper">
+<body class="snow-wrapper" style="overflow-y: auto">
     <div class="snow snow-layer1 a"></div>
     <div class="snow snow-layer1"></div>
     <div class="snow snow-layer2 a"></div>
@@ -29,7 +29,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">            
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
