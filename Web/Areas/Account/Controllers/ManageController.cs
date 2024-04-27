@@ -12,7 +12,7 @@ public class ManageController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserStore<IdentityUser> _userStore;
-    //private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
     public ManageController(UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
@@ -20,7 +20,7 @@ public class ManageController : Controller
     {
         _userManager = userManager;
         _userStore = userStore;
-        //_signInManager = signInManager;
+        _signInManager = signInManager;
     }
 
     [HttpGet]
@@ -47,7 +47,8 @@ public class ManageController : Controller
 
         if (ModelState.IsValid)
         {
-            ICommandResult<IRegisterSantaUser> commandResult = await new CreateSantaUserCommand(model, _userManager, _userStore).Handle();
+            ICommandResult<IRegisterSantaUser> commandResult = await new 
+                CreateSantaUserCommand(model, _userManager, _userStore, _signInManager).Handle();
 
             if (commandResult.Success)
             {
@@ -65,34 +66,10 @@ public class ManageController : Controller
                 foreach (var error in commandResult.Validation.Errors)
                 {
                     ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }                
+                }
             }
-            
-            //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
-            //if (result.Succeeded)
-            //{
-            //    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-            //    {
-            //        return RedirectToPage("RegisterConfirmation", new { email = model.Email, returnUrl = model.ReturnUrl });
-            //    }
-            //    else
-            //    {
-            //        await _signInManager.SignInAsync(user, isPersistent: false);
-            //        return LocalRedirect(model.ReturnUrl);
-            //    }
-            //}
         }
 
         return View();
     }
-
-    //private IUserEmailStore<IdentityUser> GetEmailStore()
-    //{
-    //    if (!_userManager.SupportsUserEmail)
-    //    {
-    //        throw new NotSupportedException("The default UI requires a user store with email support.");
-    //    }
-    //    return (IUserEmailStore<IdentityUser>)_userStore;
-    //}
 }

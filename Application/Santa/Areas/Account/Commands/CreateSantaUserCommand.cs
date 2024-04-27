@@ -12,11 +12,18 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserStore<IdentityUser> _userStore;
+    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IUserEmailStore<IdentityUser> _emailStore;
 
-    public CreateSantaUserCommand(IRegisterSantaUser item, UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore) : base(item)
+    public CreateSantaUserCommand(IRegisterSantaUser item, 
+        UserManager<IdentityUser> userManager, 
+        IUserStore<IdentityUser> userStore,
+        SignInManager<IdentityUser> signInManager) : base(item)
     {
         _userManager = userManager;
         _userStore = userStore;
+        _signInManager = signInManager;
+        _emailStore = GetEmailStore();
     }
 
     public override async Task<ICommandResult<IRegisterSantaUser>> Handle()
@@ -31,7 +38,7 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
                 Forename = Item.Forename,
                 MiddleNames = Item.MiddleNames,
                 Surname = Item.Surname,
-                Email = string.IsNullOrWhiteSpace(Item.Email) ? Item.Email : null,
+                Email = string.IsNullOrWhiteSpace(Item.Email) ? null: Item.Email,
                 UserName = string.IsNullOrWhiteSpace(Item.UserName) ? Item.Email : Item.UserName,
             };
 
@@ -51,14 +58,15 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
             {
                 await _userStore.SetUserNameAsync(globalUserDb, Item.Email, CancellationToken.None);
 
-                //if (!string.IsNullOrWhiteSpace(Item.Email))
-                //{
-                //    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                //}
+                if (!string.IsNullOrWhiteSpace(Item.Email))
+                {
+                    await _emailStore.SetEmailAsync(globalUserDb, Item.Email, CancellationToken.None);
+                }
 
                 Success = true;
                 Item.Password = "";
                 await ModelContext.SaveChangesAsync();
+                await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
             }
             else
             {
@@ -77,5 +85,14 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
         }
 
         return await Result();
+    }
+
+    private IUserEmailStore<IdentityUser> GetEmailStore()
+    {
+        if (!_userManager.SupportsUserEmail)
+        {
+            throw new NotSupportedException("The default UI requires a user store with email support.");
+        }
+        return (IUserEmailStore<IdentityUser>)_userStore;
     }
 }
