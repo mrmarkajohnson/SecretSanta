@@ -20,6 +20,18 @@ public class ApplicationDbContext : IdentityDbContext
     {            
     }
 
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ChangeTracker.DetectChanges();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        ChangeTracker.DetectChanges();
+        return base.SaveChanges();
+    }
+
     public DbSet<Global_User> Global_Users => Set<Global_User>();
     public DbSet<Santa_GiftingGroup> Santa_GiftingGroups => Set<Santa_GiftingGroup>();
     public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUsers => Set<Santa_GiftingGroupUser>();

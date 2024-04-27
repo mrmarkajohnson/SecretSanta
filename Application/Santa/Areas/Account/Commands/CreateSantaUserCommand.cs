@@ -49,8 +49,6 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
 
             if (result.Succeeded)
             {
-                //ModelContext.Add(santaUserDb); // already added
-
                 await _userStore.SetUserNameAsync(globalUserDb, Item.Email, CancellationToken.None);
 
                 //if (!string.IsNullOrWhiteSpace(Item.Email))
