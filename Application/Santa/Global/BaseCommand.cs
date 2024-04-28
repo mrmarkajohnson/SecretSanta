@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Global;
-using SecretSanta.Data;
 
 namespace Application.Santa.Global;
 
-public abstract class BaseCommand<TItem>
+public abstract class BaseCommand<TItem> : BaseRequest
 {
     public TItem Item { get; set; }
 
@@ -13,12 +12,9 @@ public abstract class BaseCommand<TItem>
     protected AbstractValidator<TItem>? Validator { get; set; }
     protected ValidationResult Validation { get; set; } = new ValidationResult();
 
-    protected ApplicationDbContext ModelContext { get; set; }
-
     protected BaseCommand(TItem item)
     {
         Item = item;
-        ModelContext = new ApplicationDbContext();
     }
 
     public abstract Task<ICommandResult<TItem>> Handle();

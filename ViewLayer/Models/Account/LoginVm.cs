@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
@@ -19,13 +9,13 @@ public class LoginVm
     public string? ReturnUrl { get; set; }
     
     [Display(Name = "E-mail or Username")]
-    public string? EmailOrUserName { get; set; }
+    public required string EmailOrUserName { get; set; }
 
     [Required]
     [DataType(DataType.Password)]
-    public string? Password { get; set; }
+    public required string Password { get; set; }
 
-    [Display(Name = "Remember me?")]
+    [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }
 
 }

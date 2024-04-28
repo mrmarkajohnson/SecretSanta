@@ -27,6 +27,13 @@ public static class IdentityValidation
         public const bool RequireUniqueEmail = false;
     }
 
+    public static class SignInOptions
+    {
+        public static bool RequireConfirmedEmail = false;
+        public static bool RequireConfirmedPhoneNumber = false;
+        public static bool RequireConfirmedAccount = false;
+    }
+
     public static void ConfigureOptions(IdentityOptions options)
     {
         // Password settings.
