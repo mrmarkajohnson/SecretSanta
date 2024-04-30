@@ -49,6 +49,21 @@ h2 {
 
 nav.navbar {
     background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
+    padding-right: 10px !important;
+}
+
+button.navbar-toggler {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    font-size: 2rem !important;
+    border: none !important;
+    color: white !important;
+}
+
+button.navbar-toggler:hover {
+    color: $gold !important;
+    font-weight: 400 !important;
+    text-shadow: $green-gold-shadow !important;
 }
 
 .nav-link {
@@ -56,9 +71,13 @@ nav.navbar {
 }
 
 .nav-link:hover {
-    color: $gold;
-    font-weight: 400;
-    text-shadow: $green-gold-shadow;
+    color: $gold !important;
+    font-weight: 600 !important;
+    text-shadow: white !important;
+}
+
+.navbar-togger {
+    border: none !important;
 }
 
 a {
@@ -73,9 +92,23 @@ a:hover {
 }
 
 label.control-label {
+    color: #292929 !important;
+    display: block;
+    font-weight: 500 !important;
+    text-align: left !important;
+}
+
+label.control-label.required {
+    color: #111111 !important;
     display: block;
     font-weight: 600 !important;
     text-align: left !important;
+}
+
+label.control-label.required::after {
+    content: "*";
+    color: red !important;
+    padding-left: 1px !important;
 }
 
 // region info circles for tooltips
@@ -83,6 +116,7 @@ label.control-label {
 .fa.fa-info-circle {
     color: $purple !important;
     background: $gold-background !important;
+    font-size: 15px !important;
 }
 
 .fa.fa-info-circle.fa-border {
@@ -96,6 +130,7 @@ label.control-label {
 .fa-circle-info {
     color: $purple !important;
     background: $gold-background !important;
+    font-size: 15px !important;
 }
 
 .fa-circle-info.fa-border {

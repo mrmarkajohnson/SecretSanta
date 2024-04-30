@@ -19,7 +19,7 @@
                     <br />
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="form-group-sm mb-3">
-                        <label asp-for="EmailOrUserName" class="control-label"></label>
+                        <label asp-for="EmailOrUserName" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
                             <div class="input-group-text" data-toggle="tooltip" data-html="true" title="@emailOrUserNameExplanation">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="form-group-sm mb-3">
-                        <label asp-for="Password" class="control-label">Password</label>
+                        <label asp-for="Password" class="control-label required">Password</label>
                         <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                         <div>
                             <span asp-validation-for="Password" class="text-danger"></span>

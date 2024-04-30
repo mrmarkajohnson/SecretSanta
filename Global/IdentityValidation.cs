@@ -12,6 +12,13 @@ public static class IdentityValidation
         public const bool RequireLowercase = false;
         public const bool RequireUppercase = false;
         public const bool RequireDigit = true;
+
+        public static string Description = $"Must be at least {RequiredLength} characters, with at least one "
+            + (RequireDigit ? "digit, " : "")
+            + (RequireNonAlphanumeric ? "symbol, " : "")
+            + (RequireLowercase ? "lowercase, " : "")
+            + (RequireUppercase ? "uppercase, " : "")
+            + $"and {RequiredUniqueChars} unique characters.";
     }
 
     public static class LockoutOptions
@@ -25,6 +32,7 @@ public static class IdentityValidation
     {
         public const string AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
         public const bool RequireUniqueEmail = false;
+        public const int UserNameRequiredLength = 8;
     }
 
     public static class SignInOptions

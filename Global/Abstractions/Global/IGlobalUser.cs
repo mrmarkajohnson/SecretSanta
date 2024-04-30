@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace Global.Abstractions.Global;
 
 public interface IGlobalUser : IIdentityUser
-{    
+{
+    [Display(Name = "First Name")]
     string Forename { get; set; }
 
     [Display(Name = "Middle Names")]

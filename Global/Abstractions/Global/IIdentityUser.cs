@@ -7,7 +7,7 @@ public interface IIdentityUser
 {
     string Id { get; set; }
 
-    [Display(Name = "Username")]
+    [Display(Name = "Username")]    
     string? UserName { get; set; }
 
     [Display(Name = "E-mail Address")]
@@ -25,5 +25,8 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
             .NotEmpty()
             .When(x => string.IsNullOrWhiteSpace(x.Email))
             .WithMessage($"Please provide a Username if no E-mail Address is provided.");
+
+        RuleFor(x => x.UserName)
+            .MinimumLength(IdentityValidation.UserOptions.UserNameRequiredLength);
     }
 }

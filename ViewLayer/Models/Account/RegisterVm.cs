@@ -11,7 +11,7 @@ public class RegisterVm : SantaUser, IRegisterSantaUser
 
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = IdentityValidation.PasswordOptions.RequiredLength)]
+    [StringLength(100, ErrorMessage = "Your {0} must be between {2} and {1} characters long.", MinimumLength = IdentityValidation.PasswordOptions.RequiredLength)]
     [DataType(DataType.Password)]
     [Display(Name = "Password")]
     public required string Password { get; set; }

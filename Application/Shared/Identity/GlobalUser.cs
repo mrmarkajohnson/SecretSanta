@@ -5,6 +5,7 @@ namespace Application.Shared.Identity;
 
 public class GlobalUser : CoreIdentityUser, IGlobalUser
 {
+    [Display(Name = "First Name")]
     public required string Forename { get; set; }
 
     [Display(Name = "Middle Names")]
