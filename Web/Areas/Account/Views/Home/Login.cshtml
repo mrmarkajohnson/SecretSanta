@@ -22,7 +22,7 @@
                         <label asp-for="EmailOrUserName" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-                            <div class="input-group-text" data-toggle="tooltip" data-html="true" title="@emailOrUserNameExplanation">
+                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@emailOrUserNameExplanation">
                                 <i class="fa fa-info-circle fa-border"></i>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                             &nbsp;
                             @Html.DisplayNameFor(m => m.RememberMe)
                             &nbsp;
-                            <div class="d-inline" data-toggle="tooltip" data-html="true" title="@rememberMeExplanation">
+                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@rememberMeExplanation">
                                 <i class="fa fa-info-circle fa-border"></i>
                             </div>
                         </label>
@@ -76,34 +76,34 @@
     </section>
 
     @* <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            if ((Model.ExternalLogins?.Count ?? 0) == 0)
-            {
-                <div>
-                    <p>
-                        There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                            article
-                            about setting up this ASP.NET application to support logging in via external services
-                        </a>.
-                    </p>
-                </div>
-            }
-            else
-            {
-                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                    <div>
-                        <p>
-                            @foreach (var provider in Model.ExternalLogins!)
-                            {
-                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                            }
-                        </p>
-                    </div>
-                </form>
-            }
-        </section>
+    <section>
+    <h3>Use another service to log in.</h3>
+    <hr />
+    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+    {
+    <div>
+    <p>
+    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+    article
+    about setting up this ASP.NET application to support logging in via external services
+    </a>.
+    </p>
+    </div>
+    }
+    else
+    {
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    <div>
+    <p>
+    @foreach (var provider in Model.ExternalLogins!)
+    {
+    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+    }
+    </p>
+    </div>
+    </form>
+    }
+    </section>
     </div> *@
 
 </div>
