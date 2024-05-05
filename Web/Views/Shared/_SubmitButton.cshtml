@@ -1,0 +1,11 @@
+﻿@using Global.Abstractions.Global
+@using ViewLayer.Models.Shared
+
+@model IForm
+@{
+    var defaultModel = new BaseFormVm();
+    string text = string.IsNullOrEmpty(Model?.SubmitButtonText) ? defaultModel.SubmitButtonText : Model.SubmitButtonText;
+    string icon = string.IsNullOrEmpty(Model?.SubmitButtonIcon) ? defaultModel.SubmitButtonIcon : Model.SubmitButtonIcon;
+}
+
+<button type="submit" class="w-100 btn btn-lg btn-primary"><i class="fa @icon"></i> &nbsp; @text</button>

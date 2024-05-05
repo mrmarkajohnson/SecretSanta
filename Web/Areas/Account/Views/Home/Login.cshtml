@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Log in";
     string emailOrUserNameExplanation = "If you have provided an E-mail Address you can enter it here, or enter your Username";
-    string rememberMeExplanation = "If this is ticked, your browser will save your login details for future logins.";
+    string rememberMeExplanation = "If this is ticked, you will stay logged in even if you close the browser, until your login expires.";
 }
 
 <div class="text-center">
@@ -50,7 +50,7 @@
                     </div>
                     <br />
                     <div>
-                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                        <partial name="_SubmitButton" />
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>

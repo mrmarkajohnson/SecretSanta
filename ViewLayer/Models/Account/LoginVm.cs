@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Global.Abstractions.Global;
+using System.ComponentModel.DataAnnotations;
+using ViewLayer.Models.Shared;
 
 namespace ViewLayer.Models.Account;
 
-public class LoginVm
+public class LoginVm : BaseFormVm, IForm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    public string? ReturnUrl { get; set; }
-    
     [Display(Name = "E-mail or Username")]
     public required string EmailOrUserName { get; set; }
 
@@ -18,4 +18,6 @@ public class LoginVm
     [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }
 
+    public override string SubmitButtonText { get; set; } = "Log in";
+    public override string SubmitButtonIcon { get; set; } = "fa-key";
 }

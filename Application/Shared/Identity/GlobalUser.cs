@@ -12,4 +12,6 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
     public string? MiddleNames { get; set; }
 
     public required string Surname { get; set; }
+
+    public bool SecurityQuestionsSet { get; set; }
 }

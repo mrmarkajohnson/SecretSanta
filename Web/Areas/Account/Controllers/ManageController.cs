@@ -47,7 +47,7 @@ public class ManageController : Controller
 
         if (ModelState.IsValid)
         {
-            ICommandResult<IRegisterSantaUser> commandResult = await new 
+            ICommandResult<IRegisterSantaUser> commandResult = await new
                 CreateSantaUserCommand(model, _userManager, _userStore, _signInManager).Handle();
 
             if (commandResult.Success)
@@ -60,6 +60,39 @@ public class ManageController : Controller
                 {
                     return Redirect(model.ReturnUrl);
                 }
+            }
+            else
+            {
+                foreach (var error in commandResult.Validation.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+            }
+        }
+
+        return View();
+    }
+
+    [HttpGet]
+    public IActionResult SetSecurityQuestions()
+    {
+        var model = new SetSecurityQuestionsVm();
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SetSecurityQuestions(SetSecurityQuestionsVm model)
+    {
+        model.ReturnUrl ??= Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            ICommandResult<ISecurityQuestions> commandResult = await new
+                SetSecurityQuestionsCommand(model, User, _userManager, _signInManager).Handle();
+
+            if (commandResult.Success)
+            {
+                return Redirect(model.ReturnUrl);
             }
             else
             {

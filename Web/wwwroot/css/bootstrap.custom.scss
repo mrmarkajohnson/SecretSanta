@@ -47,6 +47,14 @@ h2 {
     text-shadow: $green-gold-shadow;
 }
 
+.btn-primary svg {
+    color: #ffe866;
+}
+
+.btn-primary:hover svg {
+    color: $gold;
+}
+
 nav.navbar {
     background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
     padding-right: 10px !important;

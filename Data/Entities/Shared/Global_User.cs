@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Data.Entities.Shared;
 
 [Table("Global_User")]
-public class Global_User : IdentityUser, IEntity, IGlobalUser
+public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions
 {
     public Global_User()
     {
@@ -25,4 +25,14 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser
     public virtual Santa_User? SantaUser { get; set; }
 
     public DateTime DateCreated { get; set; }
+
+    public string? SecurityQuestion1 { get; set; }
+    public string? SecurityAnswer1 { get; set; }
+    public string? SecurityHint1 { get; set; }
+
+    public string? SecurityQuestion2 { get; set; }
+    public string? SecurityAnswer2 { get; set; }
+    public string? SecurityHint2 { get; set; }
+
+    public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
 }

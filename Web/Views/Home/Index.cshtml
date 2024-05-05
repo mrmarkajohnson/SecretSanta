@@ -7,14 +7,30 @@
 @model HomeVm
 @{
     ViewData["Title"] = "Home Page";
-    string welcomeSignedInUser = "Welcome back to Secret Santa" // TODO: If the user has just registered, just say "Welcome to Secret Santa!" and give a quick guide
+    bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
+
+    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? "" : " back ") + " to Secret Santa"
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? "!" : $", {Model.CurrentUser?.Forename}!");
 }
 
 <div class="text-center">    
     @if (_signInManager.IsSignedIn(User))
     {
-        <h1>@welcomeSignedInUser</h1> 
+        <h1>@welcomeSignedInUser</h1>
+
+        if (mustSetSecurityQuestions)
+        {
+            <p>
+                <br />
+                Santa has one final task for you before he can accept your wish list. Please set some 
+                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    security questions</a> in case you forget your password and need to reset it.
+            </p>
+        }
+        else
+        {
+            // TODO: Add the main page content here
+        }
     }
     else
     {

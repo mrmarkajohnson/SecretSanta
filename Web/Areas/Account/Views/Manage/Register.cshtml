@@ -65,7 +65,7 @@
                     <div class="form-group-sm mb-3">
                         <label asp-for="Forename" class="control-label required"></label>
                         <div class="input-group input-info">
-                            <input asp-for="Forename" maxlength="250" class="form-control" autocomplete="firstname" aria-required="false" placeholder="Enter your first name here" />
+                            <input asp-for="Forename" maxlength="250" class="form-control" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
                         </div>
                         <div>
                             <span asp-validation-for="Forename" class="text-danger"></span>
@@ -86,14 +86,14 @@
                     <div class="form-group-sm mb-3">
                         <label asp-for="Surname" class="control-label required"></label>
                         <div class="input-group input-info">
-                            <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="false" placeholder="Enter your surname here" />
+                            <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="true" placeholder="Enter your surname here" />
                         </div>
                         <div>
                             <span asp-validation-for="Surname" class="text-danger"></span>
                         </div>
                     </div>
                     <br />
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                    <partial name="_SubmitButton" />
                 </div>
                 <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
             </div>

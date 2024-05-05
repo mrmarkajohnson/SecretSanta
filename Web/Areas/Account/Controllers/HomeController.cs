@@ -29,11 +29,6 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Login(string? returnUrl = null)
     {
-        //if (!string.IsNullOrEmpty(ErrorMessage))
-        //{
-        //    ModelState.AddModelError(string.Empty, ErrorMessage);
-        //}
-
         var model = new LoginVm
         {
             EmailOrUserName = "",

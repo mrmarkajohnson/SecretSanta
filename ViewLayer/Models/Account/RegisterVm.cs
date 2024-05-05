@@ -1,11 +1,12 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
 using Global;
+using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public class RegisterVm : SantaUser, IRegisterSantaUser
+public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
 {
     public string? ReturnUrl { get; set; }
 
@@ -20,4 +21,7 @@ public class RegisterVm : SantaUser, IRegisterSantaUser
     [Display(Name = "Confirm password")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public required string ConfirmPassword { get; set; }
+
+    public string SubmitButtonText { get; set; } = "Register";
+    public string SubmitButtonIcon { get; set; } = "fa-id-card";
 }

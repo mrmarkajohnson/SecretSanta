@@ -12,6 +12,8 @@ public interface IGlobalUser : IIdentityUser
     string? MiddleNames { get; set; }
 
     string Surname { get; set; }
+
+    bool SecurityQuestionsSet { get; }
 }
 
 
