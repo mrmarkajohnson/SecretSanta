@@ -1,26 +1,23 @@
 ﻿using Application.Santa.Areas.Account.Commands;
+using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
+using Web.Controllers;
 
 namespace Web.Areas.Account.Controllers;
 
 [Area("Account")]
-public class ManageController : Controller
+public class ManageController : BaseController
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserStore<IdentityUser> _userStore;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public ManageController(UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager)
+    public ManageController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore) 
+        : base(userManager, signInManager)
     {
-        _userManager = userManager;
         _userStore = userStore;
-        _signInManager = signInManager;
     }
 
     [HttpGet]
@@ -48,7 +45,7 @@ public class ManageController : Controller
         if (ModelState.IsValid)
         {
             ICommandResult<IRegisterSantaUser> commandResult = await new
-                CreateSantaUserCommand(model, _userManager, _userStore, _signInManager).Handle();
+                CreateSantaUserCommand(model, UserManager, _userStore, SignInManager).Handle();
 
             if (commandResult.Success)
             {
@@ -74,10 +71,33 @@ public class ManageController : Controller
     }
 
     [HttpGet]
-    public IActionResult SetSecurityQuestions()
+    public async Task<IActionResult> SetSecurityQuestions()
     {
-        var model = new SetSecurityQuestionsVm();
-        return View(model);
+        if (SignInManager.IsSignedIn(User))
+        { 
+            var model = new SetSecurityQuestionsVm();
+
+            ISecurityQuestions? currentSecurityQuestions = await new GetSecurityQuestionsQuery(User, UserManager, SignInManager).Handle(); ;
+
+            if (currentSecurityQuestions?.SecurityQuestionsSet == true)
+            {
+                model = new SetSecurityQuestionsVm
+                {
+                    SecurityQuestion1 = currentSecurityQuestions.SecurityQuestion1,
+                    SecurityAnswer1 = currentSecurityQuestions.SecurityAnswer1,
+                    SecurityHint1 = currentSecurityQuestions.SecurityHint1,
+                    SecurityQuestion2 = currentSecurityQuestions.SecurityQuestion2,
+                    SecurityAnswer2 = currentSecurityQuestions.SecurityAnswer2,
+                    SecurityHint2 = currentSecurityQuestions.SecurityHint2
+                };
+            }
+
+            return View(model);
+        }
+        else
+        {
+            return Redirect(Url.Action("Error"));
+        }
     }
 
     [HttpPost]
@@ -88,7 +108,7 @@ public class ManageController : Controller
         if (ModelState.IsValid)
         {
             ICommandResult<ISecurityQuestions> commandResult = await new
-                SetSecurityQuestionsCommand(model, User, _userManager, _signInManager).Handle();
+                SetSecurityQuestionsCommand(model, User, UserManager, SignInManager).Handle();
 
             if (commandResult.Success)
             {

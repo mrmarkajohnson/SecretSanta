@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Global;
@@ -27,6 +28,6 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
             .WithMessage($"Please provide a Username if no E-mail Address is provided.");
 
         RuleFor(x => x.UserName)
-            .MinimumLength(IdentityValidation.UserOptions.UserNameRequiredLength);
+            .MinimumLength(Identity.UserNames.MinLength);
     }
 }

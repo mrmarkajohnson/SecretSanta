@@ -1,5 +1,4 @@
-﻿@using Global
-@using ViewLayer.Models.Account;
+﻿@using static Global.Validation.Identity;
 
 @model RegisterVm
 @{
@@ -47,7 +46,7 @@
                         <label asp-for="Password" class="control-label required">Password</label>
                         <div class="input-group input-info">
                             <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Create a new password" />
-                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@IdentityValidation.PasswordOptions.Description">
+                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@Passwords.Description">
                                 <i class="fa fa-info-circle fa-border"></i>
                             </div>
                         </div>
@@ -108,39 +107,6 @@
             </div>
         </form>
     </section>
-
-    @*     <div class="col-md-6 col-md-offset-2">
-    <section>
-    <h3>Use another service to register.</h3>
-    <hr />
-    @{
-    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-    {
-    <div>
-    <p>
-    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-    article
-    about setting up this ASP.NET application to support logging in via external services
-    </a>.
-    </p>
-    </div>
-    }
-    else
-    {
-    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-    <div>
-    <p>
-    @foreach (var provider in Model.ExternalLogins!)
-    {
-    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-    }
-    </p>
-    </div>
-    </form>
-    }
-    }
-    </section>
-    </div> *@
 
 </div>
 

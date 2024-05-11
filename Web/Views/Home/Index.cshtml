@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using ViewLayer.Models.Home
+﻿@using ViewLayer.Models.Home
 
 @inject SignInManager<IdentityUser> _signInManager
 @inject UserManager<IdentityUser> _userManager
@@ -30,6 +29,13 @@
         else
         {
             // TODO: Add the main page content here
+
+            <p>
+                <br />
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    Update Your Security Questions
+                </a>
+            </p>
         }
     }
     else

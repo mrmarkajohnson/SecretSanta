@@ -1,5 +1,6 @@
 ﻿using Data.Entities.Santa;
 using Global.Abstractions.Global;
+using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,25 +14,36 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
         DateCreated = DateTime.Now;
     }
     
-    [Required, Length(2, 250)]
+    [Required, Display(Name = "First Name")]
+    [Length(UserDetails.Forename.MinLength, UserDetails.Forename.MaxLength)]
     public required string Forename { get; set; }
 
-    [Display(Name = "Middle Names")]
+    [Display(Name = "Middle Names"), MaxLength(UserDetails.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
 
-    [Required, Length(2, 250)]
+    [Required, Length(UserDetails.Surname.MinLength, UserDetails.Surname.MaxLength)]
     public required string Surname { get; set; }
 
     public virtual Santa_User? SantaUser { get; set; }
 
     public DateTime DateCreated { get; set; }
 
+    [Length(UserDetails.SecurityQuestions.MinLength, UserDetails.SecurityQuestions.MaxLength)]
     public string? SecurityQuestion1 { get; set; }
+
+    [Length(UserDetails.SecurityAnswers.MinLength, UserDetails.SecurityAnswers.MaxLength)]
     public string? SecurityAnswer1 { get; set; }
+
+    [MaxLength(UserDetails.SecurityHints.MaxLength)]
     public string? SecurityHint1 { get; set; }
 
+    [Length(UserDetails.SecurityQuestions.MinLength, UserDetails.SecurityQuestions.MaxLength)]
     public string? SecurityQuestion2 { get; set; }
+
+    [Length(UserDetails.SecurityAnswers.MinLength, UserDetails.SecurityAnswers.MaxLength)]
     public string? SecurityAnswer2 { get; set; }
+
+    [MaxLength(UserDetails.SecurityHints.MaxLength)]
     public string? SecurityHint2 { get; set; }
 
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);

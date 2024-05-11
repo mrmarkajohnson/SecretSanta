@@ -1,4 +1,4 @@
-using Global;
+using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -19,15 +19,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = IdentityValidation.SignInOptions.RequireConfirmedEmail;
-    options.SignIn.RequireConfirmedPhoneNumber = IdentityValidation.SignInOptions.RequireConfirmedPhoneNumber;
-    options.SignIn.RequireConfirmedAccount = IdentityValidation.SignInOptions.RequireConfirmedAccount;
+    options.SignIn.RequireConfirmedEmail = Identity.SignIn.RequireConfirmedEmail;
+    options.SignIn.RequireConfirmedPhoneNumber = Identity.SignIn.RequireConfirmedPhoneNumber;
+    options.SignIn.RequireConfirmedAccount = Identity.SignIn.RequireConfirmedAccount;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
 
-builder.Services.Configure<IdentityOptions>(IdentityValidation.ConfigureOptions);
+builder.Services.Configure<IdentityOptions>(Identity.ConfigureOptions);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

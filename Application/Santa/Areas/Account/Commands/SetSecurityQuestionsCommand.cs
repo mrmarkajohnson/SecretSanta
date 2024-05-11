@@ -1,4 +1,5 @@
 ﻿using Application.Santa.Global;
+using FluentValidation.Results;
 using Global.Abstractions.Global;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -51,12 +52,12 @@ public class SetSecurityQuestionsCommand : BaseCommand<ISecurityQuestions>
                 }
                 else
                 {
-
+                    Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
                 }
             }
             else
             {
-
+                Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
             }
         }
 

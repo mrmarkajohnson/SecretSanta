@@ -27,7 +27,6 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
         if (_signInManager.IsSignedIn(_user))
         {
             string? userId = _userManager.GetUserId(_user);
-            //var user = await _userManager.GetUserAsync(User);
             if (userId != null)
             {
                 var santaUserDb = ModelContext.Santa_Users

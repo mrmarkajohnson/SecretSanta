@@ -2,23 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
+using Web.Controllers;
 
 namespace Web.Areas.Account.Controllers;
 
 [Area("Account")]
-public class HomeController : Controller
+public class HomeController : BaseController
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserStore<IdentityUser> _userStore;
-
-    public HomeController(UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager)
+    public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(userManager, signInManager)
     {
-        _userManager = userManager;
-        _userStore = userStore;
-        _signInManager = signInManager;
     }
 
     public IActionResult Index()
@@ -54,7 +46,7 @@ public class HomeController : Controller
         {
             //This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var result = await SignInManager.PasswordSignInAsync(model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 //_logger.LogInformation("User logged in.");

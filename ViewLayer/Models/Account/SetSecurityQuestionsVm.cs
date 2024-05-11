@@ -3,7 +3,7 @@ using Global.Abstractions.Global;
 
 namespace ViewLayer.Models.Account;
 
-public class SetSecurityQuestionsVm : SecurityQuestions, IForm
+public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISecurityQuestions
 {
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";

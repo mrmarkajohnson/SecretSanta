@@ -1,16 +1,20 @@
 ﻿using Global.Abstractions.Global;
+using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
 
 public class GlobalUser : CoreIdentityUser, IGlobalUser
 {
-    [Display(Name = "First Name")]
+    [Display(Name = "First Name"), StringLength(UserDetails.Forename.MaxLength,
+        ErrorMessage = "Your {0} must be {2} to {1} characters long.", MinimumLength = UserDetails.Forename.MinLength)]
     public required string Forename { get; set; }
 
-    [Display(Name = "Middle Names")]
+    [Display(Name = "Middle Names"), MaxLength(UserDetails.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
 
+    [Display(Name = "Surname"), StringLength(UserDetails.Surname.MaxLength,
+        ErrorMessage = "Your {0} must be {2} to {1} characters long.", MinimumLength = UserDetails.Surname.MinLength)]
     public required string Surname { get; set; }
 
     public bool SecurityQuestionsSet { get; set; }

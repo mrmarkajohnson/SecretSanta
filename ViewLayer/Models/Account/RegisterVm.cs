@@ -1,7 +1,7 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
-using Global;
 using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
+using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
@@ -12,13 +12,11 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
 
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    [StringLength(100, ErrorMessage = "Your {0} must be between {2} and {1} characters long.", MinimumLength = IdentityValidation.PasswordOptions.RequiredLength)]
-    [DataType(DataType.Password)]
-    [Display(Name = "Password")]
+    [Display(Name = "Password"), DataType(DataType.Password), StringLength(Identity.Passwords.MaxLength, 
+        ErrorMessage = "Your {0} must be {2} to {1} characters long.", MinimumLength = Identity.Passwords.MinLength)]
     public required string Password { get; set; }
 
-    [DataType(DataType.Password)]
-    [Display(Name = "Confirm password")]
+    [Display(Name = "Confirm password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public required string ConfirmPassword { get; set; }
 

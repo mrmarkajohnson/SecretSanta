@@ -1,36 +1,22 @@
-﻿using Application.Santa.Areas.Account.Queries;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.ViewLayer.Models;
-using System;
 using System.Diagnostics;
 using ViewLayer.Models.Home;
+using Web.Controllers;
 
 namespace SecretSanta.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserStore<IdentityUser> _userStore;
-    private readonly SignInManager<IdentityUser> _signInManager;
-
-    public HomeController(ILogger<HomeController> logger, 
-        UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager)
+    public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(userManager, signInManager)
     {
-        _logger = logger;
-        _userManager = userManager;
-        _userStore = userStore;
-        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> Index()
     {
         var model = new HomeVm();
-        model.CurrentUser = await new GetCurrentUserQuery(User, _userManager, _signInManager).Handle();
+        model.CurrentUser = await GetCurrentUser();
         return View(model);
     }
 
