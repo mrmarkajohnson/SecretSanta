@@ -5,10 +5,23 @@
 }
 
 <div class="text-center">
-    <h1>Please set your security questions</h1>
+    @if (Model.Update)
+    {
+        <h1>Update your security questions</h1>
+    }
+    else
+    {
+        <h1>Please set your security questions</h1>
+    }
 
     <section>
         <form asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
+
+            <div class="collapse">
+                <input type="hidden" asp-for="Update" />
+            </div>
+            
+            
             <div class="row text-center">
                 <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
                 <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 mb-5">
@@ -44,9 +57,7 @@
                         <div class="input-group input-info">
                             <input asp-for="SecurityHint1" class="form-control" aria-required="false" placeholder="Add a hint if you might need one" 
                                 autocomplete="off" />
-                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@hintExplanation">
-                                <i class="fa fa-info-circle fa-border"></i>
-                            </div>
+                            <partial name="_InputInfo" model="@hintExplanation" />
                         </div>
                         <div>
                             <span asp-validation-for="SecurityHint1" class="text-danger"></span>
@@ -77,9 +88,7 @@
                         <div class="input-group input-info">
                             <input asp-for="SecurityHint2" class="form-control" aria-required="false" placeholder="Add a hint if you might need one"
                                 autocomplete="off" />
-                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@hintExplanation">
-                                <i class="fa fa-info-circle fa-border"></i>
-                            </div>
+                            <partial name="_InputInfo" model="@hintExplanation" />
                         </div>
                         <div>
                             <span asp-validation-for="SecurityHint2" class="text-danger"></span>

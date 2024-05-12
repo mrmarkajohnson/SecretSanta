@@ -8,4 +8,6 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISecurityQuestio
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";
+
+    public bool Update { get; set; }
 }

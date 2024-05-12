@@ -32,7 +32,7 @@
 
             <p>
                 <br />
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
                     Update Your Security Questions
                 </a>
             </p>

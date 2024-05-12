@@ -2,7 +2,6 @@ using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using SecretSanta.Data;
 
 var builder = WebApplication.CreateBuilder(args);

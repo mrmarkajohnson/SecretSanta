@@ -18,17 +18,18 @@ $gold-glow: #ffd70020;
 $green-gold-glow: #efffcc20;
 $grey-blue-glow: #9999ff10;
 
-$btn-shadow: $primary-shadow-1 0 2px 4px, $primary-shadow-2 0 5px 9px -3px, $primary 0 -3px 0 inset;
-$purple-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
-$gold-shadow: -1px -1px 0 $gold-glow, 1px 0 0 $gold-glow, -1px 1px 0 $gold-glow, 1px 1px 0 $gold-glow;
-$green-gold-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
-$grey-blue-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
+$btn-box-shadow: $primary-shadow-1 0 2px 4px, $primary-shadow-2 0 5px 9px -3px, $primary 0 -3px 0 inset;
+$purple-box-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
+
+$gold-text-shadow: -1px -1px 0 $gold-glow, 1px 0 0 $gold-glow, -1px 1px 0 $gold-glow, 1px 1px 0 $gold-glow;
+$green-gold-text-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
+$grey-blue-text-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
 
 h1 {
     color: $secondary;
     font-weight: 600;
     font-size: 40px;
-    text-shadow: $gold-shadow !important;
+    text-shadow: $gold-text-shadow !important;
     margin-bottom: 10px !important;
 }
 
@@ -36,28 +37,29 @@ h2 {
     color: $purple;
     font-weight: 500;
     font-size: 30px;
-    text-shadow: $grey-blue-shadow !important;
+    text-shadow: $grey-blue-text-shadow !important;
     margin-bottom: 6px !important;
 }
 
 .btn-primary {
     background: radial-gradient(100% 100% at 100% 0, $primary-bg-subtle 0, $primary 100%);
-    box-shadow: $btn-shadow;
+    box-shadow: $btn-box-shadow;
     color: $white;
 }
 
 .btn-primary:hover {
     color: $gold;
     font-weight: 400;
-    text-shadow: $green-gold-shadow;
+    text-shadow: $green-gold-text-shadow;    
 }
 
-.btn-primary svg {
-    color: #ffe866;
+.btn-primary:hover .btn-text {
+    text-decoration: underline !important;
 }
 
-.btn-primary:hover svg {
-    color: $gold;
+.btn.btn-md {
+    --bs-btn-padding-y: 0.45rem;
+    font-size: 1rem;
 }
 
 nav.navbar {
@@ -76,7 +78,7 @@ button.navbar-toggler {
 button.navbar-toggler:hover {
     color: $gold !important;
     font-weight: 400 !important;
-    text-shadow: $green-gold-shadow !important;
+    text-shadow: $green-gold-text-shadow !important;
 }
 
 .nav-link {
@@ -109,7 +111,7 @@ footer a {
 footer a:hover {
     color: $gold !important;
     font-weight: 400 !important;
-    text-shadow: $green-gold-shadow !important;
+    text-shadow: $green-gold-text-shadow !important;
     text-decoration: underline !important;
 }
 
@@ -121,11 +123,11 @@ a {
 a:hover {
     color: $primary;
     font-weight: 400;
-    text-shadow: $grey-blue-shadow;
+    text-shadow: $grey-blue-text-shadow;
 }
 
 .text-glow {
-    text-shadow: $gold-shadow !important;
+    text-shadow: $gold-text-shadow !important;
 }
 
 label.control-label {
@@ -197,7 +199,7 @@ label.control-label.required::after {
     background: $gold-background;
     border: 1px solid $purple;
     border-radius: var(--bs-tooltip-border-radius);
-    box-shadow: $purple-shadow;
+    box-shadow: $purple-box-shadow;
     position: absolute !important;
     width: fit-content !important;
 }

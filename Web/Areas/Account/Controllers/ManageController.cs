@@ -67,11 +67,11 @@ public class ManageController : BaseController
             }
         }
 
-        return View();
+        return View(model);
     }
 
     [HttpGet]
-    public async Task<IActionResult> SetSecurityQuestions()
+    public async Task<IActionResult> SetSecurityQuestions(bool update = false)
     {
         if (SignInManager.IsSignedIn(User))
         { 
@@ -88,7 +88,8 @@ public class ManageController : BaseController
                     SecurityHint1 = currentSecurityQuestions.SecurityHint1,
                     SecurityQuestion2 = currentSecurityQuestions.SecurityQuestion2,
                     SecurityAnswer2 = currentSecurityQuestions.SecurityAnswer2,
-                    SecurityHint2 = currentSecurityQuestions.SecurityHint2
+                    SecurityHint2 = currentSecurityQuestions.SecurityHint2,
+                    Update = update
                 };
             }
 
@@ -123,6 +124,6 @@ public class ManageController : BaseController
             }
         }
 
-        return View();
+        return View(model);
     }
 }

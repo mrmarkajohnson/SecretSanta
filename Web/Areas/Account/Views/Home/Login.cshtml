@@ -20,9 +20,7 @@
                         <label asp-for="EmailOrUserName" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-                            <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@emailOrUserNameExplanation">
-                                <i class="fa fa-info-circle fa-border"></i>
-                            </div>
+                            <partial name="_InputInfo" model="@emailOrUserNameExplanation" />
                         </div>
                         <div>
                             <span asp-validation-for="EmailOrUserName" class="text-danger"></span>
@@ -35,7 +33,7 @@
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="checkbox mb-3">
+                    <div class="checkbox pt-3 mb-3">
                         <label asp-for="RememberMe" class="control-label text-center">
                             <input class="form-check-input" asp-for="RememberMe" />
                             &nbsp;
