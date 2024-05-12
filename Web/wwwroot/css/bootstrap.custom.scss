@@ -5,6 +5,7 @@ $black: black;
 $gold: #ffd700;
 $gold-background: #fff7cc;
 $red-border: #ff3333;
+$purple: #6633dd;
 
 $primary-bg-subtle: #cfe2ff;
 $primary-shadow-1: #1d2ec4;
@@ -96,7 +97,7 @@ button.navbar-toggler:hover {
 
 footer {
     background: linear-gradient(180deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
-    padding: 10px 22px 12px 22px !important;
+    padding: 14px 22px 14px 22px !important;
     color: $purple;
 }
 
@@ -121,6 +122,10 @@ a:hover {
     color: $primary;
     font-weight: 400;
     text-shadow: $grey-blue-shadow;
+}
+
+.text-glow {
+    text-shadow: $gold-shadow !important;
 }
 
 label.control-label {
@@ -213,46 +218,42 @@ label.control-label.required::after {
 //region snow
 @keyframes fall {
     100% {
-        transform: translateX(10vw) translateY(150vh);
+        transform: translateX(20vw) translateY(110vh);
     }
 }
 
-.snow-wrapper {
-    /*width: 100vw;
-    height: 100vh;*/
-    background: radial-gradient(100% 100% at 100% 0, #7397a103 0, #3f2c4104 100%);
-    /*overflow: hidden;*/
-    /*position: absolute;*/
+.snow-background {
+    background: radial-gradient(100% 100% at 0 0, white 25%, #7397a115 50%, #3f2c4107 75%, white 100%);
 }
 
 $snow-1: "";
 $snow-2: "";
 $snow-3: "";
 
-@for $i from 1 through 300 {
-    $snow-1: $snow-1 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fff;
-    $snow-2: $snow-2 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fef;
-    $snow-3: $snow-3 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.01rem + #fff;
+@for $i from 1 through 400 {
+    $snow-1: $snow-1 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(100)*-0.01rem + #fff;
+    $snow-2: $snow-2 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(100)*-0.01rem + #fef;
+    $snow-3: $snow-3 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(100)-0.01rem + #fff;
 
-    @if $i < 300 {
+    @if $i < 400 {
         $snow-1: $snow-1 + ",";
         $snow-2: $snow-2 + ",";
         $snow-3: $snow-3 + ",";
     }
 }
 
-.snow {
+.snow * {
     border-radius: 50%;
     opacity: 0.9;
     position: fixed;
-    top: 0;
+    top: -200px;
     animation-name: fall;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     z-index: 100;
 }
 
-.snow.snow-layer1 {
+.snow-layer1 {
     width: 1.2rem;
     height: 1.2rem;
     filter: blur(1.5px);
@@ -262,13 +263,13 @@ $snow-3: "";
     z-index: 100;
 }
 
-.snow.snow-layer1.a {
+.snow-layer1.a {
     opacity: 0.2;
     animation-delay: -6s;
     animation-duration: 13s;
 }
 
-.snow.snow-layer2 {
+.snow-layer2 {
     width: 1rem;
     height: 1rem;
     filter: blur(2.5px);
@@ -279,13 +280,13 @@ $snow-3: "";
     z-index: 100;
 }
 
-.snow.snow-layer2.a {
+.snow-layer2.a {
     opacity: 0.2;
     animation-delay: -8s;
     animation-duration: 12s;
 }
 
-.snow.snow-layer3 {
+.snow-layer3 {
     width: 0.8rem;
     height: 0.8rem;
     filter: blur(4px);
@@ -296,7 +297,7 @@ $snow-3: "";
     z-index: 100;
 }
 
-.snow.snow-layer3.a {
+.snow-layer3.a {
     opacity: 0.2;
     animation-delay: -9s;
     animation-duration: 14s;
