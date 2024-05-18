@@ -22,16 +22,10 @@
                             <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
                             <partial name="_InputInfo" model="@emailOrUserNameExplanation" />
                         </div>
-                        <div>
-                            <span asp-validation-for="EmailOrUserName" class="text-danger"></span>
-                        </div>
                     </div>
                     <div class="form-group-sm mb-3">
                         <label asp-for="Password" class="control-label required">Password</label>
                         <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                        <div>
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
                     </div>
                     <div class="checkbox pt-3 mb-3">
                         <label asp-for="RememberMe" class="control-label text-center">
@@ -56,9 +50,9 @@
                     <div>
                         <a asp-area="Account" asp-controller="Manage" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account?</a>
                     </div>
-                    @* <div>
-                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </div> *@
+                    <div>
+                        <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl">Forgot your password?</a>
+                    </div>
 
                     @* <div>
                     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>

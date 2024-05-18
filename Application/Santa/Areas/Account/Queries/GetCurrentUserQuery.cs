@@ -2,7 +2,6 @@
 using Application.Santa.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Queries;
@@ -29,16 +28,16 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
             string? userId = _userManager.GetUserId(_user);
             if (userId != null)
             {
-                var santaUserDb = ModelContext.Santa_Users
-                    .Include(x => x.GlobalUser)
-                    .FirstOrDefault(x => x.GlobalUserId == userId);
+                var globalUserDb = ModelContext.Global_Users
+                    .FirstOrDefault(x => x.Id == userId);
 
-                var globalUserDb = santaUserDb?.GlobalUser;
                 if (globalUserDb != null)
                 {
                     santaUser = new SantaUser
                     {
                         Id = globalUserDb.Id,
+                        UserName = globalUserDb.UserName,
+                        Email = globalUserDb.Email,
                         Forename = globalUserDb.Forename,
                         MiddleNames = globalUserDb.MiddleNames,
                         Surname = globalUserDb.Surname,

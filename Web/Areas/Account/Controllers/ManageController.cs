@@ -77,7 +77,7 @@ public class ManageController : BaseController
         { 
             var model = new SetSecurityQuestionsVm();
 
-            ISecurityQuestions? currentSecurityQuestions = await new GetSecurityQuestionsQuery(User, UserManager, SignInManager).Handle(); ;
+            ISecurityQuestions? currentSecurityQuestions = await new GetSecurityQuestionsQuery(User, UserManager, SignInManager).Handle();
 
             if (currentSecurityQuestions?.SecurityQuestionsSet == true)
             {
