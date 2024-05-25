@@ -160,7 +160,7 @@ public class HomeController : BaseController
                     }
                     else
                     {
-                        ICommandResult<ISantaUser> commandResult = await Send(new
+                        ICommandResult<IChangePassword> commandResult = await Send(new
                             ChangePasswordCommand(model, user, UserManager, SignInManager));
 
                         if (commandResult.Success)

@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.Account.BaseModels;
+﻿using Application.Santa.Areas.Account.Actions;
+using Application.Santa.Areas.Account.BaseModels;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -47,7 +48,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
 
                     if (_unHashResults)
                     {
-                        await Send(new UnHashUserIdentificationQuery(santaUser));
+                        await Send(new UnHashUserIdentificationAction(santaUser));
                     }
                 }
             }

@@ -28,6 +28,11 @@ public class BaseController : Controller
         return await query.Handle();
     }
 
+    protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
+    {
+        return await action.Handle();
+    }
+
     protected async Task<ICommandResult<TItem>> Send<TItem>(BaseCommand<TItem> command)
     {
         ICommandResult<TItem> commandResult = await command.Handle();

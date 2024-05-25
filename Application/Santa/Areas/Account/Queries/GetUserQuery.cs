@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.Account.BaseModels;
+﻿using Application.Santa.Areas.Account.Actions;
+using Application.Santa.Areas.Account.BaseModels;
 using Global.Abstractions.Santa.Areas.Account;
 
 namespace Application.Santa.Areas.Account.Queries;
@@ -48,7 +49,7 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
 
                 if (_unHashResults)
                 {
-                    await Send(new UnHashUserIdentificationQuery(santaUser));
+                    await Send(new UnHashUserIdentificationAction(santaUser));
                 }
             }
         }

@@ -1,17 +1,18 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
+using Application.Santa.Areas.Account.Queries;
 
-namespace Application.Santa.Areas.Account.Queries;
+namespace Application.Santa.Areas.Account.Actions;
 
-internal class HashUserIdentificationQuery : BaseQuery<IIdentityUser>
+internal class HashUserIdentificationAction : BaseAction<IIdentityUser>
 {
     private readonly IIdentityUser _identityUser;
 
-    public HashUserIdentificationQuery(IIdentityUser identityUser)
+    public HashUserIdentificationAction(IIdentityUser identityUser)
     {
         _identityUser = identityUser;
     }
 
-    public async override Task<IIdentityUser> Handle()
+    public async override Task<bool> Handle()
     {
         if (!_identityUser.IdentificationHashed)
         {
@@ -22,6 +23,6 @@ internal class HashUserIdentificationQuery : BaseQuery<IIdentityUser>
             _identityUser.IdentificationHashed = true;
         }
 
-        return _identityUser;
+        return SuccessResult;
     }
 }

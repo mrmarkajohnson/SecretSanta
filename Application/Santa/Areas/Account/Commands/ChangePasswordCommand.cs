@@ -1,13 +1,11 @@
-﻿using Application.Santa.Global;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class ChangePasswordCommand : BaseCommand<ISantaUser>
+public class ChangePasswordCommand : BaseCommand<IChangePassword>
 {
-    private readonly IChangePassword _item;
     private readonly ISantaUser _user;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
@@ -15,26 +13,25 @@ public class ChangePasswordCommand : BaseCommand<ISantaUser>
     public ChangePasswordCommand(IChangePassword item,
         ISantaUser user,
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(user)
+        SignInManager<IdentityUser> signInManager) : base(item)
     {
-        _item = item;
         _user = user;
         _userManager = userManager;
         _signInManager = signInManager;
     }
 
-    public override async Task<ICommandResult<ISantaUser>> Handle()
+    public override async Task<ICommandResult<IChangePassword>> Handle()
     {
         var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == _user.Id);
 
-        if (globalUserDb != null && !string.IsNullOrWhiteSpace(_item.Password))
+        if (globalUserDb != null && !string.IsNullOrWhiteSpace(Item.Password))
         {
             string token = await _userManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
 
             var resetUser = await _userManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
             if (resetUser != null)
             {
-                var result = await _userManager.ResetPasswordAsync(resetUser, token, _item.Password);
+                var result = await _userManager.ResetPasswordAsync(resetUser, token, Item.Password);
 
                 if (result.Succeeded)
                 {
@@ -45,7 +42,7 @@ public class ChangePasswordCommand : BaseCommand<ISantaUser>
                 {
                     foreach (var error in result.Errors)
                     {
-                        Validation.Errors.Add(new ValidationFailure(nameof(_item.Password), error.Description));
+                        Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿using Application.Santa.Areas.Account.Queries;
+﻿using Application.Santa.Areas.Account.Actions;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using FluentValidation.Results;
@@ -32,7 +32,7 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
 
         if (Validation.IsValid)
         {
-            await Send(new HashUserIdentificationQuery(Item));
+            await Send(new HashUserIdentificationAction(Item));
 
             var globalUserDb = new Global_User
             {

@@ -15,4 +15,9 @@ public abstract class BaseRequest
     {
         return await query.Handle();
     }
+
+    protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
+    {
+        return await action.Handle();
+    }
 }
