@@ -1,5 +1,7 @@
-﻿using Application.Santa.Areas.Account.Commands;
+﻿using Application.Santa.Areas.Account.BaseModels;
+using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
+using Application.Shared.Helpers;
 using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -50,7 +52,10 @@ public class HomeController : BaseController
         {
             //This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await SignInManager.PasswordSignInAsync(model.EmailOrUserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            HashedUserId hashedId = await Send(new GetHashedIdentificationQuery(model.EmailOrUserName, false));
+
+            var result = await SignInManager.PasswordSignInAsync(hashedId.UserNameHash, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 return LocalRedirect(model.ReturnUrl);
@@ -102,14 +107,14 @@ public class HomeController : BaseController
         }
         else
         {
-            ISantaUser? user = await new GetUserQuery(model.EmailOrUserName, model.Forename).Handle();
+            ISantaUser? user = await Send(new GetUserQuery(model.EmailOrUserName, false, model.Forename, false));
             if (user == null || user.UserName == null)
             {
                 SetDetailsNotRecognisedError(model);
             }
             else 
             {
-                ISecurityQuestions? securityQuestions = await new GetSecurityQuestionsQuery(user.UserName, UserManager, SignInManager).Handle();
+                ISecurityQuestions? securityQuestions = await Send(new GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, UserManager, SignInManager));
 
                 if (securityQuestions == null)
                 {
@@ -125,42 +130,43 @@ public class HomeController : BaseController
                     model.ShowSecurityQuestions = true;
                     model.ResetPassword = false;
                 }
-                else if (model.SecurityAnswer1?.ToLower() != securityQuestions.SecurityAnswer1?.ToLower()
-                    || model.SecurityAnswer2?.ToLower() != securityQuestions.SecurityAnswer2?.ToLower())
-                {
-                    ModelState.AddModelError(string.Empty, "Security answers did not match.");
-                    model.ShowBasicDetails = false;
-                    model.ShowSecurityQuestions = true;
-                    model.ResetPassword = false;
-                }
-                else if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
-                {                    
-                    model.ShowBasicDetails = false;
-                    model.ShowSecurityQuestions = false;
-                    model.ResetPassword = true;
-                }
-                else if (model.ConfirmPassword != model.Password)
-                {
-                    ModelState.AddModelError(string.Empty, "Passwords did not match.");
-                    model.ShowBasicDetails = false;
-                    model.ShowSecurityQuestions = false;
-                    model.ResetPassword = true;
-                }
                 else
                 {
-                    ICommandResult<ISantaUser> commandResult = await new
-                        ChangePasswordCommand(model, user, UserManager, SignInManager).Handle();
+                    string hashedAnswer1 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer1?.ToLower() ?? "", user);
+                    string hashedAnswer2 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer2?.ToLower() ?? "", user);
 
-                    if (commandResult.Success)
+                    if (hashedAnswer1 != securityQuestions.SecurityAnswer1
+                        || hashedAnswer2 != securityQuestions.SecurityAnswer2)
                     {
-                        model.ReturnUrl ??= Url.Content("~/");
-                        return Redirect(model.ReturnUrl);
+                        ModelState.AddModelError(string.Empty, "Security answers did not match.");
+                        model.ShowBasicDetails = false;
+                        model.ShowSecurityQuestions = true;
+                        model.ResetPassword = false;
+                        model.SecurityAnswer1 = null;
+                        model.SecurityAnswer2 = null;
+                    }
+                    else if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
+                    {
+                        model.ShowBasicDetails = false;
+                        model.ShowSecurityQuestions = false;
+                        model.ResetPassword = true;
+                    }
+                    else if (model.ConfirmPassword != model.Password)
+                    {
+                        ModelState.AddModelError(string.Empty, "Passwords did not match.");
+                        model.ShowBasicDetails = false;
+                        model.ShowSecurityQuestions = false;
+                        model.ResetPassword = true;
                     }
                     else
                     {
-                        foreach (var error in commandResult.Validation.Errors)
+                        ICommandResult<ISantaUser> commandResult = await Send(new
+                            ChangePasswordCommand(model, user, UserManager, SignInManager));
+
+                        if (commandResult.Success)
                         {
-                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                            model.ReturnUrl ??= Url.Content("~/");
+                            return Redirect(model.ReturnUrl);
                         }
                     }
                 }

@@ -1,1 +1,3 @@
-﻿global using Global.Abstractions;
+﻿global using Application.Shared.Helpers;
+global using Application.Santa.Global;
+global using Global.Abstractions.Global;

@@ -1,6 +1,4 @@
-﻿using Global.Abstractions.Global;
-using Global.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
 
@@ -17,4 +15,6 @@ public class CoreIdentityUser : IIdentityUser
     public string? Email { get; set; }
 
     //public string? PhoneNumber { get; set; }
+
+    public bool IdentificationHashed { get; set; }
 }

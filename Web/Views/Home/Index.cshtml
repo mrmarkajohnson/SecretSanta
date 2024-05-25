@@ -46,5 +46,10 @@
             Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
                 or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
         </p>
+        <p>
+            <div>
+               If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
+            </div>
+        </p>
     }
 </div>

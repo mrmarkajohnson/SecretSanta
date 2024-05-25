@@ -1,7 +1,9 @@
-1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details:
+1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
+(NB: DO NOT change the symmetric key once used!):
 
 dotnet user-secrets set "DatabaseSettings:DevUserId" "{desired-username]" --project "Data"
 dotnet user-secrets set "DatabaseSettings:DevPassword" "{desired-password]" --project "Data"
+dotnet user-secrets set "EncryptionSettings:SymmetricKeyEnd" "{desired-key]" --project "Data" 
 
 2. To create the database, run the following command in the PMC:
 

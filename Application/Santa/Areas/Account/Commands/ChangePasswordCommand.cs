@@ -1,9 +1,7 @@
 ﻿using Application.Santa.Global;
 using FluentValidation.Results;
-using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Santa.Areas.Account.Commands;
 
@@ -27,19 +25,29 @@ public class ChangePasswordCommand : BaseCommand<ISantaUser>
 
     public override async Task<ICommandResult<ISantaUser>> Handle()
     {
-        var globalUserDb = ModelContext.Global_Users
-                .FirstOrDefault(x => x.Id == _user.Id);
+        var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == _user.Id);
 
         if (globalUserDb != null && !string.IsNullOrWhiteSpace(_item.Password))
         {
-            string token = await _userManager.GeneratePasswordResetTokenAsync(globalUserDb);
-            var resetUser = await _userManager.FindByNameAsync(_user.UserName);
-            var result = await _userManager.ResetPasswordAsync(resetUser, token, _item.Password);
+            string token = await _userManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
 
-            if (result.Succeeded)
+            var resetUser = await _userManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
+            if (resetUser != null)
             {
-                await _signInManager.SignInAsync(globalUserDb, isPersistent: false);                
-                Success = true;
+                var result = await _userManager.ResetPasswordAsync(resetUser, token, _item.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
+                    Success = true;
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        Validation.Errors.Add(new ValidationFailure(nameof(_item.Password), error.Description));
+                    }
+                }
             }
         }
         else

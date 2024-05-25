@@ -1,4 +1,6 @@
 ﻿using Application.Santa.Areas.Account.Queries;
+using Application.Santa.Global;
+using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +18,25 @@ public class BaseController : Controller
     protected UserManager<IdentityUser> UserManager { get; private init; }
     protected SignInManager<IdentityUser> SignInManager { get; private init; }
 
-
-    protected async Task<ISantaUser?> GetCurrentUser()
+    protected async Task<ISantaUser?> GetCurrentUser(bool unHashIdentification)
     {
-        return await new GetCurrentUserQuery(User, UserManager, SignInManager).Handle();
+        return await Send(new GetCurrentUserQuery(User, UserManager, SignInManager, unHashIdentification));
+    }
+
+    protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
+    {
+        return await query.Handle();
+    }
+
+    protected async Task<ICommandResult<TItem>> Send<TItem>(BaseCommand<TItem> command)
+    {
+        ICommandResult<TItem> commandResult = await command.Handle();
+
+        foreach (var error in commandResult.Validation.Errors)
+        {
+            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+
+        return commandResult;
     }
 }

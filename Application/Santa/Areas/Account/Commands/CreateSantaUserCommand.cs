@@ -1,8 +1,7 @@
-﻿using Application.Santa.Global;
+﻿using Application.Santa.Areas.Account.Queries;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using FluentValidation.Results;
-using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 
@@ -33,13 +32,15 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
 
         if (Validation.IsValid)
         {
+            await Send(new HashUserIdentificationQuery(Item));
+
             var globalUserDb = new Global_User
             {
                 Forename = Item.Forename,
                 MiddleNames = Item.MiddleNames,
                 Surname = Item.Surname,
-                Email = string.IsNullOrWhiteSpace(Item.Email) ? null: Item.Email,
-                UserName = string.IsNullOrWhiteSpace(Item.UserName) ? Item.Email : Item.UserName,
+                Email = Item.Email,
+                UserName = Item.UserName,
             };
 
             var santaUserDb = new Santa_User
@@ -56,7 +57,7 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
 
             if (result.Succeeded)
             {
-                await _userStore.SetUserNameAsync(globalUserDb, Item.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(globalUserDb, Item.UserName, CancellationToken.None);
 
                 if (!string.IsNullOrWhiteSpace(Item.Email))
                 {
@@ -93,6 +94,7 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
+
         return (IUserEmailStore<IdentityUser>)_userStore;
     }
 }

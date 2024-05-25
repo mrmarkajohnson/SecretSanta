@@ -44,8 +44,8 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            ICommandResult<IRegisterSantaUser> commandResult = await new
-                CreateSantaUserCommand(model, UserManager, _userStore, SignInManager).Handle();
+            ICommandResult<IRegisterSantaUser> commandResult = await Send(new
+                CreateSantaUserCommand(model, UserManager, _userStore, SignInManager));
 
             if (commandResult.Success)
             {
@@ -77,17 +77,17 @@ public class ManageController : BaseController
         { 
             var model = new SetSecurityQuestionsVm();
 
-            ISecurityQuestions? currentSecurityQuestions = await new GetSecurityQuestionsQuery(User, UserManager, SignInManager).Handle();
+            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));
 
             if (currentSecurityQuestions?.SecurityQuestionsSet == true)
             {
                 model = new SetSecurityQuestionsVm
                 {
                     SecurityQuestion1 = currentSecurityQuestions.SecurityQuestion1,
-                    SecurityAnswer1 = currentSecurityQuestions.SecurityAnswer1,
+                    SecurityAnswer1 = null,
                     SecurityHint1 = currentSecurityQuestions.SecurityHint1,
                     SecurityQuestion2 = currentSecurityQuestions.SecurityQuestion2,
-                    SecurityAnswer2 = currentSecurityQuestions.SecurityAnswer2,
+                    SecurityAnswer2 = null,
                     SecurityHint2 = currentSecurityQuestions.SecurityHint2,
                     Update = update
                 };
@@ -108,8 +108,8 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            ICommandResult<ISecurityQuestions> commandResult = await new
-                SetSecurityQuestionsCommand(model, User, UserManager, SignInManager).Handle();
+            ICommandResult<ISecurityQuestions> commandResult = await Send(new
+                SetSecurityQuestionsCommand(model, User, UserManager, SignInManager));
 
             if (commandResult.Success)
             {

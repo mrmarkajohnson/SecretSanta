@@ -1,0 +1,27 @@
+ACCOUNT
+Allow updating data
+Allow changing password
+
+GENERAL
+Create menus and rework main page
+
+SECURITY QUESTIONS
+Encrypt and hide existing security question answers using asymmetric encryption
+Require password before changing security questions if logged in for a while
+
+EMAILS
+Encrypt and decrypt e-mail addresses using symmetric encryption
+Add 'Use E-mail Address' checkbox on register page
+
+STYLING
+Add robin and santa images
+Allow users to turn off or change speed of snow
+
+APPLICATION
+Create santa groups
+Add users to santa groups if they don't exist
+Apply to join a santa group
+Address functionality for sending and receiving gifts (optional and must be enabled by admins)
+Do santa selection
+
+

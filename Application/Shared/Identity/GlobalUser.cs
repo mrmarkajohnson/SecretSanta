@@ -1,5 +1,4 @@
-﻿using Global.Abstractions.Global;
-using Global.Validation;
+﻿using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;

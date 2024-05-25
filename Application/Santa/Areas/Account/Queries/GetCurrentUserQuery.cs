@@ -1,5 +1,4 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
-using Application.Santa.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -11,15 +10,17 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
     private readonly ClaimsPrincipal _user;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
+    private bool _unHashResults;
 
-    public GetCurrentUserQuery(ClaimsPrincipal user, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public GetCurrentUserQuery(ClaimsPrincipal user, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, bool unHashResults)
     {
         _user = user;
         _userManager = userManager;
         _signInManager = signInManager;
+        _unHashResults = unHashResults;
     }
 
-    public override Task<ISantaUser?> Handle()
+    public override async Task<ISantaUser?> Handle()
     {
         ISantaUser? santaUser = null;
 
@@ -28,25 +29,30 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
             string? userId = _userManager.GetUserId(_user);
             if (userId != null)
             {
-                var globalUserDb = ModelContext.Global_Users
-                    .FirstOrDefault(x => x.Id == userId);
+                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
 
                 if (globalUserDb != null)
                 {
                     santaUser = new SantaUser
                     {
                         Id = globalUserDb.Id,
-                        UserName = globalUserDb.UserName,
-                        Email = globalUserDb.Email,
+                        UserName = globalUserDb.UserName, // note this will be hashed
+                        Email = globalUserDb.Email, // note this will be hashed
                         Forename = globalUserDb.Forename,
                         MiddleNames = globalUserDb.MiddleNames,
                         Surname = globalUserDb.Surname,
-                        SecurityQuestionsSet = globalUserDb.SecurityQuestionsSet
+                        SecurityQuestionsSet = globalUserDb.SecurityQuestionsSet,
+                        IdentificationHashed = true
                     };
+
+                    if (_unHashResults)
+                    {
+                        await Send(new UnHashUserIdentificationQuery(santaUser));
+                    }
                 }
             }
         }
 
-        return Task.FromResult(santaUser);
+        return santaUser;
     }
 }

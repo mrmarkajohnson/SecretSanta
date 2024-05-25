@@ -16,6 +16,8 @@ public interface IIdentityUser
 
     //[Display(Name = "Phone Number")]
     //string? PhoneNumber { get; set; }
+
+    bool IdentificationHashed { get; set; }
 }
 
 public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentityUser

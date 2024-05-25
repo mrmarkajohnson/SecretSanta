@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using Global.Abstractions.Global;
 
 namespace Application.Santa.Global;
 

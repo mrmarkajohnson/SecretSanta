@@ -10,4 +10,9 @@ public abstract class BaseRequest
     {
         ModelContext = new ApplicationDbContext();
     }
+
+    protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
+    {
+        return await query.Handle();
+    }
 }

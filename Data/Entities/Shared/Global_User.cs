@@ -31,7 +31,6 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [Length(UserDetails.SecurityQuestions.MinLength, UserDetails.SecurityQuestions.MaxLength)]
     public string? SecurityQuestion1 { get; set; }
 
-    [Length(UserDetails.SecurityAnswers.MinLength, UserDetails.SecurityAnswers.MaxLength)]
     public string? SecurityAnswer1 { get; set; }
 
     [MaxLength(UserDetails.SecurityHints.MaxLength)]
@@ -40,11 +39,13 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [Length(UserDetails.SecurityQuestions.MinLength, UserDetails.SecurityQuestions.MaxLength)]
     public string? SecurityQuestion2 { get; set; }
 
-    [Length(UserDetails.SecurityAnswers.MinLength, UserDetails.SecurityAnswers.MaxLength)]
     public string? SecurityAnswer2 { get; set; }
 
     [MaxLength(UserDetails.SecurityHints.MaxLength)]
     public string? SecurityHint2 { get; set; }
 
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
+
+    [NotMapped]
+    public bool IdentificationHashed { get; set; } = true;
 }

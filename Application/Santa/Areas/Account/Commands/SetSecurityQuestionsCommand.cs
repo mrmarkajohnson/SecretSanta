@@ -1,6 +1,4 @@
-﻿using Application.Santa.Global;
-using FluentValidation.Results;
-using Global.Abstractions.Global;
+﻿using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -34,16 +32,15 @@ public class SetSecurityQuestionsCommand : BaseCommand<ISecurityQuestions>
                 string? userId = _userManager.GetUserId(_user);
                 if (userId != null)
                 {
-                    var globalUserDb = ModelContext.Global_Users
-                        .FirstOrDefault(x => x.Id == userId);
+                    var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
 
                     if (globalUserDb != null)
                     {
                         globalUserDb.SecurityQuestion1 = Item.SecurityQuestion1;
-                        globalUserDb.SecurityAnswer1 = Item.SecurityAnswer1;
+                        globalUserDb.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? "", globalUserDb);
                         globalUserDb.SecurityHint1 = Item.SecurityHint1;
                         globalUserDb.SecurityQuestion2 = Item.SecurityQuestion2;
-                        globalUserDb.SecurityAnswer2 = Item.SecurityAnswer2;
+                        globalUserDb.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? "", globalUserDb);
                         globalUserDb.SecurityHint2 = Item.SecurityHint2;
 
                         await ModelContext.SaveChangesAsync();

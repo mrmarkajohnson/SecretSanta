@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Global.Abstractions.Global;
 
 namespace Application.Santa.Global;
 
@@ -29,5 +28,14 @@ public abstract class BaseCommand<TItem> : BaseRequest
         };
 
         return await Task.FromResult(result);
+    }
+
+    protected async Task<ICommandResult<UItem>> Send<UItem>(BaseCommand<UItem> command)
+    {
+        ICommandResult<UItem> commandResult = await command.Handle();
+
+        Validation.Errors.AddRange(commandResult.Validation.Errors);
+
+        return commandResult;
     }
 }

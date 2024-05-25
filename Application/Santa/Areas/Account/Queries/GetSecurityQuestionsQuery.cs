@@ -1,7 +1,5 @@
-﻿using Application.Santa.Global;
-using Application.Shared.Identity;
+﻿using Application.Shared.Identity;
 using Data.Entities.Shared;
-using Global.Abstractions.Global;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -10,7 +8,7 @@ namespace Application.Santa.Areas.Account.Queries;
 public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 {
     private readonly ClaimsPrincipal? _user;
-    private readonly string? _userName;
+    private readonly string? _hashedUserName;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
 
@@ -21,10 +19,9 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
         _signInManager = signInManager;
     }
 
-    // TODO: Add more parameters for a user to reset their login
-    public GetSecurityQuestionsQuery(string userName, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public GetSecurityQuestionsQuery(string userName, bool userNameHashed, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
     {
-        _userName = userName;
+        _hashedUserName = userNameHashed ? userName : EncryptionHelper.TwoWayEncrypt(userName, true);
         _userManager = userManager;
         _signInManager = signInManager;
     }
@@ -43,9 +40,9 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             }
         }
 
-        if (securityQuestions == null && !string.IsNullOrEmpty(_userName))
+        if (globalUserDb == null && !string.IsNullOrEmpty(_hashedUserName))
         {
-            globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.UserName == _userName);
+            globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
         }
 
         if (globalUserDb != null)

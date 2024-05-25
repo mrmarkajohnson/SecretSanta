@@ -16,7 +16,7 @@ public class HomeController : BaseController
     public async Task<IActionResult> Index()
     {
         var model = new HomeVm();
-        model.CurrentUser = await GetCurrentUser();
+        model.CurrentUser = await GetCurrentUser(false);
         return View(model);
     }
 
