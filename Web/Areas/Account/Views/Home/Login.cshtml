@@ -10,43 +10,53 @@
     <h1>Welcome back to Secret Santa!</h1>
     <section>
         <form id="account" method="post">
-            <div class="row text-center">
-                <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
-                <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 mb-5">
+            <div class="row d-flex align-items-center justify-content-center text-center">
+
+                <div class="mb-5">
                     <h2>Please log in</h2>
                     <br />
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-group-sm mb-3">
-                        <label asp-for="EmailOrUserName" class="control-label required"></label>
-                        <div class="input-group input-info">
-                            <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-                            <partial name="_InputInfo" model="@emailOrUserNameExplanation" />
+
+                    <div class="col-md-12">
+                        <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                            <label asp-for="EmailOrUserName" class="control-label required"></label>
+                            <div class="input-group input-info">
+                                <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
+                                <partial name="_InputInfo" model="@emailOrUserNameExplanation" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group-sm mb-3">
-                        <label asp-for="Password" class="control-label required">Password</label>
-                        <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <div class="col-md-12">
+                        <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                            <label asp-for="Password" class="control-label required">Password</label>
+                            <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                        </div>
                     </div>
-                    <div class="checkbox pt-3 mb-3">
-                        <label asp-for="RememberMe" class="control-label text-center">
-                            <input class="form-check-input" asp-for="RememberMe" />
-                            &nbsp;
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                            &nbsp;
-                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@rememberMeExplanation">
-                                <i class="fa fa-info-circle fa-border"></i>
-                            </div>
-                        </label>
+                    <div class="col-md-12">
+                        <div class="checkbox pt-3 mb-3">
+                            <label asp-for="RememberMe" class="control-label d-flex align-items-center justify-content-center text-center">
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                                &nbsp;
+                                <input class="form-check-input" asp-for="RememberMe" />
+                                &nbsp;
+                                <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@rememberMeExplanation">
+                                    <i class="fa fa-info-circle fa-border"></i>
+                                </div>
+                            </label>
+                        </div>
                     </div>
+
                     <br />
-                    <partial name="_SubmitButton" />
+                    <div class="col-md-12">
+                        <partial name="_SubmitButton" />
+                    </div>
                 </div>
-                <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
+
 
             </div>
-            <div class="row text-center">
-                <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
-                <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 d-flex flex-wrap justify-content-between">
+            <div class="row d-flex align-items-center justify-content-center text-center">
+
+                <div class="col-lg-6 col-md-8 col-sm-10 col-12 d-flex flex-wrap justify-content-between">
                     <div>
                         <a asp-area="Account" asp-controller="Manage" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account?</a>
                     </div>
@@ -58,7 +68,7 @@
                     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                     </div> *@
                 </div>
-                <div class="col-lg-3 col-md-2 col-sm-1 hidden-xs"></div>
+
             </div>
         </form>
     </section>

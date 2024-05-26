@@ -53,3 +53,7 @@ label.control-label.text-center {
 div.validation-summary-errors ul, li {
     list-style-type: none;
 }
+
+.form-group-ib {
+    display: inline-block !important;
+}

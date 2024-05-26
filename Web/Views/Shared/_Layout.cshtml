@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IWebHostEnvironment environment
+
+<!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +8,7 @@
     <title>@ViewData["Title"] - SecretSanta</title>
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 </head>
 <body class="d-flex flex-column h-100">
     <div class="snow">
@@ -47,10 +49,27 @@
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @* <script src="~/lib/popper/dist/umd//popper.min.js"></script> *@
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/fontawesome-free/js/all.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <environment include="Development">
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{
+        string relativePath = Context.Request.Path.ToString().Trim('/');
+        string bundlePath = $"js/{relativePath}/" + (environment.IsDevelopment() ? "bundle.js" : "bundle.min.js");
+
+        string absolutePath = System.IO.Path.GetFullPath($"wwwroot/{bundlePath}");
+        if (System.IO.File.Exists(absolutePath))
+        {
+            <script src="~/@bundlePath"></script>
+        }
+
+        await RenderSectionAsync("Scripts", required: false);
+    }
 </body>
 </html>

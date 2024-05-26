@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.3" />
@@ -58,6 +59,7 @@
     <Folder Include="wwwroot\lib\fontawesome-free\" />
     <Folder Include="wwwroot\lib\bootstrap\js\" />
     <Folder Include="wwwroot\lib\popper\" />
+    <Folder Include="wwwroot\scripts\Account\" />
   </ItemGroup>
 
 </Project>
