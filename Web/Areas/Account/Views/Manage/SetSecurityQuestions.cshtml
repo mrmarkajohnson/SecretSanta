@@ -49,8 +49,11 @@
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                             <label asp-for="SecurityAnswer1" class="control-label required"></label>
-                            <input type="password" asp-for="SecurityAnswer1" class="form-control" aria-required="true" placeholder="Enter the answer"
-                                   autocomplete="off" />
+                            <div class="input-group input-info">
+                                <input type="password" asp-for="SecurityAnswer1" class="form-control" aria-required="true" placeholder="Enter the answer"
+                                       autocomplete="off" />
+                                <div class="input-group-text"><i class="fa fa-eye collapse"></i></div>
+                            </div>
                             <div>
                                 <span asp-validation-for="SecurityAnswer1" class="text-danger"></span>
                             </div>
@@ -85,8 +88,11 @@
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                             <label asp-for="SecurityAnswer2" class="control-label required"></label>
-                            <input type="password" asp-for="SecurityAnswer2" class="form-control" aria-required="true" placeholder="Enter the answer"
-                                   autocomplete="off" />
+                            <div class="input-group input-info">
+                                <input type="password" asp-for="SecurityAnswer2" class="form-control" aria-required="true" placeholder="Enter the answer"
+                                       autocomplete="off" />
+                                <div class="input-group-text"><i class="fa fa-eye collapse"></i></div>
+                            </div>
                             <div>
                                 <span asp-validation-for="SecurityAnswer2" class="text-danger"></span>
                             </div>

@@ -29,7 +29,10 @@
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                             <label asp-for="Password" class="control-label required">Password</label>
-                            <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <div class="input-group input-info">                                
+                                <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                <div class="input-group-text"><i class="fa fa-eye collapse"></i></div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12">

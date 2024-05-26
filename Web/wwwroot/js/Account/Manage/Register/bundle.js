@@ -59,7 +59,3 @@ function initRegisterPage() {
         }
     }
 }
-
-function notEmptyValue(value) {
-    return value != undefined && value != null && value != '';
-}
