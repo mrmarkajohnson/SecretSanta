@@ -17,6 +17,17 @@
     "sourceMap": true
   },
   {
+    "outputFileName": "wwwroot/js/global.js",
+    "inputFiles": [
+      "wwwroot/scripts/Global/*"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
     "outputFileName": "wwwroot/js/Account/Manage/Register/bundle.js",
     "inputFiles": [
       "wwwroot/scripts/Account/*"
