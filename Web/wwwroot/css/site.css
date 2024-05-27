@@ -17,6 +17,11 @@ body {
   margin-bottom: 60px;
 }
 
+p {
+    margin-top : 6px;
+    margin-bottom : 6px;
+}
+
 .tooltip {
     z-index: 50000;
     border-style: solid;
@@ -24,12 +29,12 @@ body {
     width: fit-content !important;
 }
 
-    .tooltip.bs-tooltip-auto {
-        z-index: 50000;
-        border-style: solid;
-        position: absolute !important;
-        width: fit-content !important;
-    }
+.tooltip.bs-tooltip-auto {
+    z-index: 50000;
+    border-style: solid;
+    position: absolute !important;
+    width: fit-content !important;
+}
 
 .input-group.input-info input.form-control {
     border-right: none !important;

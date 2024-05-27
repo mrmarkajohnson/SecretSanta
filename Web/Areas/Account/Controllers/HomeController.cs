@@ -122,13 +122,7 @@ public class HomeController : BaseController
                 }
                 else if (!model.SecurityQuestionsSet)
                 {
-                    model.SecurityQuestion1 = securityQuestions.SecurityQuestion1;
-                    model.SecurityHint1 = securityQuestions.SecurityHint1;
-                    model.SecurityQuestion2 = securityQuestions.SecurityQuestion2;
-                    model.SecurityHint2 = securityQuestions.SecurityHint2;
-                    model.ShowSecurityQuestions = false;
-                    model.ShowSecurityQuestions = true;
-                    model.ResetPassword = false;
+                    SetUpSecurityQuestions(model, securityQuestions);
                 }
                 else
                 {
@@ -139,24 +133,16 @@ public class HomeController : BaseController
                         || hashedAnswer2 != securityQuestions.SecurityAnswer2)
                     {
                         ModelState.AddModelError(string.Empty, "Security answers did not match.");
-                        model.ShowBasicDetails = false;
-                        model.ShowSecurityQuestions = true;
-                        model.ResetPassword = false;
-                        model.SecurityAnswer1 = null;
-                        model.SecurityAnswer2 = null;
+                        SetUpSecurityQuestions(model, securityQuestions);
                     }
                     else if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
                     {
-                        model.ShowBasicDetails = false;
-                        model.ShowSecurityQuestions = false;
-                        model.ResetPassword = true;
+                        SetUpPasswordReset(model);
                     }
                     else if (model.ConfirmPassword != model.Password)
                     {
                         ModelState.AddModelError(string.Empty, "Passwords did not match.");
-                        model.ShowBasicDetails = false;
-                        model.ShowSecurityQuestions = false;
-                        model.ResetPassword = true;
+                        SetUpPasswordReset(model);
                     }
                     else
                     {
@@ -174,6 +160,28 @@ public class HomeController : BaseController
         }
 
         return View(model);
+    }
+
+    private static void SetUpSecurityQuestions(ForgotPasswordVm model, ISecurityQuestions securityQuestions)
+    {
+        model.SecurityQuestion1 = securityQuestions.SecurityQuestion1;
+        model.SecurityHint1 = securityQuestions.SecurityHint1;
+        model.SecurityQuestion2 = securityQuestions.SecurityQuestion2;
+        model.SecurityHint2 = securityQuestions.SecurityHint2;
+        model.ShowBasicDetails = false;
+        model.ShowSecurityQuestions = true;
+        model.ResetPassword = false;
+        model.SubmitButtonText = "Send Answers";
+        model.SubmitButtonIcon = "fa-comment-dots";
+    }
+
+    private static void SetUpPasswordReset(ForgotPasswordVm model)
+    {
+        model.ShowBasicDetails = false;
+        model.ShowSecurityQuestions = false;
+        model.ResetPassword = true;
+        model.SubmitButtonText = "Reset";
+        model.SubmitButtonIcon = "fa-rotate-right";
     }
 
     private void SetDetailsNotRecognisedError(ForgotPasswordVm model)

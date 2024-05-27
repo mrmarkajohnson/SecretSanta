@@ -6,6 +6,7 @@ $gold: #ffd700;
 $gold-background: #fff7cc;
 $red-border: #ff3333;
 $purple: #6633dd;
+$grey: #777777;
 
 $primary-bg-subtle: #cfe2ff;
 $primary-shadow-1: #1d2ec4;
@@ -21,7 +22,8 @@ $grey-blue-glow: #9999ff10;
 $btn-box-shadow: $primary-shadow-1 0 2px 4px, $primary-shadow-2 0 5px 9px -3px, $primary 0 -3px 0 inset;
 $purple-box-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
 
-$gold-text-shadow: -1px -1px 0 $gold-glow, 1px 0 0 $gold-glow, -1px 1px 0 $gold-glow, 1px 1px 0 $gold-glow;
+$gold-text-shadow: -1.5px -1.5px 0 $gold-glow, 1px 0 0 $gold-glow, -1.5px 1.5px 0 $gold-glow, 1px 1px 0 $gold-glow, 
+        0.1px 0 $grey, 0 0.1px $grey, -0.1px 0 $grey, 0 -0.1px $grey;
 $green-gold-text-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
 $grey-blue-text-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
 
@@ -38,7 +40,8 @@ h2 {
     font-weight: 500;
     font-size: 30px;
     text-shadow: $grey-blue-text-shadow !important;
-    margin-bottom: 6px !important;
+    margin-top: 6px !important;
+    margin-bottom: 10px !important;
 }
 
 .btn-primary {
@@ -100,7 +103,8 @@ button.navbar-toggler:hover {
 footer {
     background: linear-gradient(180deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
     padding: 14px 22px 14px 22px !important;
-    color: $purple;
+    color: $purple-600;
+    text-shadow: $gold-text-shadow;
 }
 
 footer a {    
@@ -128,6 +132,7 @@ a:hover {
 
 .text-glow {
     text-shadow: $gold-text-shadow !important;
+    font-weight: 500;
 }
 
 label.control-label {

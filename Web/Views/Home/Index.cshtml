@@ -12,44 +12,43 @@
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? "!" : $", {Model.CurrentUser?.Forename}!");
 }
 
-<div class="text-center">    
+<div class="text-center">
     @if (_signInManager.IsSignedIn(User))
     {
         <h1>@welcomeSignedInUser</h1>
-
-        if (mustSetSecurityQuestions)
-        {
+        <div class="mt-2">
+            if (mustSetSecurityQuestions)
+            {
             <p>
-                <br />
-                Santa has one final task for you before he can accept your wish list. Please set some 
-                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                    security questions</a> in case you forget your password and need to reset it.
+                Santa has one final task for you before he can accept your wish list. Please set some
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    security questions
+                </a> in case you forget your password and need to reset it.
             </p>
-        }
-        else
-        {
+            }
+            else
+            {
             // TODO: Add the main page content here
 
             <p>
-                <br />
                 <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
                     Update Your Security Questions
                 </a>
             </p>
-        }
+            }
+        </div>
     }
     else
     {
         <h1>Welcome to Secret Santa!</h1>
-        <p>
-            <br />
-            Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
+        <div class="mt-2">
+            <p>
+                Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
                 or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
-        </p>
-        <p>
-            <div>
-               If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
-            </div>
-        </p>
+            </p>
+            <p>
+                If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
+            </p>
+        </div>
     }
 </div>
