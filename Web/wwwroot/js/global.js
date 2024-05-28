@@ -33,7 +33,7 @@ function initThinking() {
 
         form.addEventListener('submit', function (e) {
             
-            if ($form.valid()) {
+            if (typeof $.fn.valid != 'function' || $form.valid()) {
                 submitButton = e.currentTarget;
                 submitButton.setAttribute('disabled', 'disabled');
                 submitTimer = setTimeout(function () {
