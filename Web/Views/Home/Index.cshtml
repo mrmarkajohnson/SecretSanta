@@ -17,24 +17,24 @@
     {
         <h1>@welcomeSignedInUser</h1>
         <div class="mt-2">
-            if (mustSetSecurityQuestions)
+            @if (mustSetSecurityQuestions)
             {
-            <p>
-                Santa has one final task for you before he can accept your wish list. Please set some
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                    security questions
-                </a> in case you forget your password and need to reset it.
-            </p>
+                <p>
+                    Santa has one final task for you before he can accept your wish list. Please set some
+                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                        security questions
+                    </a> in case you forget your password and need to reset it.
+                </p>
             }
             else
             {
-            // TODO: Add the main page content here
+                    // TODO: Add the main page content here
 
-            <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                    Update Your Security Questions
-                </a>
-            </p>
+                <p>
+                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                        Update Your Security Questions
+                    </a>
+                </p>
             }
         </div>
     }

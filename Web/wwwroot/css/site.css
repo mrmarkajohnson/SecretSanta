@@ -22,6 +22,18 @@ p {
     margin-bottom : 6px;
 }
 
+.thinking {
+    position: fixed;
+    height: 100vh;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    opacity: 0.7;
+    background: white;
+    z-index: 4000;
+}
+
 .tooltip {
     z-index: 50000;
     border-style: solid;
