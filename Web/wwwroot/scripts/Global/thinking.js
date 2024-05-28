@@ -27,7 +27,7 @@ function initThinking() {
                 submitTimer = setTimeout(function () {
                     thinkingSection.style.display = "flex";
                     submitButton.removeAttribute('disabled');
-                }, 500);
+                }, 100);
             }
         }, { passive: true });
 

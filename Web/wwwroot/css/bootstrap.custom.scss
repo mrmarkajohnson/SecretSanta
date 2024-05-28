@@ -6,6 +6,7 @@ $gold: #ffd700;
 $gold-background: #fff7cc;
 $red-border: #ff3333;
 $purple: #6633dd;
+$purple-background: #8855ff;
 $grey: #777777;
 
 $primary-bg-subtle: #cfe2ff;
@@ -155,37 +156,37 @@ label.control-label.required::after {
     padding-left: 1px !important;
 }
 
-// region info circles for tooltips
+// region info/question circles for tooltips
 
-.fa.fa-info-circle {
+.fa.fa-circle-question {
     color: $purple !important;
     background: $gold-background !important;
     font-size: 15px !important;
 }
 
-.fa.fa-info-circle.fa-border {
+.fa.fa-circle-question.fa-border {
     --fa-border-color: #{$gold};
     --fa-border-radius: 50% !important;
     --fa-border-padding: 0 !important;
-    --fa-border-width: 1px !important;
+    --fa-border-width: 2px !important;
     --fa-border-style: solid !important;
 }
 
-/*.fa-circle-info {
-    color: $purple !important;
-    background: $gold-background !important;
+.fa.fa-circle-info {
+    color: $gold-background !important;
+    background: $purple !important;
     font-size: 15px !important;
 }
 
-.fa-circle-info.fa-border {
-    --fa-border-color: #{$gold};
+.fa.fa-circle-info.fa-border {
+    --fa-border-color: #{$purple};
     --fa-border-radius: 50% !important;
     --fa-border-padding: 0 !important;
-    --fa-border-width: 1px !important;
+    --fa-border-width: 2px !important;
     --fa-border-style: solid !important;
-}*/
+}
 
-// endregion info circles for tooltips
+// endregion info/question circles for tooltips
 
 // region tooltips
 

@@ -22,7 +22,7 @@
                             <label asp-for="EmailOrUserName" class="control-label required"></label>
                             <div class="input-group input-info">
                                 <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-                                <partial name="_InputInfo" model="@emailOrUserNameExplanation" />
+                                <partial name="_InputQuestion" model="@emailOrUserNameExplanation" />
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                                 <input class="form-check-input" asp-for="RememberMe" />
                                 &nbsp;
                                 <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@rememberMeExplanation">
-                                    <i class="fa fa-info-circle fa-border"></i>
+                                    <i class="fa fa-circle-question fa-border"></i>
                                 </div>
                             </label>
                         </div>

@@ -29,9 +29,7 @@
                             <label asp-for="Email" class="control-label"></label>
                             <div class="input-group input-info">
                                 <input asp-for="Email" class="form-control email-input" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-                                <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@emailExplanation">
-                                    <i class="fa fa-info-circle fa-border"></i>
-                                </div>
+                                <partial name="_InputQuestion" model="@emailExplanation" />
                             </div>
                             <div>
                                 <span asp-validation-for="Email" class="text-danger"></span>
@@ -44,9 +42,7 @@
                             <label asp-for="UserName" class="control-label"></label>
                             <div class="input-group input-info">
                                 <input asp-for="UserName" class="form-control username-input" autocomplete="username" aria-required="false" placeholder="Create a username" />
-                                <div class="input-group-text" data-toggle="tooltip" data-html="true" data-bs-container="div.input-group-text" title="@userNameExplanation">
-                                    <i class="fa fa-info-circle fa-border"></i>
-                                </div>
+                                <partial name="_InputQuestion" model="@userNameExplanation" />
                             </div>
                             <div>
                                 <span asp-validation-for="UserName" class="text-danger"></span>
@@ -70,7 +66,7 @@
                             <div class="input-group input-info">
                                 <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Create a new password" />
                                 <div class="input-group-text"><i class="fa fa-eye collapse"></i></div>
-                                <partial name="_InputInfo" model="@Passwords.Description" />
+                                <partial name="_InputQuestion" model="@Passwords.Description" />
                             </div>
                             <div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -103,7 +99,7 @@
                             <label asp-for="MiddleNames" class="control-label"></label>
                             <div class="input-group input-info">
                                 <input asp-for="MiddleNames" maxlength="250" class="form-control" autocomplete="middlenames" aria-required="false" placeholder="Enter any middle names here" />
-                                <partial name="_InputInfo" model="@middleNamesExplanation" />
+                                <partial name="_InputQuestion" model="@middleNamesExplanation" />
                             </div>
                             <div>
                                 <span asp-validation-for="MiddleNames" class="text-danger"></span>

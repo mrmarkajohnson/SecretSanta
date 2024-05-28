@@ -62,7 +62,7 @@
                             <div class="input-group input-info">
                                 <input asp-for="SecurityHint1" class="form-control" aria-required="false" placeholder="Add a hint if you might need one"
                                        autocomplete="off" />
-                                <partial name="_InputInfo" model="@hintExplanation" />
+                                <partial name="_InputQuestion" model="@hintExplanation" />
                             </div>
                             <div>
                                 <span asp-validation-for="SecurityHint1" class="text-danger"></span>
@@ -101,7 +101,7 @@
                             <div class="input-group input-info">
                                 <input asp-for="SecurityHint2" class="form-control" aria-required="false" placeholder="Add a hint if you might need one"
                                        autocomplete="off" />
-                                <partial name="_InputInfo" model="@hintExplanation" />
+                                <partial name="_InputQuestion" model="@hintExplanation" />
                             </div>
                             <div>
                                 <span asp-validation-for="SecurityHint2" class="text-danger"></span>
