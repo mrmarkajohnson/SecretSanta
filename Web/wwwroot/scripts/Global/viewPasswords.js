@@ -31,6 +31,15 @@ function initEyeSymbol(eyeSymbol) {
                 }
             });
 
+            input.addEventListener('focus', function () {
+                if (!emptyInput(input) && !showText) {
+                    eyeSymbol.classList.remove('collapse');
+                    if (noEyeSymbol) {
+                        noEyeSymbol.classList.add('collapse');
+                    }
+                }                
+            });
+
             function toggleEyeSymbol() {
                 if (emptyInput(input)) {
                     if (!showText) {
