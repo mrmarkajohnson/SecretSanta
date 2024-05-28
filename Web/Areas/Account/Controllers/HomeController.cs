@@ -70,12 +70,22 @@ public class HomeController : BaseController
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                SetInvalidLogin();
             }
+        }
+        else
+        {
+            SetInvalidLogin();
         }
 
         model.Password = "";
         return View(model);
+    }
+
+    private void SetInvalidLogin()
+    {
+        ModelState.Clear();
+        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
     }
 
     [HttpGet]

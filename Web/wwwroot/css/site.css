@@ -23,8 +23,9 @@ p {
 }
 
 .thinking {
-    position: fixed;
-    height: 100vh;
+    position: absolute;
+    display: flex;
+    height: 100%;
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;

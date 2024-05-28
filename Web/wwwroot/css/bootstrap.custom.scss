@@ -231,6 +231,10 @@ label.control-label.required::after {
 
 .snow-background {
     background: radial-gradient(100% 100% at 0 0, white 25%, #7397a115 50%, #3f2c4107 75%, white 100%);
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 $snow-1: "";
