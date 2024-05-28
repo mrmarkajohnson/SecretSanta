@@ -51,10 +51,10 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             {
                 SecurityQuestion1 = globalUserDb.SecurityQuestion1,
                 SecurityAnswer1 = globalUserDb.SecurityAnswer1,
-                SecurityHint1 = globalUserDb.SecurityHint1,
+                SecurityHint1 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint1, false),
                 SecurityQuestion2 = globalUserDb.SecurityQuestion2,
                 SecurityAnswer2 = globalUserDb.SecurityAnswer2,
-                SecurityHint2 = globalUserDb.SecurityHint2
+                SecurityHint2 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint2, false)
             };
         }
 

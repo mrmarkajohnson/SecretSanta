@@ -13,79 +13,100 @@ public static class EncryptionHelper
     private const int _iterations = 350000;
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    public static string OneWayEncrypt(string value, IIdentityUser user)
+    public static string OneWayEncrypt(string? value, IIdentityUser user)
     {
         return OneWayEncrypt(value, user.Id);
     }
 
-    public static string OneWayEncrypt(string value, string saltKey)
+    public static string OneWayEncrypt(string? value, string saltKey)
     {
-        byte[] salt = GetSaltKeyBytes(saltKey);
-
-        var hash = Rfc2898DeriveBytes.Pbkdf2(
-            Encoding.UTF8.GetBytes(value),
-            salt,
-            _iterations,
-            _hashAlgorithm,
-            _saltKeySize);
-
-        return Convert.ToBase64String(hash);
-    }
-
-    public static string TwoWayEncrypt(string value, bool alphanumericOnly)
-    {
-        byte[] array;
-
-        using (Aes aes = Aes.Create())
+        if (string.IsNullOrEmpty(value))
         {
-            aes.Key = GetSymmetricKeyBytes();
-            aes.IV = new byte[16];
-
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                {
-                    using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
-                    {
-                        streamWriter.Write(value);
-                    }
-
-                    array = memoryStream.ToArray();
-                }
-            }
-        }
-
-        if (alphanumericOnly)
-        {
-            return Convert.ToHexString(array);
+            return value ?? "";
         }
         else
         {
-            return Convert.ToBase64String(array);
+            byte[] salt = GetSaltKeyBytes(saltKey);
+
+            var hash = Rfc2898DeriveBytes.Pbkdf2(
+                Encoding.UTF8.GetBytes(value),
+                salt,
+                _iterations,
+                _hashAlgorithm,
+                _saltKeySize);
+
+            return Convert.ToBase64String(hash);
         }
     }
 
-    public static string Decrypt(string _hashedString, bool alphanumericOnly)
+    public static string TwoWayEncrypt(string? value, bool alphanumericOnly)
     {
-        byte[] buffer = alphanumericOnly ? Convert.FromHexString(_hashedString)
+        if (string.IsNullOrEmpty(value))
+        {
+            return value ?? "";
+        }
+        else
+        {
+            byte[] array;
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = GetSymmetricKeyBytes();
+                aes.IV = new byte[16];
+
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
+                        {
+                            streamWriter.Write(value);
+                        }
+
+                        array = memoryStream.ToArray();
+                    }
+                }
+            }
+
+            if (alphanumericOnly)
+            {
+                return Convert.ToHexString(array);
+            }
+            else
+            {
+                return Convert.ToBase64String(array);
+            }
+        }
+    }
+
+    public static string Decrypt(string? _hashedString, bool alphanumericOnly)
+    {
+        if (string.IsNullOrEmpty(_hashedString))
+        {
+            return _hashedString ?? "";
+        }
+        else
+        {
+            byte[] buffer = alphanumericOnly ? Convert.FromHexString(_hashedString)
             : Convert.FromBase64String(_hashedString);
 
-        using (Aes aes = Aes.Create())
-        {
-            aes.Key = GetSymmetricKeyBytes();
-            aes.IV = new byte[16];
-            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-            using (MemoryStream memoryStream = new MemoryStream(buffer))
+            using (Aes aes = Aes.Create())
             {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                aes.Key = GetSymmetricKeyBytes();
+                aes.IV = new byte[16];
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream(buffer))
                 {
-                    using (StreamReader streamReader = new StreamReader(cryptoStream))
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                     {
-                        string returnString = streamReader.ReadToEnd();
-                        return returnString;
+                        using (StreamReader streamReader = new StreamReader(cryptoStream))
+                        {
+                            string returnString = streamReader.ReadToEnd();
+                            return returnString;
+                        }
                     }
                 }
             }

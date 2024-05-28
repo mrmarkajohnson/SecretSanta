@@ -38,10 +38,10 @@ public class SetSecurityQuestionsCommand : BaseCommand<ISecurityQuestions>
                     {
                         globalUserDb.SecurityQuestion1 = Item.SecurityQuestion1;
                         globalUserDb.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? "", globalUserDb);
-                        globalUserDb.SecurityHint1 = Item.SecurityHint1;
+                        globalUserDb.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
                         globalUserDb.SecurityQuestion2 = Item.SecurityQuestion2;
                         globalUserDb.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? "", globalUserDb);
-                        globalUserDb.SecurityHint2 = Item.SecurityHint2;
+                        globalUserDb.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
 
                         await ModelContext.SaveChangesAsync();
                         Success = true;
