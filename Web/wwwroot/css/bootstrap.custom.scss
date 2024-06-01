@@ -40,9 +40,18 @@ h2 {
     color: $purple;
     font-weight: 500;
     font-size: 30px;
-    text-shadow: $grey-blue-text-shadow !important;
+    text-shadow: $green-gold-text-shadow !important;
     margin-top: 6px !important;
     margin-bottom: 10px !important;
+}
+
+h3 {
+    color: $primary;
+    font-weight: 400;
+    font-size: 20px;
+    text-shadow: $grey-blue-text-shadow !important;
+    margin-top: 6px !important;
+    margin-bottom: 8px !important;
 }
 
 .btn-primary {

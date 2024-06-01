@@ -22,7 +22,12 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 
 function initThinking() {
     let thinkingSection = document.querySelector('.thinking');
-    clearThinkingElements(thinkingSection, null); 
+    clearThinkingElements(thinkingSection, null);
+
+    window.addEventListener('beforeunload', function () {
+        clearThinkingElements(thinkingSection, null);
+        showThinkingAnimation(thinkingSection, null);
+    });
 
     var forms = document.querySelectorAll('form');
     forms.forEach(initSubmitThinking);
@@ -36,10 +41,7 @@ function initThinking() {
             if (typeof $.fn.valid != 'function' || $form.valid()) {
                 submitButton = e.currentTarget;
                 submitButton.setAttribute('disabled', 'disabled');
-                submitTimer = setTimeout(function () {
-                    thinkingSection.style.display = "flex";
-                    submitButton.removeAttribute('disabled');
-                }, 100);
+                showThinkingAnimation(thinkingSection, submitButton);
             }
         }, { passive: true });
 
@@ -47,6 +49,15 @@ function initThinking() {
             clearThinkingElements(thinkingSection, submitButton);            
         });
     }
+}
+
+function showThinkingAnimation(thinkingSection, submitButton) {
+    submitTimer = setTimeout(function() {
+        thinkingSection.style.display = "block";
+        if (submitButton) {
+            submitButton.removeAttribute('disabled');
+        }
+    }, 200);
 }
 
 function clearThinkingElements(thinkingSection, submitButton) {

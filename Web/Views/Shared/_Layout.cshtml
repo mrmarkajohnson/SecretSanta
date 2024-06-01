@@ -40,10 +40,24 @@
     </header>
 
     <div class="container flex-grow-1 snow-background">       
-        <main role="main" style="margin: 0 !important; width: 100% !important;">
-            <div class="wrapper" style="position: relative">
-                <div class="thinking align-items-center justify-content-center text-center" style="display: none !important">
-                    <img src="~/img/dancing-elves.gif" />
+        <main role="main" class="d-flex flex-column" style="margin: 0 !important; width: 100% !important; height: 100% !important">
+            <div class="wrapper row flex-grow-1" style="position: relative">
+                <div class="thinking justify-content-center text-center align-middle" style="display: none !important">
+                    <div class="d-flex flex-column" style="margin: 0 !important; width: 100% !important; height: 100% !important">
+                        <div class="row flex-grow-1 col-12 align-items-center d-flex flex-column">
+                            <div class="row flex-grow-1"></div>
+                            <div class="row">
+                                <h3>Please wait, Santa's elves are working on it...</h3>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <img src="~/img/dancing-elves.gif" height="225px !important" width="300px !important" 
+                                        style="max-height: 225px !important; max-width: 300px !important; vertical-align: top !important" />
+                                </div>
+                            </div>
+                            <div class="row flex-grow-1"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="pt-4 pb-4">
                     @RenderBody()

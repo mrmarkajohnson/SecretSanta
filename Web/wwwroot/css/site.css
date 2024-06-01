@@ -24,13 +24,13 @@ p {
 
 .thinking {
     position: absolute;
-    display: flex;
+    display: block;
     height: 100%;
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
-    opacity: 0.7;
+    opacity: 0.9;
     background: white;
     z-index: 4000;
 }
