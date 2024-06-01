@@ -3,15 +3,18 @@ Allow updating data
 Allow changing password
 
 GENERAL
+Show toaster success messages
 Create menus and rework main page
+Add testing and production configuration
+Add privacy page
+Move validation to the controllers
 
 SECURITY QUESTIONS
-Encrypt and hide existing security question answers using asymmetric encryption
+Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)
 Require password before changing security questions if logged in for a while
 
 EMAILS
-Encrypt and decrypt e-mail addresses using symmetric encryption
-Add 'Use E-mail Address' checkbox on register page
+Enable e-mail functionality
 
 STYLING
 Add robin and santa images
