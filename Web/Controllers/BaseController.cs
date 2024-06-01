@@ -18,6 +18,18 @@ public class BaseController : Controller
     protected UserManager<IdentityUser> UserManager { get; private init; }
     protected SignInManager<IdentityUser> SignInManager { get; private init; }
 
+    public IActionResult RedirectWithMessage(IForm model, string successMessage)
+    {
+        return RedirectWithMessage(model.ReturnUrl ?? Url.Content("~/"), successMessage);
+    }
+
+    public IActionResult RedirectWithMessage(string url, string successMessage)
+    {
+        string addQuery = url.Contains("?") ? "&" : "?";
+        
+        return LocalRedirect($"{url}{addQuery}SuccessMessage={successMessage}");
+    }
+
     protected async Task<ISantaUser?> GetCurrentUser(bool unHashIdentification)
     {
         return await Send(new GetCurrentUserQuery(User, UserManager, SignInManager, unHashIdentification));

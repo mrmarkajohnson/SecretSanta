@@ -2,7 +2,7 @@
 
 namespace ViewLayer.Models.Home;
 
-public class HomeVm
+public class HomeVm : BasePageVm
 {
     public ISantaUser? CurrentUser { get; set; }
 }

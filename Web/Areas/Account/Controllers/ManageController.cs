@@ -55,7 +55,7 @@ public class ManageController : BaseController
                 }
                 else
                 {
-                    return Redirect(model.ReturnUrl);
+                    return RedirectWithMessage(model.ReturnUrl, "Registered Successfully");
                 }
             }
             else
@@ -113,7 +113,7 @@ public class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return Redirect(model.ReturnUrl);
+                return RedirectWithMessage(model, "Security Questions Set Successfully");
             }
             else
             {
@@ -126,4 +126,6 @@ public class ManageController : BaseController
 
         return View(model);
     }
+
+    
 }

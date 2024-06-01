@@ -22,3 +22,5 @@ I've sometimes decided to try a different approach to what I'm use to, to see wh
 - ASP.NET Identity and User Secrets (for development) but with my own modifications
 - Encryption of usernames, e-mails and security answers to keep future users safe, e.g. if this is cloned
 - Base classes that extend to the view models, to try to avoid DTOs with lots of replication
+- Entity Framework Core, as I'd only used EF6 before
+- Bootstrap 5, as I was used to Bootstrap 3

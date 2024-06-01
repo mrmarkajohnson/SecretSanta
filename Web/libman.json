@@ -104,24 +104,19 @@
       "provider": "unpkg",
       "library": "@fortawesome/fontawesome-free@6.5.1",
       "destination": "wwwroot/lib/fontawesome-free/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@popperjs/core@2.11.8",
+      "destination": "wwwroot/lib/popper/"
+    },
+    {
+      "library": "popper.js@2.11.8",
+      "destination": "wwwroot/lib/popper/popper.js/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr"
     }
-  ,
-{
-  "provider": "cdnjs",
-  "library": "popper.js@2.11.8",
-  "destination": "wwwroot/lib/popper/"
-}
-,
-{
-  "provider": "unpkg",
-  "library": "@popperjs/core@2.11.8",
-  "destination": "wwwroot/lib/popper/"
-}
-,
-{
-  "provider": "cdnjs",
-  "library": "popper.js@2.11.8",
-  "destination": "wwwroot/lib/popper/popper.js/"
-}
-]
+  ]
 }

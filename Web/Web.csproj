@@ -21,14 +21,17 @@
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
     <Content Remove="compilerconfig.json" />
+    <Content Remove="Views\Shared\_SuccessMessage.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="compilerconfig.json" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_SuccessMessage.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="Views\Shared\_SuccessMessage.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,9 +61,13 @@
   <ItemGroup>
     <Folder Include="wwwroot\lib\fontawesome-free\" />
     <Folder Include="wwwroot\lib\bootstrap\js\" />
+    <Folder Include="wwwroot\lib\toastr\" />
     <Folder Include="wwwroot\lib\popper\" />
     <Folder Include="wwwroot\scripts\Account\" />
-    <Folder Include="wwwroot\scripts\Global\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_SuccessMessage.cshtml" />
   </ItemGroup>
 
 </Project>

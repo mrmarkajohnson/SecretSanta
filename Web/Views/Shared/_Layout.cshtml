@@ -10,9 +10,10 @@
     <script>
         FontAwesomeConfig = { autoReplaceSvg: false }
     </script>
-
+    
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.css" /> @* This is after Bootstrap to preserve the original styling *@
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 </head>
 <body class="d-flex flex-column h-100">
@@ -78,10 +79,12 @@
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>    
 
     <environment include="Development">
+        <script src="~/lib/toastr/toastr.min.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/global.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/js/global.min.js" asp-append-version="true"></script>
     </environment>

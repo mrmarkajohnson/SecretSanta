@@ -2,7 +2,7 @@
 
 namespace ViewLayer.Models.Shared;
 
-public class BaseFormVm : IForm
+public class BaseFormVm : BasePageVm, IForm
 {
     public virtual string? ReturnUrl { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";

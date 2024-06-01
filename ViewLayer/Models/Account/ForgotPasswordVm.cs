@@ -8,6 +8,7 @@ namespace ViewLayer.Models.Account;
 public class ForgotPasswordVm : SecurityQuestions, IChangePassword, IForm
 {
     public string? ReturnUrl { get; set; }
+    public string? SuccessMessage { get; set; }
 
     [Display(Name = "E-mail or Username")]
     public required string EmailOrUserName { get; set; }
@@ -28,5 +29,5 @@ public class ForgotPasswordVm : SecurityQuestions, IChangePassword, IForm
     public bool ResetPassword { get; set; }
 
     public string SubmitButtonText { get; set; } = "Submit";
-    public string SubmitButtonIcon { get; set; } = "fa-paper-plane";
+    public string SubmitButtonIcon { get; set; } = "fa-paper-plane";    
 }

@@ -58,7 +58,7 @@ public class HomeController : BaseController
             var result = await SignInManager.PasswordSignInAsync(hashedId.UserNameHash, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return LocalRedirect(model.ReturnUrl);
+                return RedirectWithMessage(model, "Logged In Successfully");
             }
             //if (result.RequiresTwoFactor)
             //{
@@ -162,7 +162,7 @@ public class HomeController : BaseController
                         if (commandResult.Success)
                         {
                             model.ReturnUrl ??= Url.Content("~/");
-                            return Redirect(model.ReturnUrl);
+                            return RedirectWithMessage(model, "Password Reset Successfully");
                         }
                     }
                 }

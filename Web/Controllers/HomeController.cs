@@ -13,9 +13,9 @@ public class HomeController : BaseController
     {
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
-        var model = new HomeVm();
+        var model = new HomeVm { SuccessMessage = successMessage };
         model.CurrentUser = await GetCurrentUser(false);
         return View(model);
     }

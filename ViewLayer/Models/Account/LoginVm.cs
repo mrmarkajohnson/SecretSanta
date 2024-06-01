@@ -1,6 +1,4 @@
-﻿using Global.Abstractions.Global;
-using System.ComponentModel.DataAnnotations;
-using ViewLayer.Models.Shared;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 

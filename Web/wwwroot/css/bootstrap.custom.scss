@@ -165,6 +165,10 @@ label.control-label.required::after {
     padding-left: 1px !important;
 }
 
+#toast-container > div {
+    text-shadow: $gold-text-shadow; // everything else is in site.css as this sits behind toastr
+}
+
 // region info/question circles for tooltips
 
 .fa.fa-circle-question {

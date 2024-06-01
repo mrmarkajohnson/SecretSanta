@@ -1,5 +1,4 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
-using Global.Abstractions.Global;
 using Global.Abstractions.Santa.Areas.Account;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +8,7 @@ namespace ViewLayer.Models.Account;
 public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
 {
     public string? ReturnUrl { get; set; }
+    public string? SuccessMessage { get; set; }
 
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

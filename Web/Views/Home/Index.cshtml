@@ -12,6 +12,8 @@
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? "!" : $", {Model.CurrentUser?.Forename}!");
 }
 
+<partial name="_SuccessMessage" />
+
 <div class="text-center">
     @if (_signInManager.IsSignedIn(User))
     {
