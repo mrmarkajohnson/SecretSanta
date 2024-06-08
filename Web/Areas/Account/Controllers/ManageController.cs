@@ -1,7 +1,6 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Global;
-using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
@@ -14,7 +13,7 @@ public class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
-    public ManageController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore) 
+    public ManageController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore)
         : base(userManager, signInManager)
     {
         _userStore = userStore;
@@ -44,8 +43,8 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            ICommandResult<IRegisterSantaUser> commandResult = await Send(new
-                CreateSantaUserCommand(model, UserManager, _userStore, SignInManager));
+            var commandResult = await Send(new CreateSantaUserCommand<RegisterVm>(model, UserManager, _userStore, SignInManager),
+                new RegisterSantaValidator());
 
             if (commandResult.Success)
             {
@@ -58,13 +57,6 @@ public class ManageController : BaseController
                     return RedirectWithMessage(model.ReturnUrl, "Registered Successfully");
                 }
             }
-            else
-            {
-                foreach (var error in commandResult.Validation.Errors)
-                {
-                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
-            }
         }
 
         return View(model);
@@ -74,7 +66,7 @@ public class ManageController : BaseController
     public async Task<IActionResult> SetSecurityQuestions(bool update = false)
     {
         if (SignInManager.IsSignedIn(User))
-        { 
+        {
             var model = new SetSecurityQuestionsVm();
 
             ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));
@@ -108,24 +100,15 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            ICommandResult<ISecurityQuestions> commandResult = await Send(new
-                SetSecurityQuestionsCommand(model, User, UserManager, SignInManager));
+            var commandResult = await Send(new SetSecurityQuestionsCommand<SetSecurityQuestionsVm>(model, User, UserManager, SignInManager),
+                new SetSecurityQuestionsVmValidator());
 
             if (commandResult.Success)
             {
                 return RedirectWithMessage(model, "Security Questions Set Successfully");
             }
-            else
-            {
-                foreach (var error in commandResult.Validation.Errors)
-                {
-                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
-            }
         }
 
         return View(model);
     }
-
-    
 }

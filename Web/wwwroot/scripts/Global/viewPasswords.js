@@ -1,3 +1,5 @@
+let hideTextClass = 'hide-text';
+
 window.addEventListener('load', function () {
     initEyeSymbols();
 });
@@ -10,8 +12,9 @@ function initEyeSymbols() {
 function initEyeSymbol(eyeSymbol) {
     let inputGroup = eyeSymbol.closest('.input-group');
     if (inputGroup) {
-        let input = inputGroup.querySelector('input[type=password]');
+        let input = inputGroup.querySelector('input[type=password], input.' + hideTextClass);
         if (input) {
+            let isPassword = input.type == 'password';
             let showText = false;
             let noEyeSymbol = inputGroup.querySelector('.fa-eye-slash');;
 
@@ -23,8 +26,9 @@ function initEyeSymbol(eyeSymbol) {
             addToggleListener(eyeSymbol);
 
             input.addEventListener('blur', function () {
-                input.type = 'password';
                 showText = false;
+                toggleInputType(input, isPassword, showText);
+                
                 eyeSymbol.classList.add('collapse');
                 if (noEyeSymbol) {
                     noEyeSymbol.classList.add('collapse');
@@ -68,7 +72,7 @@ function initEyeSymbol(eyeSymbol) {
 
             function convertToPassword() {
                 showText = false;
-                input.type = 'password';
+                toggleInputType(input, isPassword, showText);
 
                 eyeSymbol.classList.remove('collapse');
                 if (noEyeSymbol) {
@@ -78,7 +82,8 @@ function initEyeSymbol(eyeSymbol) {
 
             function convertToText() {
                 showText = true;
-                input.type = 'text';
+                toggleInputType(input, isPassword, showText);
+
                 eyeSymbol.classList.add('collapse');
                 if (noEyeSymbol) {
                     noEyeSymbol.classList.remove('collapse');
@@ -100,6 +105,16 @@ function initEyeSymbol(eyeSymbol) {
                     togglePassword();
                 });
             }
+        }
+    }
+
+    function toggleInputType(input, isPassword, showText) {
+        if (isPassword) {
+            input.type = showText ? 'text' : 'password';
+        } else if (showText) {
+            input.classList.remove(hideTextClass);
+        } else {
+            input.classList.add(hideTextClass);
         }
     }
 }

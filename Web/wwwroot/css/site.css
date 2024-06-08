@@ -99,3 +99,13 @@ div.validation-summary-errors ul, li {
     bottom: 80px;
     left: 30px;
 }
+
+input.hide-text {
+    text-security: disc;
+    -webkit-text-security: disc;
+    -moz-text-security: disc;
+}
+
+input::-ms-reveal, input::-ms-clear {
+    display: none;
+}

@@ -83,4 +83,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
+FluentValidationConfiguration.SetFluentValidationOptions();
+
 app.Run();

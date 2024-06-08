@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Global.Validation;
-using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Global;
 
@@ -8,14 +7,8 @@ public interface IIdentityUser
 {
     string Id { get; set; }
 
-    [Display(Name = "Username")]    
     string? UserName { get; set; }
-
-    [Display(Name = "E-mail Address")]
     string? Email { get; set; }
-
-    //[Display(Name = "Phone Number")]
-    //string? PhoneNumber { get; set; }
 
     bool IdentificationHashed { get; set; }
 }
@@ -31,5 +24,7 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
 
         RuleFor(x => x.UserName)
             .MinimumLength(Identity.UserNames.MinLength);
+
+        RuleFor(x => x.Email).EmailAddress();
     }
 }

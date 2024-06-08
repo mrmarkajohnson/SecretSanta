@@ -13,7 +13,7 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
     [Display(Name = "Password"), DataType(DataType.Password), StringLength(Identity.Passwords.MaxLength, 
-        ErrorMessage = "Your {0} must be {2} to {1} characters long.", MinimumLength = Identity.Passwords.MinLength)]
+        ErrorMessage = ValidationMessages.LengthError, MinimumLength = Identity.Passwords.MinLength)]
     public required string Password { get; set; }
 
     [Display(Name = "Confirm password"), DataType(DataType.Password)]
@@ -22,4 +22,8 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
 
     public string SubmitButtonText { get; set; } = "Register";
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
+}
+
+public class RegisterSantaValidator : SantaUserValidator<RegisterVm>
+{
 }

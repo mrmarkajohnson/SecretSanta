@@ -12,3 +12,7 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISecurityQuestio
 
     public bool Update { get; set; }
 }
+
+public class SetSecurityQuestionsVmValidator : SecurityQuestionsValidator<SetSecurityQuestionsVm>
+{
+}

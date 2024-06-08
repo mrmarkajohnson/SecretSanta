@@ -6,17 +6,35 @@ namespace Application.Santa.Global;
 public abstract class BaseCommand<TItem> : BaseRequest
 {
     public TItem Item { get; set; }
+    public AbstractValidator<TItem>? Validator { get; set; }
+    public ValidationResult Validation { get; set; } = new ValidationResult();
 
     protected bool Success { get; set; }
-    protected AbstractValidator<TItem>? Validator { get; set; }
-    protected ValidationResult Validation { get; set; } = new ValidationResult();
 
     protected BaseCommand(TItem item)
     {
         Item = item;
     }
 
-    public abstract Task<ICommandResult<TItem>> Handle();
+    public async Task<ICommandResult<TItem>> Handle()
+    {
+        if (Validator != null && !Validation.RuleSetsExecuted.Any())
+        {
+            Validator.Validate(Item);
+        }
+
+        if (Validation.IsValid)
+        {
+            return await HandlePostValidation();
+        }
+        else
+        {
+            Success = false; // just in case
+            return await Result();
+        }
+    }
+
+    protected abstract Task<ICommandResult<TItem>> HandlePostValidation();
 
     public async Task<ICommandResult<TItem>> Result()
     {
@@ -30,9 +48,14 @@ public abstract class BaseCommand<TItem> : BaseRequest
         return await Task.FromResult(result);
     }
 
-    protected async Task<ICommandResult<UItem>> Send<UItem>(BaseCommand<UItem> command)
+    protected async Task<ICommandResult<UItem>> Send<UItem>(BaseCommand<UItem> subCommand, AbstractValidator<UItem>? validator)
     {
-        ICommandResult<UItem> commandResult = await command.Handle();
+        if (validator != null)
+        {
+            subCommand.Validator = validator;
+        }
+        
+        ICommandResult<UItem> commandResult = await subCommand.Handle();
 
         Validation.Errors.AddRange(commandResult.Validation.Errors);
 

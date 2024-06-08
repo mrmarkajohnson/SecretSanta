@@ -1,5 +1,5 @@
 ﻿using Application.Shared.Identity;
-using Global.Abstractions.Global;
+using FluentValidation;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,7 +17,7 @@ public class ForgotPasswordVm : SecurityQuestions, IChangePassword, IForm
     public required string Forename { get; set; }
 
     [Display(Name = "Password"), DataType(DataType.Password), StringLength(Identity.Passwords.MaxLength,
-        ErrorMessage = "Your {0} must be {2} to {1} characters long.", MinimumLength = Identity.Passwords.MinLength)]
+        ErrorMessage = ValidationMessages.LengthError, MinimumLength = Identity.Passwords.MinLength)]
     public required string Password { get; set; }
 
     [Display(Name = "Confirm password"), DataType(DataType.Password)]
@@ -29,5 +29,17 @@ public class ForgotPasswordVm : SecurityQuestions, IChangePassword, IForm
     public bool ResetPassword { get; set; }
 
     public string SubmitButtonText { get; set; } = "Submit";
-    public string SubmitButtonIcon { get; set; } = "fa-paper-plane";    
+    public string SubmitButtonIcon { get; set; } = "fa-paper-plane";
+}
+
+public class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>
+{
+    public ForgotPasswordVmValidator()
+    {
+        RuleFor(x => x.EmailOrUserName).NotEmpty().When(x => x.ShowBasicDetails);
+        RuleFor(x => x.Forename).NotEmpty().When(x => x.ShowBasicDetails);
+
+        RuleFor(x => x.SecurityAnswer1).NotEmpty().When(x => x.ShowSecurityQuestions);
+        RuleFor(x => x.SecurityAnswer2).NotEmpty().When(x => x.ShowSecurityQuestions);
+    }
 }

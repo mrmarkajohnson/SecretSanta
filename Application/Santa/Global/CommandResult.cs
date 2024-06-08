@@ -2,7 +2,7 @@
 
 namespace Application.Santa.Global;
 
-internal class CommandResult<TItem> : ICommandResult<TItem>
+public class CommandResult<TItem> : ICommandResult<TItem>
 {
     public required TItem Item {  get; set; }
     public bool Success { get; set; }

@@ -110,59 +110,63 @@ public class HomeController : BaseController
     public async Task<IActionResult> ForgotPassword(ForgotPasswordVm model)
     {
         ModelState.Clear();
-        
-        if (string.IsNullOrWhiteSpace(model.EmailOrUserName) || string.IsNullOrWhiteSpace(model.Forename))
+
+        bool validates = ValidateItem(model, new ForgotPasswordVmValidator());
+
+        if (validates)
         {
-            SetDetailsNotRecognisedError(model);
-        }
-        else
-        {
-            ISantaUser? user = await Send(new GetUserQuery(model.EmailOrUserName, false, model.Forename, false));
-            if (user == null || user.UserName == null)
+            if (string.IsNullOrWhiteSpace(model.EmailOrUserName) || string.IsNullOrWhiteSpace(model.Forename))
             {
                 SetDetailsNotRecognisedError(model);
             }
-            else 
+            else
             {
-                ISecurityQuestions? securityQuestions = await Send(new GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, UserManager, SignInManager));
-
-                if (securityQuestions == null)
+                ISantaUser? user = await Send(new GetUserQuery(model.EmailOrUserName, false, model.Forename, false));
+                if (user == null || user.UserName == null)
                 {
                     SetDetailsNotRecognisedError(model);
                 }
-                else if (!model.SecurityQuestionsSet)
-                {
-                    SetUpSecurityQuestions(model, securityQuestions);
-                }
                 else
                 {
-                    string hashedAnswer1 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer1?.ToLower() ?? "", user);
-                    string hashedAnswer2 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer2?.ToLower() ?? "", user);
+                    ISecurityQuestions? securityQuestions = await Send(new GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, UserManager, SignInManager));
 
-                    if (hashedAnswer1 != securityQuestions.SecurityAnswer1
-                        || hashedAnswer2 != securityQuestions.SecurityAnswer2)
+                    if (securityQuestions == null)
                     {
-                        ModelState.AddModelError(string.Empty, "Security answers did not match.");
+                        SetDetailsNotRecognisedError(model);
+                    }
+                    else if (!model.SecurityQuestionsSet)
+                    {
                         SetUpSecurityQuestions(model, securityQuestions);
-                    }
-                    else if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
-                    {
-                        SetUpPasswordReset(model);
-                    }
-                    else if (model.ConfirmPassword != model.Password)
-                    {
-                        ModelState.AddModelError(string.Empty, "Passwords did not match.");
-                        SetUpPasswordReset(model);
                     }
                     else
                     {
-                        ICommandResult<IChangePassword> commandResult = await Send(new
-                            ChangePasswordCommand(model, user, UserManager, SignInManager));
+                        string hashedAnswer1 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer1?.ToLower() ?? "", user);
+                        string hashedAnswer2 = EncryptionHelper.OneWayEncrypt(model.SecurityAnswer2?.ToLower() ?? "", user);
 
-                        if (commandResult.Success)
+                        if (hashedAnswer1 != securityQuestions.SecurityAnswer1
+                            || hashedAnswer2 != securityQuestions.SecurityAnswer2)
                         {
-                            model.ReturnUrl ??= Url.Content("~/");
-                            return RedirectWithMessage(model, "Password Reset Successfully");
+                            ModelState.AddModelError(string.Empty, "Security answers did not match.");
+                            SetUpSecurityQuestions(model, securityQuestions);
+                        }
+                        else if (string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.ConfirmPassword))
+                        {
+                            SetUpPasswordReset(model);
+                        }
+                        else if (model.ConfirmPassword != model.Password)
+                        {
+                            ModelState.AddModelError(string.Empty, "Passwords did not match.");
+                            SetUpPasswordReset(model);
+                        }
+                        else
+                        {
+                            var commandResult = await Send(new ChangePasswordCommand<ForgotPasswordVm>(model, user, UserManager, SignInManager), null);
+
+                            if (commandResult.Success)
+                            {
+                                model.ReturnUrl ??= Url.Content("~/");
+                                return RedirectWithMessage(model, "Password Reset Successfully");
+                            }
                         }
                     }
                 }

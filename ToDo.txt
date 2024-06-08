@@ -3,11 +3,10 @@ Allow updating data
 Allow changing password
 
 GENERAL
-Show toaster success messages
 Create menus and rework main page
 Add testing and production configuration
 Add privacy page
-Move validation to the controllers
+Get usermanager etc. via dependency injection
 
 SECURITY QUESTIONS
 Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)

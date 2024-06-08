@@ -7,10 +7,10 @@ public class CoreIdentityUser : IIdentityUser
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [Display(Name = "Username")]
-    [StringLength(100, ErrorMessage = "Your {0} must be {2} to {1} characters long, if entered.", MinimumLength = Global.Validation.Identity.UserNames.MinLength)]
+    [StringLength(100, ErrorMessage = "'{0}' must be {2} to {1} characters long, if entered.", MinimumLength = Global.Validation.Identity.UserNames.MinLength)]
     public string? UserName { get; set; }
 
-    [EmailAddress]
+    [EmailAddress(ErrorMessage = "'E-mail' is not a valid e-mail address.")]
     [Display(Name = "E-mail")]
     public string? Email { get; set; }
 

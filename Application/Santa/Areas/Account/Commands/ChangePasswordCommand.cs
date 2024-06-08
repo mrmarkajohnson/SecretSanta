@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class ChangePasswordCommand : BaseCommand<IChangePassword>
+public class ChangePasswordCommand<TItem> : BaseCommand<TItem> where TItem : IChangePassword
 {
     private readonly ISantaUser _user;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
 
-    public ChangePasswordCommand(IChangePassword item,
+    public ChangePasswordCommand(TItem item,
         ISantaUser user,
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager) : base(item)
@@ -20,7 +20,7 @@ public class ChangePasswordCommand : BaseCommand<IChangePassword>
         _signInManager = signInManager;
     }
 
-    public override async Task<ICommandResult<IChangePassword>> Handle()
+    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
         var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == _user.Id);
 

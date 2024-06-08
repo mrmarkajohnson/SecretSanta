@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
+public class CreateSantaUserCommand<TItem> : BaseCommand<TItem> where TItem : IRegisterSantaUser
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserStore<IdentityUser> _userStore;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IUserEmailStore<IdentityUser> _emailStore;
 
-    public CreateSantaUserCommand(IRegisterSantaUser item, 
-        UserManager<IdentityUser> userManager, 
+    public CreateSantaUserCommand(TItem item,
+        UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
         SignInManager<IdentityUser> signInManager) : base(item)
     {
@@ -25,62 +25,71 @@ public class CreateSantaUserCommand : BaseCommand<IRegisterSantaUser>
         _emailStore = GetEmailStore();
     }
 
-    public override async Task<ICommandResult<IRegisterSantaUser>> Handle()
+    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Validator = new RegisterSantaValidator();
-        Validation = Validator.Validate(Item);
+        string? originalUserName = Item.UserName;
+        string? originalEmail = Item.Email;
 
-        if (Validation.IsValid)
+        await Send(new HashUserIdentificationAction(Item));
+
+        var globalUserDb = new Global_User
         {
-            await Send(new HashUserIdentificationAction(Item));
+            Forename = Item.Forename,
+            MiddleNames = Item.MiddleNames,
+            Surname = Item.Surname,
+            Email = Item.Email,
+            UserName = Item.UserName,
+        };
 
-            var globalUserDb = new Global_User
+        var santaUserDb = new Santa_User
+        {
+            GlobalUserId = globalUserDb.Id,
+            GlobalUser = globalUserDb
+        };
+
+        globalUserDb.SantaUser = santaUserDb;
+
+        ModelContext.ChangeTracker.DetectChanges();
+
+        IdentityResult result = await _userManager.CreateAsync(globalUserDb, Item.Password);
+
+        if (result.Succeeded)
+        {
+            await _userStore.SetUserNameAsync(globalUserDb, Item.UserName, CancellationToken.None);
+
+            if (!string.IsNullOrWhiteSpace(Item.Email))
             {
-                Forename = Item.Forename,
-                MiddleNames = Item.MiddleNames,
-                Surname = Item.Surname,
-                Email = Item.Email,
-                UserName = Item.UserName,
-            };
+                await _emailStore.SetEmailAsync(globalUserDb, Item.Email, CancellationToken.None);
+            }
 
-            var santaUserDb = new Santa_User
+            Success = true;
+            Item.Password = "";
+            await ModelContext.SaveChangesAsync();
+            await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
+        }
+        else
+        {
+            foreach (var error in result.Errors)
             {
-                GlobalUserId = globalUserDb.Id,
-                GlobalUser = globalUserDb
-            };
-
-            globalUserDb.SantaUser = santaUserDb;
-
-            ModelContext.ChangeTracker.DetectChanges();
-
-            IdentityResult result = await _userManager.CreateAsync(globalUserDb, Item.Password);
-
-            if (result.Succeeded)
-            {
-                await _userStore.SetUserNameAsync(globalUserDb, Item.UserName, CancellationToken.None);
+                string description = error.Description;
+                
+                if (!string.IsNullOrWhiteSpace(Item.UserName))
+                {
+                    description = description.Replace(Item.UserName, originalUserName);
+                }
 
                 if (!string.IsNullOrWhiteSpace(Item.Email))
                 {
-                    await _emailStore.SetEmailAsync(globalUserDb, Item.Email, CancellationToken.None);
+                    description = description.Replace(Item.Email, originalEmail);
                 }
-
-                Success = true;
-                Item.Password = "";
-                await ModelContext.SaveChangesAsync();
-                await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
-            }
-            else
-            {
-                foreach (var error in result.Errors)
+                
+                if (error.Description.ToLower().Contains("username"))
                 {
-                    if (error.Description.ToLower().Contains("username"))
-                    {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), error.Description));
-                    }
-                    else
-                    {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
-                    }
+                    Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), description));
+                }
+                else
+                {
+                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), description));
                 }
             }
         }

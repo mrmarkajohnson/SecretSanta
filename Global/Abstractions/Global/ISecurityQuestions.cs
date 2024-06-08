@@ -16,7 +16,7 @@ public interface ISecurityQuestions
     bool SecurityQuestionsSet { get; }
 }
 
-public class SecurityQuestionsValidator : AbstractValidator<ISecurityQuestions>
+public class SecurityQuestionsValidator<TItem> : AbstractValidator<TItem> where TItem : ISecurityQuestions
 {
     public SecurityQuestionsValidator()
     {
