@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
+using FluentValidation.Internal;
+using FluentValidation.Resources;
 using Global.Abstractions.Extensions;
+using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -11,7 +14,6 @@ public static class FluentValidationConfiguration
     {
         ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
         {
-
             string? displayName = null;
             PropertyInfo? originalProperty = type.GetProperties().FirstOrDefault(x => x.Name == memberInfo.Name);
 
@@ -25,5 +27,47 @@ public static class FluentValidationConfiguration
 
             return displayName ?? ValidatorOptions.Global.PropertyNameResolver(type, memberInfo, expression).SplitPascalCase();
         };
+
+        ValidatorOptions.Global.LanguageManager = new CustomLanguageManager();
+        ValidatorOptions.Global.MessageFormatterFactory = () => new CustomMessageFormatter();        
+    }
+
+    public class CustomMessageFormatter : MessageFormatter
+    {
+        public override string BuildMessage(string messageTemplate)
+        {
+            string templateWithoutQuotes = messageTemplate.Replace("'{PropertyName}'", "{PropertyName}");
+            string finalMessage = base.BuildMessage(templateWithoutQuotes);            
+            return finalMessage;
+        }
+    }
+
+    public class CustomLanguageManager : LanguageManager
+    {
+        string[] englishCodes = ["en", "en-GB", "en-US"]; // , "en-AE", "en-BZ", "en-CA", "en-IE", "en-JM", "en-NZ", "en-ZA", "en-TT" ];
+
+        public CustomLanguageManager() // use FluentValidation.Validators to find the classes and get the names
+        {
+            foreach (var link in ValidationMessages.MessageLinks)
+            {
+                string errorMessage = link.ErrorMessage.Replace("{0}", "{PropertyName}").Replace("{1}", $"{{{link.Property1}}}").Replace("{2}", $"{{{link.Property2}}}");
+                AddEnglishTranslation(link.FluentValidatorName, errorMessage);
+            }
+
+            //AddEnglishTranslation("NotNullValidator", ValidationMessages.RequiredError);
+            //AddEnglishTranslation("NotEmptyValidator", ValidationMessages.RequiredError);
+            //AddEnglishTranslation("EmailValidator", ValidationMessages.EmailError);
+            //AddEnglishTranslation("LengthValidator", ValidationMessages.LengthError);
+            //AddEnglishTranslation("MaximumLengthValidator", ValidationMessages.MaxLengthError);
+            //AddEnglishTranslation("MinimumLengthValidator", ValidationMessages.MinLengthError);
+        }
+
+        private void AddEnglishTranslation(string validatorName, string errorMessage)
+        {
+            foreach (string code in englishCodes)
+            {
+                AddTranslation(code, validatorName, errorMessage);
+            }
+        }
     }
 }

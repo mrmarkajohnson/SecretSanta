@@ -1,5 +1,6 @@
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
@@ -22,6 +23,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = Identity.SignIn.RequireConfirmedPhoneNumber;
     options.SignIn.RequireConfirmedAccount = Identity.SignIn.RequireConfirmedAccount;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+if (builder.Services.Any(f => f.ServiceType == typeof(IValidationAttributeAdapterProvider)))
+{
+    builder.Services.Remove(builder.Services.Single(f => f.ServiceType == typeof(IValidationAttributeAdapterProvider)));
+}
+
+builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
