@@ -53,13 +53,6 @@ public static class FluentValidationConfiguration
                 string errorMessage = link.ErrorMessage.Replace("{0}", "{PropertyName}").Replace("{1}", $"{{{link.Property1}}}").Replace("{2}", $"{{{link.Property2}}}");
                 AddEnglishTranslation(link.FluentValidatorName, errorMessage);
             }
-
-            //AddEnglishTranslation("NotNullValidator", ValidationMessages.RequiredError);
-            //AddEnglishTranslation("NotEmptyValidator", ValidationMessages.RequiredError);
-            //AddEnglishTranslation("EmailValidator", ValidationMessages.EmailError);
-            //AddEnglishTranslation("LengthValidator", ValidationMessages.LengthError);
-            //AddEnglishTranslation("MaximumLengthValidator", ValidationMessages.MaxLengthError);
-            //AddEnglishTranslation("MinimumLengthValidator", ValidationMessages.MinLengthError);
         }
 
         private void AddEnglishTranslation(string validatorName, string errorMessage)
