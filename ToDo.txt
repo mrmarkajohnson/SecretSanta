@@ -9,6 +9,7 @@ Add privacy page
 Get usermanager etc. via dependency injection
 
 SECURITY QUESTIONS
+Fix issue with list on Chrome
 Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)
 Require password before changing security questions if logged in for a while
 

@@ -2,7 +2,7 @@
 
 namespace Global.Validation;
 
-public static class Identity
+public static class IdentityVal
 {
     public static class Passwords
     {
@@ -32,7 +32,8 @@ public static class Identity
     public static class UserNames
     {
         public const string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-        public const int MinLength = 8;                
+        public const int MinLength = 8;
+        public const int MaxLength = 100;
     }
 
     public static class Emails

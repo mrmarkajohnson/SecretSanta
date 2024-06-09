@@ -19,11 +19,11 @@ public class GlobalUserValidator<T> : IdentityUserValidator<T> where T : IGlobal
     public GlobalUserValidator()
     {
         RuleFor(x => x.Forename)
-            .NotEmpty()
-            .Length(UserDetails.Forename.MinLength, UserDetails.Forename.MaxLength);
+            .NotNull().NotEmpty()
+            .Length(UserVal.Forename.MinLength, UserVal.Forename.MaxLength);
 
         RuleFor(x => x.Surname)
-            .NotEmpty()
-            .Length(UserDetails.Surname.MinLength, UserDetails.Surname.MaxLength);
+            .NotNull().NotEmpty()
+            .Length(UserVal.Surname.MinLength, UserVal.Surname.MaxLength);
     }
 }

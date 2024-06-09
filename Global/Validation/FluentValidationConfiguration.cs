@@ -2,7 +2,6 @@
 using FluentValidation.Internal;
 using FluentValidation.Resources;
 using Global.Abstractions.Extensions;
-using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -14,6 +13,11 @@ public static class FluentValidationConfiguration
     {
         ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
         {
+            if (memberInfo == null || memberInfo.Name == null)
+            {
+                return null;
+            }
+
             string? displayName = null;
             PropertyInfo? originalProperty = type.GetProperties().FirstOrDefault(x => x.Name == memberInfo.Name);
 

@@ -1,8 +1,9 @@
-﻿using Data.Entities.Shared.Base;
+﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+using Global.Validation;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity
+public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftingGroup
 {
     public Santa_GiftingGroup()
     {
@@ -13,22 +14,22 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity
     [Key]
     public int Id { get; set; }
 
-    [Required, Length(4, 150)]
+    [Required, MaxLength(GiftingGroupVal.Name.MaxLength)]
     public string Name { get; set; } = "";
 
-    [Required, Length(6, 250)]
+    [Required, MaxLength(GiftingGroupVal.Description.MaxLength)]
     public string Description { get; set; } = "";
 
-    [Required, Length(8, 15)]
+    [Required, MaxLength(GiftingGroupVal.JoinerToken.MaxLength)]
     public string JoinerToken { get; set; } = "";
 
-    [Required, Length(3, 8)]
+    [Required, MaxLength(GiftingGroupVal.CultureInfo.MaxLength)]
     public string CultureInfo { get; set; } = "en-GB";
 
-    [MaxLength(4)]
+    [MaxLength(GiftingGroupVal.CurrencyCodeOverride.MaxLength)]
     public string? CurrencyCodeOverride { get; set; } = "GBP";
 
-    [MaxLength(3)]
+    [MaxLength(GiftingGroupVal.CurrencySymbolOverride.MaxLength)]
     public string? CurrencySymbolOverride { get; set; } = "£";
 
     public virtual ICollection<Santa_GiftingGroupUser> UserLinks { get; set; }

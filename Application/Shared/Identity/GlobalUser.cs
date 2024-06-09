@@ -5,13 +5,13 @@ namespace Application.Shared.Identity;
 
 public class GlobalUser : CoreIdentityUser, IGlobalUser
 {
-    [Display(Name = "First Name"), StringLength(UserDetails.Forename.MaxLength, MinimumLength = UserDetails.Forename.MinLength)]
+    [Display(Name = "First Name"), StringLength(UserVal.Forename.MaxLength, MinimumLength = UserVal.Forename.MinLength)]
     public required string Forename { get; set; }
 
-    [Display(Name = "Middle Names"), MaxLength(UserDetails.MiddleNames.MaxLength)]
+    [Display(Name = "Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
 
-    [Display(Name = "Surname"), StringLength(UserDetails.Surname.MaxLength, MinimumLength = UserDetails.Surname.MinLength)]
+    [Display(Name = "Surname"), StringLength(UserVal.Surname.MaxLength, MinimumLength = UserVal.Surname.MinLength)]
     public required string Surname { get; set; }
 
     public bool SecurityQuestionsSet { get; set; }

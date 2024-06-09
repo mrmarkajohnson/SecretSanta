@@ -19,9 +19,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = Identity.SignIn.RequireConfirmedEmail;
-    options.SignIn.RequireConfirmedPhoneNumber = Identity.SignIn.RequireConfirmedPhoneNumber;
-    options.SignIn.RequireConfirmedAccount = Identity.SignIn.RequireConfirmedAccount;
+    options.SignIn.RequireConfirmedEmail = IdentityVal.SignIn.RequireConfirmedEmail;
+    options.SignIn.RequireConfirmedPhoneNumber = IdentityVal.SignIn.RequireConfirmedPhoneNumber;
+    options.SignIn.RequireConfirmedAccount = IdentityVal.SignIn.RequireConfirmedAccount;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 if (builder.Services.Any(f => f.ServiceType == typeof(IValidationAttributeAdapterProvider)))
@@ -34,7 +34,7 @@ builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidat
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
 
-builder.Services.Configure<IdentityOptions>(Identity.ConfigureOptions);
+builder.Services.Configure<IdentityOptions>(IdentityVal.ConfigureOptions);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -18,12 +18,12 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
     public IdentityUserValidator()
     {
         RuleFor(x => x.UserName)
-            .NotEmpty()
+            .NotNull().NotEmpty()
             .When(x => string.IsNullOrWhiteSpace(x.Email))
             .WithMessage($"Please provide a Username if no E-mail Address is provided.");
 
         RuleFor(x => x.UserName)
-            .MinimumLength(Identity.UserNames.MinLength);
+            .MinimumLength(IdentityVal.UserNames.MinLength);
 
         RuleFor(x => x.Email).EmailAddress();
     }

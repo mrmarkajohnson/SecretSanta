@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Global.Abstractions.Global;
 
 namespace Global.Abstractions.Santa.Areas.Account;
 
-public interface IRegisterSantaUser : ISantaUser
+public interface IRegisterSantaUser : ISantaUser, ISetPassword
 {
-    [DataType(DataType.Password)]
-    string Password { get; set; }
+}
 
-    string ConfirmPassword { get; set; }
+public class RegisterSantaUserValidator<T> : SantaUserValidator<T> where T : IRegisterSantaUser
+{
+	public RegisterSantaUserValidator()
+	{
+		Include(new SetPasswordValidator<T>());
+	}
 }

@@ -1,8 +1,6 @@
 ﻿namespace Global.Abstractions.Global;
 
-public interface IChangePassword
+public interface IChangePassword : ISetPassword
 {
     string EmailOrUserName { get; }
-    string Password { get; }
-    string ConfirmPassword { get; }
 }
