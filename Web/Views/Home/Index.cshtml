@@ -30,8 +30,13 @@
             }
             else
             {
-                    // TODO: Add the main page content here
+                // TODO: Add the main page content here
 
+                <p>
+                    <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                        Update Your Details
+                    </a>
+                </p>
                 <p>
                     <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
                         Update Your Security Questions

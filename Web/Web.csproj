@@ -63,7 +63,6 @@
     <Folder Include="wwwroot\lib\bootstrap\js\" />
     <Folder Include="wwwroot\lib\toastr\" />
     <Folder Include="wwwroot\lib\popper\" />
-    <Folder Include="wwwroot\scripts\Account\" />
   </ItemGroup>
 
   <ItemGroup>

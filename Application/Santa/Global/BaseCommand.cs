@@ -61,4 +61,9 @@ public abstract class BaseCommand<TItem> : BaseRequest
 
         return commandResult;
     }
+
+    public void AddUserNotFoundError()
+    {
+        Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
+    }
 }

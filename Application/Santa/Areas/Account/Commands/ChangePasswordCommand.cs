@@ -49,7 +49,7 @@ public class ChangePasswordCommand<TItem> : BaseCommand<TItem> where TItem : ICh
         }
         else
         {
-            Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
+            AddUserNotFoundError();
         }
 
         return await Result();

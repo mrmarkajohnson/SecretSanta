@@ -23,6 +23,6 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
 }
 
-public class RegisterSantaValidator : RegisterSantaUserValidator<RegisterVm>
+public class RegisterVmValidator : RegisterSantaUserValidator<RegisterVm>
 {
 }

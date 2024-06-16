@@ -44,7 +44,7 @@ public class ManageController : BaseController
         if (ModelState.IsValid)
         {
             var commandResult = await Send(new CreateSantaUserCommand<RegisterVm>(model, UserManager, _userStore, SignInManager),
-                new RegisterSantaValidator());
+                new RegisterVmValidator());
 
             if (commandResult.Success)
             {
@@ -106,6 +106,57 @@ public class ManageController : BaseController
             if (commandResult.Success)
             {
                 return RedirectWithMessage(model, "Security Questions Set Successfully");
+            }
+        }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateDetails(string? returnUrl = null)
+    {
+        if (SignInManager.IsSignedIn(User))
+        {
+            var currentUser = await GetCurrentUser(true);
+
+            if (currentUser == null)
+            {
+                return Redirect(Url.Action("Error"));
+            }
+
+            var model = new UpdateDetailsVm
+            {
+                Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                Password = "",
+                Email = currentUser.Email,
+                Forename = currentUser.Forename,
+                MiddleNames = currentUser.MiddleNames,
+                Surname = currentUser.Surname,
+                ReturnUrl = returnUrl ?? Url.Content("~/")
+            };
+
+            return View(model);
+        }
+        else
+        {
+            return Redirect(Url.Action("Error"));
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateDetails(UpdateDetailsVm model)
+    {
+        model.ReturnUrl ??= Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            var commandResult = await Send(new UpdateAccountDetailsCommand<UpdateDetailsVm>(model, User, UserManager, _userStore, SignInManager),
+                new UpdateDetailsVmValidator());
+
+            if (commandResult.Success)
+            {
+                return RedirectWithMessage(model, "Details Updated Successfully");
             }
         }
 

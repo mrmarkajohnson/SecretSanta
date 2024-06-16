@@ -1,5 +1,4 @@
 ACCOUNT
-Allow updating data
 Allow changing password
 
 GENERAL
@@ -7,11 +6,17 @@ Create menus and rework main page
 Add testing and production configuration
 Add privacy page
 Get usermanager etc. via dependency injection
+Lock out after 5 login failures (or log out and lock after 5 incorrect passwords elsewhere?)
+Add back buttons to relevant pages
+Use IIS?
+Use AutoMapper?
 
 SECURITY QUESTIONS
 Fix issue with list on Chrome
 Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)
 Require password before changing security questions if logged in for a while
+Lock out after 5 tries
+Add a Christmas-themed greeting from a list that always appears when logged in
 
 EMAILS
 Enable e-mail functionality

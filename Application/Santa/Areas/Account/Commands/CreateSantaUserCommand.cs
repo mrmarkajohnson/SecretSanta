@@ -7,22 +7,16 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class CreateSantaUserCommand<TItem> : BaseCommand<TItem> where TItem : IRegisterSantaUser
+public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IRegisterSantaUser
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserStore<IdentityUser> _userStore;
     private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly IUserEmailStore<IdentityUser> _emailStore;
 
     public CreateSantaUserCommand(TItem item,
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager) : base(item)
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore)
     {
-        _userManager = userManager;
-        _userStore = userStore;
         _signInManager = signInManager;
-        _emailStore = GetEmailStore();
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
@@ -51,59 +45,41 @@ public class CreateSantaUserCommand<TItem> : BaseCommand<TItem> where TItem : IR
 
         ModelContext.ChangeTracker.DetectChanges();
 
-        IdentityResult result = await _userManager.CreateAsync(globalUserDb, Item.Password);
+        IdentityResult result = await UserManager.CreateAsync(globalUserDb, Item.Password);
 
         if (result.Succeeded)
         {
-            await _userStore.SetUserNameAsync(globalUserDb, Item.UserName, CancellationToken.None);
+            await SetUserName(globalUserDb);
+            await StoreEmailAddress(globalUserDb);
 
-            if (!string.IsNullOrWhiteSpace(Item.Email))
-            {
-                await _emailStore.SetEmailAsync(globalUserDb, Item.Email, CancellationToken.None);
-            }
-
-            Success = true;
             Item.Password = "";
             await ModelContext.SaveChangesAsync();
+            Success = true;
             await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
         }
         else
         {
             foreach (var error in result.Errors)
             {
-                string description = error.Description;
-                
-                if (!string.IsNullOrWhiteSpace(Item.UserName))
-                {
-                    description = description.Replace(Item.UserName, originalUserName);
-                }
+                string message = error.Description;
 
-                if (!string.IsNullOrWhiteSpace(Item.Email))
+                message = ReplaceHashedDetails(message, originalUserName, originalEmail);
+
+                if (message.ToLower().Contains("username"))
                 {
-                    description = description.Replace(Item.Email, originalEmail);
+                    Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), message));
                 }
-                
-                if (error.Description.ToLower().Contains("username"))
+                else if (message.ToLower().Contains("email") || message.ToLower().Contains("e-mail"))
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), description));
+                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Email), message));
                 }
                 else
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), description));
+                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), message));
                 }
             }
         }
 
         return await Result();
-    }
-
-    private IUserEmailStore<IdentityUser> GetEmailStore()
-    {
-        if (!_userManager.SupportsUserEmail)
-        {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
-        }
-
-        return (IUserEmailStore<IdentityUser>)_userStore;
     }
 }

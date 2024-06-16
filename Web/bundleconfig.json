@@ -37,5 +37,16 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/Account/Manage/UpdateDetails/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Account/*"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
   }
 ]  

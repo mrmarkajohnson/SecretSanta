@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
@@ -41,15 +40,19 @@ public class SetSecurityQuestionsCommand<TItem> : BaseCommand<TItem> where TItem
                     await ModelContext.SaveChangesAsync();
                     Success = true;
                 }
+                else
+                {
+                    AddUserNotFoundError();
+                }
             }
             else
             {
-                Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
+                AddUserNotFoundError();
             }
         }
         else
         {
-            Validation.Errors.Add(new ValidationFailure(string.Empty, "User not found. Please log in again."));
+            AddUserNotFoundError();
         }
 
         return await Result();

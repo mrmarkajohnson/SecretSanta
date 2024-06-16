@@ -11,6 +11,12 @@
             <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li> *@
         <li class="nav-item">
+            <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Security Questions</a>
+        </li>
+        <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "", successMessage = "Logged Out Successfully" })">
                 <button type="submit" class="nav-link btn btn-link">Logout</button>
             </form>
