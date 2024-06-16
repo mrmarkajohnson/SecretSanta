@@ -18,7 +18,7 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
     public IdentityUserValidator()
     {
         RuleFor(x => x.UserName)
-            .NotNull().NotEmpty()
+            .NotNullOrEmpty()
             .When(x => string.IsNullOrWhiteSpace(x.Email))
             .WithMessage($"Please provide a Username if no E-mail Address is provided.");
 

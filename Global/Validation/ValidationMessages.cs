@@ -20,9 +20,10 @@ public static class ValidationMessages
     public const string ExactLengthError = "{0} must be {1} characters long.";
     public const string InclusiveBetweenError = "{0} must be between {1} and {2}.";
     public const string ExclusiveBetweenError = "{0} must be less than {1} and more than {2}.";
-    //public const string CreditCardError = "{0} is not a valid credit card number.";
+    public const string CreditCardError = "{0} is not a valid credit card number.";
     public const string NotInRangeError = "{0} has a range of values which does not include {1}.";
     public const string EmptyError = "{0} must be empty.";
+    public const string NotValidError = "{0} is not valid.";
 
     internal static readonly IList<ValidationMessageLink> MessageLinks =
     [
@@ -38,15 +39,15 @@ public static class ValidationMessages
         new ValidationMessageLink("NotEmptyValidator", typeof(RequiredAttribute), RequiredError),
         new ValidationMessageLink("NotEqualValidator", typeof(ValidationAttribute), NotEqualError, "ComparisonValue"),
         new ValidationMessageLink("NotNullValidator", typeof(RequiredAttribute), RequiredError),
-        //new ValidationMessageLink("PredicateValidator", typeof(ValidationAttribute), "The specified condition was not met for {0}."),
-        //new ValidationMessageLink("AsyncPredicateValidator", typeof(ValidationAttribute), "The specified condition was not met for {0}."),
-        //new ValidationMessageLink("RegularExpressionValidator", typeof(ValidationAttribute), "{0} is not in the correct format."),
+        new ValidationMessageLink("PredicateValidator", typeof(ValidationAttribute), NotValidError),
+        new ValidationMessageLink("AsyncPredicateValidator", typeof(ValidationAttribute), NotValidError),
+        new ValidationMessageLink("RegularExpressionValidator", typeof(ValidationAttribute), "{0} is not in the correct format."),
         new ValidationMessageLink("EqualValidator", typeof(ValidationAttribute), EqualError, "ComparisonValue"),
         new ValidationMessageLink("ExactLengthValidator", typeof(ValidationAttribute), ExactLengthError, "MaxLength"),
         new ValidationMessageLink("InclusiveBetweenValidator", typeof(ValidationAttribute), InclusiveBetweenError, "From", "To"),
         new ValidationMessageLink("ExclusiveBetweenValidator", typeof(ValidationAttribute), ExclusiveBetweenError, "From", "To"),
-        //new ValidationMessageLink("CreditCardValidator", typeof(CreditCardAttribute), CreditCardError),
-        //new ValidationMessageLink("ScalePrecisionValidator", typeof(ValidationAttribute), "{0} must not be more than {ExpectedPrecision} digits in total, with allowance for {ExpectedScale} decimals. {Digits} digits and {ActualScale} decimals were found."),
+        new ValidationMessageLink("CreditCardValidator", typeof(CreditCardAttribute), CreditCardError),
+        new ValidationMessageLink("ScalePrecisionValidator", typeof(ValidationAttribute), "{0} must not be more than {ExpectedPrecision} digits in total, with allowance for {ExpectedScale} decimals. {Digits} digits and {ActualScale} decimals were found."),
         new ValidationMessageLink("EmptyValidator", typeof(ValidationAttribute), EmptyError),
         new ValidationMessageLink("NullValidator", typeof(ValidationAttribute), EmptyError),
         new ValidationMessageLink("EnumValidator", typeof(RangeAttribute), NotInRangeError, "PropertyValue"),
@@ -55,7 +56,9 @@ public static class ValidationMessages
         new ValidationMessageLink("MinimumLength_Simple", typeof(MinLengthAttribute), MinLengthError, "MinLength"),
         new ValidationMessageLink("MaximumLength_Simple", typeof(MaxLengthAttribute), MaxLengthError, "MaxLength"),
         new ValidationMessageLink("ExactLength_Simple", typeof(ValidationAttribute), ExactLengthError, "MaxLength"),
-        new ValidationMessageLink("InclusiveBetween_Simple", typeof(ValidationAttribute), InclusiveBetweenError)
+        new ValidationMessageLink("InclusiveBetween_Simple", typeof(ValidationAttribute), InclusiveBetweenError),
+        // Custom validators
+        new ValidationMessageLink("NotNullOrEmptyValidator", typeof(ValidationAttribute), RequiredError)
     ];
 
     internal static List<ValidationMessageLink> AttributeMessageLinks = MessageLinks
