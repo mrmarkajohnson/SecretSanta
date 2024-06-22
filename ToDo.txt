@@ -10,9 +10,9 @@ Lock out after 5 login failures (or log out and lock after 5 incorrect passwords
 Add back buttons to relevant pages
 Use IIS?
 Use AutoMapper?
+On error, if user isn't logged in but needs to be, redirect to login or home page and pass in return URL
 
 SECURITY QUESTIONS
-Fix issue with list on Chrome
 Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)
 Require password before changing security questions if logged in for a while
 Lock out after 5 tries

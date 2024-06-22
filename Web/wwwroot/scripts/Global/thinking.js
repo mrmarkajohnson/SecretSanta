@@ -1,13 +1,5 @@
 let submitTimer = null;
 
-window.addEventListener('load', function () {
-    initThinking();
-});
-
-$(document).on('ajaxComplete', function () { // this is very difficult without JQuery
-    initThinking();
-});
-
 function initThinking() {
     let thinkingSection = document.querySelector('.thinking');
     clearThinkingElements(thinkingSection, null);

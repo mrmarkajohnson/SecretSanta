@@ -1,8 +1,4 @@
-﻿window.addEventListener('load', function () {
-    initSuccessMessage();
-});
-
-function initSuccessMessage() {
+﻿function initSuccessMessage() {
     let successMessageInput = document.getElementById('redirectSuccessMessage');
     if (notEmptyInput(successMessageInput)) {
         toastr.options = {

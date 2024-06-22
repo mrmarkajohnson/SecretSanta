@@ -1,9 +1,5 @@
 let hideTextClass = 'hide-text';
 
-window.addEventListener('load', function () {
-    initEyeSymbols();
-});
-
 function initEyeSymbols() {
     let eyeSymbols = document.querySelectorAll('.fa-eye');
     eyeSymbols.forEach(initEyeSymbol);
