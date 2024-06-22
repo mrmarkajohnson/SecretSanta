@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Validators;
-using System.Collections;
+using Global.Abstractions.Extensions;
 
 namespace Global.Validation.CustomValidators;
 
@@ -11,48 +11,29 @@ public class NotNullOrEmptyValidator<T, TProperty> : PropertyValidator<T, TPrope
 {
     public override string Name => "NotNullOrEmptyValidator";
 
-    public override bool IsValid(ValidationContext<T> context, TProperty value)
-    {
-        return IsValid(value);
-    }
-
-    public bool IsValid(TProperty value)
+    public override bool IsValid(ValidationContext<T> context, TProperty value)            
     {
         if (value == null || Equals(value, default(T)))
         {
             return false;
         }
 
-        if (value is string s && string.IsNullOrWhiteSpace(s))
+        Type originalType = typeof(T);
+        Type nonNullableType = Nullable.GetUnderlyingType(originalType) ?? originalType;
+
+        if (nonNullableType != originalType) 
         {
-            return false;
+            if (Equals(value, nonNullableType.GetDefault()))
+            {
+                return false;
+            }             
         }
 
-        if (value is ICollection col && col.Count == 0)
-        {
-            return false;
-        }
-
-        if (value is IEnumerable e && IsEmpty(e))
-        {
-            return false;
-        }
-
-        return !EqualityComparer<TProperty>.Default.Equals(value, default);
+        return new NotEmptyValidator<T, TProperty>().IsValid(context, value);
     }
 
     protected override string GetDefaultMessageTemplate(string errorCode)
     {
         return Localized(errorCode, Name);
-    }
-
-    private static bool IsEmpty(IEnumerable enumerable)
-    {
-        var enumerator = enumerable.GetEnumerator();
-
-        using (enumerator as IDisposable)
-        {
-            return !enumerator.MoveNext();
-        }
     }
 }

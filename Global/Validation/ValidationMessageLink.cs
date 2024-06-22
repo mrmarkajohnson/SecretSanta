@@ -17,4 +17,9 @@ internal class ValidationMessageLink
     public string ErrorMessage { get; set; }
     public string Property1 { get; set; }
     public string Property2 { get; set; }
+
+    public string ConvertMessageForFluentValidation()
+    {
+        return ErrorMessage.Replace("{0}", "{PropertyName}").Replace("{1}", $"{{{Property1}}}").Replace("{2}", $"{{{Property2}}}");
+    }
 }

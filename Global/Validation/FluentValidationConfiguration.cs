@@ -54,7 +54,7 @@ public static class FluentValidationConfiguration
         {
             foreach (var link in ValidationMessages.MessageLinks)
             {
-                string errorMessage = link.ErrorMessage.Replace("{0}", "{PropertyName}").Replace("{1}", $"{{{link.Property1}}}").Replace("{2}", $"{{{link.Property2}}}");
+                string errorMessage = link.ConvertMessageForFluentValidation();
                 AddEnglishTranslation(link.FluentValidatorName, errorMessage);
             }
         }
