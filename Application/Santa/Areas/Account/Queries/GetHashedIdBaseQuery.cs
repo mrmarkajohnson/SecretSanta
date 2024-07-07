@@ -2,7 +2,7 @@
 
 namespace Application.Santa.Areas.Account.Queries;
 
-public class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, new()
+internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, new()
 {
     protected IIdentityUser User { get; set; }
 
@@ -30,7 +30,7 @@ public class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, new(
         if (result is HashedUserIdWithGreeting greetingResult)
         {
             greetingResult.GreetingHash = User.IdentificationHashed ? User.Greeting
-                : EncryptionHelper.TwoWayEncrypt(User.Greeting, false);
+                : EncryptionHelper.TwoWayEncrypt(User.Greeting, false, User.Id);
         }
 
         return result;

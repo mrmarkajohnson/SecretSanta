@@ -2,7 +2,7 @@
 
 namespace ViewLayer.Models.Account;
 
-public class LoginVm : BaseFormVm, IForm
+public class LoginVm : BaseFormVm, ILogin, IForm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

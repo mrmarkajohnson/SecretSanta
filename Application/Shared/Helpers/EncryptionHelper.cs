@@ -5,11 +5,15 @@ using System.Text;
 
 namespace Application.Shared.Helpers;
 
-public static class EncryptionHelper
+internal static class EncryptionHelper
 {
     private const int _bitLength = 256;
     private const int _saltKeySize = 64;
     private const int _iterations = 350000;
+
+    private static string? _symmetricKey;
+    private static byte[]? _symmetricKeyBytes;
+
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
     public static string OneWayEncrypt(string? value, IIdentityUser user)
@@ -38,7 +42,7 @@ public static class EncryptionHelper
         }
     }
 
-    public static string TwoWayEncrypt(string? value, bool alphanumericOnly)
+    public static string TwoWayEncrypt(string? value, bool alphanumericOnly, string? saltKey = null)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -50,7 +54,7 @@ public static class EncryptionHelper
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = GetSymmetricKeyBytes();
+                aes.Key = GetSymmetricKeyBytes(saltKey);
                 aes.IV = new byte[16];
                 //aes.Padding = PaddingMode.Zeros;
 
@@ -81,7 +85,7 @@ public static class EncryptionHelper
         }
     }
 
-    public static string Decrypt(string? _hashedString, bool alphanumericOnly)
+    public static string Decrypt(string? _hashedString, bool alphanumericOnly, string? saltKey = null)
     {
         if (string.IsNullOrEmpty(_hashedString))
         {
@@ -96,7 +100,7 @@ public static class EncryptionHelper
 
                 using (Aes aes = Aes.Create())
                 {
-                    aes.Key = GetSymmetricKeyBytes();
+                    aes.Key = GetSymmetricKeyBytes(saltKey);
                     aes.IV = new byte[16];
                     //aes.Padding = PaddingMode.Zeros;
 
@@ -124,25 +128,42 @@ public static class EncryptionHelper
 
     private static string GetSymmetricEncryptionKey()
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .AddUserSecrets(Assembly.GetExecutingAssembly())
-            .Build();
-
-        string? key = configuration["EncryptionSettings:SymmetricKeyEnd"];
-        if (key == null)
+        if (string.IsNullOrWhiteSpace(_symmetricKey))
         {
-            throw new ArgumentException("No symmetric key has been created by the system administrator.");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .Build();
+
+            string? key = configuration["EncryptionSettings:SymmetricKeyEnd"];
+            if (key == null)
+            {
+                throw new ArgumentException("No symmetric key has been created by the system administrator.");
+            }
+
+            _symmetricKey = IdentitySettings.SymmetricKeyStart + key; // the prefix means anyone who finds the secrets file still can't use it directly
         }
 
-        return IdentitySettings.SymmetricKeyStart + key; // the prefix means anyone who finds the secrets file still can't use it directly
+        return _symmetricKey;
     }
 
-    private static byte[] GetSymmetricKeyBytes()
+    private static byte[] GetSymmetricKeyBytes(string? saltKey = null)
     {
-        string key = GetSymmetricEncryptionKey();
-        return StringToByteArray(key, _bitLength / 8); // 8 bits per byte, so divide by 8 for byte length
+        if (!string.IsNullOrWhiteSpace(saltKey))
+        {
+            string key = GetSymmetricEncryptionKey();
+            string saltedKey = OneWayEncrypt(key, saltKey);
+            return StringToByteArray(saltedKey, _bitLength / 8); // 8 bits per byte, so divide by 8 for byte length
+        }
+
+        if (_symmetricKeyBytes == null)
+        {
+            string key = GetSymmetricEncryptionKey();
+            _symmetricKeyBytes = StringToByteArray(key, _bitLength / 8); // 8 bits per byte, so divide by 8 for byte length
+        }
+
+        return _symmetricKeyBytes;
     }
 
     private static byte[] GetSaltKeyBytes(string saltKey)

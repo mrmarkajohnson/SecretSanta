@@ -3,7 +3,7 @@ using Global.Abstractions.Extensions;
 
 namespace Application.Santa.Areas.Account.Queries;
 
-public class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGreeting>
+internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGreeting>
 {
     private readonly IIdentityUser _user;
 
@@ -22,7 +22,7 @@ public class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGreeti
             : _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.UserName, true)
             : _user.UserName;
 
-        string greeting = _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.Greeting, false) : 
+        string greeting = _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.Greeting, false, _user.Id) : 
             _user.Greeting;
 
         return Task.FromResult(new UnHashedUserIdWithGreeting

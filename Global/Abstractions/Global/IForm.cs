@@ -2,7 +2,7 @@
 
 public interface IForm : IPage
 {
-    string? ReturnUrl { get;}
-    string SubmitButtonText { get; }
-    string SubmitButtonIcon { get; }
+    string? ReturnUrl { get; set; }
+    string SubmitButtonText { get; set; }
+    string SubmitButtonIcon { get; set; }
 }

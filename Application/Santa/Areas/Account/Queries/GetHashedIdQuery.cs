@@ -3,7 +3,7 @@ using Application.Shared.Identity;
 
 namespace Application.Santa.Areas.Account.Queries;
 
-public class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
+internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
 {
     public GetHashedIdQuery(string userNameOrEmail, bool hashed) : base(new CoreIdentityUser())
     {

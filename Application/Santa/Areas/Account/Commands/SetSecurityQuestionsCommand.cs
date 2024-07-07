@@ -36,7 +36,7 @@ public class SetSecurityQuestionsCommand<TItem> : BaseCommand<TItem> where TItem
                     globalUserDb.SecurityQuestion2 = Item.SecurityQuestion2;
                     globalUserDb.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? "", globalUserDb);
                     globalUserDb.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
-                    globalUserDb.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false);
+                    globalUserDb.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, globalUserDb.Id);
 
                     await ModelContext.SaveChangesAsync();
                     Success = true;

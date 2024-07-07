@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public class ForgotPasswordVm : ISecurityQuestions, IChangePassword, IForm
+public class ForgotPasswordVm : IForgotPassword, IForm
 {
     public string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
@@ -40,6 +40,7 @@ public class ForgotPasswordVm : ISecurityQuestions, IChangePassword, IForm
     public string SubmitButtonIcon { get; set; } = "fa-paper-plane";
 
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
+    public bool PasswordResetSuccessfully { get; set; }
 }
 
 public class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>

@@ -2,7 +2,7 @@
 
 namespace Application.Santa.Areas.Account.Queries;
 
-public class GetHashedIdWithGreetingQuery : GetHashedIdBaseQuery<HashedUserIdWithGreeting>
+internal class GetHashedIdWithGreetingQuery : GetHashedIdBaseQuery<HashedUserIdWithGreeting>
 {
     public GetHashedIdWithGreetingQuery(IIdentityUser user) : base(user)
     {
