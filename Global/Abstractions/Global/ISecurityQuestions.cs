@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Global.Settings;
 using Global.Validation;
 
 namespace Global.Abstractions.Global;
@@ -22,6 +23,8 @@ public class SecurityQuestionsValidator<TItem> : AbstractValidator<TItem> where 
 {
     public SecurityQuestionsValidator()
     {
+        RuleFor(x => x.Greeting).Must(x => Greetings.Messages.Any(y => Equals(y, x))).WithMessage("Greeting not found. Please click 'Change' to select another.");
+        
         RuleFor(x => x.SecurityQuestion1).NotNull().NotEmpty().Length(UserVal.SecurityQuestions.MinLength, UserVal.SecurityQuestions.MaxLength);
         RuleFor(x => x.SecurityAnswer1).NotNull().NotEmpty().Length(UserVal.SecurityAnswers.MinLength, UserVal.SecurityAnswers.MaxLength);
         RuleFor(x => x.SecurityHint1).MaximumLength(UserVal.SecurityHints.MaxLength);

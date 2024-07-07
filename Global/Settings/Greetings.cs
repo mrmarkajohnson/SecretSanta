@@ -4,7 +4,7 @@ public static class Greetings
 {
     public static readonly IList<string> Messages =
     [
-        "Merry Christmas, one and all!",
+        "Merry Christmas, one and all",
         "Season's greetings",
         "Joyeux noel",
         "Feliz navidad",
@@ -24,8 +24,8 @@ public static class Greetings
         "Glad tidings of comfort and joy",
         "Deck the halls",
         "Joy to the world",
-        "Walking in a winter wonderland",
-        "Bah, humbug!",
+        "Were' walking in a winter wonderland",
+        "Bah, humbug",
         "All I want for Christmas is you",
         "Happy birthday, Jesus",
         "Comfort and joy",
@@ -35,7 +35,7 @@ public static class Greetings
         "Harness the reindeer",
         "There's snow place like home",
         "Christmas jumpers on",
-        "Merry Christmas, ya filthy animals!",
+        "Merry Christmas, ya filthy animals",
         "Let's make a snowman",
         "Let's get crackers",
         "Light the candles",
