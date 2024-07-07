@@ -17,6 +17,8 @@ Add more security to password resets, e.g. using e-mails (could make e-mail mand
 Require password before changing security questions if logged in for a while
 Lock out after 5 tries
 Add a Christmas-themed greeting from a list that always appears when logged in
+Go straight to security questions after registering, using text from home page
+Handle 'forgot password' if security questions not yet set
 
 EMAILS
 Enable e-mail functionality

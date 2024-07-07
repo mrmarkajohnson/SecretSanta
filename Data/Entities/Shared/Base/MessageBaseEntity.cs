@@ -1,4 +1,6 @@
-﻿namespace Data.Entities.Shared.Base;
+﻿using static Global.Settings.MessageSettings;
+
+namespace Data.Entities.Shared.Base;
 
 public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessage
 {

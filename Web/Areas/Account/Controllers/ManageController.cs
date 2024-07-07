@@ -1,6 +1,8 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
+using Global.Abstractions.Extensions;
 using Global.Abstractions.Global;
+using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
@@ -29,6 +31,7 @@ public class ManageController : BaseController
             Surname = "",
             Password = "",
             ConfirmPassword = "",
+            Greeting = ""
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
         };
 
@@ -67,23 +70,40 @@ public class ManageController : BaseController
     {
         if (SignInManager.IsSignedIn(User))
         {
-            var model = new SetSecurityQuestionsVm();
+            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));            
+            string? currentGreeting = currentSecurityQuestions?.Greeting;
 
-            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));
-
-            if (currentSecurityQuestions?.SecurityQuestionsSet == true)
+            if (string.IsNullOrWhiteSpace(currentGreeting))
             {
-                model = new SetSecurityQuestionsVm
-                {
-                    SecurityQuestion1 = currentSecurityQuestions.SecurityQuestion1,
-                    SecurityAnswer1 = null,
-                    SecurityHint1 = currentSecurityQuestions.SecurityHint1,
-                    SecurityQuestion2 = currentSecurityQuestions.SecurityQuestion2,
-                    SecurityAnswer2 = null,
-                    SecurityHint2 = currentSecurityQuestions.SecurityHint2,
-                    Update = update
-                };
+                var user = await GetCurrentUser(true);
+                currentGreeting = user?.Greeting;
             }
+
+            List<string> greetings = new();
+
+            if (string.IsNullOrWhiteSpace(currentGreeting)) // just in case
+            {
+                greetings = Greetings.Messages.GetNFromList(3);
+                currentGreeting = greetings[0];
+            }
+            else
+            {
+                greetings.Add(currentGreeting);
+                greetings.AddRange(Greetings.Messages.Where(x => x != currentGreeting).ToList().GetNFromList(2)); // add 2 others to choose from
+            }
+
+            var model = new SetSecurityQuestionsVm
+            {
+                SecurityQuestion1 = currentSecurityQuestions?.SecurityQuestion1,
+                SecurityAnswer1 = null,
+                SecurityHint1 = currentSecurityQuestions?.SecurityHint1,
+                SecurityQuestion2 = currentSecurityQuestions?.SecurityQuestion2,
+                SecurityAnswer2 = null,
+                SecurityHint2 = currentSecurityQuestions?.SecurityHint2,
+                Update = update && currentSecurityQuestions?.SecurityQuestionsSet == true,
+                Greetings = greetings,
+                Greeting = currentGreeting
+            };
 
             return View(model);
         }
@@ -133,6 +153,7 @@ public class ManageController : BaseController
                 Forename = currentUser.Forename,
                 MiddleNames = currentUser.MiddleNames,
                 Surname = currentUser.Surname,
+                Greeting = "", // not needed
                 ReturnUrl = returnUrl ?? Url.Content("~/")
             };
 

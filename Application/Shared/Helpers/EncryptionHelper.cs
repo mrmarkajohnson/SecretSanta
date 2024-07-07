@@ -1,5 +1,4 @@
-﻿using Global;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,6 +52,7 @@ public static class EncryptionHelper
             {
                 aes.Key = GetSymmetricKeyBytes();
                 aes.IV = new byte[16];
+                //aes.Padding = PaddingMode.Zeros;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -89,26 +89,35 @@ public static class EncryptionHelper
         }
         else
         {
-            byte[] buffer = alphanumericOnly ? Convert.FromHexString(_hashedString)
-            : Convert.FromBase64String(_hashedString);
-
-            using (Aes aes = Aes.Create())
+            try
             {
-                aes.Key = GetSymmetricKeyBytes();
-                aes.IV = new byte[16];
-                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                byte[] buffer = alphanumericOnly ? Convert.FromHexString(_hashedString)
+                : Convert.FromBase64String(_hashedString);
 
-                using (MemoryStream memoryStream = new MemoryStream(buffer))
+                using (Aes aes = Aes.Create())
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                    aes.Key = GetSymmetricKeyBytes();
+                    aes.IV = new byte[16];
+                    //aes.Padding = PaddingMode.Zeros;
+
+                    ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                    using (MemoryStream memoryStream = new MemoryStream(buffer))
                     {
-                        using (StreamReader streamReader = new StreamReader(cryptoStream))
+                        using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                         {
-                            string returnString = streamReader.ReadToEnd();
-                            return returnString;
+                            using (StreamReader streamReader = new StreamReader(cryptoStream))
+                            {
+                                string returnString = streamReader.ReadToEnd();
+                                return returnString;
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+                return _hashedString ?? "";
             }
         }
     }
@@ -127,7 +136,7 @@ public static class EncryptionHelper
             throw new ArgumentException("No symmetric key has been created by the system administrator.");
         }
 
-        return Settings.SymmetricKeyStart + key; // the prefix means anyone who finds the secrets file still can't use it directly
+        return IdentitySettings.SymmetricKeyStart + key; // the prefix means anyone who finds the secrets file still can't use it directly
     }
 
     private static byte[] GetSymmetricKeyBytes()

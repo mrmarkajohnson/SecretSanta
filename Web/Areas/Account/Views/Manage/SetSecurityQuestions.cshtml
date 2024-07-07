@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Set Security Questions";
     string hintExplanation = "Add a short hint if you might think of more than one answer, or write it differently - but keep it cryptic so only you'll know!";
+    string greetingExplanation = "This is the greeting shown when you log in. You can change the greeting if you don't like it.";
 }
 
 <div class="text-center">
@@ -25,12 +26,35 @@
             <div class="row d-flex align-items-center justify-content-center text-center">
                 <div class="mb-5 mt-2">
                     
-                    <p>These questions will be used to identity you if you forget your password in the future.</p>
+                    <p>These will be used to identity you if you forget your password in the future.</p>
                     <p>Please enter two questions, or select from the existing lists. Choose answers that you'll remember, but others won't know.</p>
-                    <p>To protect your security and privacy, answers and hints are scrambled immediately in the database.</p>
+                    <p>To protect your security and privacy answers and hints, and your greeting, are scrambled immediately in the database.</p>
                     <br />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <div class="collapse">
+                        @for (int i = 0; i < Model.Greetings.Count; i++)
+                        {
+                            <input type="hidden" asp-for="Greetings[i]" class="form-control greeting-option" aria-required="true" readonly="true" autocomplete="off" />
+                        }
+                        <input type="hidden" asp-for="Greeting" class="greeting-text" />
+                    </div>
+
+                    <h2>Your Greeting</h2>
+                    <div class="col-md-12">
+                        <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                            <label asp-for="Greeting" class="control-label w-100 d-flex align-items-center justify-content-between">
+                                @Html.DisplayNameFor(m => m.Greeting)
+                                <label class="fw-normal greeting-text">@Model.Greeting</label>
+                                <a href="#" class="btn btn-sm btn-primary change-greeting" onClick="changeGreeting()"><i class="fa fa-dice"></i> &nbsp; <span class="btn-text">Change</span></a>
+                                <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@greetingExplanation">
+                                    <i class="fa fa-circle-question fa-border"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br />
 
                     <h2>Question 1</h2>
                     <div class="col-md-12">

@@ -1,4 +1,6 @@
-﻿namespace Data.Abstractions;
+﻿using static Global.Settings.MessageSettings;
+
+namespace Data.Abstractions;
 
 public interface IMessage : IArchivableEntity
 {

@@ -1,6 +1,6 @@
-﻿namespace Global;
+﻿namespace Global.Settings;
 
-public static class Settings
+public static class MessageSettings
 {
     public enum MessageRecipientType
     {
@@ -19,16 +19,12 @@ public static class Settings
 
     public static List<MessageRecipientType> OriginalOnlyRecipientTypes = new List<MessageRecipientType>
     {
-        MessageRecipientType.GiftRecipient, MessageRecipientType.Gifter, MessageRecipientType.YearGroupCurrentMembers, 
+        MessageRecipientType.GiftRecipient, MessageRecipientType.Gifter, MessageRecipientType.YearGroupCurrentMembers,
         MessageRecipientType.YearGroupAllMembers, MessageRecipientType.GroupAllCurrentMembers, MessageRecipientType.GroupAllEverMembers
     };
 
     public static List<MessageRecipientType> ReplyOnlyRecipientTypes = new List<MessageRecipientType>
-    { 
+    {
         MessageRecipientType.OriginalSender, MessageRecipientType.OriginalCurrentRecipients, MessageRecipientType.OriginalAllEverRecipients
     };
-
-    public const string SymmetricKeyStart = "kj*8%u803wq&*&^*sdf&w4w4eq9"; // DO NOT change this once used!
-
-    public const string StandardEmailEnd = "@secretsanta.com";
 }

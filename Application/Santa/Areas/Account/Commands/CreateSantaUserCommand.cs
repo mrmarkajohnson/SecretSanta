@@ -2,7 +2,9 @@
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using FluentValidation.Results;
+using Global.Abstractions.Extensions;
 using Global.Abstractions.Santa.Areas.Account;
+using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
@@ -24,6 +26,8 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
         string? originalUserName = Item.UserName;
         string? originalEmail = Item.Email;
 
+        Item.Greeting = Greetings.Messages.Get1FromList();
+
         await Send(new HashUserIdentificationAction(Item));
 
         var globalUserDb = new Global_User
@@ -33,6 +37,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
             Surname = Item.Surname,
             Email = Item.Email,
             UserName = Item.UserName,
+            Greeting = Item.Greeting
         };
 
         var santaUserDb = new Santa_User

@@ -8,8 +8,10 @@
     ViewData["Title"] = "Home Page";
     bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
 
-    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? "" : " back ") + " to Secret Santa"
-        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? "!" : $", {Model.CurrentUser?.Forename}!");
+    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? "" : " back") 
+        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? " to Secret Santa" : "") // avoid making the string too long
+        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? "" : $", {Model.CurrentUser.Forename}")
+        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? "!" : $". {Model.CurrentUser.Greeting}!");
 }
 
 <partial name="_SuccessMessage" />

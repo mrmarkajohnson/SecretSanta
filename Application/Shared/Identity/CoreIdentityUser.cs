@@ -17,5 +17,7 @@ public class CoreIdentityUser : IIdentityUser
 
     //public string? PhoneNumber { get; set; }
 
+    public string Greeting { get; set; } = "";
+
     public bool IdentificationHashed { get; set; }
 }

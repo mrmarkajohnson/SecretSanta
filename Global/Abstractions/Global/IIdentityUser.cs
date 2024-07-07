@@ -9,6 +9,7 @@ public interface IIdentityUser
 
     string? UserName { get; set; }
     string? Email { get; set; }
+    string Greeting { get; set; }
 
     bool IdentificationHashed { get; set; }
 }

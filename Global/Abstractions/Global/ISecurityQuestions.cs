@@ -13,6 +13,8 @@ public interface ISecurityQuestions
     string? SecurityAnswer2 { get; set; }
     string? SecurityHint2 { get; set; }
 
+    string Greeting { get; set; }
+
     bool SecurityQuestionsSet { get; }
 }
 

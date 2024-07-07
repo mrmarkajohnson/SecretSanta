@@ -27,5 +27,8 @@ public class SecurityQuestions : ISecurityQuestions
     [Display(Name = "Hint"), MaxLength(UserVal.SecurityHints.MaxLength)]
     public string? SecurityHint2 { get; set; }
 
+    [Display(Name = "Greeting")]
+    public required string Greeting { get; set; }
+
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
 }

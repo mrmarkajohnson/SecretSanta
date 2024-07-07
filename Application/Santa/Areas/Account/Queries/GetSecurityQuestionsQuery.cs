@@ -54,7 +54,8 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
                 SecurityHint1 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint1, false),
                 SecurityQuestion2 = globalUserDb.SecurityQuestion2,
                 SecurityAnswer2 = globalUserDb.SecurityAnswer2,
-                SecurityHint2 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint2, false)
+                SecurityHint2 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint2, false),
+                Greeting = "" // EncryptionHelper.Decrypt(globalUserDb.Greeting, false)
             };
         }
 

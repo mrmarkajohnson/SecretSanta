@@ -53,7 +53,7 @@ public class HomeController : BaseController
             //This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-            HashedUserId hashedId = await Send(new GetHashedIdentificationQuery(model.EmailOrUserName, false));
+            HashedUserId hashedId = await Send(new GetHashedIdQuery(model.EmailOrUserName, false));
 
             var result = await SignInManager.PasswordSignInAsync(hashedId.UserNameHash, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
@@ -115,14 +115,15 @@ public class HomeController : BaseController
 
         if (validates)
         {
-            if (string.IsNullOrWhiteSpace(model.EmailOrUserName) || string.IsNullOrWhiteSpace(model.Forename))
+            if (string.IsNullOrWhiteSpace(model.EmailOrUserName) || string.IsNullOrWhiteSpace(model.Forename) || string.IsNullOrWhiteSpace(model.Greeting))
             {
                 SetDetailsNotRecognisedError(model);
             }
             else
             {
+                string hashedGreeting = EncryptionHelper.TwoWayEncrypt(model.Greeting, false);
                 ISantaUser? user = await Send(new GetUserQuery(model.EmailOrUserName, false, model.Forename, false));
-                if (user == null || user.UserName == null)
+                if (user == null || user.UserName == null || user.Greeting != hashedGreeting)
                 {
                     SetDetailsNotRecognisedError(model);
                 }

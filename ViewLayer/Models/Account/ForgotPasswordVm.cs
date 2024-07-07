@@ -16,6 +16,9 @@ public class ForgotPasswordVm : ISecurityQuestions, IChangePassword, IForm
     public string? SecurityAnswer2 { get; set; }
     public string? SecurityHint2 { get; set; }
 
+    [Display(Name = "Greeting")]
+    public string Greeting { get; set; } = "";
+
     [Display(Name = "E-mail or Username")]
     public required string EmailOrUserName { get; set; }
 

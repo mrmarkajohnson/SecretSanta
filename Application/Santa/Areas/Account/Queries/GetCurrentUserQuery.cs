@@ -42,6 +42,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
                         Forename = globalUserDb.Forename,
                         MiddleNames = globalUserDb.MiddleNames,
                         Surname = globalUserDb.Surname,
+                        Greeting = globalUserDb.Greeting,
                         SecurityQuestionsSet = globalUserDb.SecurityQuestionsSet,
                         IdentificationHashed = true
                     };

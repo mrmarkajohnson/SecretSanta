@@ -44,6 +44,8 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [MaxLength(UserVal.SecurityHints.MaxLength)]
     public string? SecurityHint2 { get; set; }
 
+    public required string Greeting { get; set; }
+
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
 
     [NotMapped]

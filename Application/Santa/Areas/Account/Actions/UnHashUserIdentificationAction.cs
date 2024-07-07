@@ -16,10 +16,11 @@ internal class UnHashUserIdentificationAction : BaseAction<IIdentityUser>
     {
         if (_identityUser.IdentificationHashed)
         {
-            UnHashedUserId unHashedId = await Send(new GetUnHashedIdentificationQuery(_identityUser));
+            UnHashedUserIdWithGreeting unHashedId = await Send(new GetUnHashedIdentificationQuery(_identityUser));
 
             _identityUser.UserName = unHashedId.UserName;
             _identityUser.Email = unHashedId.Email;
+            _identityUser.Greeting = unHashedId.Greeting;
             _identityUser.IdentificationHashed = false;
         }
 

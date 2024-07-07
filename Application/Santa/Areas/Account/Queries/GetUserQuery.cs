@@ -25,7 +25,7 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
 
         if (!string.IsNullOrWhiteSpace(_userNameOrEmail) && !string.IsNullOrWhiteSpace(_foreName))
         {           
-            HashedUserId hashedId = await Send(new GetHashedIdentificationQuery(_userNameOrEmail, _userNamehashed));
+            HashedUserId hashedId = await Send(new GetHashedIdQuery(_userNameOrEmail, _userNamehashed));
 
             bool isEmail = EmailHelper.IsEmail(_userNameOrEmail);
 
@@ -43,6 +43,7 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
                     Forename = globalUserDb.Forename,
                     MiddleNames = globalUserDb.MiddleNames,
                     Surname = globalUserDb.Surname,
+                    Greeting = globalUserDb.Greeting,
                     SecurityQuestionsSet = globalUserDb.SecurityQuestionsSet,
                     IdentificationHashed = true
                 };
