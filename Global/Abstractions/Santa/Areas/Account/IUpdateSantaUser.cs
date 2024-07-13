@@ -1,8 +1,9 @@
-﻿namespace Global.Abstractions.Santa.Areas.Account;
+﻿using Global.Abstractions.Global.Account;
 
-public interface IUpdateSantaUser : ISantaUser
+namespace Global.Abstractions.Santa.Areas.Account;
+
+public interface IUpdateSantaUser : ISantaUser, IConfirmCurrentPassword
 {
-    string Password { get; set; }
 }
 
 

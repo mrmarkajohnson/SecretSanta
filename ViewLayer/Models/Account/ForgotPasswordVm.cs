@@ -1,20 +1,22 @@
 ﻿using FluentValidation;
-using Global.Validation;
+using Global.Abstractions.Global.Account;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public class ForgotPasswordVm : IForgotPassword, IForm
+public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
 {
-    public string? ReturnUrl { get; set; }
-    public string? SuccessMessage { get; set; }
-
     public string? SecurityQuestion1 { get; set; }
-    public string? SecurityAnswer1 { get; set; }
     public string? SecurityHint1 { get; set; }
+
+    [Required, Display(Name = "Answer 1")]
+    public string? SecurityAnswer1 { get; set; }
+    
     public string? SecurityQuestion2 { get; set; }
-    public string? SecurityAnswer2 { get; set; }
     public string? SecurityHint2 { get; set; }
+
+    [Required, Display(Name = "Answer 2")]
+    public string? SecurityAnswer2 { get; set; }
 
     [Display(Name = "Greeting")]
     public string Greeting { get; set; } = "";
@@ -25,19 +27,12 @@ public class ForgotPasswordVm : IForgotPassword, IForm
     [Display(Name = "First Name")]
     public required string Forename { get; set; }
 
-    [Display(Name = "Password"), DataType(DataType.Password), StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
-    public required string Password { get; set; }
-
-    [Display(Name = "Confirm password"), DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
-    public required string ConfirmPassword { get; set; }
-
     public bool ShowBasicDetails { get; set; }
     public bool ShowSecurityQuestions { get; set; }
     public bool ResetPassword { get; set; }
 
-    public string SubmitButtonText { get; set; } = "Submit";
-    public string SubmitButtonIcon { get; set; } = "fa-paper-plane";
+    public override string SubmitButtonText { get; set; } = "Submit";
+    public override string SubmitButtonIcon { get; set; } = "fa-paper-plane";
 
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
     public bool PasswordResetSuccessfully { get; set; }
@@ -56,7 +51,6 @@ public class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>
         When(x => x.ResetPassword, () =>
         {
             Include(new SetPasswordValidator<ForgotPasswordVm>());
-        });
-        
+        });        
     }
 }

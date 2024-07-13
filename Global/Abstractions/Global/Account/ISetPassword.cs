@@ -2,13 +2,15 @@
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Global.Account;
 
 public interface ISetPassword
 {
     [DataType(DataType.Password)]
     string Password { get; set; }
 
+    [Display(Name = "Confirm Password"), DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
     string ConfirmPassword { get; set; }
 }
 

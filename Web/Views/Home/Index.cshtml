@@ -44,6 +44,11 @@
                         Update Your Security Questions
                     </a>
                 </p>
+                <p>
+                    <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-update="@true" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                        Change Your Password
+                    </a>
+                </p>
             }
         </div>
     }

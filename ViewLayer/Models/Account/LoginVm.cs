@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Global.Abstractions.Global.Account;
 
 namespace ViewLayer.Models.Account;
 

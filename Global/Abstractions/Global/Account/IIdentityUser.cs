@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Global.Validation;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Global.Account;
 
 public interface IIdentityUser
 {

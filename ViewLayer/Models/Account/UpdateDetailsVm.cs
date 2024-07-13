@@ -10,11 +10,13 @@ public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IForm
     public string? SuccessMessage { get; set; }
 
     [Required]
-    [DataType(DataType.Password)]
-    public required string Password { get; set; }
+    [Display(Name = "Password"), DataType(DataType.Password)]
+    public required string CurrentPassword { get; set; }
 
     public string SubmitButtonText { get; set; } = "Update";
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
+
+    public string CurrentPasswordLabel => "Password";
 }
 
 public class UpdateDetailsVmValidator : SantaUserValidator<UpdateDetailsVm>

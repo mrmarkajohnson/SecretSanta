@@ -1,7 +1,7 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Extensions;
-using Global.Abstractions.Global;
+using Global.Abstractions.Global.Account;
 using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -148,7 +148,7 @@ public class ManageController : BaseController
             {
                 Id = currentUser.Id,
                 UserName = currentUser.UserName,
-                Password = "",
+                CurrentPassword = "",
                 Email = currentUser.Email,
                 Forename = currentUser.Forename,
                 MiddleNames = currentUser.MiddleNames,
@@ -174,6 +174,53 @@ public class ManageController : BaseController
         {
             var commandResult = await Send(new UpdateAccountDetailsCommand<UpdateDetailsVm>(model, User, UserManager, _userStore, SignInManager),
                 new UpdateDetailsVmValidator());
+
+            if (commandResult.Success)
+            {
+                return RedirectWithMessage(model, "Details Updated Successfully");
+            }
+        }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ChangePassword(string? returnUrl = null)
+    {
+        if (SignInManager.IsSignedIn(User))
+        {
+            var currentUser = await GetCurrentUser(true);
+
+            if (currentUser == null)
+            {
+                return Redirect(Url.Action("Error"));
+            }
+
+            var model = new ChangePasswordVm
+            {
+                CurrentPassword = "",
+                Password = "",
+                ConfirmPassword = "",
+                ReturnUrl = returnUrl ?? Url.Content("~/")
+            };
+
+            return View(model);
+        }
+        else
+        {
+            return Redirect(Url.Action("Error"));
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordVm model)
+    {
+        model.ReturnUrl ??= Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            var commandResult = await Send(new ChangePasswordCommand<ChangePasswordVm>(model, User, UserManager, SignInManager),
+                new ChangePasswordVmValidator());
 
             if (commandResult.Success)
             {

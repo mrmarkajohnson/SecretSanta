@@ -1,4 +1,5 @@
 ﻿using Application.Shared.Identity;
+using Global.Abstractions.Global.Account;
 
 namespace ViewLayer.Models.Account;
 

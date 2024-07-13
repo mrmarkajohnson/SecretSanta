@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Global.Abstractions.Global.Account;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;

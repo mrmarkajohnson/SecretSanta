@@ -1,4 +1,5 @@
 ﻿using Application.Santa.Areas.Account.Queries;
+using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 
@@ -75,7 +76,7 @@ public class ForgotPasswordCommand<TItem> : BaseCommand<TItem> where TItem : IFo
                         }
                         else
                         {
-                            var commandResult = await Send(new ChangePasswordCommand<TItem>(Item, user, _userManager, _signInManager), null);
+                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user, _userManager, _signInManager), null);
 
                             if (commandResult.Success)
                             {

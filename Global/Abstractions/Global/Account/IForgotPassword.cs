@@ -1,6 +1,6 @@
-﻿namespace Global.Abstractions.Global;
+﻿namespace Global.Abstractions.Global.Account;
 
-public interface IForgotPassword : ISecurityQuestions, IChangePassword, IForm
+public interface IForgotPassword : ISecurityQuestions, IResetPassword, IForm
 {
     string Forename { get; set; }
 

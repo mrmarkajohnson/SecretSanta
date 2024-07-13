@@ -1,55 +1,79 @@
 ﻿using FluentValidation.Results;
-using Global.Abstractions.Santa.Areas.Account;
+using Global.Abstractions.Global.Account;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class ChangePasswordCommand<TItem> : BaseCommand<TItem> where TItem : IChangePassword
+public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IChangePassword
 {
-    private readonly ISantaUser _user;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly ClaimsPrincipal _user;
 
     public ChangePasswordCommand(TItem item,
-        ISantaUser user,
+        ClaimsPrincipal user,
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item)
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
     {
         _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == _user.Id);
-
-        if (globalUserDb != null && !string.IsNullOrWhiteSpace(Item.Password))
+        if (SignInManager.IsSignedIn(_user))
         {
-            string token = await _userManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
-
-            var resetUser = await _userManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
-            if (resetUser != null)
+            string? userId = UserManager.GetUserId(_user);
+            if (userId != null)
             {
-                var result = await _userManager.ResetPasswordAsync(resetUser, token, Item.Password);
+                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
 
-                if (result.Succeeded)
+                if (globalUserDb != null)
                 {
-                    await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
-                    Success = true;
+                    bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
+                    if (!passwordCorrect)
+                    {
+                        Validation.Errors.Add(new ValidationFailure(nameof(Item.CurrentPassword), $"{Item.CurrentPasswordLabel} is incorrect."));
+                    }
+                    else if (Validation.IsValid && !string.IsNullOrWhiteSpace(Item.Password))
+                    {
+                        string token = await UserManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
+
+                        var resetUser = await UserManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
+                        if (resetUser != null)
+                        {
+                            var result = await UserManager.ResetPasswordAsync(resetUser, token, Item.Password);
+
+                            if (result.Succeeded)
+                            {
+                                await SignInManager.SignInAsync(globalUserDb, isPersistent: false);
+                                Success = true;
+                            }
+                            else
+                            {
+                                foreach (var error in result.Errors)
+                                {
+                                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            AddUserNotFoundError();
+                        }
+                    }
+                    else
+                    {
+                        AddUserNotFoundError();
+                    }
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
-                    }
+                    AddUserNotFoundError();
                 }
             }
-        }
-        else
-        {
-            AddUserNotFoundError();
+            else
+            {
+                AddUserNotFoundError();
+            }
         }
 
         return await Result();

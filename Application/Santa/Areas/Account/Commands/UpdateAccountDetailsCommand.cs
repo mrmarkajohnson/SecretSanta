@@ -37,10 +37,10 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
 
                     await Send(new HashUserIdentificationAction(Item));
 
-                    bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.Password);
+                    bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
                     if (!passwordCorrect)
                     {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), "Incorrect password."));
+                        Validation.Errors.Add(new ValidationFailure(nameof(Item.CurrentPassword), $"Incorrect {Item.CurrentPasswordLabel}."));
                     }
                     else if (Validation.IsValid)
                     {

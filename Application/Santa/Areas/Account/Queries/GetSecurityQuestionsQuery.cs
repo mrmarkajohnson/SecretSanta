@@ -1,5 +1,6 @@
 ﻿using Application.Shared.Identity;
 using Data.Entities.Shared;
+using Global.Abstractions.Global.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 

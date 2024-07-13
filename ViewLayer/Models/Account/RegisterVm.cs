@@ -15,7 +15,7 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
     [Display(Name = "Password"), DataType(DataType.Password), StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
     public required string Password { get; set; }
 
-    [Display(Name = "Confirm password"), DataType(DataType.Password)]
+    [Display(Name = "Confirm Password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
     public required string ConfirmPassword { get; set; }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Global.Account;
 
 public interface ILogin
 {

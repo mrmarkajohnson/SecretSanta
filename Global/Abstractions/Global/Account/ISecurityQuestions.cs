@@ -2,13 +2,13 @@
 using Global.Settings;
 using Global.Validation;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Global.Account;
 
 public interface ISecurityQuestions
 {
     string? SecurityQuestion1 { get; set; }
     string? SecurityAnswer1 { get; set; }
-    string? SecurityHint1 {  get; set; }
+    string? SecurityHint1 { get; set; }
 
     string? SecurityQuestion2 { get; set; }
     string? SecurityAnswer2 { get; set; }
@@ -24,7 +24,7 @@ public class SecurityQuestionsValidator<TItem> : AbstractValidator<TItem> where 
     public SecurityQuestionsValidator()
     {
         RuleFor(x => x.Greeting).Must(x => Greetings.Messages.Any(y => Equals(y, x))).WithMessage("Greeting not found. Please click 'Change' to select another.");
-        
+
         RuleFor(x => x.SecurityQuestion1).NotNull().NotEmpty().Length(UserVal.SecurityQuestions.MinLength, UserVal.SecurityQuestions.MaxLength);
         RuleFor(x => x.SecurityAnswer1).NotNull().NotEmpty().Length(UserVal.SecurityAnswers.MinLength, UserVal.SecurityAnswers.MaxLength);
         RuleFor(x => x.SecurityHint1).MaximumLength(UserVal.SecurityHints.MaxLength);

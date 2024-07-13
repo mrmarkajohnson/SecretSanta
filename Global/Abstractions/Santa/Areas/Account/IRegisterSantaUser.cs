@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Global;
+﻿using Global.Abstractions.Global.Account;
 
 namespace Global.Abstractions.Santa.Areas.Account;
 
