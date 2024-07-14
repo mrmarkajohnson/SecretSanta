@@ -1,5 +1,7 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
+using Global.Abstractions.Extensions;
+using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +48,6 @@ public class HomeController : BaseController
 
         if (ModelState.IsValid)
         {
-            //This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             var result = await Send(new LoginQuery(model, SignInManager));
             
             if (result.Succeeded)
@@ -60,7 +60,8 @@ public class HomeController : BaseController
             //}
             if (result.IsLockedOut)
             {
-                return RedirectToPage("./Lockout");
+                model.LockedOut = true;
+                SetInvalidLogin(true);
             }
             else
             {
@@ -76,10 +77,11 @@ public class HomeController : BaseController
         return View(model);
     }
 
-    private void SetInvalidLogin()
+    private void SetInvalidLogin(bool lockedOut = false)
     {
         ModelState.Clear();
-        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        string message = "Invalid login attempt." + (lockedOut ? $" This account is now locked out for {IdentityVal.Lockouts.DefaultLockoutTimeSpan.GetDescription()}." : "");
+        ModelState.AddModelError(string.Empty, message);
     }
 
     [HttpGet]

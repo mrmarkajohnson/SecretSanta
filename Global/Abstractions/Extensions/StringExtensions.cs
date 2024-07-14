@@ -25,4 +25,41 @@ public static class StringExtensions
         }
 
     }
+
+    public static string DisplayList(this IEnumerable<string> list, bool or = false, bool oxfordComma = false)
+    {
+        if (list == null || list.Count() == 0)
+        {
+            return string.Empty;
+        }
+        else if (list.Count() == 1)
+        {
+            return list.ElementAt(0);
+        }
+        else
+        {
+            string result = "";
+            string add = or ? "or" : "and";
+            
+            for (int i = 0; i < list.Count(); i++)
+            {
+                string element = list.ElementAt(i);
+
+                if (i == 0)
+                {
+                    result = element;
+                }
+                else if (i < list.Count() - 1)
+                {
+                    result += ", " + element;
+                }
+                else
+                {
+                    result += (oxfordComma ? "," : "") +  $" {add} {element}";
+                }
+            }
+
+            return result;
+        }
+    }
 }

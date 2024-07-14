@@ -17,6 +17,8 @@ public class LoginVm : BaseFormVm, ILogin, IForm
     [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }
 
+    public bool LockedOut { get; set; }
+
     public override string SubmitButtonText { get; set; } = "Log in";
     public override string SubmitButtonIcon { get; set; } = "fa-key";
 }

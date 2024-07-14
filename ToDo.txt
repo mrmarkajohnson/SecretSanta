@@ -3,14 +3,13 @@ Create menus and rework main page
 Add testing and production configuration
 Add privacy page
 Get usermanager etc. via dependency injection
-Lock out after 5 login failures (or log out and lock after 5 incorrect passwords elsewhere?)
 Add back buttons to relevant pages
 Use IIS?
 Use AutoMapper?
 On error, if user isn't logged in but needs to be, redirect to login or home page and pass in return URL
 
 SECURITY QUESTIONS / FORGOTTEN PASSWORD
-Require password before changing security questions if logged in for a while
+Require password before changing security questions (when updating)
 Lock out after 5 tries
 Go straight to security questions after registering, using text from home page
 Handle 'forgot password' if security questions not yet set

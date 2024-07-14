@@ -24,7 +24,7 @@ public static class IdentityVal
 
     public static class Lockouts
     {
-        public static TimeSpan DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
+        public static TimeSpan DefaultLockoutTimeSpan = TimeSpan.FromMinutes(360);
         public const int MaxFailedAccessAttempts = 5;
         public const bool AllowedForNewUsers = true;
     }
