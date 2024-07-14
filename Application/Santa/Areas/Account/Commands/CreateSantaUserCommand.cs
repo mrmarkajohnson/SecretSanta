@@ -72,15 +72,15 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
 
                 if (message.ToLower().Contains("username"))
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), message));
+                    AddValidationError(nameof(Item.UserName), message);
                 }
                 else if (message.ToLower().Contains("email") || message.ToLower().Contains("e-mail"))
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Email), message));
+                    AddValidationError(nameof(Item.Email), message);
                 }
                 else
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), message));
+                    AddValidationError(nameof(Item.Password), message);
                 }
             }
         }

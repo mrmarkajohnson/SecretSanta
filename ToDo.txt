@@ -9,8 +9,7 @@ Use IIS?
 Use AutoMapper?
 On error, if user isn't logged in but needs to be, redirect to login or home page and pass in return URL
 
-SECURITY QUESTIONS
-Add more security to password resets, e.g. using e-mails (could make e-mail mandatory with 'security only' option)
+SECURITY QUESTIONS / FORGOTTEN PASSWORD
 Require password before changing security questions if logged in for a while
 Lock out after 5 tries
 Go straight to security questions after registering, using text from home page

@@ -34,7 +34,7 @@ public abstract class ChangePasswordBaseCommand<TItem> : BaseCommand<TItem> wher
             {
                 foreach (var error in result.Errors)
                 {
-                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
+                    AddValidationError(nameof(Item.Password), error.Description);
                 }
             }
         }

@@ -15,8 +15,6 @@ public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IForm
 
     public string SubmitButtonText { get; set; } = "Update";
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
-
-    public string CurrentPasswordLabel => "Password";
 }
 
 public class UpdateDetailsVmValidator : SantaUserValidator<UpdateDetailsVm>

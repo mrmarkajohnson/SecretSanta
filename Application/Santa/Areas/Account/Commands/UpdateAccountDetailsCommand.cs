@@ -40,7 +40,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                     bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
                     if (!passwordCorrect)
                     {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.CurrentPassword), $"Incorrect {Item.CurrentPasswordLabel}."));
+                        AddValidationError(nameof(Item.CurrentPassword), "Current Password is incorrect.");
                     }
                     else if (Validation.IsValid)
                     {
@@ -54,7 +54,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                             {
                                 string message = ex.Message;
                                 message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                                Validation.Errors.Add(new ValidationFailure(nameof(Item.UserName), message));
+                                AddValidationError(nameof(Item.UserName), message);
                             }
                         }
 
@@ -68,7 +68,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                             {
                                 string message = ex.Message;
                                 message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                                Validation.Errors.Add(new ValidationFailure(nameof(Item.Email), message));
+                                AddValidationError(nameof(Item.Email), message);
                             }
                         }
 

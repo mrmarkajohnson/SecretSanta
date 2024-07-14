@@ -7,6 +7,4 @@ public interface IConfirmCurrentPassword
     [Required]
     [Display(Name = "Current Password"), DataType(DataType.Password)]
     string CurrentPassword { get; set; }
-
-    string CurrentPasswordLabel { get; }
 }

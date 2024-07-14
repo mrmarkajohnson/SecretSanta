@@ -31,7 +31,7 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
                     bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
                     if (!passwordCorrect)
                     {
-                        Validation.Errors.Add(new ValidationFailure(nameof(Item.CurrentPassword), $"{Item.CurrentPasswordLabel} is incorrect."));
+                        AddValidationError(nameof(Item.CurrentPassword), "Current Password is incorrect.");
                     }
                     else if (Validation.IsValid && !string.IsNullOrWhiteSpace(Item.Password))
                     {
@@ -51,7 +51,7 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
                             {
                                 foreach (var error in result.Errors)
                                 {
-                                    Validation.Errors.Add(new ValidationFailure(nameof(Item.Password), error.Description));
+                                    AddValidationError(nameof(Item.Password), error.Description);
                                 }
                             }
                         }

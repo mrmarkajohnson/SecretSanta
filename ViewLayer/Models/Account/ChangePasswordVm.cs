@@ -15,8 +15,6 @@ public class ChangePasswordVm : SetPasswordBaseVm, IChangePassword
     [Display(Name = "New Password"), DataType(DataType.Password)]
     [StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
     public override required string Password { get; set; }
-
-    public string CurrentPasswordLabel => "Current Password";
 }
 
 public class ChangePasswordVmValidator : SetPasswordValidator<ChangePasswordVm>
