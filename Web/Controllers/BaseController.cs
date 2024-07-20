@@ -3,9 +3,12 @@ using Application.Santa.Global;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Global;
+using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Policy;
 
 namespace Web.Controllers;
 
@@ -28,7 +31,6 @@ public class BaseController : Controller
     public IActionResult RedirectWithMessage(string url, string successMessage)
     {
         string addQuery = url.Contains("?") ? "&" : "?";
-
         return LocalRedirect($"{url}{addQuery}SuccessMessage={successMessage}");
     }
 
@@ -39,7 +41,8 @@ public class BaseController : Controller
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
-        return await query.Handle();
+        TItem? result = await query.Handle();
+        return result;
     }
 
     protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
@@ -101,6 +104,19 @@ public class BaseController : Controller
         foreach (var error in validationResult.Errors)
         {
             ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+    }
+
+    protected async Task<IActionResult> RedirectIfLockedOut(string viewName, ICheckLockout model)
+    {
+        if (model is ICheckLockout checkLockout && checkLockout.LockedOut)
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            return LocalRedirect(Url.Action("LockedOut", "Home", new { Area = "Account" }));
+        }
+        else
+        {
+            return View(viewName, model);
         }
     }
 }

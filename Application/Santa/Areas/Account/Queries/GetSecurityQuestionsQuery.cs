@@ -37,7 +37,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             string? userId = _userManager.GetUserId(_user);
             if (userId != null)
             {
-                globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+                globalUserDb = GetGlobalUser(userId);
             }
         }
 

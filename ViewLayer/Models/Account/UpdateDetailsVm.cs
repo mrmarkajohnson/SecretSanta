@@ -13,6 +13,8 @@ public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IForm
     [Display(Name = "Password"), DataType(DataType.Password)]
     public required string CurrentPassword { get; set; }
 
+    public bool LockedOut { get; set; }
+
     public string SubmitButtonText { get; set; } = "Update";
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
 }

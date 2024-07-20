@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public abstract class SetPasswordBaseVm : BaseFormVm, ISetPassword
+public abstract class SetPasswordBaseVm : BaseFormVm, ISetPassword, ICheckLockout
 {
     [Required]
     [Display(Name = "Password"), DataType(DataType.Password)] 
@@ -15,4 +15,6 @@ public abstract class SetPasswordBaseVm : BaseFormVm, ISetPassword
     [Display(Name = "Confirm Password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
     public required string ConfirmPassword { get; set; }
+
+    public bool LockedOut { get; set; }
 }

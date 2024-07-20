@@ -1,5 +1,4 @@
 ﻿using Application.Santa.Areas.Account.Actions;
-using FluentValidation.Results;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -9,41 +8,39 @@ namespace Application.Santa.Areas.Account.Commands;
 public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IUpdateSantaUser
 {
     private readonly ClaimsPrincipal _user;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
     public UpdateAccountDetailsCommand(TItem item,
         ClaimsPrincipal user,
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore)
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore, signInManager)
     {
         _user = user;
-        _signInManager = signInManager;
+        SignInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        if (_signInManager.IsSignedIn(_user))
+        if (SignInManager.IsSignedIn(_user))
         {
             string? userId = UserManager.GetUserId(_user);
             if (userId != null && userId == Item.Id)
             {
-                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+                var globalUserDb = GetGlobalUser(userId);
 
                 if (globalUserDb != null)
                 {
-                    string? originalUserName = Item.UserName;
-                    string? originalEmail = Item.Email;
-
-                    await Send(new HashUserIdentificationAction(Item));
-
-                    bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
-                    if (!passwordCorrect)
+                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                    if (!passwordCorrect || !Validation.IsValid)
                     {
-                        AddValidationError(nameof(Item.CurrentPassword), "Current Password is incorrect.");
+                        return await Result();
                     }
-                    else if (Validation.IsValid)
+                    else
                     {
+                        string? originalUserName = Item.UserName;
+                        string? originalEmail = Item.Email;
+                        await Send(new HashUserIdentificationAction(Item));
+
                         if (Item.UserName != globalUserDb.UserName)
                         {
                             try

@@ -74,7 +74,7 @@ public class HomeController : BaseController
         }
 
         model.Password = "";
-        return View(model);
+        return await RedirectIfLockedOut("Login", model);
     }
 
     private void SetInvalidLogin(bool lockedOut = false)
@@ -115,6 +115,17 @@ public class HomeController : BaseController
             return RedirectWithMessage(model, "Password Reset Successfully");
         }
 
-        return View(model);
+        return await RedirectIfLockedOut("ForgotPassword", model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LockedOut()
+    {
+        if (SignInManager.IsSignedIn(User))
+        {
+            await SignInManager.SignOutAsync();
+        }
+        
+        return View();
     }
 }

@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Global.Abstractions.Global.Account;
+﻿using Global.Abstractions.Global.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -19,50 +18,33 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
+        if (!Validation.IsValid)
+        {
+            return await Result();
+        }
+        else if (string.IsNullOrWhiteSpace(Item.Password)) // just in case
+        {
+            AddValidationError(nameof(Item.Password), "Please enter a new password.");
+            return await Result();
+        }
+
         if (SignInManager.IsSignedIn(_user))
         {
             string? userId = UserManager.GetUserId(_user);
             if (userId != null)
             {
-                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+                var globalUserDb = GetGlobalUser(userId);
 
                 if (globalUserDb != null)
                 {
-                    bool passwordCorrect = await UserManager.CheckPasswordAsync(globalUserDb, Item.CurrentPassword);
-                    if (!passwordCorrect)
+                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                    if (!passwordCorrect || !Validation.IsValid)
                     {
-                        AddValidationError(nameof(Item.CurrentPassword), "Current Password is incorrect.");
-                    }
-                    else if (Validation.IsValid && !string.IsNullOrWhiteSpace(Item.Password))
-                    {
-                        string token = await UserManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
-
-                        var resetUser = await UserManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
-                        if (resetUser != null)
-                        {
-                            var result = await UserManager.ResetPasswordAsync(resetUser, token, Item.Password);
-
-                            if (result.Succeeded)
-                            {
-                                await SignInManager.SignInAsync(globalUserDb, isPersistent: false);
-                                Success = true;
-                            }
-                            else
-                            {
-                                foreach (var error in result.Errors)
-                                {
-                                    AddValidationError(nameof(Item.Password), error.Description);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            AddUserNotFoundError();
-                        }
+                        return await Result();
                     }
                     else
                     {
-                        AddUserNotFoundError();
+                        await ChangePassword(globalUserDb);
                     }
                 }
                 else

@@ -30,7 +30,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
             string? userId = _userManager.GetUserId(_user);
             if (userId != null)
             {
-                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+                var globalUserDb = GetGlobalUser(userId);
 
                 if (globalUserDb != null)
                 {

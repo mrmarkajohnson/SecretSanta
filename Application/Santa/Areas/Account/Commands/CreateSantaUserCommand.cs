@@ -11,14 +11,12 @@ namespace Application.Santa.Areas.Account.Commands;
 
 public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IRegisterSantaUser
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-
     public CreateSantaUserCommand(TItem item,
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore)
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore, signInManager)
     {
-        _signInManager = signInManager;
+        SignInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
@@ -60,7 +58,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
             Item.Password = "";
             await ModelContext.SaveChangesAsync();
             Success = true;
-            await _signInManager.SignInAsync(globalUserDb, isPersistent: false);
+            await SignInManager.SignInAsync(globalUserDb, isPersistent: false);
         }
         else
         {

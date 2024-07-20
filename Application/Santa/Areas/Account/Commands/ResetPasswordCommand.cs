@@ -1,4 +1,5 @@
-﻿using Global.Abstractions.Global.Account;
+﻿using Data.Entities.Shared;
+using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,7 +19,7 @@ public class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> wher
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == _user.Id);
+       Global_User? globalUserDb = GetGlobalUser(_user);
 
         if (globalUserDb != null && !string.IsNullOrWhiteSpace(Item.Password))
         {

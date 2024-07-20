@@ -1,0 +1,21 @@
+﻿@using Global.Validation
+@using Global.Abstractions.Extensions
+
+@{
+    ViewData["Title"] = "Locked Out";
+}
+
+<div class="text-center">
+    <h1>This account is locked out</h1>
+    <section>
+        <form id="account" method="post">
+            <div class="row d-flex align-items-center justify-content-center text-center">
+
+                <div class="mb-5">                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    The requested account has been locked out for @IdentityVal.Lockouts.DefaultLockoutTimeSpan.GetDescription().                    
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

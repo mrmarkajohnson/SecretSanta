@@ -1,19 +1,14 @@
 ﻿using Data.Entities.Shared;
-using FluentValidation.Results;
 using Global.Abstractions.Global.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public abstract class ChangePasswordBaseCommand<TItem> : BaseCommand<TItem> where TItem : ISetPassword
+public abstract class ChangePasswordBaseCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetPassword
 {
-    protected UserManager<IdentityUser> UserManager { get; }
-    protected SignInManager<IdentityUser> SignInManager { get; }
-
-    protected ChangePasswordBaseCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(item)
+    protected ChangePasswordBaseCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
+        : base(item, userManager, signInManager)
     {
-        UserManager = userManager;
-        SignInManager = signInManager;
     }
 
     protected async Task ChangePassword(Global_User globalUserDb)
@@ -37,6 +32,10 @@ public abstract class ChangePasswordBaseCommand<TItem> : BaseCommand<TItem> wher
                     AddValidationError(nameof(Item.Password), error.Description);
                 }
             }
+        }
+        else
+        {
+            AddUserNotFoundError();
         }
     }
 

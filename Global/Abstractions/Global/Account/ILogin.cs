@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Global.Abstractions.Global.Account;
 
-namespace Global.Abstractions.Global.Account;
-
-public interface ILogin
+public interface ILogin : ICheckLockout
 {
     string EmailOrUserName { get; set; }
     string Password { get; set; }

@@ -136,6 +136,19 @@
                         </div>
                     </div>
 
+                    @if (Model.Update)
+                    {
+                        <br />
+                        <h2>Verification</h2>
+                        <partial name="_ConfirmCurrentPassword" />
+                    }
+                    else
+                    {
+                        <div class="collapse">
+                            <input asp-for="CurrentPassword" value="NotUsed"> Avoid invalid ModelState
+                        </div>
+                    }
+
                     <br />
                     <div class="col-md-12">
                         <partial name="_SubmitButton" />

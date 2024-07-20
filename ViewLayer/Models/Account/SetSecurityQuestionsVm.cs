@@ -1,9 +1,10 @@
 ﻿using Application.Shared.Identity;
 using Global.Abstractions.Global.Account;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISecurityQuestions
+public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISetSecurityQuestions
 {
     public required List<string> Greetings { get; set; }
     
@@ -13,9 +14,14 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISecurityQuestio
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";
 
+    [Required]
+    [Display(Name = "Password"), DataType(DataType.Password)]
+    public required string CurrentPassword { get; set; }
+
     public bool Update { get; set; }
+    public bool LockedOut { get; set; }
 }
 
-public class SetSecurityQuestionsVmValidator : SecurityQuestionsValidator<SetSecurityQuestionsVm>
+public class SetSecurityQuestionsVmValidator : SetSecurityQuestionsValidator<SetSecurityQuestionsVm>
 {
 }

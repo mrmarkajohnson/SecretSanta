@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public abstract class IdentityBaseCommand<TItem> : BaseCommand<TItem> where TItem : ISantaUser
+public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where TItem : ISantaUser
 {
-    private protected UserManager<IdentityUser> UserManager { get; set; }
     private protected IUserStore<IdentityUser> UserStore { get; set; }
 
-    public IdentityBaseCommand(TItem item, UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore) : base(item)
+    public IdentityBaseCommand(TItem item, 
+        UserManager<IdentityUser> userManager, 
+        IUserStore<IdentityUser> userStore, 
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
     {
-        UserManager = userManager;
         UserStore = userStore;
     }
 

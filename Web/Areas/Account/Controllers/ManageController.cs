@@ -3,6 +3,7 @@ using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Extensions;
 using Global.Abstractions.Global.Account;
 using Global.Settings;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
@@ -51,14 +52,7 @@ public class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                if (string.IsNullOrWhiteSpace(model.ReturnUrl))
-                {
-                    return RedirectToPage("RegisterConfirmation", new { email = model.Email, returnUrl = model.ReturnUrl });
-                }
-                else
-                {
-                    return RedirectWithMessage(model.ReturnUrl, "Registered Successfully");
-                }
+                return RedirectWithMessage(model.ReturnUrl, "Registered Successfully");
             }
         }
 
@@ -66,7 +60,7 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> SetSecurityQuestions(bool update = false)
+    public async Task<IActionResult> SetSecurityQuestions()
     {
         if (SignInManager.IsSignedIn(User))
         {
@@ -100,9 +94,10 @@ public class ManageController : BaseController
                 SecurityQuestion2 = currentSecurityQuestions?.SecurityQuestion2,
                 SecurityAnswer2 = null,
                 SecurityHint2 = currentSecurityQuestions?.SecurityHint2,
-                Update = update && currentSecurityQuestions?.SecurityQuestionsSet == true,
+                Update = currentSecurityQuestions?.SecurityQuestionsSet == true,
                 Greetings = greetings,
-                Greeting = currentGreeting
+                Greeting = currentGreeting,
+                CurrentPassword = ""
             };
 
             return View(model);
@@ -120,6 +115,12 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
+            if (!model.Update) // in case the user removed it
+            {
+                ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));
+                model.Update = currentSecurityQuestions?.SecurityQuestionsSet == true; // current password must be confirmed
+            }
+
             var commandResult = await Send(new SetSecurityQuestionsCommand<SetSecurityQuestionsVm>(model, User, UserManager, SignInManager),
                 new SetSecurityQuestionsVmValidator());
 
@@ -129,7 +130,7 @@ public class ManageController : BaseController
             }
         }
 
-        return View(model);
+        return await RedirectIfLockedOut("SetSecurityQuestions", model);
     }
 
     [HttpGet]
@@ -181,7 +182,7 @@ public class ManageController : BaseController
             }
         }
 
-        return View(model);
+        return await RedirectIfLockedOut("UpdateDetails", model);
     }
 
     [HttpGet]
@@ -228,6 +229,6 @@ public class ManageController : BaseController
             }
         }
 
-        return View(model);
+        return await RedirectIfLockedOut("ChangePassword", model);
     }
 }

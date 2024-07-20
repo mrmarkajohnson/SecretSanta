@@ -5,15 +5,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class ForgotPasswordCommand<TItem> : BaseCommand<TItem> where TItem : IForgotPassword
+public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem : IForgotPassword
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
-
-    public ForgotPasswordCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(item)
+    public ForgotPasswordCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
+        : base(item, userManager, signInManager)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
@@ -38,11 +34,12 @@ public class ForgotPasswordCommand<TItem> : BaseCommand<TItem> where TItem : IFo
                 if (user.Greeting != hashedGreeting)
                 {
                     SetDetailsNotRecognisedError();
+                    Item.LockedOut = await AccessFailed(UserManager, user);
                 }
                 else
                 {
                     ISecurityQuestions? securityQuestions = await Send(new 
-                        GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, _userManager, _signInManager));
+                        GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, UserManager, SignInManager));
 
                     if (securityQuestions == null)
                     {
@@ -63,6 +60,7 @@ public class ForgotPasswordCommand<TItem> : BaseCommand<TItem> where TItem : IFo
                         {
                             AddValidationError(string.Empty, "Security answers did not match.");
                             SetUpSecurityQuestions(securityQuestions);
+                            Item.LockedOut = await AccessFailed(UserManager, user);
                         }
                         else if (string.IsNullOrEmpty(Item.Password) || string.IsNullOrEmpty(Item.ConfirmPassword))
                         {
@@ -76,7 +74,7 @@ public class ForgotPasswordCommand<TItem> : BaseCommand<TItem> where TItem : IFo
                         }
                         else
                         {
-                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user, _userManager, _signInManager), null);
+                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user, UserManager, SignInManager), null);
 
                             if (commandResult.Success)
                             {

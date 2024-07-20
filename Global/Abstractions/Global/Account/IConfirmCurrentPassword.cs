@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Global.Account;
 
-public interface IConfirmCurrentPassword
+public interface IConfirmCurrentPassword : ICheckLockout
 {
     [Required]
     [Display(Name = "Current Password"), DataType(DataType.Password)]

@@ -4,33 +4,42 @@ using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
 
-public class SetSecurityQuestionsCommand<TItem> : BaseCommand<TItem> where TItem : ISecurityQuestions
+public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetSecurityQuestions
 {
     private readonly ClaimsPrincipal _user;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
     public SetSecurityQuestionsCommand(TItem item,
         ClaimsPrincipal user,
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item)
+        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
     {
         _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        if (_signInManager.IsSignedIn(_user))
-        {
-            string? userId = _userManager.GetUserId(_user);
+        if (SignInManager.IsSignedIn(_user))
+        {           
+            string? userId = UserManager.GetUserId(_user);
             if (userId != null)
             {
-                var globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+                var globalUserDb = GetGlobalUser(userId);
 
                 if (globalUserDb != null)
                 {
+                    if (Item.Update)
+                    {
+                        bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                        if (!passwordCorrect || !Validation.IsValid)
+                        {
+                            return await Result();
+                        }
+                    }
+                    else if (!Validation.IsValid)
+                    {
+                        return await Result();
+                    }
+
                     globalUserDb.SecurityQuestion1 = Item.SecurityQuestion1;
                     globalUserDb.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? "", globalUserDb);
                     globalUserDb.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
