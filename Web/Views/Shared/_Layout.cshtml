@@ -60,19 +60,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="pt-4 pb-4">
+                <div class="pt-4 pb-4 text-center">
                     @RenderBody()
                 </div>
         </div>
         </main>
     </div>
 
-    <footer class="footer">        
-        <span class="text-secondary text-glow">Secret Santa</span> was created by <a target="_blank" href="https://mrmarkajohnson.com/">Mark Johnson</a>               
-        <span class="float-end"> <a target="_blank" href="https://icons8.com/icon/52PmO1ntgoRU/berries">Berries</a> icon by 
+    <footer class="footer d-flex justify-content-between">        
+        <div><span class="text-secondary text-glow">Secret Santa</span> was created by <a target="_blank" href="http://mrmarkajohnson.co.uk/">Mark Johnson</a></div>
+        <div class="text-center"><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></div>
+        <div class="text-end"> <a target="_blank" href="https://icons8.com/icon/52PmO1ntgoRU/berries">Berries</a> icon by 
             <a target="_blank" href="https://icons8.com">Icons8</a> and converted in <a target="_blank" href="https://www.xiconeditor.com/">XIconEditor</a>
-        </span>
-        @* <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
+        </div>
+        
     </footer>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

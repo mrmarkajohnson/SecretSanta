@@ -5,51 +5,48 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="text-center">
-    <h1>Welcome to Secret Santa!</h1>
+<h1>Welcome to Secret Santa!</h1>
 
-    <section>
-        <form asp-area="Account" asp-controller="Manage" asp-action="Register" method="post">
-            <div class="row d-flex align-items-center justify-content-center text-center">
+<section>
+    <form asp-area="Account" asp-controller="Manage" asp-action="Register" method="post">
+        <div class="row d-flex align-items-center justify-content-center text-center">
 
-                <div class="mb-5">
-                    <h2>Please create an account</h2>
+            <div class="mb-5">
+                <h2>Please create an account</h2>
 
-                    <p class="mt-2 mb-4">
-                        For security and privacy, e-mail addresses and user names are scrambled in the database.
-                    </p>
+                <p class="mt-2 mb-4">
+                    For security and privacy, e-mail addresses and user names are scrambled in the database.
+                </p>
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-                    <partial name="_SetUserNameAndEmail" />
+                <partial name="_SetUserNameAndEmail" />
 
-                    <partial name="_SetPassword" />
+                <partial name="_SetPassword" />
 
-                    <partial name="_SetPersonalNames" />
+                <partial name="_SetPersonalNames" />
 
-                    <br />
-                    <div class="col-md-12">
-                        <partial name="_SubmitButton" />
-                    </div>
+                <br />
+                <div class="col-md-12">
+                    <partial name="_SubmitButton" />
                 </div>
-
             </div>
-            <div class="row d-flex align-items-center justify-content-center text-center">
 
-                <div class="col-lg-6 col-md-8 col-sm-10 col-12 d-flex flex-wrap justify-content-between text-center">
-                    <div>
-                        <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl">Already have an account?</a>
-                    </div>
-                    <div>
-                        <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl">Forgot your password?</a>
-                    </div>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center text-center">
+
+            <div class="col-lg-6 col-md-8 col-sm-10 col-12 d-flex flex-wrap justify-content-between text-center">
+                <div>
+                    <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl">Already have an account?</a>
                 </div>
-
+                <div>
+                    <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl">Forgot your password?</a>
+                </div>
             </div>
-        </form>
-    </section>
 
-</div>
+        </div>
+    </form>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

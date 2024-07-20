@@ -1,7 +1,6 @@
 GENERAL
 Create menus and rework main page
 Add testing and production configuration
-Add privacy page
 Get usermanager etc. via dependency injection
 Add back buttons to relevant pages
 Use IIS?

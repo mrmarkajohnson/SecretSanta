@@ -76,6 +76,11 @@ div.validation-summary-errors ul, li {
     display: inline-block !important;
 }
 
+ul.bulleted li {
+    text-align: left;
+    list-style-type: disc;
+}
+
 #toast-container > div {
     opacity: 0.7;
 }

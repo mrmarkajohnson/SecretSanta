@@ -16,53 +16,51 @@
 
 <partial name="_SuccessMessage" />
 
-<div class="text-center">
-    @if (_signInManager.IsSignedIn(User))
-    {
-        <h1>@welcomeSignedInUser</h1>
-        <div class="mt-2">
-            @if (mustSetSecurityQuestions)
-            {
-                <p>
-                    Santa has one final task for you before he can accept your wish list. Please set some
-                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                        security questions
-                    </a> in case you forget your password and need to reset it.
-                </p>
-            }
-            else
-            {
-                // TODO: Add the main page content here
+@if (_signInManager.IsSignedIn(User))
+{
+    <h1>@welcomeSignedInUser</h1>
+    <div class="mt-2">
+        @if (mustSetSecurityQuestions)
+        {
+            <p>
+                Santa has one final task for you before he can accept your wish list. Please set some
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    security questions
+                </a> in case you forget your password and need to reset it.
+            </p>
+        }
+        else
+        {
+            // TODO: Add the main page content here
 
-                <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                        Update Your Details
-                    </a>
-                </p>
-                <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                        Update Your Security Questions
-                    </a>
-                </p>
-                <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                        Change Your Password
-                    </a>
-                </p>
-            }
-        </div>
-    }
-    else
-    {
-        <h1>Welcome to Secret Santa!</h1>
-        <div class="mt-2">
             <p>
-                Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
-                or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
+                <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    Update Your Details
+                </a>
             </p>
             <p>
-                If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    Update Your Security Questions
+                </a>
             </p>
-        </div>
-    }
-</div>
+            <p>
+                <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    Change Your Password
+                </a>
+            </p>
+        }
+    </div>
+}
+else
+{
+    <h1>Welcome to Secret Santa!</h1>
+    <div class="mt-2">
+        <p>
+            Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
+            or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
+        </p>
+        <p>
+            If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
+        </p>
+    </div>
+}
