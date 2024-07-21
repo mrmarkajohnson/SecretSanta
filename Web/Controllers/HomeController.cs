@@ -9,7 +9,7 @@ namespace SecretSanta.Controllers;
 
 public class HomeController : BaseController
 {
-    public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(userManager, signInManager)
+    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(services, userManager, signInManager)
     {
     }
 

@@ -27,7 +27,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
         _signInManager = signInManager;
     }
 
-    public override Task<ISecurityQuestions?> Handle()
+    protected override Task<ISecurityQuestions?> Handle()
     {
         ISecurityQuestions? securityQuestions = null;
         Global_User? globalUserDb = null;
@@ -56,7 +56,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
                 SecurityQuestion2 = globalUserDb.SecurityQuestion2,
                 SecurityAnswer2 = globalUserDb.SecurityAnswer2,
                 SecurityHint2 = EncryptionHelper.Decrypt(globalUserDb.SecurityHint2, false),
-                Greeting = "" // EncryptionHelper.Decrypt(globalUserDb.Greeting, false)
+                Greeting = EncryptionHelper.Decrypt(globalUserDb.Greeting, false, globalUserDb.Id)
             };
         }
 

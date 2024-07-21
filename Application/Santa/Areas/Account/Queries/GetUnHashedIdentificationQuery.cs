@@ -13,7 +13,7 @@ internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGree
         _user = user;
     }
 
-    public override Task<UnHashedUserIdWithGreeting> Handle()
+    protected override Task<UnHashedUserIdWithGreeting> Handle()
     {
         string? email = string.IsNullOrWhiteSpace(_user.Email) ? null
             : _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)

@@ -3,7 +3,6 @@ using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Extensions;
 using Global.Abstractions.Global.Account;
 using Global.Settings;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
@@ -16,8 +15,8 @@ public class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
-    public ManageController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore)
-        : base(userManager, signInManager)
+    public ManageController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore)
+        : base(services, userManager, signInManager)
     {
         _userStore = userStore;
     }
@@ -88,17 +87,15 @@ public class ManageController : BaseController
 
             var model = new SetSecurityQuestionsVm
             {
-                SecurityQuestion1 = currentSecurityQuestions?.SecurityQuestion1,
-                SecurityAnswer1 = null,
-                SecurityHint1 = currentSecurityQuestions?.SecurityHint1,
-                SecurityQuestion2 = currentSecurityQuestions?.SecurityQuestion2,
-                SecurityAnswer2 = null,
-                SecurityHint2 = currentSecurityQuestions?.SecurityHint2,
-                Update = currentSecurityQuestions?.SecurityQuestionsSet == true,
                 Greetings = greetings,
                 Greeting = currentGreeting,
                 CurrentPassword = ""
             };
+
+            if (currentSecurityQuestions != null)
+            {
+                Mapper.Map(currentSecurityQuestions, model);
+            }
 
             return View(model);
         }

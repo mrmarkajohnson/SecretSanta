@@ -13,7 +13,7 @@ internal class UnHashUserIdentificationAction : BaseAction<IIdentityUser>
         _identityUser = identityUser;
     }
 
-    public async override Task<bool> Handle()
+    protected async override Task<bool> Handle()
     {
         if (_identityUser.IdentificationHashed)
         {

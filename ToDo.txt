@@ -1,10 +1,10 @@
 GENERAL
 Create menus and rework main page
 Add testing and production configuration
-Get usermanager etc. via dependency injection
+Get usermanager etc. from services
 Add back buttons to relevant pages
 Use IIS?
-Use AutoMapper?
+Add more maps for AutoMapper
 On error, if user isn't logged in but needs to be, redirect to login or home page and pass in return URL
 
 SECURITY QUESTIONS / FORGOTTEN PASSWORD

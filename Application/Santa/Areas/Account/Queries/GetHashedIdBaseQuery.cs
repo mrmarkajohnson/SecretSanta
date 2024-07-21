@@ -12,7 +12,7 @@ internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, ne
         User = user;
     }
 
-    public override Task<T> Handle()
+    protected override Task<T> Handle()
     {
         string? emailHash = string.IsNullOrWhiteSpace(User.Email) ? null
             : User.IdentificationHashed ? User.Email

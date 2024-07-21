@@ -1,9 +1,11 @@
+using AutoMapper;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,12 @@ builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidat
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
+
+string[] mapperAssemblyNames = [ "Application", "ViewLayer" ];
+Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => mapperAssemblyNames.Contains(x.GetName().Name)).ToArray();
+var profiles = mapperAssemblies.SelectMany(x => x.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x))).ToArray();
+builder.Services.AddAutoMapper(profiles);
+builder.Services.Configure<IMapper>(cfg => cfg.ConfigurationProvider.AssertConfigurationIsValid()); // test mappings to make sure they are OK
 
 builder.Services.Configure<IdentityOptions>(IdentityVal.ConfigureOptions);
 

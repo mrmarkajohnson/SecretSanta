@@ -1,5 +1,6 @@
 ﻿using Application.Santa.Areas.Account.Queries;
 using Application.Santa.Global;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Global;
@@ -8,20 +9,29 @@ using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Policy;
 
 namespace Web.Controllers;
 
 public class BaseController : Controller
 {
-    public BaseController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public BaseController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
     {
+        Services = services;
         UserManager = userManager;
         SignInManager = signInManager;
+
+        Mapper = services.GetRequiredService<IMapper>();
+
+        if (Mapper == null)
+        {
+            throw new ArgumentException("Mapper cannot be null");
+        }
     }
 
+    public IServiceProvider Services { get; }
     protected UserManager<IdentityUser> UserManager { get; private init; }
     protected SignInManager<IdentityUser> SignInManager { get; private init; }
+    protected IMapper Mapper { get; set; }
 
     public IActionResult RedirectWithMessage(IForm model, string successMessage)
     {
@@ -41,13 +51,13 @@ public class BaseController : Controller
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
-        TItem? result = await query.Handle();
+        TItem? result = await query.Handle(Services);
         return result;
     }
 
     protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
     {
-        return await action.Handle();
+        return await action.Handle(Services);
     }
 
     protected async Task<ICommandResult<TItem>> Send<TItem>(BaseCommand<TItem> command, AbstractValidator<TItem>? validator)
@@ -59,7 +69,7 @@ public class BaseController : Controller
             command.Validator = validator;
             command.Validation = validationResult;
 
-            ICommandResult<TItem> commandResult = await command.Handle();
+            ICommandResult<TItem> commandResult = await command.Handle(Services);
             AddErrorsToModelState(commandResult);
 
             return commandResult;

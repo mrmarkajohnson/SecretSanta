@@ -13,7 +13,8 @@ namespace Web.Areas.Account.Controllers;
 [Area("Account")]
 public class HomeController : BaseController
 {
-    public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(userManager, signInManager)
+    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
+        : base(services, userManager, signInManager)
     {
     }
 

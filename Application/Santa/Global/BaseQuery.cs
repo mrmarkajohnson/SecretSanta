@@ -1,6 +1,12 @@
 ﻿namespace Application.Santa.Global;
 
-public abstract class BaseQuery<TItem> : BaseRequest
+public abstract class BaseQuery<TItem> : BaseRequest<TItem>
 {
-    public abstract Task<TItem> Handle();
+    public override Task<TItem> Handle(IServiceProvider services)
+    {
+        Initialise(services);
+        return Handle();
+    }
+
+    protected abstract Task<TItem> Handle();
 }

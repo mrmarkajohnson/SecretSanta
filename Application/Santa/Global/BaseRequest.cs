@@ -1,29 +1,61 @@
-﻿using Application.Shared.Identity;
+﻿using AutoMapper;
 using Data.Entities.Shared;
 using Global.Abstractions.Global.Account;
-using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using SecretSanta.Data;
 
 namespace Application.Santa.Global;
 
-public abstract class BaseRequest
+public abstract class BaseRequest<TResult>
 {
+    protected IServiceProvider Services { get; set; }
     protected ApplicationDbContext ModelContext { get; set; }
+    protected IMapper Mapper { get; set; }
 
+    #pragma warning disable CS8618
     protected BaseRequest()
     {
         ModelContext = new ApplicationDbContext();
     }
+    #pragma warning restore CS8618
+
+    protected void Initialise(IServiceProvider services)
+    {
+        if (services == null)
+        {
+            throw new ArgumentException("Services cannot be null");
+        }
+
+        Services = services;
+        Mapper = services.GetRequiredService<IMapper>();
+
+        if (Mapper == null)
+        {
+            throw new ArgumentException("Mapper cannot be null");
+        }
+    }
+
+    public abstract Task<TResult> Handle(IServiceProvider Services);
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
-        return await query.Handle();
+        if (Services == null)
+        {
+            throw new ArgumentException("Services cannot be null");
+        }
+
+        return await query.Handle(Services);
     }
 
     protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
     {
-        return await action.Handle();
+        if (Services == null)
+        {
+            throw new ArgumentException("Services cannot be null");
+        }
+
+        return await action.Handle(Services);
     }
 
     protected Global_User? GetGlobalUser(IIdentityUser user)

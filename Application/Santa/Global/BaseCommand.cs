@@ -3,7 +3,7 @@ using FluentValidation.Results;
 
 namespace Application.Santa.Global;
 
-public abstract class BaseCommand<TItem> : BaseRequest
+public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 {
     public TItem Item { get; set; }
     public AbstractValidator<TItem>? Validator { get; set; }
@@ -16,8 +16,10 @@ public abstract class BaseCommand<TItem> : BaseRequest
         Item = item;
     }
 
-    public async Task<ICommandResult<TItem>> Handle()
+    public override async Task<ICommandResult<TItem>> Handle(IServiceProvider services)
     {
+        Initialise(services);
+
         if (Validator != null && !Validation.RuleSetsExecuted.Any())
         {
             Validator.Validate(Item);
@@ -54,8 +56,13 @@ public abstract class BaseCommand<TItem> : BaseRequest
         {
             subCommand.Validator = validator;
         }
-        
-        ICommandResult<UItem> commandResult = await subCommand.Handle();
+
+        if (Services == null)
+        {
+            throw new ArgumentException("Services cannot be null");
+        }
+
+        ICommandResult<UItem> commandResult = await subCommand.Handle(Services);
 
         Validation.Errors.AddRange(commandResult.Validation.Errors);
 

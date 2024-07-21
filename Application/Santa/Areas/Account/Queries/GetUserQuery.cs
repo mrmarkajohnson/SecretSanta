@@ -19,7 +19,7 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
         _unHashResults = unHashResults;
     }
 
-    public async override Task<ISantaUser?> Handle()
+    protected async override Task<ISantaUser?> Handle()
     {
         ISantaUser? santaUser = null;
 

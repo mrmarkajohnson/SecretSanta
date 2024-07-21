@@ -12,7 +12,7 @@ internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
         User.IdentificationHashed = hashed;
     }
 
-    public async override Task<HashedUserId> Handle()
+    protected async override Task<HashedUserId> Handle()
     {
         HashedUserId result = await base.Handle();
         return result;

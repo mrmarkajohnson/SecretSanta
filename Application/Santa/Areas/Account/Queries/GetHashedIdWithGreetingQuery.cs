@@ -9,7 +9,7 @@ internal class GetHashedIdWithGreetingQuery : GetHashedIdBaseQuery<HashedUserIdW
     {
     }
 
-    public async override Task<HashedUserIdWithGreeting> Handle()
+    protected async override Task<HashedUserIdWithGreeting> Handle()
     {
         HashedUserIdWithGreeting result = await base.Handle();        
         return result;

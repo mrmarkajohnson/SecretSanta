@@ -4,11 +4,17 @@
 /// An Action is like a query but it transforms the object passed in, instead of retrieving somethig
 /// It returns a simple success or failure boolean
 /// </summary>
-public abstract class BaseAction<TItem> : BaseRequest
+public abstract class BaseAction<TItem> : BaseRequest<bool>
 {
     protected bool Success { get; set; }
 
-    public abstract Task<bool> Handle();
+    public override async Task<bool> Handle(IServiceProvider services)
+    {
+        Initialise(services);
+        return await Handle();
+    }
+
+    protected abstract Task<bool> Handle();
 
     public bool SuccessResult
     { 
