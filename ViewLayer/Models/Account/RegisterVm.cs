@@ -13,11 +13,11 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
     [Display(Name = "Password"), DataType(DataType.Password), StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
-    public required string Password { get; set; }
+    public string Password { get; set; } = "";
 
     [Display(Name = "Confirm Password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
-    public required string ConfirmPassword { get; set; }
+    public string ConfirmPassword { get; set; } = "";
 
     public string SubmitButtonText { get; set; } = "Register";
     public string SubmitButtonIcon { get; set; } = "fa-id-card";

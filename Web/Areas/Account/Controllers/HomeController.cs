@@ -24,14 +24,13 @@ public class HomeController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Login(string? returnUrl = null)
+    public async Task<IActionResult> Login(string? returnUrl = null, bool timedOut = false)
     {
         var model = new LoginVm
         {
-            EmailOrUserName = "",
-            Password = "",
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
-            ReturnUrl = returnUrl ?? Url.Content("~/")
+            ReturnUrl = returnUrl ?? Url.Content("~/"),
+            TimedOut = timedOut,
         };
 
         // Clear the existing external cookie to ensure a clean login process
@@ -90,10 +89,6 @@ public class HomeController : BaseController
     {
         var model = new ForgotPasswordVm
         {
-            EmailOrUserName = "",
-            Forename = "",
-            Password = "",
-            ConfirmPassword = "",
             ShowBasicDetails = true,
             ShowSecurityQuestions = false,
             ResetPassword = false,

@@ -35,18 +35,8 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
             
             if (globalUserDb != null)
             {
-                santaUser = new SantaUser
-                {
-                    Id = globalUserDb.Id,
-                    UserName = globalUserDb.UserName, // note this will be hashed
-                    Email = globalUserDb.Email, // note this will be hashed
-                    Forename = globalUserDb.Forename,
-                    MiddleNames = globalUserDb.MiddleNames,
-                    Surname = globalUserDb.Surname,
-                    Greeting = globalUserDb.Greeting,
-                    SecurityQuestionsSet = globalUserDb.SecurityQuestionsSet,
-                    IdentificationHashed = true
-                };
+                santaUser = new SantaUser();
+                Mapper.Map(globalUserDb, santaUser);
 
                 if (_unHashResults)
                 {

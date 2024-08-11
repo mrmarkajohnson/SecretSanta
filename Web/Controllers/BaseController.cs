@@ -129,4 +129,10 @@ public class BaseController : Controller
             return View(viewName, model);
         }
     }
+
+    protected async Task<IActionResult> RedirectToLogin(HttpRequest request)
+    {
+        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
+        return LocalRedirect(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }));
+    }
 }

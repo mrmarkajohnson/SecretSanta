@@ -18,6 +18,12 @@
 
                 @if (!Model.LockedOut)
                 {
+                    if (Model.TimedOut)
+                    {
+                        <p>Your connection has timed out. Please log in again, and you will be redirected to the requested page.</p>
+                        <br/>
+                    }
+
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                             <label asp-for="EmailOrUserName" class="control-label required"></label>

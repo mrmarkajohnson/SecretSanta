@@ -22,10 +22,10 @@ public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     public string Greeting { get; set; } = "";
 
     [Display(Name = "E-mail or Username")]
-    public required string EmailOrUserName { get; set; }
+    public string EmailOrUserName { get; set; } = "";
 
     [Display(Name = "First Name")]
-    public required string Forename { get; set; }
+    public string Forename { get; set; } = "";
 
     public bool ShowBasicDetails { get; set; }
     public bool ShowSecurityQuestions { get; set; }

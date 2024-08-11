@@ -27,11 +27,6 @@ public class ManageController : BaseController
         var model = new RegisterVm
         {
             ReturnUrl = returnUrl ?? Url.Content("~/"),
-            Forename = "",
-            Surname = "",
-            Password = "",
-            ConfirmPassword = "",
-            Greeting = ""
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
         };
 
@@ -88,8 +83,7 @@ public class ManageController : BaseController
             var model = new SetSecurityQuestionsVm
             {
                 Greetings = greetings,
-                Greeting = currentGreeting,
-                CurrentPassword = ""
+                Greeting = currentGreeting
             };
 
             if (currentSecurityQuestions != null)
@@ -101,7 +95,7 @@ public class ManageController : BaseController
         }
         else
         {
-            return Redirect(Url.Action("Error"));
+            return await RedirectToLogin(HttpContext.Request);
         }
     }
 
@@ -139,27 +133,20 @@ public class ManageController : BaseController
 
             if (currentUser == null)
             {
-                return Redirect(Url.Action("Error"));
+                return await RedirectToLogin(HttpContext.Request);
             }
 
             var model = new UpdateDetailsVm
             {
-                Id = currentUser.Id,
-                UserName = currentUser.UserName,
-                CurrentPassword = "",
-                Email = currentUser.Email,
-                Forename = currentUser.Forename,
-                MiddleNames = currentUser.MiddleNames,
-                Surname = currentUser.Surname,
-                Greeting = "", // not needed
                 ReturnUrl = returnUrl ?? Url.Content("~/")
             };
 
+            Mapper.Map(currentUser, model);
             return View(model);
         }
         else
         {
-            return Redirect(Url.Action("Error"));
+            return await RedirectToLogin(HttpContext.Request);
         }
     }
 
@@ -191,14 +178,11 @@ public class ManageController : BaseController
 
             if (currentUser == null)
             {
-                return Redirect(Url.Action("Error"));
+                return await RedirectToLogin(HttpContext.Request);
             }
 
             var model = new ChangePasswordVm
             {
-                CurrentPassword = "",
-                Password = "",
-                ConfirmPassword = "",
                 ReturnUrl = returnUrl ?? Url.Content("~/")
             };
 
@@ -206,7 +190,7 @@ public class ManageController : BaseController
         }
         else
         {
-            return Redirect(Url.Action("Error"));
+            return await RedirectToLogin(HttpContext.Request);
         }
     }
 

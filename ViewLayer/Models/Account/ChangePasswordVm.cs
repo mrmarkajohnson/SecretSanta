@@ -9,12 +9,12 @@ public class ChangePasswordVm : SetPasswordBaseVm, IChangePassword
 {
     [Required]
     [Display(Name = "Current Password"), DataType(DataType.Password)]
-    public required string CurrentPassword { get; set; }
+    public string CurrentPassword { get; set; } = "";
 
     [Required]
     [Display(Name = "New Password"), DataType(DataType.Password)]
     [StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
-    public override required string Password { get; set; }
+    public override string Password { get; set; } = "";
 }
 
 public class ChangePasswordVmValidator : SetPasswordValidator<ChangePasswordVm>
