@@ -1,5 +1,6 @@
 ﻿using Application.Santa.Areas.Account.Actions;
 using Global.Abstractions.Santa.Areas.Account;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -21,76 +22,75 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        if (SignInManager.IsSignedIn(_user))
+        EnsureSignedIn(_user, SignInManager);
+
+        string? userId = UserManager.GetUserId(_user);
+        if (userId != null && userId == Item.Id)
         {
-            string? userId = UserManager.GetUserId(_user);
-            if (userId != null && userId == Item.Id)
+            var globalUserDb = GetGlobalUser(userId);
+
+            if (globalUserDb != null)
             {
-                var globalUserDb = GetGlobalUser(userId);
-
-                if (globalUserDb != null)
+                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                if (!passwordCorrect || !Validation.IsValid)
                 {
-                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
-                    if (!passwordCorrect || !Validation.IsValid)
-                    {
-                        return await Result();
-                    }
-                    else
-                    {
-                        string? originalUserName = Item.UserName;
-                        string? originalEmail = Item.Email;
-                        await Send(new HashUserIdentificationAction(Item));
-
-                        if (Item.UserName != globalUserDb.UserName)
-                        {
-                            try
-                            {
-                                await SetUserName(globalUserDb);
-                            }
-                            catch (Exception ex)
-                            {
-                                string message = ex.Message;
-                                message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                                AddValidationError(nameof(Item.UserName), message);
-                            }
-                        }
-
-                        if (Item.Email != globalUserDb.Email)
-                        {
-                            try
-                            {
-                                await StoreEmailAddress(globalUserDb);
-                            }
-                            catch (Exception ex)
-                            {
-                                string message = ex.Message;
-                                message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                                AddValidationError(nameof(Item.Email), message);
-                            }
-                        }
-
-                        if (Validation.IsValid)
-                        {
-                            globalUserDb.Forename = Item.Forename;
-                            globalUserDb.MiddleNames = Item.MiddleNames;
-                            globalUserDb.Surname = Item.Surname;
-                            globalUserDb.Email = Item.Email; // just in case
-                            globalUserDb.UserName = Item.UserName; // just in case
-
-                            await ModelContext.SaveChangesAsync();
-                            Success = true;
-                        }
-                    }
+                    return await Result();
                 }
                 else
                 {
-                    AddUserNotFoundError();
+                    string? originalUserName = Item.UserName;
+                    string? originalEmail = Item.Email;
+                    await Send(new HashUserIdentificationAction(Item));
+
+                    if (Item.UserName != globalUserDb.UserName)
+                    {
+                        try
+                        {
+                            await SetUserName(globalUserDb);
+                        }
+                        catch (Exception ex)
+                        {
+                            string message = ex.Message;
+                            message = ReplaceHashedDetails(message, originalUserName, originalEmail);
+                            AddValidationError(nameof(Item.UserName), message);
+                        }
+                    }
+
+                    if (Item.Email != globalUserDb.Email)
+                    {
+                        try
+                        {
+                            await StoreEmailAddress(globalUserDb);
+                        }
+                        catch (Exception ex)
+                        {
+                            string message = ex.Message;
+                            message = ReplaceHashedDetails(message, originalUserName, originalEmail);
+                            AddValidationError(nameof(Item.Email), message);
+                        }
+                    }
+
+                    if (Validation.IsValid)
+                    {
+                        globalUserDb.Forename = Item.Forename;
+                        globalUserDb.MiddleNames = Item.MiddleNames;
+                        globalUserDb.Surname = Item.Surname;
+                        globalUserDb.Email = Item.Email; // just in case
+                        globalUserDb.UserName = Item.UserName; // just in case
+
+                        await ModelContext.SaveChangesAsync();
+                        Success = true;
+                    }
                 }
             }
             else
             {
                 AddUserNotFoundError();
             }
+        }
+        else
+        {
+            AddUserNotFoundError();
         }
 
         return await Result();

@@ -8,18 +8,17 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISetSecurityQues
 {
     public required List<string> Greetings { get; set; }
     
-    public string? ReturnUrl { get; set; }
-    public string? SuccessMessage { get; set; }
-
-    public string SubmitButtonText { get; set; } = "Save";
-    public string SubmitButtonIcon { get; set; } = "fa-save";
-
     [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
     public string CurrentPassword { get; set; } = "";
 
     public bool Update { get; set; }
     public bool LockedOut { get; set; }
+
+    public string? ReturnUrl { get; set; }
+    public string? SuccessMessage { get; set; }
+    public string SubmitButtonText { get; set; } = "Save";
+    public string SubmitButtonIcon { get; set; } = "fa-save";
 }
 
 public class SetSecurityQuestionsVmValidator : SetSecurityQuestionsValidator<SetSecurityQuestionsVm>

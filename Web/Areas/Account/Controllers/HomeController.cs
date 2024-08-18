@@ -1,6 +1,6 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
-using Global.Abstractions.Extensions;
+using Global.Extensions.System;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +13,7 @@ namespace Web.Areas.Account.Controllers;
 [Area("Account")]
 public class HomeController : BaseController
 {
-    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
+    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         : base(services, userManager, signInManager)
     {
     }
@@ -34,7 +34,7 @@ public class HomeController : BaseController
         };
 
         // Clear the existing external cookie to ensure a clean login process
-        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);        
+        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         return View(model);
     }
@@ -49,7 +49,7 @@ public class HomeController : BaseController
         if (ModelState.IsValid)
         {
             var result = await Send(new LoginQuery(model, SignInManager));
-            
+
             if (result.Succeeded)
             {
                 return RedirectWithMessage(model, "Logged In Successfully");
@@ -119,9 +119,9 @@ public class HomeController : BaseController
     {
         if (SignInManager.IsSignedIn(User))
         {
-            await SignInManager.SignOutAsync();
+            await SignInManager.SignOutAsync(); // just in case
         }
-        
+
         return View();
     }
 }

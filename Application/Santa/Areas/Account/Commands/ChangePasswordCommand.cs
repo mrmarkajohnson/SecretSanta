@@ -1,4 +1,5 @@
 ﻿using Global.Abstractions.Global.Account;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -28,34 +29,33 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
             return await Result();
         }
 
-        if (SignInManager.IsSignedIn(_user))
-        {
-            string? userId = UserManager.GetUserId(_user);
-            if (userId != null)
-            {
-                var globalUserDb = GetGlobalUser(userId);
+        EnsureSignedIn(_user, SignInManager);
 
-                if (globalUserDb != null)
+        string? userId = UserManager.GetUserId(_user);
+        if (userId != null)
+        {
+            var globalUserDb = GetGlobalUser(userId);
+
+            if (globalUserDb != null)
+            {
+                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                if (!passwordCorrect || !Validation.IsValid)
                 {
-                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
-                    if (!passwordCorrect || !Validation.IsValid)
-                    {
-                        return await Result();
-                    }
-                    else
-                    {
-                        await ChangePassword(globalUserDb);
-                    }
+                    return await Result();
                 }
                 else
                 {
-                    AddUserNotFoundError();
+                    await ChangePassword(globalUserDb);
                 }
             }
             else
             {
                 AddUserNotFoundError();
             }
+        }
+        else
+        {
+            AddUserNotFoundError();
         }
 
         return await Result();

@@ -1,0 +1,131 @@
+﻿@using ViewLayer.Models.GiftingGroup
+
+@using System.Linq
+
+@model EditGiftingGroupVm
+@{
+    ViewData["Title"] = Model.Exists ? "Edit Group" : "Create Group";
+    string heading = Model.Exists ? $"Edit Gifting Group {Model.Name}" : "Create a new Gifting Group";
+    string groupNameExplanation = "Each group must have a unique name, to help members identify it.";
+    string joinerTokenExplanation = "Give this token to members who want to join the group, to control membership.";
+    string cultureInfoExplanation = "This sets the default currency symbol, number formatting etc. for members.";
+    string currencyExplanation = "Override the default currency from the location if necessary.";
+}
+
+<h1>@heading</h1>
+
+<section>
+    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SaveGiftingGroup" method="post">
+        <div class="row d-flex align-items-center justify-content-center text-center">
+
+            <div class="mb-5 mt-2">
+               <p>
+                    A gifting group is a group of people who exchange 'Secret Santa' gifts at Christmas.
+                </p>
+
+                @if (!Model.Exists)
+                {
+                    <p>
+                        When you create a new group, you are automatically an administrator of that group.
+                        Other administrators can be added later.
+                    </p>
+                }
+
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <br />
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="Name" class="control-label required"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="Name" class="form-control" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
+                            <partial name="_InputQuestion" model="@groupNameExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="Description" class="control-label required"></label>
+                        <input asp-for="Description" class="form-control" autocomplete="off" aria-required="true" placeholder="Enter a description to help identify the group" />
+                        <div>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="JoinerToken" class="control-label required"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="JoinerToken" class="form-control" readonly />
+                            <partial name="_InputQuestion" model="@joinerTokenExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="JoinerToken" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="CultureInfo" class="control-label required"></label>
+                        <div class="input-group input-info">
+                            <select asp-for="CultureInfo" class="form-control" aria-required="true">                                
+                                @foreach (var ci in Model.Cultures)
+                                {
+                                    <option value="@ci.Name" data-currency-string="@ci.CurrencyString">
+                                        @ci.Location
+                                    </option>
+                                }
+                            </select>
+                            <partial name="_InputQuestion" model="@cultureInfoExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="CultureInfo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="CurrencyOverride" class="control-label required"></label>
+                        <div class="d-flex pe-3 gap-3">
+                            <div class="col-6 d-flex">
+                                <label asp-for="DefaultCurrency" class="control-label-inline">Default: </label>
+                                <input asp-for="DefaultCurrency" class="form-control default-currency" readonly />
+                            </div>
+                            <div class="col-6 d-flex">
+                                <label class="control-label-inline">Override: </label>
+                                <div class="input-group input-info">                                    
+                                    <select asp-for="CurrencyOverride" class="form-control" aria-required="false">
+                                        <option value=""></option>
+                                        @foreach (var ci in Model.Currencies)
+                                        {
+                                            <option value="@ci.Name">
+                                                @ci.CurrencyString
+                                            </option>
+                                        }
+                                    </select>
+                                    <partial name="_InputQuestion" model="@currencyExplanation" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="CurrencyOverride" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="col-md-12">
+                    <partial name="_SubmitButton" />
+                </div>
+            </div>
+
+        </div>
+    </form>
+</section>

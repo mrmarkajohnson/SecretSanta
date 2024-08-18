@@ -26,22 +26,15 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
     {
         ISantaUser? santaUser = null;
 
-        if (_signInManager.IsSignedIn(_user))
+        Global_User? globalUserDb = GetCurrentGlobalUser(_user, _signInManager, _userManager);
+
+        if (globalUserDb != null)
         {
-            string? userId = _userManager.GetUserId(_user);
-            if (userId != null)
+            santaUser = Mapper.Map<SantaUser>(globalUserDb);
+
+            if (_unHashResults)
             {
-                Global_User? globalUserDb = GetGlobalUser(userId);
-
-                if (globalUserDb != null)
-                {
-                    santaUser = Mapper.Map<SantaUser>(globalUserDb);
-
-                    if (_unHashResults)
-                    {
-                        await Send(new UnHashUserIdentificationAction(santaUser));
-                    }
-                }
+                await Send(new UnHashUserIdentificationAction(santaUser));
             }
         }
 

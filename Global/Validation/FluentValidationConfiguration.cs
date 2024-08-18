@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Resources;
-using Global.Abstractions.Extensions;
+using Global.Extensions.System;
 using System.ComponentModel;
 using System.Reflection;
 

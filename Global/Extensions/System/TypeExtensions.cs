@@ -1,4 +1,4 @@
-﻿namespace Global.Abstractions.Extensions;
+﻿namespace Global.Extensions.System;
 
 public static class TypeExtensions
 {

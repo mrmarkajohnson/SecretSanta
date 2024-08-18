@@ -1,13 +1,13 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Global.Abstractions.Extensions;
+namespace Global.Extensions.System;
 
 public static class StringExtensions
 {
     public static string SplitPascalCase(this string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
-        
+
         Regex r = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])");
 
         return r.Replace(value, " ");
@@ -40,7 +40,7 @@ public static class StringExtensions
         {
             string result = "";
             string add = or ? "or" : "and";
-            
+
             for (int i = 0; i < list.Count(); i++)
             {
                 string element = list.ElementAt(i);
@@ -55,7 +55,7 @@ public static class StringExtensions
                 }
                 else
                 {
-                    result += (oxfordComma ? "," : "") +  $" {add} {element}";
+                    result += (oxfordComma ? "," : "") + $" {add} {element}";
                 }
             }
 

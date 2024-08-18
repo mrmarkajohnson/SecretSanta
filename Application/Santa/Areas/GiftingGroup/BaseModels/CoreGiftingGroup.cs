@@ -20,10 +20,10 @@ public class CoreGiftingGroup : IGiftingGroup
     [Required, StringLength(GiftingGroupVal.Description.MaxLength, MinimumLength = GiftingGroupVal.Description.MinLength)]
     public string Description { get; set; } = "";
 
-    [Required, StringLength(GiftingGroupVal.JoinerToken.MaxLength, MinimumLength = GiftingGroupVal.JoinerToken.MinLength)]
+    [Display(Name = "Joiner Token"), Required, StringLength(GiftingGroupVal.JoinerToken.MaxLength, MinimumLength = GiftingGroupVal.JoinerToken.MinLength)]
     public string JoinerToken { get; set; } = "";
 
-    [Required, StringLength(GiftingGroupVal.CultureInfo.MaxLength, MinimumLength = GiftingGroupVal.CultureInfo.MinLength)]
+    [Display(Name = "Main Location"), Required, StringLength(GiftingGroupVal.CultureInfo.MaxLength, MinimumLength = GiftingGroupVal.CultureInfo.MinLength)]
     public string CultureInfo { get; set; } = "en-GB";
 
     [MaxLength(GiftingGroupVal.CurrencyCodeOverride.MaxLength)]

@@ -58,6 +58,14 @@ p {
     background: #ffffff !important;
 }
 
+input:read-only {
+    background-color: #eeeeee !important;
+}
+
+input.form-control:read-only {
+    background-color: #eeeeee !important;
+}
+
 .field-validation-error {
     display: block !important;
     text-align: right;
@@ -66,6 +74,12 @@ p {
 
 label.control-label.text-center {
     text-align : center !important;
+}
+
+label.control-label-inline {
+    font-weight: 500 !important;
+    padding: 7px 7px 0 0 !important;
+    color: #333333 !important;
 }
 
 div.validation-summary-errors ul, li {

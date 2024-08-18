@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Data.Entities.Shared;
 using Global.Abstractions.Global.Account;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SecretSanta.Data;
+using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Application.Santa.Global;
 
@@ -58,14 +62,50 @@ public abstract class BaseRequest<TResult>
         return await action.Handle(Services);
     }
 
-    protected Global_User? GetGlobalUser(IIdentityUser user)
+    protected void EnsureSignedIn(ClaimsPrincipal user, SignInManager<IdentityUser> signInManager)
     {
-        return GetGlobalUser(user.Id);
+        if (!signInManager.IsSignedIn(user))
+        {
+            throw new NotSignedInException();
+        }
     }
 
-    protected Global_User? GetGlobalUser(string userId)
+    protected Global_User? GetCurrentGlobalUser(ClaimsPrincipal user, 
+        SignInManager<IdentityUser> signInManager, 
+        UserManager<IdentityUser> userManager, 
+        params Expression<Func<Global_User, object>>[] includes)
     {
-        return ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+        Global_User? globalUserDb = null;
+
+        EnsureSignedIn(user, signInManager);
+
+        string? userId = userManager.GetUserId(user);
+        if (userId != null)
+        {
+            globalUserDb = GetGlobalUser(userId);
+        }
+
+        return globalUserDb;
+    }
+
+    protected Global_User? GetGlobalUser(IIdentityUser user, params Expression<Func<Global_User, object>>[] includes)
+    {
+        return GetGlobalUser(user.Id, includes);
+    }
+
+    protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object>>[] includes)
+    {
+        if (includes != null && includes.Any())
+        {
+            var query = ModelContext.Global_Users;
+            return includes
+                .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
+                .FirstOrDefault(x => x.Id == userId);
+        }
+        else
+        {
+            return ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+        }
     }
 
     protected async Task<bool> AccessFailed(UserManager<IdentityUser> userManager, IIdentityUser user)

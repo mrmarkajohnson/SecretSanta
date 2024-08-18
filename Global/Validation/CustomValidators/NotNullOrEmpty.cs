@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Validators;
-using Global.Abstractions.Extensions;
+using Global.Extensions.System;
 
 namespace Global.Validation.CustomValidators;
 

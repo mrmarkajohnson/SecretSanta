@@ -32,7 +32,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
         ISecurityQuestions? securityQuestions = null;
         Global_User? globalUserDb = null;
 
-        if (_user != null && _signInManager.IsSignedIn(_user))
+        if (_user != null && _signInManager.IsSignedIn(_user)) // first constructor
         {
             string? userId = _userManager.GetUserId(_user);
             if (userId != null)
@@ -41,7 +41,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             }
         }
 
-        if (globalUserDb == null && !string.IsNullOrEmpty(_hashedUserName))
+        if (globalUserDb == null && !string.IsNullOrEmpty(_hashedUserName)) // second constructor
         {
             globalUserDb = ModelContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
         }

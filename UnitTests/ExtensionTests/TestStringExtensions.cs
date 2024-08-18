@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Extensions;
+﻿using Global.Extensions.System;
 using Xunit;
 
 namespace UnitTests.ExtensionTests;

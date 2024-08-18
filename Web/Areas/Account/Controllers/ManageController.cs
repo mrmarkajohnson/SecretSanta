@@ -1,7 +1,7 @@
 ﻿using Application.Santa.Areas.Account.Commands;
 using Application.Santa.Areas.Account.Queries;
-using Global.Abstractions.Extensions;
 using Global.Abstractions.Global.Account;
+using Global.Extensions.System;
 using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

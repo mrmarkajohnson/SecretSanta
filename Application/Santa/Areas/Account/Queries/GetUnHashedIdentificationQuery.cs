@@ -1,6 +1,6 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
-using Global.Abstractions.Extensions;
 using Global.Abstractions.Global.Account;
+using Global.Extensions.System;
 
 namespace Application.Santa.Areas.Account.Queries;
 

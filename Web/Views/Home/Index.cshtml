@@ -31,8 +31,6 @@
         }
         else
         {
-            // TODO: Add the main page content here
-
             <p>
                 <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
                     Update Your Details
@@ -46,6 +44,12 @@
             <p>
                 <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
                     Change Your Password
+                </a>
+            </p>
+
+            <p>
+                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                    Create a New Gifting Group
                 </a>
             </p>
         }
