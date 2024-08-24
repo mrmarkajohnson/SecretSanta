@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Data.Entities.Shared;
 using Global.Abstractions.Global.Account;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -75,17 +74,17 @@ public abstract class BaseRequest<TResult>
         UserManager<IdentityUser> userManager, 
         params Expression<Func<Global_User, object>>[] includes)
     {
-        Global_User? globalUserDb = null;
+        Global_User? dbGlobalUser = null;
 
         EnsureSignedIn(user, signInManager);
 
         string? userId = userManager.GetUserId(user);
         if (userId != null)
         {
-            globalUserDb = GetGlobalUser(userId);
+            dbGlobalUser = GetGlobalUser(userId, includes);
         }
 
-        return globalUserDb;
+        return dbGlobalUser;
     }
 
     protected Global_User? GetGlobalUser(IIdentityUser user, params Expression<Func<Global_User, object>>[] includes)

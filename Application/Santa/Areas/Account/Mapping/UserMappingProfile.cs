@@ -1,6 +1,5 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
 using AutoMapper;
-using Data.Entities.Shared;
 
 namespace Application.Santa.Areas.Account.Mapping;
 

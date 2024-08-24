@@ -17,10 +17,15 @@ This section needs to be completed...
 
 # Decisions I Made
 
-I've sometimes decided to try a different approach to what I'm use to, to see what happens!  That included using:
+I've sometimes decided to try a different approach to what I'm used to, to see what happens!  
+
+So this is experimental and not necessarily trying to use 'established best practice', what I've done elsewhere, etc.  That included using:
 - Standard JavaScript where possible, as I was rusty (although JQuery was already embedded)
 - ASP.NET Identity and User Secrets (for development) but with my own modifications
 - Encryption of usernames, e-mails and security answers to keep future users safe, e.g. if this is cloned
 - Base classes that extend to the view models, to try to avoid DTOs with lots of replication
 - Entity Framework Core, as I'd only used EF6 before
 - Bootstrap 5, as I was used to Bootstrap 3
+- My own 'light' version of CQRS without using (e.g.) Mediator, to see what happens, adding 'Actions' that just update an item
+
+I've made light use of AutoMapper, e.g. avoiding mapping to Entities, as version 12 takes away a lot of functionality. 

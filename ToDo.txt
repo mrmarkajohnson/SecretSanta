@@ -6,6 +6,7 @@ Add back buttons to relevant pages
 Use IIS?
 Add auditing
 Ensure all deletions and archives are handled
+Ensure custom exceptions are handled
 
 USERS/SECURITY
 Go straight to security questions after registering, using text from home page

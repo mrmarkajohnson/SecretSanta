@@ -74,7 +74,7 @@
                     <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                         <label asp-for="CultureInfo" class="control-label required"></label>
                         <div class="input-group input-info">
-                            <select asp-for="CultureInfo" class="form-control" aria-required="true">                                
+                            <select asp-for="CultureInfo" class="form-control culture-info-select" aria-required="true">                                
                                 @foreach (var ci in Model.Cultures)
                                 {
                                     <option value="@ci.Name" data-currency-string="@ci.CurrencyString">

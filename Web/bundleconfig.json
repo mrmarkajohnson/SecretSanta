@@ -59,5 +59,27 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/GiftingGroup/Manage/CreateGiftingGroup/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/GiftingGroup/editGiftingGroup.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/GiftingGroup/Manage/EditGiftingGroup/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/GiftingGroup/editGiftingGroup.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
   }
-]  
+]

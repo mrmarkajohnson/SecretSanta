@@ -1,5 +1,4 @@
-﻿using Data.Entities.Shared;
-using Global.Abstractions.Santa.Areas.Account;
+﻿using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
@@ -26,35 +25,35 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
         return (IUserEmailStore<IdentityUser>)UserStore;
     }
 
-    private protected async Task SetUserName(Global_User globalUserDb) // use this approach so it is thoroughly checked
+    private protected async Task SetUserName(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
     {
-        await UserStore.SetUserNameAsync(globalUserDb, Item.UserName, CancellationToken.None);
+        await UserStore.SetUserNameAsync(dbGlobalUser, Item.UserName, CancellationToken.None);
     }
 
-    private protected async Task StoreEmailAddress(Global_User globalUserDb) // use this approach so it is thoroughly checked
+    private protected async Task StoreEmailAddress(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
     {
         if (!string.IsNullOrWhiteSpace(Item.Email))
         {
             try
             {
-                await GetEmailStore().SetEmailAsync(globalUserDb, Item.Email, CancellationToken.None);
+                await GetEmailStore().SetEmailAsync(dbGlobalUser, Item.Email, CancellationToken.None);
             }
             catch
             {
                 try
                 {
-                    await UserManager.SetEmailAsync(globalUserDb, Item.Email);
+                    await UserManager.SetEmailAsync(dbGlobalUser, Item.Email);
                 }
                 catch
                 {
-                    string token = await UserManager.GenerateChangeEmailTokenAsync(globalUserDb, Item.Email);
-                    await UserManager.ChangeEmailAsync(globalUserDb, Item.Email, token);
+                    string token = await UserManager.GenerateChangeEmailTokenAsync(dbGlobalUser, Item.Email);
+                    await UserManager.ChangeEmailAsync(dbGlobalUser, Item.Email, token);
                 }
             }
         }
         else
         {
-            globalUserDb.Email = null;
+            dbGlobalUser.Email = null;
         }
     }
 

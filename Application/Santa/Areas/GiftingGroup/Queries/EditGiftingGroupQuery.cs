@@ -1,5 +1,4 @@
 ﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
-using Data.Entities.Shared;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -24,22 +23,22 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
 
     protected async override Task<IGiftingGroup> Handle()
     {
-        Global_User? globalUserDb = GetCurrentGlobalUser(_user, _signInManager, _userManager, 
+        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager, 
             g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
-        if (globalUserDb != null)
+        if (dbGlobalUser != null)
         {
-            var santaUser = globalUserDb.SantaUser;
+            Santa_User? dbSantaUser = dbGlobalUser.SantaUser;
 
-            if (santaUser != null)
+            if (dbSantaUser != null)
             {
-                var giftingGroupLink = santaUser.GiftingGroupLinks.FirstOrDefault(x => x.GiftingGroupId == _groupId);
+                Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks.FirstOrDefault(x => x.GiftingGroupId == _groupId);
 
-                if (giftingGroupLink != null)
+                if (dbGiftingGroupLink != null)
                 {
-                    if (giftingGroupLink.GroupAdmin)
+                    if (dbGiftingGroupLink.GroupAdmin)
                     {
-                        return Mapper.Map<IGiftingGroup>(giftingGroupLink.GiftingGroup);
+                        return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
                     }
                     else
                     {

@@ -1,5 +1,4 @@
-﻿using Data.Entities.Shared;
-using Global.Abstractions.Global.Account;
+﻿using Global.Abstractions.Global.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
@@ -11,18 +10,18 @@ public abstract class ChangePasswordBaseCommand<TItem> : UserBaseCommand<TItem> 
     {
     }
 
-    protected async Task ChangePassword(Global_User globalUserDb)
+    protected async Task ChangePassword(Global_User dbGlobalUser)
     {
-        string token = await UserManager.GeneratePasswordResetTokenAsync(globalUserDb); // can't call the reset directly
+        string token = await UserManager.GeneratePasswordResetTokenAsync(dbGlobalUser); // can't call the reset directly
 
-        var resetUser = await UserManager.FindByIdAsync(globalUserDb.Id); // avoid 'cannot be tracked' error
+        var resetUser = await UserManager.FindByIdAsync(dbGlobalUser.Id); // avoid 'cannot be tracked' error
         if (resetUser != null)
         {
             var result = await UserManager.ResetPasswordAsync(resetUser, token, Item.Password);
 
             if (result.Succeeded)
             {
-                await SignInManager.SignInAsync(globalUserDb, isPersistent: false);
+                await SignInManager.SignInAsync(dbGlobalUser, isPersistent: false);
                 Success = true;
             }
             else

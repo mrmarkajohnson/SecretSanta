@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.Queries;
+﻿using Application.Santa.Areas.GiftingGroup.Commands;
+using Application.Santa.Areas.GiftingGroup.Queries;
 using Global.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -57,10 +58,17 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> SaveGiftingGroup(EditGiftingGroupVm model)
     {
+        string saved = model.Id > 0 ? "Created" : "Updated";
+
+        var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model, User, UserManager, SignInManager), new EditGiftingGroupVmValidator());
         
-        
-        throw new NotImplementedException();
+        if (commandResult.Success)
+        {
+            model.ReturnUrl ??= Url.Content("~/");
+            return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
+        }
 
         model.SubmitButtonText = model.Id > 0 ? "Create" : "Save Changes";
+        return EditGiftingGroup(model);
     }
 }

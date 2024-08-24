@@ -4,6 +4,7 @@ using Global.Extensions.System;
 using static Global.Settings.GlobalSettings;
 
 using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace ViewLayer.Models.GiftingGroup;
 
@@ -12,7 +13,27 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
     public bool Exists => Id > 0;
 
     [Display(Name = "Currency")]
-    public string CurrencyOverride { get; set; } = "";
+    public string CurrencyOverride
+    {
+        get => CultureInfoExtensions.GetCurrencyString(CurrencyCodeOverride, CurrencySymbolOverride);
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                CurrencyCodeOverride = CurrencySymbolOverride = "";
+            }
+            else if (value.Contains(" ("))
+            {
+                string[] parts = value.Split(" (");
+                CurrencyCodeOverride = parts[0];
+                CurrencySymbolOverride = parts[1].Replace(")", "");
+            }
+            else
+            {
+                CurrencyCodeOverride = CurrencySymbolOverride = value;
+            }
+        }
+    }
 
     public string? DefaultCurrency => Cultures?.FirstOrDefault(x => x.Name == CultureInfo)?.CurrencyString;
 
@@ -31,4 +52,9 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
     public string? SuccessMessage { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";
     public virtual string SubmitButtonIcon { get; set; } = "fa-save";
+}
+
+public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
+{
+    // TODO: Add validation
 }

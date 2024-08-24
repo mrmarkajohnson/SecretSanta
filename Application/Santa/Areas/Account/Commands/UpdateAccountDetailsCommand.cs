@@ -27,11 +27,11 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
         string? userId = UserManager.GetUserId(_user);
         if (userId != null && userId == Item.Id)
         {
-            var globalUserDb = GetGlobalUser(userId);
+            Global_User? dbGlobalUser = GetGlobalUser(userId);
 
-            if (globalUserDb != null)
+            if (dbGlobalUser != null)
             {
-                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, globalUserDb);
+                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, dbGlobalUser);
                 if (!passwordCorrect || !Validation.IsValid)
                 {
                     return await Result();
@@ -42,11 +42,11 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                     string? originalEmail = Item.Email;
                     await Send(new HashUserIdentificationAction(Item));
 
-                    if (Item.UserName != globalUserDb.UserName)
+                    if (Item.UserName != dbGlobalUser.UserName)
                     {
                         try
                         {
-                            await SetUserName(globalUserDb);
+                            await SetUserName(dbGlobalUser);
                         }
                         catch (Exception ex)
                         {
@@ -56,11 +56,11 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                         }
                     }
 
-                    if (Item.Email != globalUserDb.Email)
+                    if (Item.Email != dbGlobalUser.Email)
                     {
                         try
                         {
-                            await StoreEmailAddress(globalUserDb);
+                            await StoreEmailAddress(dbGlobalUser);
                         }
                         catch (Exception ex)
                         {
@@ -72,11 +72,11 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
 
                     if (Validation.IsValid)
                     {
-                        globalUserDb.Forename = Item.Forename;
-                        globalUserDb.MiddleNames = Item.MiddleNames;
-                        globalUserDb.Surname = Item.Surname;
-                        globalUserDb.Email = Item.Email; // just in case
-                        globalUserDb.UserName = Item.UserName; // just in case
+                        dbGlobalUser.Forename = Item.Forename;
+                        dbGlobalUser.MiddleNames = Item.MiddleNames;
+                        dbGlobalUser.Surname = Item.Surname;
+                        dbGlobalUser.Email = Item.Email; // just in case
+                        dbGlobalUser.UserName = Item.UserName; // just in case
 
                         await ModelContext.SaveChangesAsync();
                         Success = true;

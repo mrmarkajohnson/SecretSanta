@@ -17,12 +17,27 @@ public static class CultureInfoExtensions
             Location = location,
             IsoCurrency = regionInfo?.ISOCurrencySymbol,
             CurrencySymbol = regionInfo?.CurrencySymbol,
-            CurrencyString = regionInfo != null 
-                ? (regionInfo.ISOCurrencySymbol != regionInfo.CurrencySymbol 
-                    ? $"{regionInfo.ISOCurrencySymbol} ({regionInfo.CurrencySymbol})"
-                    : regionInfo.ISOCurrencySymbol)
-                : null
+            CurrencyString = regionInfo != null ? GetCurrencyString(regionInfo) : null
         };
+    }
+
+    private static string GetCurrencyString(RegionInfo regionInfo)
+    {
+        return GetCurrencyString(regionInfo.ISOCurrencySymbol, regionInfo.CurrencySymbol);
+    }
+
+    public static string GetCurrencyString(string? isoCurrency, string? currencySymbol)
+    {
+        isoCurrency = isoCurrency?.Trim() ?? "";
+        currencySymbol = currencySymbol?.Trim() ?? "";
+
+        return isoCurrency == currencySymbol
+            ? (isoCurrency == ""
+                ? "" // both empty
+                : isoCurrency) // both the same, not empty
+            : (currencySymbol == ""
+                ? isoCurrency // can't be empty
+                : $"{isoCurrency} ({currencySymbol})"); // neither empty but not the same
     }
 }
 

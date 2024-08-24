@@ -1,7 +1,4 @@
 ﻿using Application.Santa.Areas.Account.Actions;
-using Data.Entities.Santa;
-using Data.Entities.Shared;
-using FluentValidation.Results;
 using Global.Abstractions.Santa.Areas.Account;
 using Global.Extensions.System;
 using Global.Settings;
@@ -28,7 +25,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
 
         await Send(new HashUserIdentificationAction(Item));
 
-        var globalUserDb = new Global_User
+        var dbGlobalUser = new Global_User
         {
             Forename = Item.Forename,
             MiddleNames = Item.MiddleNames,
@@ -38,27 +35,27 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
             Greeting = Item.Greeting
         };
 
-        var santaUserDb = new Santa_User
+        var dbSantaUser = new Santa_User
         {
-            GlobalUserId = globalUserDb.Id,
-            GlobalUser = globalUserDb
+            GlobalUserId = dbGlobalUser.Id,
+            GlobalUser = dbGlobalUser
         };
 
-        globalUserDb.SantaUser = santaUserDb;
+        dbGlobalUser.SantaUser = dbSantaUser;
 
         ModelContext.ChangeTracker.DetectChanges();
 
-        IdentityResult result = await UserManager.CreateAsync(globalUserDb, Item.Password);
+        IdentityResult result = await UserManager.CreateAsync(dbGlobalUser, Item.Password);
 
         if (result.Succeeded)
         {
-            await SetUserName(globalUserDb);
-            await StoreEmailAddress(globalUserDb);
+            await SetUserName(dbGlobalUser);
+            await StoreEmailAddress(dbGlobalUser);
 
             Item.Password = "";
             await ModelContext.SaveChangesAsync();
             Success = true;
-            await SignInManager.SignInAsync(globalUserDb, isPersistent: false);
+            await SignInManager.SignInAsync(dbGlobalUser, isPersistent: false);
         }
         else
         {

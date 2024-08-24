@@ -29,14 +29,14 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
 
             bool isEmail = EmailHelper.IsEmail(_userNameOrEmail);
 
-            var globalUserDb = ModelContext.Global_Users
+            var dbGlobalUser = ModelContext.Global_Users
                 .FirstOrDefault(x => x.Forename.ToLower() == _foreName.ToLower()
                     && ((hashedId.UserNameHash != null && x.UserName == hashedId.UserNameHash) || (isEmail && x.Email == hashedId.EmailHash)));
             
-            if (globalUserDb != null)
+            if (dbGlobalUser != null)
             {
                 santaUser = new SantaUser();
-                Mapper.Map(globalUserDb, santaUser);
+                Mapper.Map(dbGlobalUser, santaUser);
 
                 if (_unHashResults)
                 {

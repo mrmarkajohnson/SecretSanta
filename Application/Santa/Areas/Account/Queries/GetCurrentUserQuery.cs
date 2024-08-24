@@ -1,6 +1,5 @@
 ﻿using Application.Santa.Areas.Account.Actions;
 using Application.Santa.Areas.Account.BaseModels;
-using Data.Entities.Shared;
 using Global.Abstractions.Santa.Areas.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -26,11 +25,11 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
     {
         ISantaUser? santaUser = null;
 
-        Global_User? globalUserDb = GetCurrentGlobalUser(_user, _signInManager, _userManager);
+        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager);
 
-        if (globalUserDb != null)
+        if (dbGlobalUser != null)
         {
-            santaUser = Mapper.Map<SantaUser>(globalUserDb);
+            santaUser = Mapper.Map<SantaUser>(dbGlobalUser);
 
             if (_unHashResults)
             {
