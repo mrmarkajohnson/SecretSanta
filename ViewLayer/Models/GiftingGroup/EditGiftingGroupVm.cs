@@ -5,6 +5,7 @@ using static Global.Settings.GlobalSettings;
 
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
+using Global.Validation;
 
 namespace ViewLayer.Models.GiftingGroup;
 
@@ -56,5 +57,12 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
 
 public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
 {
-    // TODO: Add validation
+    public EditGiftingGroupVmValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().Length(GiftingGroupVal.Name.MinLength, GiftingGroupVal.Name.MaxLength);
+        RuleFor(x => x.Description).NotEmpty().Length(GiftingGroupVal.Description.MinLength, GiftingGroupVal.Description.MaxLength);
+        RuleFor(x => x.JoinerToken).NotEmpty();
+        RuleFor(x => x.CultureInfo).IsInDropDownList(x => x.Cultures.Select(y => y.Name), false);
+        RuleFor(x => x.CurrencyOverride).IsInDropDownList(x => x.Currencies.Select(y => y.Name), true);
+    }
 }

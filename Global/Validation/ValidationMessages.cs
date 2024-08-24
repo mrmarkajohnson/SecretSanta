@@ -24,6 +24,7 @@ public static class ValidationMessages
     public const string NotInRangeError = "{0} has a range of values which does not include {1}.";
     public const string EmptyError = "{0} must be empty.";
     public const string NotValidError = "{0} is not valid.";
+    public const string NotInDropDownError = "Please select a {0} from the drop-down list.";
 
     internal static readonly IList<ValidationMessageLink> MessageLinks =
     [
