@@ -1,4 +1,5 @@
-﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Application.Santa.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -25,51 +26,84 @@ public class SaveGiftingGroupCommand<T> : BaseCommand<T> where T : IGiftingGroup
     {
         EnsureSignedIn(_user, _signInManager);
 
-        Santa_GiftingGroup? dbItem = null;
+        Santa_GiftingGroup? dbGiftingGroup = null;
+
+        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager,
+                g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+
+        // TODO: Ensure the name is unique if new or changed
 
         if (Item.Id > 0)
         {
-            Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager,
-                g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-
-            Santa_GiftingGroupUser? dbGiftingGroupLink = dbGlobalUser?.SantaUser?.GiftingGroupLinks.FirstOrDefault(x => x.GiftingGroupId == Item.Id);
+            Santa_GiftingGroupUser? dbGiftingGroupLink = dbGlobalUser?.SantaUser?.GiftingGroupLinks
+                .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+                .FirstOrDefault(x => x.GiftingGroupId == Item.Id);
 
             if (dbGiftingGroupLink != null)
             {
                 if (dbGiftingGroupLink.GroupAdmin)
                 {
-                    dbItem = dbGiftingGroupLink.GiftingGroup;
+                    dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
-                    // TODO: Check that the name is unique if changed
+                    if (Item.JoinerToken != dbGiftingGroup.JoinerToken)
+                    {
+                        await ReplaceTokenIfNotUnique();
+                    }
                 }
                 else
                 {
                     throw new AccessDeniedException();
                 }
-            }
-
-            if (dbItem == null)
-            {
-                throw new NotFoundException("Gifting Group");
-            }
+            }            
         }
-        else
+        else if (dbGlobalUser?.SantaUser != null)
         {
-            // TODO: Check that the name, token etc.are unique
+            await ReplaceTokenIfNotUnique();
 
-            dbItem = new Santa_GiftingGroup();
-            ModelContext.Add(dbItem);
+            dbGiftingGroup = new Santa_GiftingGroup();
+            ModelContext.Add(dbGiftingGroup);
+
+            dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
+            {
+                GroupAdmin = true,
+                UserId = dbGlobalUser.SantaUser.Id,
+                User = dbGlobalUser.SantaUser,
+                GiftingGroup = dbGiftingGroup
+            });
         }
 
-        dbItem.Name = Item.Name;
-        dbItem.Description = Item.Description;
-        dbItem.JoinerToken = Item.JoinerToken;
-        dbItem.CultureInfo = Item.CultureInfo;
-        dbItem.CurrencyCodeOverride = Item.CurrencyCodeOverride;
-        dbItem.CurrencySymbolOverride = Item.CurrencySymbolOverride;
+        if (dbGiftingGroup == null)
+        {
+            throw new NotFoundException("Gifting Group");
+        }
 
-        await ModelContext.SaveChangesAsync();
-        Success = true;
+        if (Item.Name != dbGiftingGroup.Name)
+        {
+            List<string> existingNames = ModelContext.Santa_GiftingGroups.Select(x => x.Name).ToList();
+            if (existingNames.Contains(Item.Name.Trim()))
+            {
+                AddValidationError(nameof(Item.Name),  $"Another group with name '{Item.Name}' already exists. Names must be unique.");
+            }
+        }
+
+        if (Validation.IsValid)
+        {
+            dbGiftingGroup.Name = Item.Name.Trim();
+            dbGiftingGroup.Description = Item.Description.Trim();
+            dbGiftingGroup.JoinerToken = Item.JoinerToken;
+            dbGiftingGroup.CultureInfo = Item.CultureInfo;
+            dbGiftingGroup.CurrencyCodeOverride = Item.CurrencyCodeOverride;
+            dbGiftingGroup.CurrencySymbolOverride = Item.CurrencySymbolOverride;
+
+            await ModelContext.SaveChangesAsync();
+            Success = true;
+        }
+
         return await Result();
+    }
+
+    private async Task ReplaceTokenIfNotUnique()
+    {
+        Item.JoinerToken = await Send(new GetUniqueJoinerTokenQuery(Item.JoinerToken));
     }
 }

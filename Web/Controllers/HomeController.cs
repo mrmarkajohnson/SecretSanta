@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Application.Santa.Areas.GiftingGroup.Queries;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.ViewLayer.Models;
 using System.Diagnostics;
@@ -20,6 +21,10 @@ public class HomeController : BaseController
         try
         {
             model.CurrentUser = await GetCurrentUser(true);
+            if (model.CurrentUser != null)
+            {
+                model.GiftingGroups = await Send(new GetUserGiftingGroupsQuery(User, UserManager, SignInManager));
+            }
         }
         catch { }
 

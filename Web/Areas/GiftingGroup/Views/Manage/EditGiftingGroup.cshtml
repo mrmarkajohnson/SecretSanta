@@ -18,6 +18,10 @@
     <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SaveGiftingGroup" method="post">
         <div class="row d-flex align-items-center justify-content-center text-center">
 
+            <div class="collapse">
+                <input type="hidden" asp-for="Id">
+            </div>
+            
             <div class="mb-5 mt-2">
                <p>
                     A gifting group is a group of people who exchange 'Secret Santa' gifts at Christmas.

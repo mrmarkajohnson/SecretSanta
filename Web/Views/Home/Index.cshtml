@@ -24,7 +24,7 @@
         {
             <p>
                 Santa has one final task for you before he can accept your wish list. Please set some
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
                     security questions
                 </a> in case you forget your password and need to reset it.
             </p>
@@ -32,27 +32,39 @@
         else
         {
             <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">
                     Update Your Details
                 </a>
             </p>
             <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
                     Update Your Security Questions
                 </a>
             </p>
             <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword">
                     Change Your Password
                 </a>
             </p>
 
             <p>
-                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
+                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
                     Create a New Gifting Group
                 </a>
             </p>
-        }
+
+            @if (Model?.GiftingGroups?.Any() == true)
+            {
+                @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+                {
+                    <p>
+                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId = "@giftingGroup.GroupId">
+                            Edit Gifting Group '@giftingGroup.GroupName'
+                        </a>
+                    </p>
+                }
+            }
+    }
     </div>
 }
 else
@@ -60,7 +72,7 @@ else
     <h1>Welcome to Secret Santa!</h1>
     <div class="mt-2">
         <p>
-            Please <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">log in</a> if you have an account,
+            Please <a asp-area="Account" asp-controller="Home" asp-action="Login">log in</a> if you have an account,
             or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
         </p>
         <p>

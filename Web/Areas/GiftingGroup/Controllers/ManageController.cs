@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.Commands;
+﻿using Application.Santa.Areas.GiftingGroup;
+using Application.Santa.Areas.GiftingGroup.Commands;
 using Application.Santa.Areas.GiftingGroup.Queries;
 using Global.Helpers;
 using Microsoft.AspNetCore.Identity;
@@ -21,12 +22,12 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public IActionResult CreateGiftingGroup()
+    public async Task<IActionResult> CreateGiftingGroup()
     {
         var model = new EditGiftingGroupVm
         {
             SubmitButtonText = "Create",
-            JoinerToken = RandomHelper.RandomAlphanumericCharacters(20) // TODO: Check it's unique
+            JoinerToken = await Send(new GetUniqueJoinerTokenQuery())
         };
 
         return EditGiftingGroup(model);

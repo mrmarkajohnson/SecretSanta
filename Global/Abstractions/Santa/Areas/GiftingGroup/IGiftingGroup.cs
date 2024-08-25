@@ -7,7 +7,7 @@ public interface IGiftingGroup
     string Name { get; }
     string Description { get; }
 
-    string JoinerToken { get; }
+    string JoinerToken { get; set; }
 
     string CultureInfo { get; }
     string? CurrencyCodeOverride { get; }

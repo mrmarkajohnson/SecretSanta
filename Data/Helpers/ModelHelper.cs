@@ -41,7 +41,7 @@ internal static class ModelHelper
         modelBuilder.Entity<Santa_GiftingGroupUser>()
             .HasOne(e => e.User)
             .WithMany(e => e.GiftingGroupLinks)
-            .HasForeignKey(e => e.GiftingGroupId)
+            .HasForeignKey(e => e.UserId)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 

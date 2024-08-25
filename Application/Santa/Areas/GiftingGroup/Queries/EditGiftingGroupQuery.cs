@@ -23,6 +23,11 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
 
     protected async override Task<IGiftingGroup> Handle()
     {
+        if (_groupId == 0)
+        {
+            return new CoreGiftingGroup();
+        }
+        
         Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager, 
             g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
@@ -32,7 +37,9 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
 
             if (dbSantaUser != null)
             {
-                Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks.FirstOrDefault(x => x.GiftingGroupId == _groupId);
+                Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
+                    .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+                    .FirstOrDefault(x => x.GiftingGroupId == _groupId);
 
                 if (dbGiftingGroupLink != null)
                 {
@@ -48,6 +55,6 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
             }
         }
 
-        return new CoreGiftingGroup();
+        throw new NotFoundException("Gifting Group");
     }
 }

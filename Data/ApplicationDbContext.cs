@@ -65,7 +65,9 @@ public class ApplicationDbContext : IdentityDbContext
             connectionStringBuilder.Password = configuration["DatabaseSettings:DevPassword"];
             string connectionString = connectionStringBuilder.ConnectionString;
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder
+                .UseLazyLoadingProxies()
+                .UseSqlServer(connectionString);
         }
     }
 }        
