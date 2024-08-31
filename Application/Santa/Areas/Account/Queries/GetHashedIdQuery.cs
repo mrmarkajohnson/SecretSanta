@@ -7,9 +7,9 @@ internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
 {
     public GetHashedIdQuery(string userNameOrEmail, bool hashed) : base(new CoreIdentityUser())
     {
-        User.UserName = userNameOrEmail;
-        User.Email = EmailHelper.IsEmail(userNameOrEmail) ? userNameOrEmail : null;
-        User.IdentificationHashed = hashed;
+        IdentityUser.UserName = userNameOrEmail;
+        IdentityUser.Email = EmailHelper.IsEmail(userNameOrEmail) ? userNameOrEmail : null;
+        IdentityUser.IdentificationHashed = hashed;
     }
 
     protected async override Task<HashedUserId> Handle()

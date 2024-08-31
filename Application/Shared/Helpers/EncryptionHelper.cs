@@ -17,9 +17,9 @@ internal static class EncryptionHelper
 
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    public static string OneWayEncrypt(string? value, IIdentityUser user)
+    public static string OneWayEncrypt(string? value, IIdentityUser identityUser)
     {
-        return OneWayEncrypt(value, user.Id);
+        return OneWayEncrypt(value, identityUser.Id);
     }
 
     public static string OneWayEncrypt(string? value, string saltKey)

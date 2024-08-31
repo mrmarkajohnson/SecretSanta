@@ -6,25 +6,25 @@ namespace Application.Santa.Areas.Account.Queries;
 
 internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGreeting>
 {
-    private readonly IIdentityUser _user;
+    private readonly IIdentityUser _identityUser;
 
-    public GetUnHashedIdentificationQuery(IIdentityUser user)
+    public GetUnHashedIdentificationQuery(IIdentityUser identityUser)
     {
-        _user = user;
+        _identityUser = identityUser;
     }
 
     protected override Task<UnHashedUserIdWithGreeting> Handle()
     {
-        string? email = string.IsNullOrWhiteSpace(_user.Email) ? null
-            : _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
-            : _user.Email;
+        string? email = string.IsNullOrWhiteSpace(_identityUser.Email) ? null
+            : _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
+            : _identityUser.Email;
 
-        string? userName = string.IsNullOrWhiteSpace(_user.UserName) ? email
-            : _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.UserName, true)
-            : _user.UserName;
+        string? userName = string.IsNullOrWhiteSpace(_identityUser.UserName) ? email
+            : _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.UserName, true)
+            : _identityUser.UserName;
 
-        string greeting = _user.IdentificationHashed ? EncryptionHelper.Decrypt(_user.Greeting, false, _user.Id) : 
-            _user.Greeting;
+        string greeting = _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.Greeting, false, _identityUser.Id) : 
+            _identityUser.Greeting;
 
         return Task.FromResult(new UnHashedUserIdWithGreeting
         {

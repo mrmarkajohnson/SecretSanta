@@ -1,7 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup;
-using Application.Santa.Areas.GiftingGroup.Commands;
+﻿using Application.Santa.Areas.GiftingGroup.Commands;
 using Application.Santa.Areas.GiftingGroup.Queries;
-using Global.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.GiftingGroup;
@@ -12,7 +10,7 @@ namespace Web.Areas.GiftingGroup.Controllers;
 [Area("GiftingGroup")]
 public class ManageController : BaseController
 {
-    public ManageController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(services, userManager, signInManager)
+    public ManageController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {
     }
 
@@ -41,7 +39,7 @@ public class ManageController : BaseController
             SubmitButtonText = "Save Changes"
         };
 
-        var groupDetails = await Send(new EditGiftingGroupQuery(groupId, User, UserManager, SignInManager));
+        var groupDetails = await Send(new EditGiftingGroupQuery(groupId));
 
         if (groupDetails != null)
         {
@@ -61,7 +59,7 @@ public class ManageController : BaseController
     {
         string saved = model.Id > 0 ? "Created" : "Updated";
 
-        var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model, User, UserManager, SignInManager), new EditGiftingGroupVmValidator());
+        var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
         
         if (commandResult.Success)
         {

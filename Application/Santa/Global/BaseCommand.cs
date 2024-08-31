@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using System.Security.Claims;
 
 namespace Application.Santa.Global;
 
@@ -16,9 +17,9 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         Item = item;
     }
 
-    public override async Task<ICommandResult<TItem>> Handle(IServiceProvider services)
+    public override async Task<ICommandResult<TItem>> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
-        Initialise(services);
+        Initialise(services, claimsUser);
 
         if (Validator != null && !Validation.RuleSetsExecuted.Any())
         {
@@ -62,7 +63,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             throw new ArgumentException("Services cannot be null");
         }
 
-        ICommandResult<UItem> commandResult = await subCommand.Handle(Services);
+        ICommandResult<UItem> commandResult = await subCommand.Handle(Services, ClaimsUser);
 
         Validation.Errors.AddRange(commandResult.Validation.Errors);
 

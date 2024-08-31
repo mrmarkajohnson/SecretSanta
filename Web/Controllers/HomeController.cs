@@ -10,7 +10,7 @@ namespace SecretSanta.Controllers;
 
 public class HomeController : BaseController
 {
-    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : base(services, userManager, signInManager)
+    public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {
     }
 
@@ -23,7 +23,7 @@ public class HomeController : BaseController
             model.CurrentUser = await GetCurrentUser(true);
             if (model.CurrentUser != null)
             {
-                model.GiftingGroups = await Send(new GetUserGiftingGroupsQuery(User, UserManager, SignInManager));
+                model.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
             }
         }
         catch { }

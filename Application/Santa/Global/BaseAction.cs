@@ -1,4 +1,6 @@
-﻿namespace Application.Santa.Global;
+﻿using System.Security.Claims;
+
+namespace Application.Santa.Global;
 
 /// <summary>
 /// An Action is like a query but it transforms the object passed in, instead of retrieving somethig
@@ -8,9 +10,9 @@ public abstract class BaseAction<TItem> : BaseRequest<bool>
 {
     protected bool Success { get; set; }
 
-    public override async Task<bool> Handle(IServiceProvider services)
+    public override async Task<bool> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
-        Initialise(services);
+        Initialise(services, claimsUser);
         return await Handle();
     }
 

@@ -15,8 +15,8 @@ public class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
-    public ManageController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore)
-        : base(services, userManager, signInManager)
+    public ManageController(IServiceProvider services, SignInManager<IdentityUser> signInManager, IUserStore<IdentityUser> userStore)
+        : base(services, signInManager)
     {
         _userStore = userStore;
     }
@@ -41,7 +41,7 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            var commandResult = await Send(new CreateSantaUserCommand<RegisterVm>(model, UserManager, _userStore, SignInManager),
+            var commandResult = await Send(new CreateSantaUserCommand<RegisterVm>(model, _userStore),
                 new RegisterVmValidator());
 
             if (commandResult.Success)
@@ -58,7 +58,7 @@ public class ManageController : BaseController
     {
         if (SignInManager.IsSignedIn(User))
         {
-            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));            
+            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());            
             string? currentGreeting = currentSecurityQuestions?.Greeting;
 
             if (string.IsNullOrWhiteSpace(currentGreeting))
@@ -108,11 +108,11 @@ public class ManageController : BaseController
         {
             if (!model.Update) // in case the user removed it
             {
-                ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery(User, UserManager, SignInManager));
+                ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());
                 model.Update = currentSecurityQuestions?.SecurityQuestionsSet == true; // current password must be confirmed
             }
 
-            var commandResult = await Send(new SetSecurityQuestionsCommand<SetSecurityQuestionsVm>(model, User, UserManager, SignInManager),
+            var commandResult = await Send(new SetSecurityQuestionsCommand<SetSecurityQuestionsVm>(model),
                 new SetSecurityQuestionsVmValidator());
 
             if (commandResult.Success)
@@ -157,7 +157,7 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            var commandResult = await Send(new UpdateAccountDetailsCommand<UpdateDetailsVm>(model, User, UserManager, _userStore, SignInManager),
+            var commandResult = await Send(new UpdateAccountDetailsCommand<UpdateDetailsVm>(model, _userStore),
                 new UpdateDetailsVmValidator());
 
             if (commandResult.Success)
@@ -201,7 +201,7 @@ public class ManageController : BaseController
 
         if (ModelState.IsValid)
         {
-            var commandResult = await Send(new ChangePasswordCommand<ChangePasswordVm>(model, User, UserManager, SignInManager),
+            var commandResult = await Send(new ChangePasswordCommand<ChangePasswordVm>(model),
                 new ChangePasswordVmValidator());
 
             if (commandResult.Success)

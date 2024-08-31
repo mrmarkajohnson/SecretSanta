@@ -14,10 +14,9 @@ namespace Web.Controllers;
 
 public class BaseController : Controller
 {
-    public BaseController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public BaseController(IServiceProvider services, SignInManager<IdentityUser> signInManager)
     {
         Services = services;
-        UserManager = userManager;
         SignInManager = signInManager;
 
         Mapper = services.GetRequiredService<IMapper>();
@@ -29,7 +28,6 @@ public class BaseController : Controller
     }
 
     public IServiceProvider Services { get; }
-    protected UserManager<IdentityUser> UserManager { get; private init; }
     protected SignInManager<IdentityUser> SignInManager { get; private init; }
     protected IMapper Mapper { get; set; }
 
@@ -46,18 +44,18 @@ public class BaseController : Controller
 
     protected async Task<ISantaUser?> GetCurrentUser(bool unHashIdentification)
     {
-        return await Send(new GetCurrentUserQuery(User, UserManager, SignInManager, unHashIdentification));
+        return await Send(new GetCurrentUserQuery(unHashIdentification));
     }
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
-        TItem? result = await query.Handle(Services);
+        TItem? result = await query.Handle(Services, User);
         return result;
     }
 
     protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
     {
-        return await action.Handle(Services);
+        return await action.Handle(Services, User);
     }
 
     protected async Task<ICommandResult<TItem>> Send<TItem>(BaseCommand<TItem> command, AbstractValidator<TItem>? validator)
@@ -69,7 +67,7 @@ public class BaseController : Controller
             command.Validator = validator;
             command.Validation = validationResult;
 
-            ICommandResult<TItem> commandResult = await command.Handle(Services);
+            ICommandResult<TItem> commandResult = await command.Handle(Services, User);
             AddErrorsToModelState(commandResult);
 
             return commandResult;

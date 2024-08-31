@@ -1,19 +1,11 @@
 ﻿using Global.Abstractions.Global.Account;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
 {
-    private protected UserManager<IdentityUser> UserManager { get; set; }
-    private protected SignInManager<IdentityUser> SignInManager { get; set; }
-
-    public UserBaseCommand(TItem item,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item)
+    public UserBaseCommand(TItem item) : base(item)
     {
-        UserManager = userManager;
-        SignInManager = signInManager;
     }
 
     protected async Task<bool> CheckPasswordAndHandleFailure(IConfirmCurrentPassword item, Global_User dbGlobalUser)

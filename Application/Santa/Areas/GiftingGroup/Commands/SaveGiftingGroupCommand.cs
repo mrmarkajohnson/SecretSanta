@@ -1,37 +1,22 @@
 ﻿using Application.Santa.Areas.GiftingGroup.Queries;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.GiftingGroup.Commands;
 
 public class SaveGiftingGroupCommand<T> : BaseCommand<T> where T : IGiftingGroup
 {
-    private readonly ClaimsPrincipal _user;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
-
-    public SaveGiftingGroupCommand(T item,
-        ClaimsPrincipal user,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item)
+    public SaveGiftingGroupCommand(T item) : base(item)
     {
-        _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected async override Task<ICommandResult<T>> HandlePostValidation()
     {
-        EnsureSignedIn(_user, _signInManager);
+        EnsureSignedIn();
 
         Santa_GiftingGroup? dbGiftingGroup = null;
 
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager,
-                g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-
-        // TODO: Ensure the name is unique if new or changed
+        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
         if (Item.Id > 0)
         {

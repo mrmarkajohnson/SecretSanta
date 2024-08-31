@@ -1,30 +1,20 @@
 ﻿using Application.Santa.Areas.Account.Actions;
 using Global.Abstractions.Santa.Areas.Account;
-using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IUpdateSantaUser
 {
-    private readonly ClaimsPrincipal _user;
-
-    public UpdateAccountDetailsCommand(TItem item,
-        ClaimsPrincipal user,
-        UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore, signInManager)
+    public UpdateAccountDetailsCommand(TItem item, IUserStore<IdentityUser> userStore) : base(item, userStore)
     {
-        _user = user;
-        SignInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        EnsureSignedIn(_user, SignInManager);
+        EnsureSignedIn();
 
-        string? userId = UserManager.GetUserId(_user);
+        string? userId = GetCurrentUserId();
         if (userId != null && userId == Item.Id)
         {
             Global_User? dbGlobalUser = GetGlobalUser(userId);

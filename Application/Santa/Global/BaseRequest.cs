@@ -12,9 +12,40 @@ namespace Application.Santa.Global;
 
 public abstract class BaseRequest<TResult>
 {
-    protected IServiceProvider Services { get; set; }
-    protected ApplicationDbContext ModelContext { get; set; }
+    private UserManager<IdentityUser> _userManager;
+    private SignInManager<IdentityUser> _signInManager;
+
+    protected IServiceProvider Services { get; private set; }
+    protected ApplicationDbContext ModelContext { get; private set; }
     protected IMapper Mapper { get; set; }
+
+    protected ClaimsPrincipal ClaimsUser {  get; private set; }
+
+    protected UserManager<IdentityUser> UserManager 
+    { 
+        get
+        {
+            if (_userManager == null)
+            {
+                _userManager = Services.GetRequiredService<UserManager<IdentityUser>>();
+            }
+
+            return _userManager;
+        }
+    }
+
+    protected SignInManager<IdentityUser> SignInManager
+    {
+        get
+        {
+            if (_signInManager == null)
+            {
+                _signInManager = Services.GetRequiredService<SignInManager<IdentityUser>>();
+            }
+
+            return _signInManager;
+        }
+    }
 
     #pragma warning disable CS8618
     protected BaseRequest()
@@ -23,7 +54,7 @@ public abstract class BaseRequest<TResult>
     }
     #pragma warning restore CS8618
 
-    protected void Initialise(IServiceProvider services)
+    protected void Initialise(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
         if (services == null)
         {
@@ -37,9 +68,11 @@ public abstract class BaseRequest<TResult>
         {
             throw new ArgumentException("Mapper cannot be null");
         }
+
+        ClaimsUser = claimsUser;
     }
 
-    public abstract Task<TResult> Handle(IServiceProvider Services);
+    public abstract Task<TResult> Handle(IServiceProvider Services, ClaimsPrincipal claimsUser);
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
@@ -48,7 +81,7 @@ public abstract class BaseRequest<TResult>
             throw new ArgumentException("Services cannot be null");
         }
 
-        return await query.Handle(Services);
+        return await query.Handle(Services, ClaimsUser);
     }
 
     protected async Task<bool> Send<TItem>(BaseAction<TItem> action)
@@ -58,27 +91,29 @@ public abstract class BaseRequest<TResult>
             throw new ArgumentException("Services cannot be null");
         }
 
-        return await action.Handle(Services);
+        return await action.Handle(Services, ClaimsUser);
     }
 
-    protected void EnsureSignedIn(ClaimsPrincipal user, SignInManager<IdentityUser> signInManager)
+    protected void EnsureSignedIn()
     {
-        if (!signInManager.IsSignedIn(user))
+        if (!SignInManager.IsSignedIn(ClaimsUser))
         {
             throw new NotSignedInException();
         }
     }
 
-    protected Global_User? GetCurrentGlobalUser(ClaimsPrincipal user, 
-        SignInManager<IdentityUser> signInManager, 
-        UserManager<IdentityUser> userManager, 
-        params Expression<Func<Global_User, object>>[] includes)
+    protected string? GetCurrentUserId()
+    {
+        return UserManager.GetUserId(ClaimsUser);
+    }
+
+    protected Global_User? GetCurrentGlobalUser(params Expression<Func<Global_User, object>>[] includes)
     {
         Global_User? dbGlobalUser = null;
 
-        EnsureSignedIn(user, signInManager);
+        EnsureSignedIn();
 
-        string? userId = userManager.GetUserId(user);
+        string? userId = GetCurrentUserId();
         if (userId != null)
         {
             dbGlobalUser = GetGlobalUser(userId, includes);
@@ -87,9 +122,9 @@ public abstract class BaseRequest<TResult>
         return dbGlobalUser;
     }
 
-    protected Global_User? GetGlobalUser(IIdentityUser user, params Expression<Func<Global_User, object>>[] includes)
+    protected Global_User? GetGlobalUser(IIdentityUser identityUser, params Expression<Func<Global_User, object>>[] includes)
     {
-        return GetGlobalUser(user.Id, includes);
+        return GetGlobalUser(identityUser.Id, includes);
     }
 
     protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object>>[] includes)
@@ -107,11 +142,11 @@ public abstract class BaseRequest<TResult>
         }
     }
 
-    protected async Task<bool> AccessFailed(UserManager<IdentityUser> userManager, IIdentityUser user)
+    protected async Task<bool> AccessFailed(UserManager<IdentityUser> userManager, IIdentityUser identityUser)
     {
-        if (user != null)
+        if (identityUser != null)
         {
-            var dbUser = await userManager.FindByIdAsync(user.Id); // always get the user again, to avoid double tracking errors
+            var dbUser = await userManager.FindByIdAsync(identityUser.Id); // always get the user again, to avoid double tracking errors
             if (dbUser != null)
             {
                 await userManager.AccessFailedAsync(dbUser);

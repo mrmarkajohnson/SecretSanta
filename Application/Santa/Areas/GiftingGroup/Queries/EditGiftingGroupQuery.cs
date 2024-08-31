@@ -1,24 +1,16 @@
 ﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.GiftingGroup.Queries;
 
 public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
 {
     private readonly int _groupId;
-    private readonly ClaimsPrincipal _user;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public EditGiftingGroupQuery(int groupId, ClaimsPrincipal user, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public EditGiftingGroupQuery(int groupId)
     {
         _groupId = groupId;
-        _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected async override Task<IGiftingGroup> Handle()
@@ -28,8 +20,7 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
             return new CoreGiftingGroup();
         }
         
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager, 
-            g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
         if (dbGlobalUser != null)
         {
@@ -45,6 +36,7 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
                 {
                     if (dbGiftingGroupLink.GroupAdmin)
                     {
+                        await Task.CompletedTask;
                         return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
                     }
                     else

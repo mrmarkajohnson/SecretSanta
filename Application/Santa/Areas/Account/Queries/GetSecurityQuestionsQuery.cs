@@ -1,29 +1,19 @@
 ﻿using Application.Shared.Identity;
 using Global.Abstractions.Global.Account;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Queries;
 
 public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 {
-    private readonly ClaimsPrincipal? _user;
     private readonly string? _hashedUserName;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public GetSecurityQuestionsQuery(ClaimsPrincipal user, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public GetSecurityQuestionsQuery()
     {
-        _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
-    public GetSecurityQuestionsQuery(string userName, bool userNameHashed, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public GetSecurityQuestionsQuery(string userName, bool userNameHashed)
     {
         _hashedUserName = userNameHashed ? userName : EncryptionHelper.TwoWayEncrypt(userName, true);
-        _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     protected override Task<ISecurityQuestions?> Handle()
@@ -31,9 +21,9 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
         ISecurityQuestions? securityQuestions = null;
         Global_User? dbGlobalUser = null;
 
-        if (_user != null && _signInManager.IsSignedIn(_user)) // first constructor
+        if (ClaimsUser != null && SignInManager.IsSignedIn(ClaimsUser)) // first constructor
         {
-            string? userId = _userManager.GetUserId(_user);
+            string? userId = GetCurrentUserId();
             if (userId != null)
             {
                 dbGlobalUser = GetGlobalUser(userId);

@@ -1,10 +1,12 @@
-﻿namespace Application.Santa.Global;
+﻿using System.Security.Claims;
+
+namespace Application.Santa.Global;
 
 public abstract class BaseQuery<TItem> : BaseRequest<TItem>
 {
-    public override Task<TItem> Handle(IServiceProvider services)
+    public override Task<TItem> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
-        Initialise(services);
+        Initialise(services, claimsUser);
         return Handle();
     }
 

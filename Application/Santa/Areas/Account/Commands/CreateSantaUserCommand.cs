@@ -8,12 +8,8 @@ namespace Application.Santa.Areas.Account.Commands;
 
 public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IRegisterSantaUser
 {
-    public CreateSantaUserCommand(TItem item,
-        UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, userStore, signInManager)
+    public CreateSantaUserCommand(TItem item, IUserStore<IdentityUser> userStore) : base(item, userStore)
     {
-        SignInManager = signInManager;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()

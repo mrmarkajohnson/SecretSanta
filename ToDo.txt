@@ -1,7 +1,6 @@
 GENERAL
 Create menus and rework main page
 Add testing and production configuration
-Get usermanager etc. from services
 Add back buttons to relevant pages
 Use IIS?
 Add auditing

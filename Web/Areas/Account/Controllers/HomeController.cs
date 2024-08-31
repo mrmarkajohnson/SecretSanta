@@ -13,8 +13,7 @@ namespace Web.Areas.Account.Controllers;
 [Area("Account")]
 public class HomeController : BaseController
 {
-    public HomeController(IServiceProvider services, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-        : base(services, userManager, signInManager)
+    public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {
     }
 
@@ -48,7 +47,7 @@ public class HomeController : BaseController
 
         if (ModelState.IsValid)
         {
-            var result = await Send(new LoginQuery(model, SignInManager));
+            var result = await Send(new LoginQuery(model));
 
             if (result.Succeeded)
             {
@@ -103,7 +102,7 @@ public class HomeController : BaseController
     {
         ModelState.Clear();
 
-        var commandResult = await Send(new ForgotPasswordCommand<ForgotPasswordVm>(model, UserManager, SignInManager), new ForgotPasswordVmValidator());
+        var commandResult = await Send(new ForgotPasswordCommand<ForgotPasswordVm>(model), new ForgotPasswordVmValidator());
 
         if (commandResult.Success && model.PasswordResetSuccessfully)
         {

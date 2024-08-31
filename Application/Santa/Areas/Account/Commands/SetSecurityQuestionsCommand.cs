@@ -1,26 +1,18 @@
 ﻿using Global.Abstractions.Global.Account;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetSecurityQuestions
 {
-    private readonly ClaimsPrincipal _user;
-
-    public SetSecurityQuestionsCommand(TItem item,
-        ClaimsPrincipal user,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
+    public SetSecurityQuestionsCommand(TItem item) : base(item)
     {
-        _user = user;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        EnsureSignedIn(_user, SignInManager);
+        EnsureSignedIn();
 
-        string? userId = UserManager.GetUserId(_user);
+        string? userId = GetCurrentUserId();
         if (userId != null)
         {
             Global_User? dbGlobalUser = GetGlobalUser(userId);

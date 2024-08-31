@@ -1,20 +1,11 @@
 ﻿using Global.Abstractions.Global.Account;
-using Global.Extensions.Exceptions;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IChangePassword
 {
-    private readonly ClaimsPrincipal _user;
-
-    public ChangePasswordCommand(TItem item,
-        ClaimsPrincipal user,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
+    public ChangePasswordCommand(TItem item) : base(item)
     {
-        _user = user;
     }
 
     protected override async Task<ICommandResult<TItem>> HandlePostValidation()
@@ -29,9 +20,9 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
             return await Result();
         }
 
-        EnsureSignedIn(_user, SignInManager);
+        EnsureSignedIn();
 
-        string? userId = UserManager.GetUserId(_user);
+        string? userId = GetCurrentUserId();
         if (userId != null)
         {
             Global_User? dbGlobalUser = GetGlobalUser(userId);

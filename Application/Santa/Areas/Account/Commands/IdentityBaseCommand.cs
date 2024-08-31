@@ -7,10 +7,7 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 {
     private protected IUserStore<IdentityUser> UserStore { get; set; }
 
-    public IdentityBaseCommand(TItem item, 
-        UserManager<IdentityUser> userManager, 
-        IUserStore<IdentityUser> userStore, 
-        SignInManager<IdentityUser> signInManager) : base(item, userManager, signInManager)
+    public IdentityBaseCommand(TItem item, IUserStore<IdentityUser> userStore) : base(item)
     {
         UserStore = userStore;
     }

@@ -1,14 +1,12 @@
 ﻿using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem : IForgotPassword
 {
-    public ForgotPasswordCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
-        : base(item, userManager, signInManager)
+    public ForgotPasswordCommand(TItem item) : base(item)
     {
     }
 
@@ -39,7 +37,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
                 else
                 {
                     ISecurityQuestions? securityQuestions = await Send(new 
-                        GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed, UserManager, SignInManager));
+                        GetSecurityQuestionsQuery(user.UserName, user.IdentificationHashed));
 
                     if (securityQuestions == null)
                     {
@@ -74,7 +72,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
                         }
                         else
                         {
-                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user, UserManager, SignInManager), null);
+                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user), null);
 
                             if (commandResult.Success)
                             {

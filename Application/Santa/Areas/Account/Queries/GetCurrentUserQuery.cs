@@ -1,23 +1,15 @@
 ﻿using Application.Santa.Areas.Account.Actions;
 using Application.Santa.Areas.Account.BaseModels;
 using Global.Abstractions.Santa.Areas.Account;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Application.Santa.Areas.Account.Queries;
 
 public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
-{
-    private readonly ClaimsPrincipal _user;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+{    
     private bool _unHashResults;
 
-    public GetCurrentUserQuery(ClaimsPrincipal user, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, bool unHashResults)
+    public GetCurrentUserQuery(bool unHashResults)
     {
-        _user = user;
-        _userManager = userManager;
-        _signInManager = signInManager;
         _unHashResults = unHashResults;
     }
 
@@ -25,7 +17,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
     {
         ISantaUser? santaUser = null;
 
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(_user, _signInManager, _userManager);
+        Global_User? dbGlobalUser = GetCurrentGlobalUser();
 
         if (dbGlobalUser != null)
         {

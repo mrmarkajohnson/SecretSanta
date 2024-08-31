@@ -1,12 +1,10 @@
 ﻿using Global.Abstractions.Global.Account;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.Santa.Areas.Account.Commands;
 
 public abstract class ChangePasswordBaseCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetPassword
 {
-    protected ChangePasswordBaseCommand(TItem item, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
-        : base(item, userManager, signInManager)
+    protected ChangePasswordBaseCommand(TItem item) : base(item)
     {
     }
 
