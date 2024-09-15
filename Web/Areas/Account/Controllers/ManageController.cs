@@ -3,6 +3,7 @@ using Application.Santa.Areas.Account.Queries;
 using Global.Abstractions.Global.Account;
 using Global.Extensions.System;
 using Global.Settings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
@@ -54,6 +55,7 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> SetSecurityQuestions()
     {
         if (SignInManager.IsSignedIn(User))
@@ -125,6 +127,7 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> UpdateDetails(string? returnUrl = null)
     {
         if (SignInManager.IsSignedIn(User))
@@ -151,6 +154,7 @@ public class ManageController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> UpdateDetails(UpdateDetailsVm model)
     {
         model.ReturnUrl ??= Url.Content("~/");
@@ -170,6 +174,7 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> ChangePassword(string? returnUrl = null)
     {
         if (SignInManager.IsSignedIn(User))
@@ -195,6 +200,7 @@ public class ManageController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> ChangePassword(ChangePasswordVm model)
     {
         model.ReturnUrl ??= Url.Content("~/");

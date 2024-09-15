@@ -6,6 +6,7 @@ using FluentValidation.Results;
 using Global.Abstractions.Global;
 using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -132,5 +133,25 @@ public class BaseController : Controller
     {
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
         return LocalRedirect(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }));
+    }
+
+    protected void EnsureSignedIn()
+    {
+        if (!SignInManager.IsSignedIn(User))
+        {
+            throw new NotSignedInException();
+        }
+    }
+
+    [HttpGet]
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    new public IActionResult NotFound()
+    {
+        return View();
     }
 }

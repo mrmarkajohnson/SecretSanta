@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System.Reflection;
+using Web.GlobalErrorHandling;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,5 +101,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 FluentValidationConfiguration.SetFluentValidationOptions();
+
+app.UseMiddleware(typeof(GlobalRequestProcessor));
 
 app.Run();

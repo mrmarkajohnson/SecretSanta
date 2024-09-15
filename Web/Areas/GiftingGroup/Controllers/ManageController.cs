@@ -1,5 +1,6 @@
 ﻿using Application.Santa.Areas.GiftingGroup.Commands;
 using Application.Santa.Areas.GiftingGroup.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.GiftingGroup;
@@ -8,6 +9,7 @@ using Web.Controllers;
 namespace Web.Areas.GiftingGroup.Controllers;
 
 [Area("GiftingGroup")]
+[Authorize]
 public class ManageController : BaseController
 {
     public ManageController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
