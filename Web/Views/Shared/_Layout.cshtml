@@ -1,5 +1,12 @@
-﻿@inject IWebHostEnvironment environment
+﻿@using ViewLayer.Models.Home
+
+@inject IWebHostEnvironment environment
 @inject SignInManager<IdentityUser> SignInManager
+
+@{
+    HomeVm Model = ViewData["LayoutViewModel"] as HomeVm ?? new HomeVm();
+    bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
+}
 
 <!DOCTYPE html>
 <html lang="en" class="h-100">
@@ -31,29 +38,37 @@
             <div class="container-fluid">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-house">&nbsp;</i>Home</a>
+                    @if (mustSetSecurityQuestions)
+                    {
+                        // <a class="navbar-brand" href="#"></a>
+                        <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Set Your Security Questions</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-house">&nbsp;</i>Home</a>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
+                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="fa-solid fa-bars"></span>
+                        </button>
 
-                    <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
-                        <ul class="navbar-nav mr-auto">                            
-                            <partial name="_GiftingPartial" />
-                            &nbsp;
-                            <partial name="_AccountPartial" />
-                        </ul>
-                    </div>
+                        <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
+                            <ul class="navbar-nav mr-auto">                            
+                                <partial name="_GiftingPartial" />
+                                &nbsp;
+                                <partial name="_AccountPartial" />
+                            </ul>
+                        </div>
+                    }
                 }
                 else
                 {
                     <a class="navbar-brand" href="#"></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#loginContent" title="Login Menu"
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="fa-solid fa-user"></span>
+                        <span class="fa-solid fa-bars"></span>
                     </button>
-                    <div class="collapse navbar-collapse ms-auto text-end" id="loginContent">
+                    <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
                         <partial name="_LoginPartial" />
                     </div>
                 }

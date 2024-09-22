@@ -1,9 +1,9 @@
 ﻿@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav ms-auto">
-    @if (SignInManager.IsSignedIn(User))
-    {
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
             <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="fa-solid fa-user">&nbsp;</span>Account
@@ -32,6 +32,6 @@
                 </li>
 
             </ul>
-        </li>                
-    }
-</ul>
+        </li>
+    </ul>
+}

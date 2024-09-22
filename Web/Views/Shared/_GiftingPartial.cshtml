@@ -7,30 +7,32 @@
 
 @if (SignInManager.IsSignedIn(User))
 {    
-    <li class="nav-item dropdown">
-        <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="giftingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="fa-solid fa-gift">&nbsp;</span>Gifts
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="giftingDropdown">
-            <li>
-                <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
-                    Create a New Gifting Group
-                </a>
-            </li>
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+            <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="giftingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="fa-solid fa-gift">&nbsp;</span>Gifts
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="giftingDropdown">
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
+                        Create a New Gifting Group
+                    </a>
+                </li>
 
-            @if (Model?.GiftingGroups?.Any() == true)
-            {
-                <li><hr class="dropdown-divider"></li>
-            
-                @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+                @if (Model?.GiftingGroups?.Any() == true)
                 {
-                    <li>
-                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@giftingGroup.GroupId">
-                            Edit Gifting Group '@giftingGroup.GroupName'
-                        </a>
-                    </li>
+                    <li><hr class="dropdown-divider"></li>
+            
+                    @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+                    {
+                        <li>
+                            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@giftingGroup.GroupId">
+                                Edit Gifting Group '@giftingGroup.GroupName'
+                            </a>
+                        </li>
+                    }
                 }
-            }
-        </ul>
-    </li>
+            </ul>
+        </li>
+    </ul>
 }
