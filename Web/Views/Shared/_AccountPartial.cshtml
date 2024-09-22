@@ -2,36 +2,32 @@
 @inject UserManager<IdentityUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
-{
-    <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown">
-            <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fa-solid fa-user">&nbsp;</span>Account
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">                
-               @*  <li>
-                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li> *@
-                @* <li class="nav-item">
+{    
+    <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="fa-solid fa-user">&nbsp;</span>Account
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">                
+        @*  <li>
+            <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li> *@
+        @* <li class="nav-item">
             <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-            </li> *@
-                <li>
-                    <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Details</a>
-                </li>
-                <li>
-                    <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Security Questions</a>
-                </li>
-                <li>
-                    <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Change Your Password</a>
-                </li>
-                <li>
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "", successMessage = "Logged Out Successfully" })">
-                        <button type="submit" class="dropdown-item">Logout</button>
-                    </form>
-                    @* <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "", successMessage = "Logged Out Successfully" })">Log Out</a> *@
-                </li>
-
-            </ul>
+        </li> *@
+        <li>
+            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Details</a>
         </li>
+        <li>
+            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Update Your Security Questions</a>
+        </li>
+        <li>
+            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="ChangePassword" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Change Your Password</a>
+        </li>
+        <li>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "", successMessage = "Logged Out Successfully" })">
+                <button type="submit" class="dropdown-item">Logout</button>
+            </form>
+            @* <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "", successMessage = "Logged Out Successfully" })">Log Out</a> *@
+        </li>
+
     </ul>
 }

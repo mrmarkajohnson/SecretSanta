@@ -35,29 +35,55 @@
     </div>
     <header>        
         <nav class="navbar navbar-expand-sm bg-opacity-75">
-            <div class="container-fluid">
+            <div class="container-fluid align-items-start">
                 @if (SignInManager.IsSignedIn(User))
                 {
                     @if (mustSetSecurityQuestions)
                     {
-                        // <a class="navbar-brand" href="#"></a>
+                        <a class="navbar-brand" href="#"></a>
                         <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Set Your Security Questions</a>
                     }
                     else
                     {
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-house">&nbsp;</i>Home</a>
+                        <div style="vertical-align: middle !important">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="min-height: 40px !important; padding-top: 4px !important;"><i class="fa fa-house">&nbsp;</i>Home</a>
+                        </div>
 
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
-                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="fa-solid fa-bars"></span>
-                        </button>
-
-                        <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
-                            <ul class="navbar-nav mr-auto">                            
-                                <partial name="_GiftingPartial" />
+                        <div class="d-none d-sm-block text-end justify-content-end">
+                            <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
+                                @* In normal mode, show normal drop-downs *@
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <partial name="_GiftingPartial" />
+                                    </li>
+                                </ul>
                                 &nbsp;
-                                <partial name="_AccountPartial" />
-                            </ul>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <partial name="_AccountPartial" />                                
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-block d-sm-none text-end justify-content-end">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
+                                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="fa-solid fa-bars"></span>
+                            </button>
+                            <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent">
+                                @* In xs mode, show left drop-downs *@
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown dropstart">
+                                        <partial name="_GiftingPartial" />
+                                    </li>
+                                </ul>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown dropstart">
+                                        <partial name="_AccountPartial" />
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     }
                 }
