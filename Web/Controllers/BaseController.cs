@@ -1,4 +1,5 @@
 ﻿using Application.Santa.Areas.Account.Queries;
+using Application.Santa.Areas.GiftingGroup.Queries;
 using Application.Santa.Global;
 using AutoMapper;
 using FluentValidation;
@@ -10,6 +11,9 @@ using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
+using ViewLayer.Models.Home;
 
 namespace Web.Controllers;
 
@@ -26,11 +30,30 @@ public class BaseController : Controller
         {
             throw new ArgumentException("Mapper cannot be null");
         }
+
+        HomeModel = new HomeVm();
+        ViewData["LayoutViewModel"] = HomeModel;
     }
 
     public IServiceProvider Services { get; }
     protected SignInManager<IdentityUser> SignInManager { get; private init; }
     protected IMapper Mapper { get; set; }
+    public HomeVm HomeModel { get; set; }
+
+    public async Task SetHomeModel()
+    {
+        HomeModel ??= new HomeVm();
+
+        try
+        {
+            HomeModel.CurrentUser = await GetCurrentUser(true);
+            if (HomeModel.CurrentUser != null)
+            {
+                HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
+            }
+        }
+        catch { }
+    }
 
     public IActionResult RedirectWithMessage(IForm model, string successMessage)
     {

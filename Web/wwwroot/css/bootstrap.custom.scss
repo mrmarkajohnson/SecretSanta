@@ -99,11 +99,25 @@ button.navbar-toggler:hover {
     text-decoration: none !important;
 }
 
+.btn.nav-link {
+    border: 0.5px inset $white !important;
+    padding: 4px 8px 4px 8px !important;
+}
+
 .nav-link:hover {
     color: $gold !important;
     font-weight: 600 !important;
     text-shadow: white !important;
     text-decoration: underline !important;
+}
+
+.nav-link:hover i {
+    text-decoration: none !important;
+}
+
+.btn.nav-link:hover {
+    border: 1px inset $gold-text-shadow !important;
+    text-decoration: none !important;
 }
 
 .navbar-togger {

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System.Reflection;
 using Web.GlobalErrorHandling;
+using static Web.Controllers.BaseController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,8 @@ if (builder.Services.Any(f => f.ServiceType == typeof(IValidationAttributeAdapte
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); //.AddMvcOptions(options => options.EnableEndpointRouting = false);
+builder.Services.AddTransient<BaseActionFilter>();
+builder.Services.AddRazorPages().AddMvcOptions(options => options.Filters.AddService<BaseActionFilter>());
 
 string[] mapperAssemblyNames = [ "Application", "ViewLayer" ];
 Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => mapperAssemblyNames.Contains(x.GetName().Name)).ToArray();

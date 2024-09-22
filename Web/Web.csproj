@@ -77,4 +77,11 @@
     <UpToDateCheckInput Remove="Areas\Account\Views\Home\LockedOut.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Shared\_AccountPartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
