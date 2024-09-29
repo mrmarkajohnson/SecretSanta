@@ -18,9 +18,14 @@ public class SaveGiftingGroupCommand<T> : BaseCommand<T> where T : IGiftingGroup
 
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
+        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
+        {
+            throw new AccessDeniedException();
+        }
+
         if (Item.Id > 0)
         {
-            Santa_GiftingGroupUser? dbGiftingGroupLink = dbGlobalUser?.SantaUser?.GiftingGroupLinks
+            Santa_GiftingGroupUser? dbGiftingGroupLink = dbGlobalUser.SantaUser.GiftingGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
                 .FirstOrDefault(x => x.GiftingGroupId == Item.Id);
 

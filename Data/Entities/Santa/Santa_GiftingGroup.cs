@@ -9,6 +9,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     {
         UserLinks = new HashSet<Santa_GiftingGroupUser>();
         Years = new HashSet<Santa_GiftingGroupYear>();
+        MemberApplications = new HashSet<Santa_GiftingGroupApplication>();
     }
 
     [Key]
@@ -34,4 +35,5 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 
     public virtual ICollection<Santa_GiftingGroupUser> UserLinks { get; set; }
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
+    public virtual ICollection<Santa_GiftingGroupApplication> MemberApplications { get; set; }
 }

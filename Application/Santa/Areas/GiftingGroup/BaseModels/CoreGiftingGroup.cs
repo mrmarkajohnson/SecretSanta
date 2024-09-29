@@ -8,8 +8,6 @@ public class CoreGiftingGroup : IGiftingGroup
 {
     public CoreGiftingGroup()
     {
-        //UserLinks = new List<GiftingGroupUser>();
-        //Years = new List<GiftingGroupYear>();
     }
 
     public int Id { get; set; }
@@ -31,7 +29,4 @@ public class CoreGiftingGroup : IGiftingGroup
 
     [MaxLength(GiftingGroupVal.CurrencySymbolOverride.MaxLength)]
     public string? CurrencySymbolOverride { get; set; } = "£";
-
-    //public IList<GiftingGroupUser> UserLinks { get; set; }
-    //public IList<GiftingGroupYear> Years { get; set; }
 }

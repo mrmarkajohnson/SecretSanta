@@ -27,7 +27,7 @@ public class ManageController : BaseController
     {
         var model = new RegisterVm
         {
-            ReturnUrl = returnUrl ?? Url.Content("~/"),
+            ReturnUrl = returnUrl,
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
         };
 
@@ -37,7 +37,6 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> Register(RegisterVm model)
     {
-        model.ReturnUrl ??= Url.Content("~/");
         //model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         if (ModelState.IsValid)
@@ -104,8 +103,6 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> SetSecurityQuestions(SetSecurityQuestionsVm model)
     {
-        model.ReturnUrl ??= Url.Content("~/");
-
         if (ModelState.IsValid)
         {
             if (!model.Update) // in case the user removed it
@@ -141,7 +138,7 @@ public class ManageController : BaseController
 
             var model = new UpdateDetailsVm
             {
-                ReturnUrl = returnUrl ?? Url.Content("~/")
+                ReturnUrl = returnUrl
             };
 
             Mapper.Map(currentUser, model);
@@ -157,8 +154,6 @@ public class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> UpdateDetails(UpdateDetailsVm model)
     {
-        model.ReturnUrl ??= Url.Content("~/");
-
         if (ModelState.IsValid)
         {
             var commandResult = await Send(new UpdateAccountDetailsCommand<UpdateDetailsVm>(model, _userStore),
@@ -188,7 +183,7 @@ public class ManageController : BaseController
 
             var model = new ChangePasswordVm
             {
-                ReturnUrl = returnUrl ?? Url.Content("~/")
+                ReturnUrl = returnUrl
             };
 
             return View(model);
@@ -203,8 +198,6 @@ public class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> ChangePassword(ChangePasswordVm model)
     {
-        model.ReturnUrl ??= Url.Content("~/");
-
         if (ModelState.IsValid)
         {
             var commandResult = await Send(new ChangePasswordCommand<ChangePasswordVm>(model),

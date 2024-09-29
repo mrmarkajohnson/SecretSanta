@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.GiftingGroup;
 using Web.Controllers;
+using static ViewLayer.Models.GiftingGroup.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
@@ -65,11 +66,32 @@ public class ManageController : BaseController
         
         if (commandResult.Success)
         {
-            model.ReturnUrl ??= Url.Content("~/");
             return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
         }
 
         model.SubmitButtonText = model.Id > 0 ? "Create" : "Save Changes";
         return EditGiftingGroup(model);
+    }
+
+    [HttpGet]
+    public IActionResult JoinGiftingGroup()
+    {
+        var model = new JoinGiftingGroupVm();
+        return View(model);
+    }
+
+    // TODO: Set the description and update the 'blocked' value when the name or joiner token change
+
+    [HttpPost]
+    public async Task<IActionResult> JoinGiftingGroup(JoinGiftingGroupVm model)
+    {
+        var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model), new JoinGiftingGroupVmValidator());
+
+        if (commandResult.Success)
+        {
+            return RedirectWithMessage(model, $"Application sent. A group administrator will check your details and allow you to join.");
+        }
+
+        return View(model);
     }
 }

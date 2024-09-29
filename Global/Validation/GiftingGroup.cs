@@ -35,4 +35,9 @@ public static class GiftingGroupVal
     {
         public const int MaxLength = 3;
     }
+
+    public static class JoinerMessage
+    {
+        public const int MaxLength = 400;
+    }
 }

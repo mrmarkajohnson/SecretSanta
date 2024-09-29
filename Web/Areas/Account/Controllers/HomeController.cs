@@ -28,7 +28,7 @@ public class HomeController : BaseController
         var model = new LoginVm
         {
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
-            ReturnUrl = returnUrl ?? Url.Content("~/"),
+            ReturnUrl = returnUrl,
             TimedOut = timedOut,
         };
 
@@ -41,8 +41,6 @@ public class HomeController : BaseController
     [HttpPost]
     public async Task<IActionResult> Login(LoginVm model)
     {
-        model.ReturnUrl ??= Url.Content("~/");
-
         //model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         if (ModelState.IsValid)
@@ -91,7 +89,7 @@ public class HomeController : BaseController
             ShowBasicDetails = true,
             ShowSecurityQuestions = false,
             ResetPassword = false,
-            ReturnUrl = returnUrl ?? Url.Content("~/")
+            ReturnUrl = returnUrl
         };
 
         return View(model);
@@ -106,7 +104,6 @@ public class HomeController : BaseController
 
         if (commandResult.Success && model.PasswordResetSuccessfully)
         {
-            model.ReturnUrl ??= Url.Content("~/");
             return RedirectWithMessage(model, "Password Reset Successfully");
         }
 

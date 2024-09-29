@@ -24,11 +24,25 @@ internal static class ModelHelper
             .HasForeignKey<Santa_User>(e => e.GlobalUserId)
             .IsRequired(false);
 
-        modelBuilder.Entity<Santa_GiftingGroupYear>()
+        modelBuilder.Entity<Santa_GiftingGroupApplication>()
+            .HasOne(e => e.User)
+            .WithMany(e => e.GiftingGroupApplications)
+            .HasForeignKey(e => e.UserId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_GiftingGroupApplication>()
             .HasOne(e => e.GiftingGroup)
-            .WithMany(e => e.Years)
+            .WithMany(e => e.MemberApplications)
             .HasForeignKey(e => e.GiftingGroupId)
             .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_GiftingGroupApplication>()
+            .HasOne(e => e.ResponseByUser)
+            .WithMany(e => e.GiftingGroupApplicationResponses)
+            .HasForeignKey(e => e.ResponseByUserId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_GiftingGroupUser>()
@@ -42,6 +56,13 @@ internal static class ModelHelper
             .HasOne(e => e.User)
             .WithMany(e => e.GiftingGroupLinks)
             .HasForeignKey(e => e.UserId)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_GiftingGroupYear>()
+            .HasOne(e => e.GiftingGroup)
+            .WithMany(e => e.Years)
+            .HasForeignKey(e => e.GiftingGroupId)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 

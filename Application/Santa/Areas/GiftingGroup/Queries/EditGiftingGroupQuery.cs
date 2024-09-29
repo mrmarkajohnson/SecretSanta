@@ -22,27 +22,29 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
         
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
-        if (dbGlobalUser != null)
+        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
         {
-            Santa_User? dbSantaUser = dbGlobalUser.SantaUser;
+            throw new AccessDeniedException();
+        }
 
-            if (dbSantaUser != null)
+        Santa_User? dbSantaUser = dbGlobalUser.SantaUser;
+
+        if (dbSantaUser != null)
+        {
+            Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
+                .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+                .FirstOrDefault(x => x.GiftingGroupId == _groupId);
+
+            if (dbGiftingGroupLink != null)
             {
-                Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-                    .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
-                    .FirstOrDefault(x => x.GiftingGroupId == _groupId);
-
-                if (dbGiftingGroupLink != null)
+                if (dbGiftingGroupLink.GroupAdmin)
                 {
-                    if (dbGiftingGroupLink.GroupAdmin)
-                    {
-                        await Task.CompletedTask;
-                        return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
-                    }
-                    else
-                    {
-                        throw new AccessDeniedException();
-                    }
+                    await Task.CompletedTask;
+                    return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
+                }
+                else
+                {
+                    throw new AccessDeniedException();
                 }
             }
         }
