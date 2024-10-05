@@ -20,7 +20,8 @@ Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
 Remove users from group
-Apply to join a santa group
+Tidy up available locations and currencies - add missing countries
+Respond to join request
 Invite users to group via/using e-mail?
 Close group?
 

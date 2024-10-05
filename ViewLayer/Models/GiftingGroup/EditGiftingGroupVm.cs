@@ -63,6 +63,8 @@ public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
         RuleFor(x => x.Description).NotEmpty().Length(GiftingGroupVal.Description.MinLength, GiftingGroupVal.Description.MaxLength);
         RuleFor(x => x.JoinerToken).NotEmpty();
         RuleFor(x => x.CultureInfo).IsInDropDownList(x => x.Cultures.Select(y => y.Name), false);
-        RuleFor(x => x.CurrencyOverride).IsInDropDownList(x => x.Currencies.Select(y => y.Name), true);
+        RuleFor(x => x.CurrencyOverride).IsInDropDownList(x => x.Currencies
+            .Where(x => x.CurrencyString != null)
+            .Select(y => y.CurrencyString ?? ""), true);
     }
 }

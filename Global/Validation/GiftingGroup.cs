@@ -28,12 +28,12 @@ public static class GiftingGroupVal
 
     public static class CurrencyCodeOverride
     {
-        public const int MaxLength = 4;
+        public const int MaxLength = 5;
     }
 
     public static class CurrencySymbolOverride
     {
-        public const int MaxLength = 3;
+        public const int MaxLength = 5;
     }
 
     public static class JoinerMessage
