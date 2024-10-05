@@ -23,18 +23,21 @@
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Views\Shared\_SuccessMessage.cshtml" />
+    <Content Remove="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\Account\Views\Home\LockedOut.cshtml" />
     <_ContentIncludedByDefault Remove="compilerconfig.json" />
     <_ContentIncludedByDefault Remove="Views\Shared\_SuccessMessage.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Areas\Account\Views\Home\LockedOut.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="Views\Shared\_SuccessMessage.cshtml" />
+    <None Include="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
   </ItemGroup>
 
   <ItemGroup>

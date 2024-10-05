@@ -52,6 +52,11 @@
                     Create a New Gifting Group
                 </a>
             </p>
+            <p>
+                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
+                    Apply to Join a Gifting Group
+                </a>
+            </p>
 
             @if (Model?.GiftingGroups?.Any() == true)
             {

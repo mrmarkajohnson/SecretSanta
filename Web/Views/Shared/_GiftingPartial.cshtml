@@ -16,6 +16,11 @@
                 Create a New Gifting Group
             </a>
         </li>
+        <li>
+            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
+                Apply to Join a Group
+            </a>
+        </li>
 
         @if (Model?.GiftingGroups?.Any() == true)
         {

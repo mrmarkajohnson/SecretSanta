@@ -1,0 +1,87 @@
+﻿@using ViewLayer.Models.GiftingGroup
+
+@model JoinGiftingGroupVm
+@{
+    string groupNameExplanation = "Enter the name of the group. If you don't know it, ask the person who invited you to join.";
+    string joinerTokenExplanation = "Each group has a unique token fr joiners, a bit like a secret passcode.<br><br>If you don't know it, ask the person who invited you to join.";
+    string messageExplanation = "You can add a message here if it might help group administrators to know why you're applying to join.";
+}
+
+<div class="row d-flex align-items-center justify-content-center text-center">
+
+    <div class="collapse">
+        <input type="hidden" asp-for="GroupId">
+    </div>
+
+    <div class="mb-5 mt-2">
+        <p>
+            A gifting group is a group of people who exchange 'Secret Santa' gifts at Christmas.
+        </p>
+        <p>
+            Here you can apply to join a group, by entering details given to you by the person who invited you.
+        </p>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <br />
+
+        <div class="col-md-12">
+            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                <label asp-for="Name" class="control-label required"></label>
+                <div class="input-group input-info">
+                    <input asp-for="Name" class="form-control gifting-group-name" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
+                    <partial name="_InputQuestion" model="@groupNameExplanation" />
+                </div>
+                <div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                <label asp-for="JoinerToken" class="control-label required"></label>
+                <div class="input-group input-info">
+                    <input asp-for="JoinerToken" class="form-control joiner-token" autocomplete="off" aria-required="true" placeholder="Enter the group Joiner Token" />
+                    <partial name="_InputQuestion" model="@joinerTokenExplanation" />
+                </div>
+                <div>
+                    <span asp-validation-for="JoinerToken" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                <label asp-for="Message" class="control-label"></label>
+                <div class="input-group input-info">
+                    <textarea asp-for="Message" class="form-control" ></textarea>
+                    <partial name="_InputQuestion" model="@messageExplanation" />
+                </div>
+                <div>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="col-md-12">
+                <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <label asp-for="Description" class="control-label">Group Description</label>
+                    <div class="control-label fw-normal group-description">
+                        @Model.Description
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Blocked)
+        {
+            <br />
+            <div class="col-md-12">
+                <partial name="_SubmitButton" />
+            </div>
+        }
+    </div>
+
+</div>

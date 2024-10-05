@@ -72,7 +72,11 @@ input.form-control:read-only {
     font-size: 14px;
 }
 
-label.control-label.text-center {
+.control-label {
+    text-align: left !important;
+}
+
+.control-label.text-center {
     text-align : center !important;
 }
 
@@ -80,6 +84,10 @@ label.control-label-inline {
     font-weight: 500 !important;
     padding: 7px 7px 0 0 !important;
     color: #333333 !important;
+}
+
+.control-label.fw-normal {
+    font-weight: 400 !important;
 }
 
 div.validation-summary-errors ul, li {

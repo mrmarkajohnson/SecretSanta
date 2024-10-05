@@ -22,6 +22,10 @@ public class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
     public string? Message { get; set; }
 
     public bool Blocked { get; set; }
+    public bool AlreadyMember { get; set; }
+    public bool ApplicationPending { get; set; }
+
+    public required string GetGroupDetailsAction { get; set; } = "GetGroupDetailsForJoiner";
 
     public override string SubmitButtonText { get; set; } = "Join";
     public override string SubmitButtonIcon { get; set; } = "fa-handshake";

@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.Commands;
+﻿using Application.Santa.Areas.GiftingGroup.Actions;
+using Application.Santa.Areas.GiftingGroup.Commands;
 using Application.Santa.Areas.GiftingGroup.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +61,8 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> SaveGiftingGroup(EditGiftingGroupVm model)
     {
+        ModelState.Clear();
+
         string saved = model.Id > 0 ? "Created" : "Updated";
 
         var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
@@ -76,15 +79,35 @@ public class ManageController : BaseController
     [HttpGet]
     public IActionResult JoinGiftingGroup()
     {
-        var model = new JoinGiftingGroupVm();
+        var model = new JoinGiftingGroupVm
+        {
+            GetGroupDetailsAction = nameof(GetGroupDetailsForJoiner)
+        };
+
         return View(model);
     }
 
-    // TODO: Set the description and update the 'blocked' value when the name or joiner token change
+    [HttpPost]
+    public async Task<IActionResult> GetGroupDetailsForJoiner(JoinGiftingGroupVm model) // TODO: Call this
+    {
+        ModelState.Clear();
+        
+        bool found = await Send(new AddGroupDetailsForJoinerAction(model));
+
+        if (model.Blocked)
+        {
+            ModelState.AddModelError(string.Empty, "You are blocked from applying to join this group. Please stop sending applications.");            
+        }
+
+        model.GetGroupDetailsAction = nameof(GetGroupDetailsForJoiner);
+        return PartialView("_JoinGiftingGroup", model);
+    }
 
     [HttpPost]
     public async Task<IActionResult> JoinGiftingGroup(JoinGiftingGroupVm model)
     {
+        ModelState.Clear();
+
         var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model), new JoinGiftingGroupVmValidator());
 
         if (commandResult.Success)
@@ -92,6 +115,7 @@ public class ManageController : BaseController
             return RedirectWithMessage(model, $"Application sent. A group administrator will check your details and allow you to join.");
         }
 
+        model.GetGroupDetailsAction = nameof(GetGroupDetailsForJoiner);
         return View(model);
     }
 }

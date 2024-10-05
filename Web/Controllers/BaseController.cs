@@ -11,8 +11,6 @@ using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 using ViewLayer.Models.Home;
 
 namespace Web.Controllers;
