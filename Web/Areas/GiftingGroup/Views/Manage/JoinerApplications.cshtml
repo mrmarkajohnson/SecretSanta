@@ -1,0 +1,19 @@
+﻿@using Global.Abstractions.Santa.Areas.GiftingGroup
+
+@model IQueryable<IReviewApplication>
+@{
+    ViewData["Title"] = "Joiner Applications";
+}
+
+<h1>Group Joiner Applications For Review</h1>
+
+<div class="row d-flex align-items-center justify-content-center text-center">
+
+    <div class="mb-5 mt-2">
+        <p>
+            Here you can see applications from other people to join a Gifting Group, and review them.
+        </p>
+    </div>
+
+    <partial name="_JoinerApplicationsGrid" />
+</div>

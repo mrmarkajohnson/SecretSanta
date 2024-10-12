@@ -123,7 +123,8 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> JoinerApplications()
     {
-
+        IQueryable<IReviewApplication> model = await Send(new GetJoinerRequestsQuery());
+        return View(model);
     }
 
     [HttpGet]

@@ -1,0 +1,31 @@
+﻿@using Global.Abstractions.Santa.Areas.GiftingGroup
+@using NonFactors.Mvc.Grid
+
+@model IQueryable<IReviewApplication>
+@{
+    Func<IReviewApplication, object> actions = 
+    @<text>
+        <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" asp-route-id="@item.ApplicationId"><i class="fa fa-pencil"></i></a>
+    </text> ;
+}
+
+@(
+Html
+                .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(x => x.GroupName).Titled("Group Name");
+        columns.Add(x => x.Name).Titled("Applicant Name");
+        columns.Add(x => x.UserName).Titled("UserName");
+        columns.Add<string>(x => x.EmailAddress ?? "").Titled("E-mail Address");
+        columns.Add().RenderedAs(actions).Encoded(false);
+    })
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" } };
+        pager.ShowPageSizes = true;
+    })
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+)
