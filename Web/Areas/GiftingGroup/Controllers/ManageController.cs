@@ -1,6 +1,7 @@
 ﻿using Application.Santa.Areas.GiftingGroup.Actions;
 using Application.Santa.Areas.GiftingGroup.Commands;
 using Application.Santa.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -116,6 +117,21 @@ public class ManageController : BaseController
         }
 
         model.GetGroupDetailsAction = nameof(GetGroupDetailsForJoiner);
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> JoinerApplications()
+    {
+
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ReviewJoinerApplication(int id)
+    {
+        IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(id));
+        var model = new ReviewJoinerApplicationVm();
+        Mapper.Map(application, model);
         return View(model);
     }
 }

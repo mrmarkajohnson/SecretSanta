@@ -24,6 +24,15 @@
 
         @if (Model?.GiftingGroups?.Any() == true)
         {
+            @if (Model.NewJoinerApplications > 0)
+            {
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
+                        Review Joiner Applications
+                    </a>
+                </li>
+            }
+
             <li><hr class="dropdown-divider"></li>
             
             @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())

@@ -1,6 +1,4 @@
-﻿using Data.Entities.Shared.Base;
-
-namespace Data.Entities.Santa;
+﻿namespace Data.Entities.Santa;
 
 public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity
 {

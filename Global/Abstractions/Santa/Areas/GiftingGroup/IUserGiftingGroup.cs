@@ -5,4 +5,5 @@ public interface IUserGiftingGroup
     int GroupId { get; }
     string GroupName { get; }    
     bool GroupAdmin { get; }
+    int NewApplications { get; }
 }

@@ -7,4 +7,5 @@ public class UserGiftingGroup : IUserGiftingGroup
     public int GroupId { get; set; }
     public string GroupName { get; set; } = "";
     public bool GroupAdmin { get; set; }
+    public int NewApplications { get; set; }
 }

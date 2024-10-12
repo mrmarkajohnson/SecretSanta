@@ -34,6 +34,7 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<Global_User> Global_Users => Set<Global_User>();
     public DbSet<Santa_GiftingGroup> Santa_GiftingGroups => Set<Santa_GiftingGroup>();
+    public DbSet<Santa_GiftingGroupApplication> Santa_GiftingGroupApplications => Set<Santa_GiftingGroupApplication>();
     public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUsers => Set<Santa_GiftingGroupUser>();
     public DbSet<Santa_GiftingGroupYear> Santa_GiftingGroupYears => Set<Santa_GiftingGroupYear>();
     public DbSet<Santa_Message> Santa_Messages => Set<Santa_Message>();

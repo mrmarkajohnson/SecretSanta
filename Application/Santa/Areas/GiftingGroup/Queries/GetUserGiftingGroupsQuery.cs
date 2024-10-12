@@ -20,7 +20,13 @@ public class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGroup>>
         {
             userGroups = dbGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null)
-                .Select(x => new UserGiftingGroup { GroupId = x.GiftingGroupId, GroupName = x.GiftingGroup.Name, GroupAdmin = x.GroupAdmin })
+                .Select(x => new UserGiftingGroup 
+                { 
+                    GroupId = x.GiftingGroupId, 
+                    GroupName = x.GiftingGroup.Name, 
+                    GroupAdmin = x.GroupAdmin,
+                    NewApplications = x.GroupAdmin ? x.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseByUserId == null).Count() : 0,
+                })
                 .ToList<IUserGiftingGroup>();
         }
 

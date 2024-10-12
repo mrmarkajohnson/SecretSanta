@@ -1,9 +1,7 @@
-﻿using Application.Santa.Areas.GiftingGroup.Queries;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.ViewLayer.Models;
 using System.Diagnostics;
-using ViewLayer.Models.Home;
 using Web.Controllers;
 
 namespace SecretSanta.Controllers;
@@ -14,21 +12,9 @@ public class HomeController : BaseController
     {
     }
 
-    public async Task<IActionResult> Index(string? successMessage = null)
+    public IActionResult Index(string? successMessage = null)
     {
-        var model = new HomeVm { SuccessMessage = successMessage };
-
-        try
-        {
-            model.CurrentUser = await GetCurrentUser(true);
-            if (model.CurrentUser != null)
-            {
-                model.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
-            }
-        }
-        catch { }
-
-        return View(model);
+        return View(HomeModel);
     }
 
     public IActionResult Privacy()

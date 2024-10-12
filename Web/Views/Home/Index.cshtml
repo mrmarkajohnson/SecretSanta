@@ -60,6 +60,15 @@
 
             @if (Model?.GiftingGroups?.Any() == true)
             {
+                @if (Model.NewJoinerApplications > 0)
+                {
+                    <p>
+                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
+                            Review Joiner Applications
+                        </a>
+                    </p>
+                }
+                
                 @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
                 {
                     <p>

@@ -12,4 +12,5 @@ public class HomeVm : BasePageVm
     
     public ISantaUser? CurrentUser { get; set; }
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
+    public int NewJoinerApplications => GiftingGroups?.Sum(x => x.NewApplications) ?? 0;
 }
