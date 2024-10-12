@@ -1,4 +1,5 @@
-﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Application.Santa.Areas.Account.Actions;
+using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 
 namespace Application.Santa.Areas.GiftingGroup.Queries;
@@ -12,7 +13,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
         _applicationId = applicationId;
     }
 
-    protected override Task<IReviewApplication> Handle()
+    protected async override Task<IReviewApplication> Handle()
     {
         EnsureSignedIn();
 
@@ -48,6 +49,9 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             throw new NotFoundException("application");
         }
 
-        return Task.FromResult(Mapper.Map<IReviewApplication>(dbApplication));
+        var application = Mapper.Map<IReviewApplication>(dbApplication);
+        await Send(new UnHashUserIdentificationAction(application));
+
+        return application;
     }
 }

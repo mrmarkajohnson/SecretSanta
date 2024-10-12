@@ -17,7 +17,7 @@ Html
         columns.Add(x => x.GroupName).Titled("Group Name");
         columns.Add(x => x.Name).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled("UserName");
-        columns.Add<string>(x => x.EmailAddress ?? "").Titled("E-mail Address");
+        columns.Add<string>(x => x.Email ?? "").Titled("E-mail Address");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
     .Pageable(pager =>

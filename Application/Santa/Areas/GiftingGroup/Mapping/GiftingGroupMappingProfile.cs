@@ -22,12 +22,14 @@ public class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.RejectionMessage, opt => opt.MapFrom(src => src.RejectionMessage))
             .ForMember(dest => dest.Blocked, opt => opt.MapFrom(src => src.User.GiftingGroupApplications
                 .Where(x => x.GiftingGroupId == src.GiftingGroupId)
-                .Any(x => x.Blocked)));
+                .Any(x => x.Blocked)))
+            .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true));
 
         CreateMap<Global_User, ReviewJoinerApplication>()
+            .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Forename + " " + src.Surname))
-            .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email));
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
 
         CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
 	}

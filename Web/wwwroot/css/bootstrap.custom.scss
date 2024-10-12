@@ -250,6 +250,15 @@ label.control-label.required::after {
 
 //endregion tooltips
 
+.mvc-grid-headers, .mvc-grid-headers *, .mvc-grid-table > table > thead > tr > th {
+    background-color: $purple-background !important;
+    color: white !important;
+}
+
+.mvc-grid-sort, .mvc-grid-sort::after, .mvc-grid-sort::before {
+    opacity: 1 !important;
+}
+
 //region snow
 @keyframes fall {
     100% {

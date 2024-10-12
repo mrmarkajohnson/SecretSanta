@@ -50,7 +50,7 @@ public class BaseController : Controller
                 HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
             }
         }
-        catch { }
+        catch (NotSignedInException) { }
     }
 
     public IActionResult RedirectWithMessage(IForm model, string successMessage)

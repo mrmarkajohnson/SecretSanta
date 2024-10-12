@@ -1,7 +1,9 @@
-﻿namespace Application.Santa.Areas.Account.BaseModels;
+﻿using Global.Abstractions.Global.Shared;
 
-public class UnHashedUserId
+namespace Application.Santa.Areas.Account.BaseModels;
+
+public class UnHashedUserId : IHashableUserIdBase
 {
     public string? Email { get; set; }
-    public required string UserName { get; set; }
+    public string? UserName { get; set; }
 }

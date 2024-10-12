@@ -1,30 +1,36 @@
 ﻿using Application.Santa.Areas.Account.BaseModels;
 using Global.Abstractions.Global.Account;
+using Global.Abstractions.Global.Shared;
 using Global.Extensions.System;
 
 namespace Application.Santa.Areas.Account.Queries;
 
 internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGreeting>
 {
-    private readonly IIdentityUser _identityUser;
+    private readonly IHashableUserId _hashableUser;
 
-    public GetUnHashedIdentificationQuery(IIdentityUser identityUser)
+    public GetUnHashedIdentificationQuery(IHashableUserId hashableUser)
     {
-        _identityUser = identityUser;
+        _hashableUser = hashableUser;
     }
 
     protected override Task<UnHashedUserIdWithGreeting> Handle()
     {
-        string? email = string.IsNullOrWhiteSpace(_identityUser.Email) ? null
-            : _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
-            : _identityUser.Email;
+        string? email = string.IsNullOrWhiteSpace(_hashableUser.Email) ? null
+            : _hashableUser.IdentificationHashed ? EncryptionHelper.Decrypt(_hashableUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
+            : _hashableUser.Email;
 
-        string? userName = string.IsNullOrWhiteSpace(_identityUser.UserName) ? email
-            : _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.UserName, true)
-            : _identityUser.UserName;
+        string? userName = string.IsNullOrWhiteSpace(_hashableUser.UserName) ? email
+            : _hashableUser.IdentificationHashed ? EncryptionHelper.Decrypt(_hashableUser.UserName, true)
+            : _hashableUser.UserName;
 
-        string greeting = _identityUser.IdentificationHashed ? EncryptionHelper.Decrypt(_identityUser.Greeting, false, _identityUser.Id) : 
-            _identityUser.Greeting;
+        string? greeting = null;
+
+        if (_hashableUser is IIdentityUser identityUser)
+        {
+            greeting = identityUser.IdentificationHashed? EncryptionHelper.Decrypt(identityUser.Greeting, false, _hashableUser.Id) : 
+            identityUser.Greeting;
+        }
 
         return Task.FromResult(new UnHashedUserIdWithGreeting
         {

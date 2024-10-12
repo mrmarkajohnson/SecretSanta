@@ -17,7 +17,7 @@
                 <input type="hidden" asp-for="ApplicationId">
                 <input type="hidden" asp-for="Name">
                 <input type="hidden" asp-for="UserName">
-                <input type="hidden" asp-for="EmailAddress">
+                <input type="hidden" asp-for="Email">
                 <input type="hidden" asp-for="GroupName">
             </div>
 
@@ -44,13 +44,13 @@
                     </div>
                 </div>
 
-                @if (!string.IsNullOrWhiteSpace(Model.EmailAddress))
+                @if (!string.IsNullOrWhiteSpace(Model.Email))
                 {
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
-                            <label asp-for="EmailAddress" class="control-label required"></label>
+                            <label asp-for="Email" class="control-label required"></label>
                             <div class="control-label fw-normal">
-                                @Model.EmailAddress
+                                @Model.Email
                             </div>
                         </div>
                     </div>

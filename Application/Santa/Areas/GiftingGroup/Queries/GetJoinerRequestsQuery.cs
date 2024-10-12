@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using Application.Santa.Areas.Account.Actions;
+using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 
@@ -10,7 +11,7 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
     {
     }
 
-    protected override Task<IQueryable<IReviewApplication>> Handle()
+    protected async override Task<IQueryable<IReviewApplication>> Handle()
     {
         EnsureSignedIn();
 
@@ -27,6 +28,13 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
             .Where(y => y.ResponseByUserId == null)
             .AsQueryable();
 
-        return Task.FromResult(dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider));
+        var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();
+
+        foreach (var application in applications)
+        {
+            await Send(new UnHashUserIdentificationAction(application));
+        }
+
+        return applications.AsQueryable();
     }
 }

@@ -1,17 +1,12 @@
 ﻿using FluentValidation;
+using Global.Abstractions.Global.Shared;
 using Global.Validation;
 
 namespace Global.Abstractions.Global.Account;
 
-public interface IIdentityUser
-{
-    string Id { get; set; }
-
-    string? UserName { get; set; }
-    string? Email { get; set; }
+public interface IIdentityUser : IHashableUserId
+{        
     string Greeting { get; set; }
-
-    bool IdentificationHashed { get; set; }
 }
 
 public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentityUser
