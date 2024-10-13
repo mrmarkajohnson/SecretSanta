@@ -28,7 +28,7 @@ public class GiftingGroupMappingProfile : Profile
         CreateMap<Global_User, ReviewJoinerApplication>()
             .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Forename + " " + src.Surname))
+            .ForMember(dest => dest.ApplicantName, opt => opt.MapFrom(src => src.Forename + " " + src.Surname))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
 
         CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();

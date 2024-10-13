@@ -1,19 +1,15 @@
-﻿using Application.Santa.Areas.Account.Actions;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 
-namespace Application.Santa.Areas.GiftingGroup.Queries;
+namespace Application.Santa.Areas.GiftingGroup.Commands;
 
-public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
+public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TItem : IReviewApplication
 {
-    private int _applicationId;
-
-    public ReviewJoinerApplicationQuery(int applicationId)
+    public ReviewJoinerApplicationCommand(TItem item) : base(item)
     {
-        _applicationId = applicationId;
     }
 
-    protected async override Task<IReviewApplication> Handle()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
         if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
@@ -25,12 +21,12 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.Id == _applicationId)
+            .Where(x => x.Id == Item.ApplicationId)
             .FirstOrDefault();
 
         if (dbApplication == null)
         {
-            dbApplication = ModelContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == _applicationId);
+            dbApplication = ModelContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == Item.ApplicationId);
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {
@@ -47,9 +43,16 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             throw new NotFoundException("application");
         }
 
-        var application = Mapper.Map<IReviewApplication>(dbApplication);
-        await Send(new UnHashUserIdentificationAction(application));
+        if (Validation.IsValid)
+        {
+            dbApplication.Accepted = Item.Accepted;
+            dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
+            dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
+            dbApplication.ResponseByUserId = dbGlobalUser.SantaUser?.Id;
 
-        return application;
+            return await SaveAndReturnSuccess();
+        }
+
+        return await Result();
     }
 }

@@ -39,6 +39,13 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     protected abstract Task<ICommandResult<TItem>> HandlePostValidation();
 
+    protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess()
+    {
+        await ModelContext.SaveChangesAsync();
+        Success = true;
+        return await Result();
+    }
+
     public async Task<ICommandResult<TItem>> Result()
     {
         var result = new CommandResult<TItem>

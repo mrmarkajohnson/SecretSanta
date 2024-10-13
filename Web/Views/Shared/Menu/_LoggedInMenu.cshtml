@@ -1,0 +1,24 @@
+﻿@using ViewLayer.Models.Home
+
+@model MainMenuVm
+@{
+    string navItemClass = "nav-item dropdown" 
+        + (string.IsNullOrEmpty(Model.DropdownClass) ? "" : (" " + Model.DropdownClass));
+}
+
+<ul class="navbar-nav">
+    <li class="@navItemClass">
+        <partial name="Menu/_GiftingMenu" />
+    </li>
+</ul>
+
+@if (!Model.Small)
+{
+    <text>&nbsp;</text>
+}
+
+<ul class="navbar-nav">
+    <li class="@navItemClass">
+        <partial name="Menu/_AccountMenu" />
+    </li>
+</ul>

@@ -123,16 +123,44 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> JoinerApplications()
     {
-        IQueryable<IReviewApplication> model = await Send(new GetJoinerRequestsQuery());
+        var model = new JoinerApplicationsVm();
+        model.Applications = await Send(new GetJoinerRequestsQuery());
         return View(model);
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewJoinerApplication(int id)
+    public async Task<IActionResult> ReviewJoinerApplication(int id, bool singleApplication = true)
     {
         IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(id));
+        
         var model = new ReviewJoinerApplicationVm();
         Mapper.Map(application, model);
+
+        model.SingleApplication = singleApplication;
+        if (!singleApplication)
+        {
+            model.ReturnUrl = Url.Action(nameof(JoinerApplications));
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ReviewJoinerApplication(ReviewJoinerApplicationVm model)
+    {
+        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model), new ReviewJoinerApplicationVmValidator());
+
+        if (commandResult.Success)
+        {
+            if (model.SingleApplication && model.ReturnUrl?.Contains(nameof(JoinerApplications)) == true)
+            {
+                model.ReturnUrl = ""; // 
+            }
+            
+            string processed = model.Accepted ? "Accepted" : "Rejected";
+            return RedirectWithMessage(model, $"Application {processed} Successfully");
+        }
+
         return View(model);
     }
 }

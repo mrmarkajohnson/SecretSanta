@@ -15,7 +15,7 @@ public interface IReviewApplication : IHashableUserId
         set => ApplicantId = value;
     }
 
-    string Name { get; set; }
+    string ApplicantName { get; set; }
 
     int PreviousRequestCount { get; set; }
 

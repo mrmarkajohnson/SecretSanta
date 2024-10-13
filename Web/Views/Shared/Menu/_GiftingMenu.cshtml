@@ -1,9 +1,8 @@
 ﻿@using ViewLayer.Models.Home
 
 @inject SignInManager<IdentityUser> SignInManager
-@{
-    HomeVm Model = ViewData["LayoutViewModel"] as HomeVm ?? new HomeVm();
-}
+
+@model MainMenuVm
 
 @if (SignInManager.IsSignedIn(User))
 {    
@@ -22,9 +21,9 @@
             </a>
         </li>
 
-        @if (Model?.GiftingGroups?.Any() == true)
+        @if (Model?.HomeModel?.GiftingGroups?.Any() == true)
         {
-            @if (Model.NewJoinerApplications > 0)
+            @if (Model.HomeModel.NewJoinerApplications > 0)
             {
                 <li>
                     <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
@@ -34,8 +33,8 @@
             }
 
             <li><hr class="dropdown-divider"></li>
-            
-            @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+
+            @foreach (var giftingGroup in Model.HomeModel.GiftingGroups.Where(x => x.GroupAdmin).ToList())
             {
                 <li>
                     <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@giftingGroup.GroupId">

@@ -107,7 +107,7 @@ public abstract class BaseRequest<TResult>
         return UserManager.GetUserId(ClaimsUser);
     }
 
-    protected Global_User? GetCurrentGlobalUser(params Expression<Func<Global_User, object>>[] includes)
+    protected Global_User? GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
     {
         Global_User? dbGlobalUser = null;
 
@@ -122,12 +122,12 @@ public abstract class BaseRequest<TResult>
         return dbGlobalUser;
     }
 
-    protected Global_User? GetGlobalUser(IIdentityUser identityUser, params Expression<Func<Global_User, object>>[] includes)
+    protected Global_User? GetGlobalUser(IIdentityUser identityUser, params Expression<Func<Global_User, object?>>[] includes)
     {
         return GetGlobalUser(identityUser.Id, includes);
     }
 
-    protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object>>[] includes)
+    protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object?>>[] includes)
     {
         if (includes != null && includes.Any())
         {

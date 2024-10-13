@@ -4,16 +4,14 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Santa.Areas.GiftingGroup.Commands;
 
-public class SaveGiftingGroupCommand<T> : BaseCommand<T> where T : IGiftingGroup
+public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : IGiftingGroup
 {
-    public SaveGiftingGroupCommand(T item) : base(item)
+    public SaveGiftingGroupCommand(TItem item) : base(item)
     {
     }
 
-    protected async override Task<ICommandResult<T>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        EnsureSignedIn();
-
         Santa_GiftingGroup? dbGiftingGroup = null;
 
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
@@ -85,8 +83,7 @@ public class SaveGiftingGroupCommand<T> : BaseCommand<T> where T : IGiftingGroup
             dbGiftingGroup.CurrencyCodeOverride = Item.CurrencyCodeOverride;
             dbGiftingGroup.CurrencySymbolOverride = Item.CurrencySymbolOverride;
 
-            await ModelContext.SaveChangesAsync();
-            Success = true;
+            return await SaveAndReturnSuccess();
         }
 
         return await Result();

@@ -6,6 +6,18 @@
 @{
     HomeVm Model = ViewData["LayoutViewModel"] as HomeVm ?? new HomeVm();
     bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
+
+    var smallMenuModel = new MainMenuVm
+    {
+        HomeModel = Model ?? new(),
+        Small = true
+    };
+
+    var normalMenuModel = new MainMenuVm
+    {
+        HomeModel = Model ?? new(),
+        Small = false
+    };
 }
 
 <!DOCTYPE html>
@@ -53,17 +65,7 @@
                         <div class="d-none d-sm-block text-end justify-content-end">
                             <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
                                 @* In normal mode, show normal drop-downs *@
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown">
-                                        <partial name="_GiftingPartial" />
-                                    </li>
-                                </ul>
-                                &nbsp;
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown">
-                                        <partial name="_AccountPartial" />                                
-                                    </li>
-                                </ul>
+                                <partial name="Menu/_LoggedInMenu" model="@normalMenuModel" />
                             </div>
                         </div>
 
@@ -74,16 +76,7 @@
                             </button>
                             <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent">
                                 @* In xs mode, show left drop-downs *@
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown dropstart">
-                                        <partial name="_GiftingPartial" />
-                                    </li>
-                                </ul>
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown dropstart">
-                                        <partial name="_AccountPartial" />
-                                    </li>
-                                </ul>
+                                <partial name="Menu/_LoggedInMenu" model="@smallMenuModel" />
                             </div>
                         </div>
                     }
@@ -96,7 +89,7 @@
                         <span class="fa-solid fa-bars"></span>
                     </button>
                     <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
-                        <partial name="_LoginPartial" />
+                        <partial name="Menu/_LoginMenu" />
                     </div>
                 }
             </div>

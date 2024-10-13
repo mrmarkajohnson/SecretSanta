@@ -40,8 +40,7 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
                 dbGlobalUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
                 dbGlobalUser.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, dbGlobalUser.Id);
 
-                await ModelContext.SaveChangesAsync();
-                Success = true;
+                return await SaveAndReturnSuccess();
             }
             else
             {

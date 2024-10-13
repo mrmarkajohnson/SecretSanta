@@ -13,8 +13,6 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
 
     protected async override Task<IQueryable<IReviewApplication>> Handle()
     {
-        EnsureSignedIn();
-
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
         if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
         {

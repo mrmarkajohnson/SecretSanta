@@ -11,6 +11,8 @@
     <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup" method="post" class="join-group-form"
         data-get-group-details="@Model.GetGroupDetailsAction">
 
+        <partial name="_FormHiddenInputs" />
+
         <partial name="_JoinGiftingGroup" />
     </form>
 </section>

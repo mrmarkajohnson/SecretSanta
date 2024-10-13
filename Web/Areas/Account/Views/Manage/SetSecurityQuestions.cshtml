@@ -16,6 +16,7 @@ else
 
 <section>
     <form asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
+        <partial name="_FormHiddenInputs" />
 
         <div class="collapse">
             <input type="hidden" asp-for="Update" />
@@ -171,5 +172,5 @@ else
 </section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScripts" />
 }

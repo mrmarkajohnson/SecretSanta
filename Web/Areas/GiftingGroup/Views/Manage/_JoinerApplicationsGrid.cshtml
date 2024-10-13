@@ -1,28 +1,31 @@
 ﻿@using Global.Abstractions.Santa.Areas.GiftingGroup
 @using NonFactors.Mvc.Grid
 
-@model IQueryable<IReviewApplication>
+@model JoinerApplicationsVm
 @{
+    bool singleApplication = Model.ApplicationsCount == 1;
+
     Func<IReviewApplication, object> actions = 
     @<text>
-        <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" asp-route-id="@item.ApplicationId"><i class="fa fa-pencil"></i></a>
+        <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" asp-route-id="@item.ApplicationId" asp-route-singleApplication="@singleApplication">
+            <i class="fa fa-pencil"></i>
+        </a>
     </text> ;
 }
 
-@(
-Html
-                .Grid(Model)
+@(Html
+    .Grid(Model.Applications)
     .Build(columns =>
     {
         columns.Add(x => x.GroupName).Titled("Group Name");
-        columns.Add(x => x.Name).Titled("Applicant Name");
+        columns.Add(x => x.ApplicantName).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled("UserName");
         columns.Add<string>(x => x.Email ?? "").Titled("E-mail Address");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
     .Pageable(pager =>
     {
-        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" } };
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
     .Empty("No data found")

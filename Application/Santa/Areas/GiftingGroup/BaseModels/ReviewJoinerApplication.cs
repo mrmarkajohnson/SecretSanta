@@ -16,7 +16,7 @@ public class ReviewJoinerApplication : IReviewApplication
     public string? UserName { get; set; } = string.Empty;
 
     [Display(Name = "Applicant UserId")]
-    public string Name { get; set; } = string.Empty;
+    public string ApplicantName { get; set; } = string.Empty;
 
     [Display(Name = "Applicant E-mail Address")]
     public string? Email { get; set; }
@@ -24,7 +24,11 @@ public class ReviewJoinerApplication : IReviewApplication
     public int PreviousRequestCount { get; set; }
 
     public bool Accepted { get; set; }
+
+    [Display(Name = "Message")]
     public string? RejectionMessage { get; set; }
+
+    [Display(Name = "Block Future Applications")]
     public bool Blocked { get; set; }
 
     public bool IdentificationHashed { get; set; }

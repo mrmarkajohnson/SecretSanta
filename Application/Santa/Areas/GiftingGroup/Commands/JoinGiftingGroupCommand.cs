@@ -4,13 +4,13 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Santa.Areas.GiftingGroup.Commands;
 
-public class JoinGiftingGroupCommand<T> : BaseCommand<T> where T : IJoinGiftingGroup
+public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : IJoinGiftingGroup
 {
-    public JoinGiftingGroupCommand(T item) : base(item)
+    public JoinGiftingGroupCommand(TItem item) : base(item)
     {
     }
 
-    protected async override Task<ICommandResult<T>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         EnsureSignedIn();
 
@@ -69,8 +69,7 @@ public class JoinGiftingGroupCommand<T> : BaseCommand<T> where T : IJoinGiftingG
 
             ModelContext.Add(dbApplication);
 
-            await ModelContext.SaveChangesAsync();
-            Success = true;
+            return await SaveAndReturnSuccess();
         }
 
         return await Result();

@@ -68,8 +68,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
                         dbGlobalUser.Email = Item.Email; // just in case
                         dbGlobalUser.UserName = Item.UserName; // just in case
 
-                        await ModelContext.SaveChangesAsync();
-                        Success = true;
+                        return await SaveAndReturnSuccess();
                     }
                 }
             }

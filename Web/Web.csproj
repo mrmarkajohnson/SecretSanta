@@ -82,7 +82,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Shared\_AccountPartial.cshtml">
+    <Content Update="Views\Shared\Menu\_AccountMenu.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
