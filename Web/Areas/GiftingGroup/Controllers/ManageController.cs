@@ -129,9 +129,9 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewJoinerApplication(int id, bool singleApplication = true)
+    public async Task<IActionResult> ReviewJoinerApplication(int applicationId, bool singleApplication = true)
     {
-        IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(id));
+        IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(applicationId));
         
         var model = new ReviewJoinerApplicationVm();
         Mapper.Map(application, model);

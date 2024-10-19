@@ -15,7 +15,7 @@
 <h1>Review Joiner Application</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" method="post">
+    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" class="review-application" method="post">
         <partial name="_FormHiddenInputs" />
         
         <div class="row d-flex align-items-center justify-content-center text-center">
@@ -86,42 +86,44 @@
                                 <i class="fa fa-circle-question fa-border"></i>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <span asp-validation-for="AcceptedOption" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
-                        <label asp-for="RejectionMessage" class="control-label"></label>
-                        <div class="input-group input-info">
-                            <textarea asp-for="RejectionMessage" class="form-control"></textarea>
-                            <partial name="_InputQuestion" model="@rejectionMessageExplanation" />
+                        <div>
+                            <span asp-validation-for="AcceptedOption" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
 
-                @if (Model.PreviousRequestCount > 2)
-                {
+                <div class="rejected-section collapse">
                     <div class="col-md-12">
                         <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
-                            <label asp-for="Blocked" class="control-label"></label>
-                            <div class="control-label fw-normal">
-                                <input type="checkbox" asp-for="Blocked" class="form-check-input accepted-option" autocomplete="off" aria-required="false"/> &nbsp; Yes
-
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-
-                                <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@blockExplanation">
-                                    <i class="fa fa-circle-question fa-border"></i>
-                                </div>
+                            <label asp-for="RejectionMessage" class="control-label"></label>
+                            <div class="input-group input-info">
+                                <textarea asp-for="RejectionMessage" class="form-control"></textarea>
+                                <partial name="_InputQuestion" model="@rejectionMessageExplanation" />
                             </div>
                         </div>
                     </div>
-                }
+
+                    @if (Model.PreviousRequestCount > 2)
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                                <label asp-for="Blocked" class="control-label"></label>
+                                <div class="control-label fw-normal">
+                                    <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false"/> &nbsp; Yes
+
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+
+                                    <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@blockExplanation">
+                                        <i class="fa fa-circle-question fa-border"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
 
                 <br />
                 <div class="col-md-12">
