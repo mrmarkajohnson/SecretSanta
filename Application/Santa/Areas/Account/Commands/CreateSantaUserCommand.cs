@@ -39,7 +39,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
 
         dbGlobalUser.SantaUser = dbSantaUser;
 
-        ModelContext.ChangeTracker.DetectChanges();
+        DbContext.ChangeTracker.DetectChanges();
 
         IdentityResult result = await UserManager.CreateAsync(dbGlobalUser, Item.Password);
 
@@ -49,7 +49,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
             await StoreEmailAddress(dbGlobalUser);
 
             Item.Password = "";
-            await ModelContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
             Success = true;
             await SignInManager.SignInAsync(dbGlobalUser, isPersistent: false);
         }

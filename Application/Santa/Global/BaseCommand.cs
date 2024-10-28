@@ -41,7 +41,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess()
     {
-        await ModelContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
         Success = true;
         return await Result();
     }

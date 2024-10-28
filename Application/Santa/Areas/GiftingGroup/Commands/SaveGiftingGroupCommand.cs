@@ -49,7 +49,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
             await ReplaceTokenIfNotUnique();
 
             dbGiftingGroup = new Santa_GiftingGroup();
-            ModelContext.Add(dbGiftingGroup);
+            DbContext.Add(dbGiftingGroup);
 
             dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
             {
@@ -67,7 +67,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         if (Item.Name != dbGiftingGroup.Name)
         {
-            List<string> existingNames = ModelContext.Santa_GiftingGroups.Select(x => x.Name).ToList();
+            List<string> existingNames = DbContext.Santa_GiftingGroups.Select(x => x.Name).ToList();
             if (existingNames.Contains(Item.Name.Trim()))
             {
                 AddValidationError(nameof(Item.Name),  $"Another group with name '{Item.Name}' already exists. Names must be unique.");

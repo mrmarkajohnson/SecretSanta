@@ -20,7 +20,7 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
 
         if (Item.GroupId > 0)
         {
-            dbGiftingGroup = ModelContext.Santa_GiftingGroups.Where(x => x.Id == Item.GroupId).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.Id == Item.GroupId).FirstOrDefault();
 
             if (dbGiftingGroup?.Name != Item.Name || dbGiftingGroup?.JoinerToken != Item.JoinerToken) // held on to an old ID?
             {                
@@ -31,7 +31,7 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
 
         if (dbGiftingGroup == null)
         {
-            dbGiftingGroup = ModelContext.Santa_GiftingGroups
+            dbGiftingGroup = DbContext.Santa_GiftingGroups
                 .Where(x => x.Name == Item.Name && x.JoinerToken == Item.JoinerToken)
                 .FirstOrDefault();
         }

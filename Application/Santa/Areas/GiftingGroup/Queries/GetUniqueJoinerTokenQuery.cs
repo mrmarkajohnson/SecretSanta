@@ -13,7 +13,7 @@ public class GetUniqueJoinerTokenQuery : BaseQuery<string>
 
     protected override Task<string> Handle()
     {
-        List<string> existingTokens = ModelContext.Santa_GiftingGroups.Select(x => x.JoinerToken).ToList();
+        List<string> existingTokens = DbContext.Santa_GiftingGroups.Select(x => x.JoinerToken).ToList();
 
         if (!string.IsNullOrWhiteSpace(_existingToken) && IsUnique(_existingToken, existingTokens))
         {

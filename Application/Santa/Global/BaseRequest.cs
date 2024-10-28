@@ -16,7 +16,7 @@ public abstract class BaseRequest<TResult>
     private SignInManager<IdentityUser> _signInManager;
 
     protected IServiceProvider Services { get; private set; }
-    protected ApplicationDbContext ModelContext { get; private set; }
+    protected ApplicationDbContext DbContext { get; private set; }
     protected IMapper Mapper { get; set; }
 
     protected ClaimsPrincipal ClaimsUser {  get; private set; }
@@ -51,7 +51,7 @@ public abstract class BaseRequest<TResult>
 
     protected BaseRequest()
     {
-        ModelContext = new ApplicationDbContext();
+        DbContext = new ApplicationDbContext();
     }
 
     #pragma warning restore CS8618
@@ -74,7 +74,7 @@ public abstract class BaseRequest<TResult>
         ClaimsUser = claimsUser;
 
         string? currentUserId = GetCurrentUserId();
-        ModelContext.CurrentUserId = currentUserId;
+        DbContext.CurrentUserId = currentUserId;
     }
 
     public abstract Task<TResult> Handle(IServiceProvider Services, ClaimsPrincipal claimsUser);
@@ -136,14 +136,14 @@ public abstract class BaseRequest<TResult>
     {
         if (includes != null && includes.Any())
         {
-            var query = ModelContext.Global_Users;
+            var query = DbContext.Global_Users;
             return includes
                 .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
                 .FirstOrDefault(x => x.Id == userId);
         }
         else
         {
-            return ModelContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+            return DbContext.Global_Users.FirstOrDefault(x => x.Id == userId);
         }
     }
 

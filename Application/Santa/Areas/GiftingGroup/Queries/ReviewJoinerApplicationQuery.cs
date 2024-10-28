@@ -30,7 +30,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 
         if (dbApplication == null)
         {
-            dbApplication = ModelContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == _applicationId);
+            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == _applicationId);
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {

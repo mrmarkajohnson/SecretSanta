@@ -45,7 +45,7 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         if (Validation.IsValid)
         {
-            dbGiftingGroup = ModelContext.Santa_GiftingGroups.Where(x => x.Id == Item.GroupId).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.Id == Item.GroupId).FirstOrDefault();
 
             if (dbGiftingGroup == null) // just in case
             {
@@ -67,7 +67,7 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
                 Message = Item.Message
             };
 
-            ModelContext.Add(dbApplication);
+            DbContext.Add(dbApplication);
 
             return await SaveAndReturnSuccess();
         }

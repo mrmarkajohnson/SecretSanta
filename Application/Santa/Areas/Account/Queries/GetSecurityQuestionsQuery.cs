@@ -32,7 +32,7 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 
         if (dbGlobalUser == null && !string.IsNullOrEmpty(_hashedUserName)) // second constructor
         {
-            dbGlobalUser = ModelContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
+            dbGlobalUser = DbContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
         }
 
         if (dbGlobalUser != null)

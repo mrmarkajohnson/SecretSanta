@@ -26,7 +26,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
 
         if (dbApplication == null)
         {
-            dbApplication = ModelContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == Item.ApplicationId);
+            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == Item.ApplicationId);
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {

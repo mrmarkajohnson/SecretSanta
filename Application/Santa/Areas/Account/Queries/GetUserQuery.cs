@@ -29,7 +29,7 @@ public class GetUserQuery : BaseQuery<ISantaUser?>
 
             bool isEmail = EmailHelper.IsEmail(_userNameOrEmail);
 
-            var dbGlobalUser = ModelContext.Global_Users
+            var dbGlobalUser = DbContext.Global_Users
                 .FirstOrDefault(x => x.Forename.ToLower() == _foreName.ToLower()
                     && ((hashedId.UserNameHash != null && x.UserName == hashedId.UserNameHash) || (isEmail && x.Email == hashedId.EmailHash)));
             
