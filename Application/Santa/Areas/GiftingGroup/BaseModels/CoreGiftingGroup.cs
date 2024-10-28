@@ -1,4 +1,5 @@
 ﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+using Global.Names;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,7 +22,7 @@ public class CoreGiftingGroup : IGiftingGroup
     [Display(Name = "Joiner Token"), Required, StringLength(GiftingGroupVal.JoinerToken.MaxLength, MinimumLength = GiftingGroupVal.JoinerToken.MinLength)]
     public string JoinerToken { get; set; } = "";
 
-    [Display(Name = "Main Location"), Required, StringLength(GiftingGroupVal.CultureInfo.MaxLength, MinimumLength = GiftingGroupVal.CultureInfo.MinLength)]
+    [Display(Name = GiftingGroupNames.CultureInfo), Required, StringLength(GiftingGroupVal.CultureInfo.MaxLength, MinimumLength = GiftingGroupVal.CultureInfo.MinLength)]
     public string CultureInfo { get; set; } = "en-GB";
 
     [MaxLength(GiftingGroupVal.CurrencyCodeOverride.MaxLength)]

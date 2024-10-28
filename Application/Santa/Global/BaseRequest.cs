@@ -48,10 +48,12 @@ public abstract class BaseRequest<TResult>
     }
 
     #pragma warning disable CS8618
+
     protected BaseRequest()
     {
         ModelContext = new ApplicationDbContext();
     }
+
     #pragma warning restore CS8618
 
     protected void Initialise(IServiceProvider services, ClaimsPrincipal claimsUser)
@@ -70,6 +72,9 @@ public abstract class BaseRequest<TResult>
         }
 
         ClaimsUser = claimsUser;
+
+        string? currentUserId = GetCurrentUserId();
+        ModelContext.CurrentUserId = currentUserId;
     }
 
     public abstract Task<TResult> Handle(IServiceProvider Services, ClaimsPrincipal claimsUser);

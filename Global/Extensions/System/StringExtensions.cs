@@ -8,9 +8,11 @@ public static class StringExtensions
     {
         if (string.IsNullOrWhiteSpace(value)) return string.Empty;
 
-        Regex r = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])");
+        //Regex r = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])");
 
-        return r.Replace(value, " ");
+        //return r.Replace(value, " ");
+
+        return Regex.Replace(Regex.Replace(value, "([a-z])([A-Z])", "$1 $2"), "([A-Z])([A-Z])([a-z])", "$1 $2$3");
     }
 
     public static string TrimEnd(this string text, string remove)
@@ -23,7 +25,6 @@ public static class StringExtensions
         {
             return text[..^remove.Length];
         }
-
     }
 
     public static string DisplayList(this IEnumerable<string> list, bool or = false, bool oxfordComma = false)

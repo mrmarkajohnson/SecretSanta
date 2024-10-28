@@ -24,6 +24,16 @@ internal static class ModelHelper
             .HasForeignKey<Santa_User>(e => e.GlobalUserId)
             .IsRequired(false);
 
+        modelBuilder.Entity<Santa_GiftingGroup>()
+            .HasMany(e => e.AuditTrail)
+            .WithOne(e => e.Parent)
+            .HasForeignKey(e => e.ParentId);
+
+        modelBuilder.Entity<Santa_GiftingGroup_Audit>()
+            .HasMany(e => e.Changes)
+            .WithOne(e => e.Audit)
+            .HasForeignKey(e => e.AuditId);
+
         modelBuilder.Entity<Santa_GiftingGroupApplication>()
             .HasOne(e => e.User)
             .WithMany(e => e.GiftingGroupApplications)

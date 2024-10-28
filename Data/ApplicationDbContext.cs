@@ -1,11 +1,17 @@
-﻿using Data.Entities.Santa;
+﻿using Data.Attributes;
+using Data.DummyImplementations;
+using Data.Entities.Santa;
 using Data.Entities.Shared;
 using Data.Helpers;
+using Global.Extensions.System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using static Global.Settings.GlobalSettings;
 
 namespace SecretSanta.Data;
 
@@ -20,16 +26,112 @@ public class ApplicationDbContext : IdentityDbContext
     {            
     }
 
+    public string? CurrentUserId { get; set; }
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.DetectChanges();
+        AddAuditTrails();
         return await base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
         ChangeTracker.DetectChanges();
+        AddAuditTrails();
         return base.SaveChanges();
+    }
+
+    private void AddAuditTrails()
+    {
+        var modifiedAuditableEntities = ChangeTracker.Entries()
+            .Where(e => e.Entity is IAuditableEntity)
+            .Where(e => e.State == EntityState.Added
+                || e.State == EntityState.Modified
+                || e.State == EntityState.Deleted)
+            .ToList();
+
+        foreach (var modifiedEntity in modifiedAuditableEntities)
+        {
+            if (modifiedEntity.Entity is IAuditableEntity auditableEntity)
+            {
+                AddAuditTrail(modifiedEntity, auditableEntity, modifiedEntity.State);
+            }
+        }
+
+        ChangeTracker.DetectChanges();
+    }
+
+    private void AddAuditTrail<TAuditableEntity> (EntityEntry modifiedEntry, TAuditableEntity auditableEntity, EntityState state) 
+        where TAuditableEntity : IAuditableEntity
+    {
+        var changes = GetChanges(modifiedEntry);
+
+        AuditAction action = GetAuditAction(auditableEntity, state, changes);
+
+        auditableEntity.AddAuditEntry(new Dummy_AuditEntry
+        {
+            Action = action,
+            UserId = CurrentUserId ?? null
+        }, changes);
+    }
+
+    private static AuditAction GetAuditAction<TAuditableEntity>(TAuditableEntity auditableEntity, EntityState state, IList<IAuditBaseChange> changes) 
+        where TAuditableEntity : IAuditableEntity
+    {
+        AuditAction action = state switch
+        {
+            EntityState.Added => AuditAction.Create,
+            EntityState.Modified => AuditAction.Update, // initially
+            EntityState.Deleted => AuditAction.Delete,
+            _ => AuditAction.Update
+        };
+
+        if (action == AuditAction.Update)
+        {
+            if (auditableEntity is IDeletableEntity deletableEntity && deletableEntity.DateDeleted != null
+                && changes.Any(x => x.ColumnName == nameof(deletableEntity.DateDeleted)))
+            {
+                action = AuditAction.Delete;
+            }
+            else if (auditableEntity is IArchivableEntity archivableEntity && archivableEntity.DateArchived != null
+                && changes.Any(x => x.ColumnName == nameof(archivableEntity.DateArchived)))
+            {
+                action = AuditAction.Archive;
+            }
+        }
+
+        return action;
+    }
+
+    private IList<IAuditBaseChange> GetChanges(EntityEntry entity)
+    {
+        var changes = new List<IAuditBaseChange>();
+
+        foreach (IProperty property in entity.OriginalValues.Properties)
+        {
+            var oldValue = entity.OriginalValues[property];
+            var newValue = entity.CurrentValues[property];
+
+            if (!Equals(oldValue, newValue))
+            {
+                var auditAttribute = property.PropertyInfo?.GetCustomAttribute<AuditAttribute>(true);
+
+                if (auditAttribute != null && auditAttribute.NotAudited)
+                {
+                    continue;
+                }
+
+                changes.Add(new Dummy_AuditChange
+                {
+                    ColumnName = property.Name,
+                    DisplayName = !string.IsNullOrWhiteSpace(auditAttribute?.Name) ? auditAttribute.Name : property.Name.SplitPascalCase(),
+                    OldValue = oldValue?.ToString() ?? "",
+                    NewValue = newValue?.ToString() ?? ""
+                });
+            }
+        }
+        return changes;
     }
 
     public DbSet<Global_User> Global_Users => Set<Global_User>();

@@ -8,4 +8,13 @@ public static class GlobalSettings
         .Where(x => x.Name.StartsWith("en"))
         .Where(x => !x.Name.StartsWith("en-0") && !x.Name.StartsWith("en-1"))
         .ToList();
+
+    public enum AuditAction
+    {
+        Create = 0,
+        Update = 1,
+        Delete = 2,
+        Archive = 3,
+        View = 4
+    }
 }

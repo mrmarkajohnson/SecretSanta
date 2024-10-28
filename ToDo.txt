@@ -3,7 +3,7 @@ Create menus and rework main page
 Add testing and production configuration
 Add back buttons to relevant pages
 Use IIS?
-Add auditing
+Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 
 USERS/SECURITY

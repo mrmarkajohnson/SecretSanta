@@ -1,11 +1,10 @@
 ﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
+using FluentValidation;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.System;
-using static Global.Settings.GlobalSettings;
-
-using System.ComponentModel.DataAnnotations;
-using FluentValidation;
 using Global.Validation;
+using System.ComponentModel.DataAnnotations;
+using static Global.Settings.GlobalSettings;
 
 namespace ViewLayer.Models.GiftingGroup;
 
