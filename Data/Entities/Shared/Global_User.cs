@@ -13,6 +13,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     public Global_User()
     {
         DateCreated = DateTime.Now;
+        AuditTrails = new HashSet<AuditBaseEntity>();
     }
     
     [Required, Display(Name = "First Name")]
@@ -51,4 +52,6 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     [NotMapped]
     public bool IdentificationHashed { get; set; } = true;
+
+    public virtual ICollection<AuditBaseEntity> AuditTrails { get; set; }
 }

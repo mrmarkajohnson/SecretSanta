@@ -18,6 +18,12 @@ internal static class ModelHelper
             Configure(e, modelBuilder);
         }
 
+        modelBuilder.Entity<AuditBaseEntity>()
+            .HasOne(e => e.User)
+            .WithMany(e => e.AuditTrails)
+            .HasForeignKey(e => e.UserId)
+            .IsRequired(false);
+
         modelBuilder.Entity<Global_User>()
             .HasOne(e => e.SantaUser)
             .WithOne(e => e.GlobalUser)

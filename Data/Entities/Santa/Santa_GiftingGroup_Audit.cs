@@ -10,5 +10,6 @@ public class Santa_GiftingGroup_Audit : AuditBaseEntity, IAuditEntity<Santa_Gift
     
     public int ParentId { get; set; }
     public virtual Santa_GiftingGroup Parent { get; set; } = new();
+
     public virtual ICollection<Santa_GiftingGroup_AuditChange> Changes { get; set; }
 }
