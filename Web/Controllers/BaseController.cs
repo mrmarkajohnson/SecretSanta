@@ -142,7 +142,7 @@ public class BaseController : Controller
         if (model is ICheckLockout checkLockout && checkLockout.LockedOut)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return LocalRedirect(Url.Action("LockedOut", "Home", new { Area = "Account" }));
+            return LocalRedirect(Url.Action("LockedOut", "Home", new { Area = "Account" }) ?? "");
         }
         else
         {
@@ -153,7 +153,7 @@ public class BaseController : Controller
     protected async Task<IActionResult> RedirectToLogin(HttpRequest request)
     {
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
-        return LocalRedirect(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }));
+        return LocalRedirect(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }) ?? "");
     }
 
     protected void EnsureSignedIn()

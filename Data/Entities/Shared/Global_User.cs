@@ -1,4 +1,5 @@
-﻿using Data.Entities.Santa;
+﻿using Data.Attributes;
+using Data.Entities.Santa;
 using Global.Abstractions.Global;
 using Global.Abstractions.Global.Account;
 using Global.Validation;
@@ -8,19 +9,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Data.Entities.Shared;
 
 [Table("Global_User")]
-public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions
+public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions, 
+    IAuditableEntity<Global_User_Audit, Global_User_AuditChange>
 {
     public Global_User()
     {
         DateCreated = DateTime.Now;
-        AuditTrails = new HashSet<AuditBaseEntity>();
+        AuditTrail = new HashSet<Global_User_Audit>();
     }
     
-    [Required, Display(Name = "First Name")]
+    [Required, Audit("First Name")]
     [MaxLength(UserVal.Forename.MaxLength)]
     public required string Forename { get; set; }
 
-    [Display(Name = "Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
+    [Audit("Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
 
     [Required, MaxLength(UserVal.Surname.MaxLength)]
@@ -48,10 +50,19 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     public required string Greeting { get; set; }
 
+    [NotAudited]
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
 
-    [NotMapped]
+    [NotMapped, NotAudited]
     public bool IdentificationHashed { get; set; } = true;
 
-    public virtual ICollection<AuditBaseEntity> AuditTrails { get; set; }
+    [Audit(NoDetails = true)]
+    public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
+
+    public virtual ICollection<Global_User_Audit> AuditTrail { get; set; }
+
+    public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
+    {
+        this.AddNewAuditEntry<Global_User, Global_User_Audit, Global_User_AuditChange>(auditTrail, changes);
+    }
 }

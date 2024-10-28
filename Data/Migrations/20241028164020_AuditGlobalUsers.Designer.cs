@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SecretSanta.Data;
 
@@ -11,9 +12,11 @@ using SecretSanta.Data;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241028164020_AuditGlobalUsers")]
+    partial class AuditGlobalUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Santa_GiftingGroups", (string)null);
+                    b.ToTable("Santa_GiftingGroups");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupApplication", b =>
@@ -119,7 +122,7 @@ namespace Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Santa_GiftingGroupApplications", (string)null);
+                    b.ToTable("Santa_GiftingGroupApplications");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupUser", b =>
@@ -154,7 +157,7 @@ namespace Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Santa_GiftingGroupUsers", (string)null);
+                    b.ToTable("Santa_GiftingGroupUsers");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupYear", b =>
@@ -188,7 +191,7 @@ namespace Data.Migrations
 
                     b.HasIndex("GiftingGroupId");
 
-                    b.ToTable("Santa_GiftingGroupYears", (string)null);
+                    b.ToTable("Santa_GiftingGroupYears");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroup_Audit", b =>
@@ -217,7 +220,7 @@ namespace Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Santa_GiftingGroup_Audit", (string)null);
+                    b.ToTable("Santa_GiftingGroup_Audit");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroup_AuditChange", b =>
@@ -251,7 +254,7 @@ namespace Data.Migrations
 
                     b.HasIndex("AuditId");
 
-                    b.ToTable("Santa_GiftingGroup_AuditChanges", (string)null);
+                    b.ToTable("Santa_GiftingGroup_AuditChanges");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
@@ -289,7 +292,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Santa_Messages", (string)null);
+                    b.ToTable("Santa_Messages");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_MessageRecipient", b =>
@@ -321,7 +324,7 @@ namespace Data.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.ToTable("Santa_MessageRecipients", (string)null);
+                    b.ToTable("Santa_MessageRecipients");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_MessageReply", b =>
@@ -348,7 +351,7 @@ namespace Data.Migrations
                     b.HasIndex("ReplyMessageId")
                         .IsUnique();
 
-                    b.ToTable("Santa_MessageReplies", (string)null);
+                    b.ToTable("Santa_MessageReplies");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_PartnerLink", b =>
@@ -389,7 +392,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SuggestedById");
 
-                    b.ToTable("Santa_PartnerLinks", (string)null);
+                    b.ToTable("Santa_PartnerLinks");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_Suggestion", b =>
@@ -424,7 +427,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SuggesterId");
 
-                    b.ToTable("Santa_Suggestions", (string)null);
+                    b.ToTable("Santa_Suggestions");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_User", b =>
@@ -453,7 +456,7 @@ namespace Data.Migrations
                         .IsUnique()
                         .HasFilter("[GlobalUserId] IS NOT NULL");
 
-                    b.ToTable("Santa_Users", (string)null);
+                    b.ToTable("Santa_Users");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_YearGroupUser", b =>
@@ -481,7 +484,7 @@ namespace Data.Migrations
 
                     b.HasIndex("YearId");
 
-                    b.ToTable("Santa_YearGroupUsers", (string)null);
+                    b.ToTable("Santa_YearGroupUsers");
                 });
 
             modelBuilder.Entity("Data.Entities.Shared.Global_User_Audit", b =>
@@ -511,7 +514,7 @@ namespace Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Global_User_Audit", (string)null);
+                    b.ToTable("Global_User_Audit");
                 });
 
             modelBuilder.Entity("Data.Entities.Shared.Global_User_AuditChange", b =>
@@ -545,7 +548,7 @@ namespace Data.Migrations
 
                     b.HasIndex("AuditId");
 
-                    b.ToTable("Global_User_AuditChanges", (string)null);
+                    b.ToTable("Global_User_AuditChange");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -799,7 +802,7 @@ namespace Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.ToTable("Global_User", (string)null);
+                    b.ToTable("Global_User");
                 });
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupApplication", b =>

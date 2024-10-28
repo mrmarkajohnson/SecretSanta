@@ -4,6 +4,7 @@ namespace Data.Entities.Shared.Base;
 
 public abstract class AuditBaseEntity : BaseEntity, IAuditBase
 {
+    [Key]
     public int Id { get; set; }
 
     public string? UserId { get; set; }

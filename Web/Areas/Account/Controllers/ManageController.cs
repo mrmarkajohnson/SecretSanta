@@ -46,7 +46,7 @@ public class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return RedirectWithMessage(model.ReturnUrl, "Registered Successfully");
+                return RedirectWithMessage(model.ReturnUrl ?? "", "Registered Successfully");
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace Data.Entities.Shared.Base;
 
-public class AuditBaseChange : IAuditBaseChange
+public abstract class AuditBaseChange : IAuditBaseChange
 {
     public int Id { get; set; }
     public int AuditId { get; set; }

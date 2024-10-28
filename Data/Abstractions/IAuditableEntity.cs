@@ -5,9 +5,6 @@
 /// </summary>
 internal interface IAuditableEntity : IEntity
 {
-    int Id { get;  }
-    ICollection<IAuditEntity> AuditTrail { get; }
-
     void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes);
 }
 
@@ -15,8 +12,7 @@ internal interface IAuditableEntity<TAuditEntity, TChangeEntity> : IAuditableEnt
     where TAuditEntity : class, IAuditEntity<TChangeEntity>, new()
     where TChangeEntity : class, IAuditChangeEntity, new()
 {
-    new ICollection<TAuditEntity> AuditTrail { get; }
-    ICollection<IAuditEntity> IAuditableEntity.AuditTrail => AuditTrail.ToList<IAuditEntity>();
+    ICollection<TAuditEntity> AuditTrail { get; }
 }
 
 internal static class AuditableEntityExtensions
@@ -30,7 +26,6 @@ internal static class AuditableEntityExtensions
         var auditEntity = new TAuditEntity
         {
             Parent = parent,
-            ParentId = parent.Id,
             Action = auditTrail.Action,
             UserId = auditTrail.UserId,
             Changes = new List<TChangeEntity>()

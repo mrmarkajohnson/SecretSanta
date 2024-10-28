@@ -135,6 +135,8 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Global_User> Global_Users => Set<Global_User>();
+    public DbSet<Global_User_Audit> Global_User_Audit => Set<Global_User_Audit>();
+    public DbSet<Global_User_AuditChange> Global_User_AuditChanges => Set<Global_User_AuditChange>();
     public DbSet<Santa_GiftingGroup> Santa_GiftingGroups => Set<Santa_GiftingGroup>();
     public DbSet<Santa_GiftingGroup_Audit> Santa_GiftingGroup_Audit => Set<Santa_GiftingGroup_Audit>();
     public DbSet<Santa_GiftingGroup_AuditChange> Santa_GiftingGroup_AuditChanges => Set<Santa_GiftingGroup_AuditChange>();

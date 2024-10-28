@@ -1,5 +1,6 @@
 ﻿namespace Data.Attributes;
 
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 internal class AuditAttribute : Attribute
 {
     public AuditAttribute(string? name = null)

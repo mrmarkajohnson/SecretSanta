@@ -36,7 +36,7 @@ internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGree
         {
             Email = email,
             UserName = userName ?? "",
-            Greeting = greeting
+            Greeting = greeting ?? ""
         });
     }
 }

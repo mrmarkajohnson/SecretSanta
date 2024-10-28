@@ -18,17 +18,21 @@ internal static class ModelHelper
             Configure(e, modelBuilder);
         }
 
-        modelBuilder.Entity<AuditBaseEntity>()
-            .HasOne(e => e.User)
-            .WithMany(e => e.AuditTrails)
-            .HasForeignKey(e => e.UserId)
-            .IsRequired(false);
-
         modelBuilder.Entity<Global_User>()
             .HasOne(e => e.SantaUser)
             .WithOne(e => e.GlobalUser)
             .HasForeignKey<Santa_User>(e => e.GlobalUserId)
             .IsRequired(false);
+
+        modelBuilder.Entity<Global_User>()
+            .HasMany(e => e.AuditTrail)
+            .WithOne(e => e.Parent)
+            .HasForeignKey(e => e.ParentId);
+
+        modelBuilder.Entity<Global_User_Audit>()
+            .HasMany(e => e.Changes)
+            .WithOne(e => e.Audit)
+            .HasForeignKey(e => e.AuditId);
 
         modelBuilder.Entity<Santa_GiftingGroup>()
             .HasMany(e => e.AuditTrail)
