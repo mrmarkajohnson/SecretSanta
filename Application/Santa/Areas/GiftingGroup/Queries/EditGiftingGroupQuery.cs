@@ -4,7 +4,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Santa.Areas.GiftingGroup.Queries;
 
-public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
+public class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
 {
     private readonly int _groupId;
 
@@ -19,36 +19,10 @@ public class EditGiftingGroupQuery : BaseQuery<IGiftingGroup>
         {
             return new CoreGiftingGroup();
         }
-        
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
-        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
-
-        Santa_User? dbSantaUser = dbGlobalUser.SantaUser;
-
-        if (dbSantaUser != null)
-        {
-            Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
-                .FirstOrDefault(x => x.GiftingGroupId == _groupId);
-
-            if (dbGiftingGroupLink != null)
-            {
-                if (dbGiftingGroupLink.GroupAdmin)
-                {
-                    await Task.CompletedTask;
-                    return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
-                }
-                else
-                {
-                    throw new AccessDeniedException();
-                }
-            }
-        }
-
-        throw new NotFoundException("Gifting Group");
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroup(_groupId, true);
+        return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
     }
+
+    
 }

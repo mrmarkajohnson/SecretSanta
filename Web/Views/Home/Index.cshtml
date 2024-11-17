@@ -77,6 +77,15 @@
                         </a>
                     </p>
                 }
+
+                @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+                {
+                    <p>
+                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GroupId">
+                            Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </p>
+                }
             }
     }
     </div>

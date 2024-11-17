@@ -43,16 +43,34 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             throw new NotFoundException("application");
         }
 
-        if (Validation.IsValid)
+        if (Validation.IsValid && dbApplication != null)
         {
             dbApplication.Accepted = Item.Accepted;
             dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
             dbApplication.ResponseByUserId = dbGlobalUser.SantaUser?.Id;
 
+            AddToCurrentYear(dbApplication);
+
             return await SaveAndReturnSuccess();
         }
 
         return await Result();
+    }
+
+    private static void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
+    {
+        var dbGiftingGroupYear = dbApplication.GiftingGroup.Years.FirstOrDefault(x => x.Year == DateTime.Today.Year);
+        if (dbGiftingGroupYear != null)
+        {
+            dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
+            {
+                YearId = dbGiftingGroupYear.Year,
+                Year = dbGiftingGroupYear,
+                SantaUserId = dbApplication.SantaUserId,
+                SantaUser = dbApplication.SantaUser,
+                Included = true
+            });
+        }
     }
 }

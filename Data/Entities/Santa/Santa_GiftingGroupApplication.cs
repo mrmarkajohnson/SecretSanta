@@ -7,8 +7,8 @@ public class Santa_GiftingGroupApplication : DeletableBaseEntity, IDeletableEnti
     [Key]
     public int Id { get; set; }
 
-    public int UserId { get; set; }
-    public virtual required Santa_User User { get; set; }
+    public int SantaUserId { get; set; }
+    public virtual required Santa_User SantaUser { get; set; }
 
     public int GiftingGroupId { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }

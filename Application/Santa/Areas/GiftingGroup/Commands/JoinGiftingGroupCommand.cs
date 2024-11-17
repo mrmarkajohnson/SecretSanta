@@ -62,7 +62,7 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
             var dbApplication = new Santa_GiftingGroupApplication
             { 
-                User = dbGlobalUser.SantaUser,
+                SantaUser = dbGlobalUser.SantaUser,
                 GiftingGroup = dbGiftingGroup,
                 Message = Item.Message
             };

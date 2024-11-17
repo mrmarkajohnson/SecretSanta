@@ -1,17 +1,12 @@
 ﻿using FluentValidation;
 using Global.Abstractions.Global.Account;
+using Global.Abstractions.Global.Shared;
 using Global.Validation;
 
 namespace Global.Abstractions.Global;
 
-public interface IGlobalUser : IIdentityUser
+public interface IGlobalUser : IIdentityUser, IUserAllNames
 {
-    string Forename { get; set; }
-
-    string? MiddleNames { get; set; }
-
-    string Surname { get; set; }
-
     bool SecurityQuestionsSet { get; }
 }
 

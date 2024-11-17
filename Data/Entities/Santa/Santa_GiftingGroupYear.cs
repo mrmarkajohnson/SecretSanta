@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroupYear : DeletableBaseEntity
+public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
 {
     public Santa_GiftingGroupYear()
     {
@@ -15,7 +16,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity
     [Required, Length(4, 4)]
     public int Year { get; set; }
 
-    [Precision(10, 4)]
+    [Precision(10, 2)]
     public decimal? Limit { get; set; }
 
     public int GiftingGroupId { get; set; }

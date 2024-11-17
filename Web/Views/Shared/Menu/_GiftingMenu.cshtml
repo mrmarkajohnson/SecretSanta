@@ -42,6 +42,17 @@
                     </a>
                 </li>
             }
+
+            <li><hr class="dropdown-divider"></li>
+
+            @foreach (var giftingGroup in Model.HomeModel.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+            {
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GroupId">
+                        Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                    </a>
+                </li>
+            }
         }
     </ul>
 }

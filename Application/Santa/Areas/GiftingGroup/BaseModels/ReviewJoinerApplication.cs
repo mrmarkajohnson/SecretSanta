@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Santa.Areas.GiftingGroup.BaseModels;
 
-public class ReviewJoinerApplication : IReviewApplication
+public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
 {
     public int ApplicationId { get; set; }
 
@@ -15,8 +15,12 @@ public class ReviewJoinerApplication : IReviewApplication
     [Display(Name = "Applicant UserName")]
     public string? UserName { get; set; } = string.Empty;
 
-    [Display(Name = "Applicant UserId")]
-    public string ApplicantName { get; set; } = string.Empty;
+    [Display(Name = "Applicant Name")]
+    public string ApplicantName
+    {
+        get => UserDisplayName;
+        set => UserDisplayName = value;
+    }
 
     [Display(Name = "Applicant E-mail Address")]
     public string? Email { get; set; }

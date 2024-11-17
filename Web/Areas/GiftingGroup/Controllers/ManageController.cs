@@ -154,13 +154,21 @@ public class ManageController : BaseController
         {
             if (model.SingleApplication && model.ReturnUrl?.Contains(nameof(JoinerApplications)) == true)
             {
-                model.ReturnUrl = ""; // 
+                model.ReturnUrl = "";
             }
             
             string processed = model.Accepted ? "Accepted" : "Rejected";
             return RedirectWithMessage(model, $"Application {processed} Successfully");
         }
 
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SetupGiftingGroupYear(int groupId)
+    {
+        IGiftingGroupYear giftingGroupYear = await Send(new SetGiftingGroupYearQuery(groupId));
+        var model = Mapper.Map<SetGiftingGroupYearVm>(giftingGroupYear);
         return View(model);
     }
 }

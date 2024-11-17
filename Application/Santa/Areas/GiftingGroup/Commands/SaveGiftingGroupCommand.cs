@@ -54,8 +54,8 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
             dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
             {
                 GroupAdmin = true,
-                UserId = dbGlobalUser.SantaUser.Id,
-                User = dbGlobalUser.SantaUser,
+                SantaUserId = dbGlobalUser.SantaUser.Id,
+                SantaUser = dbGlobalUser.SantaUser,
                 GiftingGroup = dbGiftingGroup
             });
         }

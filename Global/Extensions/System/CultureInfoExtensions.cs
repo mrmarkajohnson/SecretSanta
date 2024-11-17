@@ -39,6 +39,18 @@ public static class CultureInfoExtensions
                 ? isoCurrency // can't be empty
                 : $"{isoCurrency} ({currencySymbol})"); // neither empty but not the same
     }
+
+    public static string GetDefultCurrencyCode(string cultureName)
+    {
+        var regionInfo = new RegionInfo(cultureName);
+        return regionInfo.ISOCurrencySymbol;
+    }
+
+    public static string GetDefultCurrencySymbol(string cultureName)
+    {
+        var regionInfo = new RegionInfo(cultureName);
+        return regionInfo.CurrencySymbol;
+    }
 }
 
 public class LocationSelectable
