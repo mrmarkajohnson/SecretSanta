@@ -4,6 +4,10 @@
 @{
     ViewData["Title"] = $"Year Setup";
     string limitExplanation = $"Set the limit for members to spend on each other this year, in {Model.CurrencyCode}";
+    string calculateTitle = Model.Calculated ? "Assign givers and receivers?" : "Reassign givers and receivers?";
+    string calculateExplanation = Model.Calculated 
+        ? "Calculate the Secret Santa recipient for each participating member" 
+        : "Realculate the Secret Santa recipient for each participating member, cancelling out all previous givers and receivers";
 }
 
 <h1>Set Up '@Model.GiftingGroupName' for @Model.Year</h1>
@@ -19,6 +23,8 @@
                 <input type="hidden" asp-for="GiftingGroupName">
                 <input type="hidden" asp-for="CurrencyCode">
                 <input type="hidden" asp-for="CurrencySymbol">
+                <input type="hidden" asp-for="Calculated">
+                <input type="hidden" asp-for="RecalculationRequired">
             </div>
 
             <div class="mb-5 mt-2">
@@ -40,7 +46,27 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <label asp-for="Calculate" class="control-label">@calculateTitle</label>
+                        <div class="control-label fw-normal">
+                            <input type="checkbox" asp-for="Calculate" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes
+
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@calculateExplanation">
+                                <i class="fa fa-circle-question fa-border"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </<div>
+
+           <br />
 
             <div class="mb-5 mt-2">
                 <h2>Participating group members</h2>
@@ -54,8 +80,6 @@
                         <partial name="_GiftingGroupYearMembersTable" />
                     </div>
                 </div>
-
-                @* TODO: Trigger the calculation *@
 
                 <br />
                 <div class="col-md-12">

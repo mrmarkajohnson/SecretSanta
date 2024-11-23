@@ -169,6 +169,12 @@ public class ManageController : BaseController
     {
         IGiftingGroupYear giftingGroupYear = await Send(new SetGiftingGroupYearQuery(groupId));
         var model = Mapper.Map<SetGiftingGroupYearVm>(giftingGroupYear);
+
+        if (model.RecalculationRequired)
+        {
+            model.Calculate = true;
+        }
+
         return View(model);
     }
 }

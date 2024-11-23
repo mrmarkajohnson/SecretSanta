@@ -6,5 +6,9 @@ public interface IGiftingGroupYear : IGiftingGroupYearBase
     string CurrencyCode { get; set; }
     string CurrencySymbol { get; set; }
 
+    bool Calculated { get; set; }
+    bool RecalculationRequired { get; set; }
+    bool Calculate { get; set; }
+
     IList<IYearGroupUserBase> GroupMembers { get; }
 }

@@ -4,7 +4,7 @@
 @model EditGiftingGroupVm
 @{
     ViewData["Title"] = Model.Exists ? "Edit Group" : "Create Group";
-    string heading = Model.Exists ? $"Edit Gifting Group {Model.Name}" : "Create a new Gifting Group";
+    string heading = Model.Exists ? $"Edit Gifting Group '{Model.Name}'" : "Create a new Gifting Group";
     string groupNameExplanation = "Each group must have a unique name, to help members identify it.";
     string joinerTokenExplanation = "Give this token to members who want to join the group, to control membership.";
     string cultureInfoExplanation = "This sets the default currency symbol, number formatting etc. for members.";

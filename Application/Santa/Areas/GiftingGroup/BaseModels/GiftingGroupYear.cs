@@ -17,6 +17,10 @@ public class GiftingGroupYear : IGiftingGroupYear
     public string CurrencyCode { get; set; } = "£";
     public string CurrencySymbol { get; set; } = "GBP";
 
+    public bool Calculated { get; set; }
+    public bool RecalculationRequired { get; set; }
+    public bool Calculate { get; set; }
+
     public List<YearGroupUserBase> GroupMembers { get; set; } = new();
 
     IList<IYearGroupUserBase> IGiftingGroupYear.GroupMembers => GroupMembers.ToList<IYearGroupUserBase>();
