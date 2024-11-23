@@ -20,13 +20,13 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     public int Id { get; set; }
 
     [Required, MaxLength(GiftingGroupVal.Name.MaxLength)]
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = string.Empty;
 
     [Required, MaxLength(GiftingGroupVal.Description.MaxLength)]
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = string.Empty;
 
     [Required, MaxLength(GiftingGroupVal.JoinerToken.MaxLength)]
-    public string JoinerToken { get; set; } = "";
+    public string JoinerToken { get; set; } = string.Empty;
 
     [Audit(GiftingGroupNames.CultureInfo), Required, MaxLength(GiftingGroupVal.CultureInfo.MaxLength)]
     public string CultureInfo { get; set; } = "en-GB";

@@ -28,14 +28,14 @@ public static class CultureInfoExtensions
 
     public static string GetCurrencyString(string? isoCurrency, string? currencySymbol)
     {
-        isoCurrency = isoCurrency?.Trim() ?? "";
-        currencySymbol = currencySymbol?.Trim() ?? "";
+        isoCurrency = isoCurrency?.Trim() ?? string.Empty;
+        currencySymbol = currencySymbol?.Trim() ?? string.Empty;
 
         return isoCurrency == currencySymbol
-            ? (isoCurrency == ""
-                ? "" // both empty
+            ? (isoCurrency == string.Empty
+                ? string.Empty // both empty
                 : isoCurrency) // both the same, not empty
-            : (currencySymbol == ""
+            : (currencySymbol == string.Empty
                 ? isoCurrency // can't be empty
                 : $"{isoCurrency} ({currencySymbol})"); // neither empty but not the same
     }
@@ -55,8 +55,8 @@ public static class CultureInfoExtensions
 
 public class LocationSelectable
 {
-    public string Name { get; set; } = "";
-    public string Location { get; set; } = "";
+    public string Name { get; set; } = string.Empty;
+    public string Location { get; set; } = string.Empty;
     public string? IsoCurrency { get; set; }
     public string? CurrencySymbol { get; set; }
     public string? CurrencyString { get; set; }

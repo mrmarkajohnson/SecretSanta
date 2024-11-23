@@ -39,7 +39,7 @@ public static class StringExtensions
         }
         else
         {
-            string result = "";
+            string result = string.Empty;
             string add = or ? "or" : "and";
 
             for (int i = 0; i < list.Count(); i++)
@@ -56,7 +56,7 @@ public static class StringExtensions
                 }
                 else
                 {
-                    result += (oxfordComma ? "," : "") + $" {add} {element}";
+                    result += (oxfordComma ? "," : string.Empty) + $" {add} {element}";
                 }
             }
 

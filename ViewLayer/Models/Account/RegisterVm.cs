@@ -10,11 +10,11 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
     [Display(Name = "Password"), DataType(DataType.Password), StringLength(IdentityVal.Passwords.MaxLength, MinimumLength = IdentityVal.Passwords.MinLength)]
-    public string Password { get; set; } = "";
+    public string Password { get; set; } = string.Empty;
 
     [Display(Name = "Confirm Password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
-    public string ConfirmPassword { get; set; } = "";
+    public string ConfirmPassword { get; set; } = string.Empty;
     
     public string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }

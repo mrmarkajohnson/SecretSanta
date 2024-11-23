@@ -20,13 +20,13 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                CurrencyCodeOverride = CurrencySymbolOverride = "";
+                CurrencyCodeOverride = CurrencySymbolOverride = string.Empty;
             }
             else if (value.Contains(" ("))
             {
                 string[] parts = value.Split(" (");
                 CurrencyCodeOverride = parts[0];
-                CurrencySymbolOverride = parts[1].Replace(")", "");
+                CurrencySymbolOverride = parts[1].Replace(")", string.Empty);
             }
             else
             {
@@ -64,6 +64,6 @@ public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
         RuleFor(x => x.CultureInfo).IsInDropDownList(x => x.Cultures.Select(y => y.Name), false);
         RuleFor(x => x.CurrencyOverride).IsInDropDownList(x => x.Currencies
             .Where(x => x.CurrencyString != null)
-            .Select(y => y.CurrencyString ?? ""), true);
+            .Select(y => y.CurrencyString ?? string.Empty), true);
     }
 }

@@ -126,8 +126,8 @@ public class ApplicationDbContext : IdentityDbContext
                 {
                     ColumnName = property.Name,
                     DisplayName = !string.IsNullOrWhiteSpace(auditAttribute?.Name) ? auditAttribute.Name : property.Name.SplitPascalCase(),
-                    OldValue = oldValue?.ToString() ?? "",
-                    NewValue = newValue?.ToString() ?? ""
+                    OldValue = oldValue?.ToString() ?? string.Empty,
+                    NewValue = newValue?.ToString() ?? string.Empty
                 });
             }
         }

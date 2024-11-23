@@ -20,14 +20,14 @@
         columns.Add(x => x.GroupName).Titled("Group Name");
         columns.Add(x => x.ApplicantName).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled("UserName");
-        columns.Add<string>(x => x.Email ?? "").Titled("E-mail Address");
+        columns.Add<string>(x => x.Email ?? string.Empty).Titled("E-mail Address");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
-    .Pageable(pager =>
+    @* .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
-    })
+    }) *@
     .Empty("No data found")
     .Filterable()
     .Sortable()

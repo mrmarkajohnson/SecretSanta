@@ -6,7 +6,7 @@ $gold: #ffd700;
 $gold-background: #fff7cc;
 $red-border: #ff3333;
 $purple: #6633dd;
-$purple-background: #8855ff;
+$purple-background: #8833ff;
 $grey: #777777;
 
 $primary-bg-subtle: #cfe2ff;
@@ -19,6 +19,7 @@ $red-glow: #ff000099;
 $gold-glow: #ffd70020;
 $green-gold-glow: #efffcc20;
 $grey-blue-glow: #9999ff10;
+$white-half-opaque: #ffffff99;
 
 $btn-box-shadow: $primary-shadow-1 0 2px 4px, $primary-shadow-2 0 5px 9px -3px, $primary 0 -3px 0 inset;
 $purple-box-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
@@ -255,8 +256,21 @@ label.control-label.required::after {
     color: white !important;
 }
 
+.mvc-grid-table > table > thead > tr > th {
+    border: 1px solid $gold !important;
+}
+
 .mvc-grid-sort, .mvc-grid-sort::after, .mvc-grid-sort::before {
-    opacity: 1 !important;
+    opacity: 0.9 !important;
+}
+
+.mvc-grid-filter, .mvc-grid-filter::after, .mvc-grid-filter::before {
+    opacity: 0.9 !important;
+}
+
+.mvc-grid-table td {
+    background-color: $white-half-opaque !important;
+    border: 1px solid $gold !important;
 }
 
 //region snow

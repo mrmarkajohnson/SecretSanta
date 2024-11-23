@@ -4,5 +4,5 @@ public class MainMenuVm
 {
     public HomeVm HomeModel { get; set; } = new();
     public bool Small { get; set; }
-    public string DropdownClass => Small ? "dropstart" : "";
+    public string DropdownClass => Small ? "dropstart" : string.Empty;
 }

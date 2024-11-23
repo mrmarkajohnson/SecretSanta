@@ -10,7 +10,7 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISetSecurityQues
     
     [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
-    public string CurrentPassword { get; set; } = "";
+    public string CurrentPassword { get; set; } = string.Empty;
 
     public bool Update { get; set; }
     public bool LockedOut { get; set; }

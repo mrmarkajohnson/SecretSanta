@@ -13,7 +13,7 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
     public string GroupName { get; set; } = string.Empty;
 
     [Display(Name = "Applicant UserName")]
-    public string? UserName { get; set; } = string.Empty;
+    public override string? UserName { get; set; } = string.Empty;
 
     [Display(Name = "Applicant Name")]
     public string ApplicantName
@@ -23,7 +23,7 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
     }
 
     [Display(Name = "Applicant E-mail Address")]
-    public string? Email { get; set; }
+    public override string? Email { get; set; }
 
     public int PreviousRequestCount { get; set; }
 
@@ -34,6 +34,4 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
 
     [Display(Name = "Block Future Applications")]
     public bool Blocked { get; set; }
-
-    public bool IdentificationHashed { get; set; }
 }

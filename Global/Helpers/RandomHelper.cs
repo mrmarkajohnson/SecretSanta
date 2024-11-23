@@ -12,6 +12,6 @@ public static class RandomHelper
     {
         var allCharacters = _alphabetUppercase + _alphabetLowercase + _numbers;
         List<char> randomNCharacters = allCharacters.GetNFromList<char>(length);
-        return string.Join(' ', randomNCharacters).Replace(" ", "");
+        return string.Join(' ', randomNCharacters).Replace(" ", string.Empty);
     }
 }

@@ -14,13 +14,14 @@ public class CoreGiftingGroup : IGiftingGroup
     public int Id { get; set; }
 
     [Required, StringLength(GiftingGroupVal.Name.MaxLength, MinimumLength = GiftingGroupVal.Name.MinLength)]
-    public string Name { get; set; } = "";
+    [Display(Name = "Group Name")]
+    public string Name { get; set; } = string.Empty;
 
     [Required, StringLength(GiftingGroupVal.Description.MaxLength, MinimumLength = GiftingGroupVal.Description.MinLength)]
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = string.Empty;
 
     [Display(Name = "Joiner Token"), Required, StringLength(GiftingGroupVal.JoinerToken.MaxLength, MinimumLength = GiftingGroupVal.JoinerToken.MinLength)]
-    public string JoinerToken { get; set; } = "";
+    public string JoinerToken { get; set; } = string.Empty;
 
     [Display(Name = GiftingGroupNames.CultureInfo), Required, StringLength(GiftingGroupVal.CultureInfo.MaxLength, MinimumLength = GiftingGroupVal.CultureInfo.MinLength)]
     public string CultureInfo { get; set; } = "en-GB";

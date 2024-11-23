@@ -48,7 +48,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
             await SetUserName(dbGlobalUser);
             await StoreEmailAddress(dbGlobalUser);
 
-            Item.Password = "";
+            Item.Password = string.Empty;
             await DbContext.SaveChangesAsync();
             Success = true;
             await SignInManager.SignInAsync(dbGlobalUser, isPersistent: false);

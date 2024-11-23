@@ -1,0 +1,38 @@
+﻿@using Application.Santa.Areas.GiftingGroup.BaseModels
+@model SetGiftingGroupYearVm
+
+<div class="mvc-grid mvc-grid-excel-mode" data-name=string.Empty data-filter-mode="Excel" data-url=string.Empty>
+    <div class="mvc-grid-table">
+        <table>
+            <thead>
+                <tr class="mvc-grid-headers">
+                    <th>
+                        <span class="mvc-grid-title">Name</span>
+                    </th>
+                    <th>
+                        <span class="mvc-grid-title">UserName</span>
+                    </th>
+                    <th>
+                        <span class="mvc-grid-title">Included</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.GroupMembers.Count; i++)
+                {
+                    YearGroupUserBase user = Model.GroupMembers[i];
+
+                    <tr>
+                        <td>
+                            <span class="hidden">
+                                <input type="hidden" asp-for="GroupMembers[i].SantaUserId" />
+                            </span>
+                            @user.UserDisplayName</td>
+                        <td>@user.UserName</td>
+                        <td><input type="checkbox" asp-for="GroupMembers[i].Included" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -54,12 +54,12 @@
                     @if (mustSetSecurityQuestions)
                     {
                         <a class="navbar-brand" href="#"></a>
-                        <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Set Your Security Questions</a>
+                        <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty })">Set Your Security Questions</a>
                     }
                     else
                     {
                         <div style="vertical-align: middle !important">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="min-height: 40px !important; padding-top: 4px !important;"><i class="fa fa-house">&nbsp;</i>Home</a>
+                            <a class="nav-link" asp-area=string.Empty asp-controller="Home" asp-action="Index" style="min-height: 40px !important; padding-top: 4px !important;"><i class="fa fa-house">&nbsp;</i>Home</a>
                         </div>
 
                         <div class="d-none d-sm-block text-end justify-content-end">
@@ -125,7 +125,7 @@
 
     <footer class="footer d-flex justify-content-between">        
         <div><span class="text-secondary text-glow">Secret Santa</span> was created by <a target="_blank" href="http://mrmarkajohnson.co.uk/">Mark Johnson</a></div>
-        <div class="text-center"><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></div>
+        <div class="text-center"><a asp-area=string.Empty asp-controller="Home" asp-action="Privacy">Privacy</a></div>
         <div class="text-end"> <a target="_blank" href="https://icons8.com/icon/52PmO1ntgoRU/berries">Berries</a> icon by 
             <a target="_blank" href="https://icons8.com">Icons8</a> and converted in <a target="_blank" href="https://www.xiconeditor.com/">XIconEditor</a>
         </div>

@@ -20,7 +20,7 @@ public class GetUniqueJoinerTokenQuery : BaseQuery<string>
             return Task.FromResult(_existingToken);
         }
 
-        string newToken = "";
+        string newToken = string.Empty;
         bool isUnique = false;
 
         while (!isUnique)

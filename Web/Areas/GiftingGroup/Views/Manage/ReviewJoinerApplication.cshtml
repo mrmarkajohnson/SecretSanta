@@ -52,20 +52,18 @@
                     </div>
                 </div>
 
-                @if (!string.IsNullOrWhiteSpace(Model.Email))
-                {
-                    <div class="col-md-12">
-                        <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                <div class="col-md-12">
+                    @if (!string.IsNullOrWhiteSpace(Model.Email))
+                    {
+                        <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
                             <label asp-for="Email" class="control-label"></label>
                             <div class="control-label fw-normal">
                                 @Model.Email
                             </div>
                         </div>
-                    </div>
-                }
+                    }
 
-                <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
                         <label asp-for="AcceptedOption" class="control-label required"></label>
                         <div class="control-label fw-normal">
                             <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"

@@ -15,10 +15,10 @@ public static class IdentityVal
         public const bool Digit = true;
 
         public static string Description = $"Must be at least {MinLength} characters, with at least one "
-            + (Digit ? "digit, " : "")
-            + (NonAlphanumeric ? "symbol, " : "")
-            + (Lowercase ? "lowercase, " : "")
-            + (Uppercase ? "uppercase, " : "")
+            + (Digit ? "digit, " : string.Empty)
+            + (NonAlphanumeric ? "symbol, " : string.Empty)
+            + (Lowercase ? "lowercase, " : string.Empty)
+            + (Uppercase ? "uppercase, " : string.Empty)
             + $"and {UniqueChars} unique characters.";
     }
 

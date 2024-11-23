@@ -6,7 +6,7 @@ namespace Application.Santa.Areas.GiftingGroup.BaseModels;
 public class GiftingGroupYear : IGiftingGroupYear
 {
     public int GiftingGroupId { get; set; }
-    public string GiftingGroupName { get; set; } = "";
+    public string GiftingGroupName { get; set; } = string.Empty;
 
     [Required, Length(4, 4)]
     public int Year { get; set; }

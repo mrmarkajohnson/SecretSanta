@@ -70,14 +70,14 @@ public class HomeController : BaseController
             SetInvalidLogin();
         }
 
-        model.Password = "";
+        model.Password = string.Empty;
         return await RedirectIfLockedOut("Login", model);
     }
 
     private void SetInvalidLogin(bool lockedOut = false)
     {
         ModelState.Clear();
-        string message = "Invalid login attempt." + (lockedOut ? $" This account is now locked out for {IdentityVal.Lockouts.DefaultLockoutTimeSpan.GetDescription()}." : "");
+        string message = "Invalid login attempt." + (lockedOut ? $" This account is now locked out for {IdentityVal.Lockouts.DefaultLockoutTimeSpan.GetDescription()}." : string.Empty);
         ModelState.AddModelError(string.Empty, message);
     }
 

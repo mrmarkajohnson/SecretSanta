@@ -3,7 +3,7 @@
 @model MainMenuVm
 @{
     string navItemClass = "nav-item dropdown" 
-        + (string.IsNullOrEmpty(Model.DropdownClass) ? "" : (" " + Model.DropdownClass));
+        + (string.IsNullOrEmpty(Model.DropdownClass) ? string.Empty : (" " + Model.DropdownClass));
 }
 
 <ul class="navbar-nav">

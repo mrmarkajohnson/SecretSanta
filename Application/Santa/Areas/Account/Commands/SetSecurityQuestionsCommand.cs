@@ -33,10 +33,10 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
                 }
 
                 dbGlobalUser.SecurityQuestion1 = Item.SecurityQuestion1;
-                dbGlobalUser.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? "", dbGlobalUser);
+                dbGlobalUser.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? string.Empty, dbGlobalUser);
                 dbGlobalUser.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
                 dbGlobalUser.SecurityQuestion2 = Item.SecurityQuestion2;
-                dbGlobalUser.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? "", dbGlobalUser);
+                dbGlobalUser.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? string.Empty, dbGlobalUser);
                 dbGlobalUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
                 dbGlobalUser.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, dbGlobalUser.Id);
 

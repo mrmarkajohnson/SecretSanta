@@ -88,12 +88,12 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "root",
     pattern: "/{controller:exists}/{action:exists}",
-    defaults: new { area = "" });
+    defaults: new { area = string.Empty });
 
 app.MapControllerRoute(
     name: "empty",
     pattern: "/",
-    defaults: new { area = "", controller = "Home", action = "index" });
+    defaults: new { area = string.Empty, controller = "Home", action = "index" });
 
 app.MapControllerRoute(
     name: "currentarea",

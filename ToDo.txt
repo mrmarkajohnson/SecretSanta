@@ -19,16 +19,15 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-Set up gifting group year
+Finish setting up group year
 Set partners
+Assign givers to receivers
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?
 Close group?
 
 GIFTS
-Set up year settings
-Do santa selection
 Add suggestions
 Address functionality for sending and receiving gifts (optional and must be enabled by admins)
 

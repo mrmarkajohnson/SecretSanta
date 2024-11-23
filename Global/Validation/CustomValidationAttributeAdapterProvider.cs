@@ -15,7 +15,7 @@ public class CustomValidationAttributeAdapterProvider
         IAttributeAdapter adapter = base.GetAttributeAdapter(attribute, stringLocalizer);
         var attributeType = attribute.GetType();
 
-        var matchedLink = ValidationMessages.AttributeMessageLinks.FirstOrDefault(x => attributeType == x.DataAttribute?.UnderlyingSystemType);
+        var matchedLink = ValidationMessages.AttributeMessageLinks.Find(x => attributeType == x.DataAttribute?.UnderlyingSystemType);
         if (matchedLink != null)
         {
             attribute.ErrorMessage = matchedLink.ErrorMessage;

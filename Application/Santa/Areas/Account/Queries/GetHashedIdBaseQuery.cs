@@ -25,7 +25,7 @@ internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, ne
         var result = Task.FromResult(new T
         {
             EmailHash = emailHash,
-            UserNameHash = userNameHash ?? "",
+            UserNameHash = userNameHash ?? string.Empty,
         });
 
         if (result is HashedUserIdWithGreeting greetingResult)

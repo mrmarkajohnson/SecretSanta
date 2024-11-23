@@ -154,7 +154,7 @@ public class ManageController : BaseController
         {
             if (model.SingleApplication && model.ReturnUrl?.Contains(nameof(JoinerApplications)) == true)
             {
-                model.ReturnUrl = "";
+                model.ReturnUrl = string.Empty;
             }
             
             string processed = model.Accepted ? "Accepted" : "Rejected";

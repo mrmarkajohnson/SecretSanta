@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
+﻿using Application.Santa.Areas.Account.Actions;
+using Application.Santa.Areas.GiftingGroup.BaseModels;
 using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
@@ -61,6 +62,11 @@ public class SetGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
             giftingGroupYear.GroupMembers.ForEach(x => x.Included = true);
         }
 
+        foreach (var member in giftingGroupYear.GroupMembers)
+        {
+            await Send(new UnHashUserIdentificationAction(member));
+        }
+
         if (string.IsNullOrEmpty(giftingGroupYear.CurrencyCode))
         {
             giftingGroupYear.CurrencyCode = CultureInfoExtensions.GetDefultCurrencyCode(dbGroup.CultureInfo);
@@ -70,6 +76,8 @@ public class SetGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
         {
             giftingGroupYear.CurrencySymbol = CultureInfoExtensions.GetDefultCurrencySymbol(dbGroup.CultureInfo);
         }
+
+        giftingGroupYear.GroupMembers = giftingGroupYear.GroupMembers.OrderBy(x => x.Forename).ThenBy(x => x.Surname).ToList();
 
         return giftingGroupYear;
     }

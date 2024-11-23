@@ -7,12 +7,12 @@ public class LoginVm : BaseFormVm, ILogin, IForm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    [Display(Name = "E-mail or Username")]
-    public string EmailOrUserName { get; set; } = "";
+    [Display(Name = "E-mail Address or Username")]
+    public string EmailOrUserName { get; set; } = string.Empty;
 
     [Required]
     [DataType(DataType.Password)]
-    public string Password { get; set; } = "";
+    public string Password { get; set; } = string.Empty;
 
     [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }

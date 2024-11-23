@@ -19,13 +19,13 @@ public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     public string? SecurityAnswer2 { get; set; }
 
     [Display(Name = "Greeting")]
-    public string Greeting { get; set; } = "";
+    public string Greeting { get; set; } = string.Empty;
 
-    [Display(Name = "E-mail or Username")]
-    public string EmailOrUserName { get; set; } = "";
+    [Display(Name = "E-mail Address or Username")]
+    public string EmailOrUserName { get; set; } = string.Empty;
 
     [Display(Name = "First Name")]
-    public string Forename { get; set; } = "";
+    public string Forename { get; set; } = string.Empty;
 
     public bool ShowBasicDetails { get; set; }
     public bool ShowSecurityQuestions { get; set; }

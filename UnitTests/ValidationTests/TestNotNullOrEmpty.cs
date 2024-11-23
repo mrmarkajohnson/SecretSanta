@@ -24,9 +24,9 @@ public class TestNotNullOrEmpty
         public int IntVal { get; set; }
         public int? NullIntVal { get; set; }
         public int? ZeroNullIntVal { get; set; } = 0;
-        public string StringVal { get; set; } = "";
+        public string StringVal { get; set; } = string.Empty;
         public string? NullStringVal { get; set; }
-        public string EmptyNullStringVal { get; set; } = "";
+        public string EmptyNullStringVal { get; set; } = string.Empty;
         // TODO: Add decimals, dates etc.
     }
 

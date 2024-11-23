@@ -24,16 +24,12 @@ public class GiftingGroupMappingProfile : Profile
                 .Where(x => x.GiftingGroupId == src.GiftingGroupId)
                 .Any(x => x.Blocked)))
             .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true));
+        CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Global_User, ReviewJoinerApplication>()
-            .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-            .ForMember(dest => dest.Forename, opt => opt.MapFrom(src => src.Forename))
-            .ForMember(dest => dest.MiddleNames, opt => opt.MapFrom(src => src.MiddleNames))
-            .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.Surname))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
-
-        CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
+            .IncludeBase<Global_User, UserNamesBase>()
+            .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id));
+        CreateMap<Global_User, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()
             .IncludeMembers(src => src.GiftingGroup)
@@ -57,11 +53,13 @@ public class GiftingGroupMappingProfile : Profile
         CreateMap<Santa_GiftingGroupUser, IYearGroupUserBase>().As<YearGroupUserBase>();
 
         CreateMap<Santa_User, YearGroupUserBase>()
+            .IncludeMembers(src => src.GlobalUser)
             .ForMember(dest => dest.SantaUserId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.Included, opt => opt.MapFrom(src => true))
-            .ForMember(dest => dest.Forename, opt => opt.MapFrom(src => src.GlobalUser.Forename))
-            .ForMember(dest => dest.MiddleNames, opt => opt.MapFrom(src => src.GlobalUser.MiddleNames))
-            .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.GlobalUser.Surname));
+            .ForMember(dest => dest.Included, opt => opt.MapFrom(src => true));
         CreateMap<Santa_User, IYearGroupUserBase>().As<YearGroupUserBase>();
+
+        CreateMap<Global_User, YearGroupUserBase>()
+            .IncludeBase<Global_User, UserNamesBase>();
+        CreateMap<Global_User, IYearGroupUserBase>().As<YearGroupUserBase>();
     }
 }

@@ -110,7 +110,7 @@
                                 <label class="control-label-inline">Override: </label>
                                 <div class="input-group input-info">                                    
                                     <select asp-for="CurrencyOverride" class="form-control" aria-required="false">
-                                        <option value=""></option>
+                                        <option value=string.Empty></option>
                                         @foreach (var ci in Model.Currencies)
                                         {
                                             <option value="@ci.CurrencyString">

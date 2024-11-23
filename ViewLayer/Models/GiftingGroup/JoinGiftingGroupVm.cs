@@ -10,13 +10,13 @@ public class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
     public int? GroupId { get; set; }
 
     [Required, Display(Name = "Group Name")]
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = string.Empty;
 
     [Display(Name = "Joiner Token"), Required]
-    public string JoinerToken { get; set; } = "";
+    public string JoinerToken { get; set; } = string.Empty;
 
     [Required, StringLength(GiftingGroupVal.Description.MaxLength, MinimumLength = GiftingGroupVal.Description.MinLength)]
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = string.Empty;
 
     [MaxLength(GiftingGroupVal.JoinerMessage.MaxLength)]
     public string? Message { get; set; }

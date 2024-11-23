@@ -26,7 +26,7 @@ internal static class EncryptionHelper
     {
         if (string.IsNullOrEmpty(value))
         {
-            return value ?? "";
+            return value ?? string.Empty;
         }
         else
         {
@@ -47,7 +47,7 @@ internal static class EncryptionHelper
     {
         if (string.IsNullOrEmpty(value))
         {
-            return value ?? "";
+            return value ?? string.Empty;
         }
         else
         {
@@ -90,7 +90,7 @@ internal static class EncryptionHelper
     {
         if (string.IsNullOrEmpty(_hashedString))
         {
-            return _hashedString ?? "";
+            return _hashedString ?? string.Empty;
         }
         else
         {
@@ -122,7 +122,7 @@ internal static class EncryptionHelper
             }
             catch
             {
-                return _hashedString ?? "";
+                return _hashedString ?? string.Empty;
             }
         }
     }

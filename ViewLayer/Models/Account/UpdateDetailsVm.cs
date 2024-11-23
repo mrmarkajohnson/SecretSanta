@@ -8,7 +8,7 @@ public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IForm
 {
    [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
-    public string CurrentPassword { get; set; } = "";
+    public string CurrentPassword { get; set; } = string.Empty;
 
     public bool LockedOut { get; set; }
 

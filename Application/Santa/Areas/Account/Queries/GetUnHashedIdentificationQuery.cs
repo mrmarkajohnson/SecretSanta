@@ -35,8 +35,8 @@ internal class GetUnHashedIdentificationQuery : BaseQuery<UnHashedUserIdWithGree
         return Task.FromResult(new UnHashedUserIdWithGreeting
         {
             Email = email,
-            UserName = userName ?? "",
-            Greeting = greeting ?? ""
+            UserName = userName ?? string.Empty,
+            Greeting = greeting ?? string.Empty
         });
     }
 }
