@@ -18,6 +18,9 @@ public class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupId == src.GiftingGroupId && x.Id != src.Id)
                 .Count()))
+            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.Year == DateTime.Today.Year)
+                ? src.GiftingGroup.Years.First(x => x.Year == DateTime.Today.Year).Users.Any(x => x.GivingToUserId != null)
+                : false))
             .ForMember(dest => dest.Accepted, opt => opt.MapFrom(src => src.Accepted))
             .ForMember(dest => dest.RejectionMessage, opt => opt.MapFrom(src => src.RejectionMessage))
             .ForMember(dest => dest.Blocked, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications

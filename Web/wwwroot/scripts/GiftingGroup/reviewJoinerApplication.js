@@ -9,10 +9,14 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 function initReviewApplication() {
     let form = document.querySelector('form.review-application');
     let acceptedOptions = form.querySelectorAll('input.accepted-option');
+    let acceptedSection = form.querySelector('div.accepted-section');
     let rejectedSection = form.querySelector('div.rejected-section');
-    let rejected = false;
+    let rejected = null;
 
-    if (acceptedOptions.length > 0 && document.body.contains(rejectedSection)) {
+    let acceptedSectionExists = document.body.contains(acceptedSection);
+    let rejectedSectionExists = document.body.contains(rejectedSection);
+
+    if (acceptedOptions.length > 0 && (acceptedSectionExists || rejectedSectionExists)) {
         acceptedOptions.forEach(function (radioOption) {
             acceptedOptionChanged(radioOption);
 
@@ -20,20 +24,30 @@ function initReviewApplication() {
                 acceptedOptionChanged(radioOption);
             });
         });
-    }
 
-    function acceptedOptionChanged(radioOption) {
-        let checked = !!radioOption.checked;
-        let rejectedOption = !!radioOption.value == false || radioOption.value == 'false';
-        let newValue = checked && rejectedOption;
+        function acceptedOptionChanged(radioOption) {
+            let checked = radioOption.checked == true ? true : null;
+            let rejectedOption = !!radioOption.value == false || radioOption.value == 'false';
+            let newValue = checked && rejectedOption;
 
-        if (newValue != rejected) {
-            rejected = newValue;
+            if (newValue != rejected) {
+                rejected = newValue;
 
-            if (rejected) {
-                rejectedSection.classList.remove('collapse');
-            } else {
-                rejectedSection.classList.add('collapse');
+                if (acceptedSectionExists) {
+                    if (rejected) {
+                        acceptedSection.classList.add('collapse');
+                    } else {
+                        acceptedSection.classList.remove('collapse');
+                    }
+                }
+
+                if (rejectedSectionExists) {
+                    if (rejected) {
+                        rejectedSection.classList.remove('collapse');
+                    } else {
+                        rejectedSection.classList.add('collapse');
+                    }
+                }
             }
         }
     }

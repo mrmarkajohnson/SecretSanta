@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Santa.Areas.GiftingGroup;
 
-public interface IReviewApplication : IHashableUserId
+public interface IReviewApplication : IHashableUserId, IUserNamesBase
 {
     int ApplicationId { get; set; }
 
@@ -18,6 +18,7 @@ public interface IReviewApplication : IHashableUserId
     string ApplicantName { get; set; }
 
     int PreviousRequestCount { get; set; }
+    bool CurrentYearCalculated { get; set; }
 
     bool Accepted { get; set; }
     string? RejectionMessage { get; set; }

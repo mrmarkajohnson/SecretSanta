@@ -17,7 +17,7 @@
 <section>
     <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" class="review-application" method="post">
         <partial name="_FormHiddenInputs" />
-        
+
         <div class="row d-flex align-items-center justify-content-center text-center">
 
             <div class="collapse">
@@ -27,6 +27,7 @@
                 <input type="hidden" asp-for="Email">
                 <input type="hidden" asp-for="GroupName">
                 <input type="hidden" asp-for="SingleApplication" />
+                <input type="hidden" asp-for="CurrentYearCalculated" />
             </div>
 
             <div class="mb-5 mt-2">
@@ -67,14 +68,14 @@
                         <label asp-for="AcceptedOption" class="control-label required"></label>
                         <div class="control-label fw-normal">
                             <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
-                                    value="true" /> &nbsp; Yes
+                                   value="true" /> &nbsp; Yes
                             &nbsp;
                             &nbsp;
                             &nbsp;
                             &nbsp;
-                            
+
                             <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
-                                    value="false" /> &nbsp; No
+                                   value="false" /> &nbsp; No
                             &nbsp;
                             &nbsp;
                             &nbsp;
@@ -87,6 +88,25 @@
                         <div>
                             <span asp-validation-for="AcceptedOption" class="text-danger"></span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="accepted-section collapse">
+                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <br />
+
+                        @if (Model.CurrentYearCalculated)
+                        {
+                            <div class="alert alert-warning">
+                                <text>@Model.Forename <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <text>@Model.Forename will be added to the current year automatically. You can remove them by editing the group's settings for @DateTime.Today.Year.</text>
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -107,7 +127,7 @@
                             <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
                                 <label asp-for="Blocked" class="control-label"></label>
                                 <div class="control-label fw-normal">
-                                    <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false"/> &nbsp; Yes
+                                    <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes
 
                                     &nbsp;
                                     &nbsp;

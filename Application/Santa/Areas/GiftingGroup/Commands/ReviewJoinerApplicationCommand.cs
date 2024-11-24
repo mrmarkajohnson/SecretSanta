@@ -58,25 +58,29 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
         return await Result();
     }
 
-    private static void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
+    private void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
     {
+        bool alreadyCalculated = Item.CurrentYearCalculated;
         var dbGiftingGroupYear = dbApplication.GiftingGroup.Years.FirstOrDefault(x => x.Year == DateTime.Today.Year);
-        
-        if (dbGiftingGroupYear != null)
-        {
-            bool alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.GivingToUserId != null);
 
-            if (!alreadyCalculated)
+        if (!alreadyCalculated) // just in case
+        {
+            if (dbGiftingGroupYear != null)
             {
-                dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
-                {
-                    YearId = dbGiftingGroupYear.Year,
-                    Year = dbGiftingGroupYear,
-                    SantaUserId = dbApplication.SantaUserId,
-                    SantaUser = dbApplication.SantaUser,
-                    Included = true
-                });
+                alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.GivingToUserId != null);
             }
+        }
+
+        if (!alreadyCalculated && dbGiftingGroupYear != null)
+        {
+            dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
+            {
+                YearId = dbGiftingGroupYear.Year,
+                Year = dbGiftingGroupYear,
+                SantaUserId = dbApplication.SantaUserId,
+                SantaUser = dbApplication.SantaUser,
+                Included = true
+            });
         }
     }
 }

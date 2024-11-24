@@ -5,6 +5,7 @@ Add back buttons to relevant pages
 Use IIS?
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
+Add gender/pronouns ('What do you prefer to be known as? Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!')
 
 USERS/SECURITY
 Go straight to security questions after registering, using text from home page
@@ -22,7 +23,7 @@ GIFTING GROUPS
 Finish setting up group year
 Set partners
 Assign givers to receivers
-Cancel calculation (automatically if new group members?)
+Cancel calculation (automatically if new group members?) and force recalculation/cancellation if changing who's included for the year
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?

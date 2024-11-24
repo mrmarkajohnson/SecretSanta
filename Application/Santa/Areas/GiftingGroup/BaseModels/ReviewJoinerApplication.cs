@@ -26,6 +26,7 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
     public override string? Email { get; set; }
 
     public int PreviousRequestCount { get; set; }
+    public bool CurrentYearCalculated { get; set; }
 
     public bool Accepted { get; set; }
 

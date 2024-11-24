@@ -2,8 +2,7 @@
 
 namespace Global.Abstractions.Santa.Areas.Account;
 
-public interface IBasicSantaUser : IUserAllNames
+public interface IBasicSantaUser : IUserNamesBase
 {
     int SantaUserId { get; set; }
-    string UserDisplayName { get; }
 }
