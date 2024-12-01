@@ -20,25 +20,25 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         if (!found)
         {
-            AddValidationError(string.Empty, "No matching group found.");
+            AddGeneralValidationError("No matching group found.");
             return await Result();
         }
 
         if (Item.AlreadyMember)
         {
-            AddValidationError(string.Empty, "You are already a member of this group.");
+            AddGeneralValidationError("You are already a member of this group.");
             return await Result();
         }
 
         if (Item.Blocked)
         {
-            AddValidationError(string.Empty, "You are blocked from applying to join this group. Please stop sending applications.");
+            AddGeneralValidationError("You are blocked from applying to join this group. Please stop sending applications.");
             return await Result();
         }
 
         if (Item.ApplicationPending)
         {
-            AddValidationError(string.Empty, "You have already requested to join this group. " +
+            AddGeneralValidationError("You have already requested to join this group. " +
                 "A group administrator will review your request soon.");
             return await Result();
         }
@@ -49,7 +49,7 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
             if (dbGiftingGroup == null) // just in case
             {
-                AddValidationError(string.Empty, "No matching group found.");
+                AddGeneralValidationError("No matching group found.");
                 return await Result();
             }
 

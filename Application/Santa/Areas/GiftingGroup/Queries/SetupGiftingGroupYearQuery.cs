@@ -6,12 +6,12 @@ using Global.Extensions.System;
 
 namespace Application.Santa.Areas.GiftingGroup.Queries;
 
-public class SetGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
+public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
 {
     private readonly int _groupId;
     private readonly int _year;
 
-    public SetGiftingGroupYearQuery(int groupId, int? year = null)
+    public SetupGiftingGroupYearQuery(int groupId, int? year = null)
     {
         _groupId = groupId;
         _year = year ?? DateTime.Today.Year;
@@ -24,7 +24,7 @@ public class SetGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
             throw new NotFoundException("Gifting Group");
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroup(_groupId, true);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_groupId, true);
         Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
         Santa_GiftingGroupYear? dbGiftingGroupYear = dbGroup.Years.FirstOrDefault(x => x.Year == _year);
         

@@ -1,4 +1,6 @@
-﻿namespace Global.Extensions.System;
+﻿using System.Reflection;
+
+namespace Global.Extensions.System;
 
 public static class TypeExtensions
 {

@@ -20,7 +20,7 @@ public class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
             return new CoreGiftingGroup();
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroup(_groupId, true);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_groupId, true);
         return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
     }
 

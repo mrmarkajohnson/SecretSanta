@@ -1,5 +1,6 @@
 ﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
 using System.ComponentModel.DataAnnotations;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Santa.Areas.GiftingGroup.BaseModels;
 
@@ -19,7 +20,9 @@ public class GiftingGroupYear : IGiftingGroupYear
 
     public bool Calculated { get; set; }
     public bool RecalculationRequired { get; set; }
-    public bool Calculate { get; set; }
+
+    [Display(Name = "Assign givers and receivers")]
+    public YearCalculationOption CalculationOption { get; set; }
 
     public List<YearGroupUserBase> GroupMembers { get; set; } = new();
 

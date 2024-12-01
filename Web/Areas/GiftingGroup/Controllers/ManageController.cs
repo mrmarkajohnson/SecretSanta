@@ -167,12 +167,25 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> SetupGiftingGroupYear(int groupId)
     {
-        IGiftingGroupYear giftingGroupYear = await Send(new SetGiftingGroupYearQuery(groupId));
-        var model = Mapper.Map<SetGiftingGroupYearVm>(giftingGroupYear);
+        IGiftingGroupYear giftingGroupYear = await Send(new SetupGiftingGroupYearQuery(groupId));
+        var model = Mapper.Map<SetupGiftingGroupYearVm>(giftingGroupYear);
 
         if (model.RecalculationRequired)
         {
             model.Calculate = true;
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model)
+    {
+        var commandResult = await Send(new SetupGiftingGroupYearCommand<SetupGiftingGroupYearVm>(model), new SetupGiftingGroupYearVmValidator());
+
+        if (commandResult.Success)
+        {
+            return RedirectWithMessage(model, $"Saved Successfully");
         }
 
         return View(model);

@@ -4,7 +4,7 @@ namespace Application.Santa.Areas.GiftingGroup.Queries;
 
 public abstract class GiftingGroupBaseQuery<TItem> : BaseQuery<TItem>
 {
-    protected async Task<Santa_GiftingGroupUser> GetGiftingGroup(int groupId, bool adminOnly)
+    protected async Task<Santa_GiftingGroupUser> GetGiftingGroupUserLink(int groupId, bool adminOnly)
     {
         Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 

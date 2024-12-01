@@ -56,7 +56,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
                         if (hashedAnswer1 != securityQuestions.SecurityAnswer1
                             || hashedAnswer2 != securityQuestions.SecurityAnswer2)
                         {
-                            AddValidationError(string.Empty, "Security answers did not match.");
+                            AddGeneralValidationError("Security answers did not match.");
                             SetUpSecurityQuestions(securityQuestions);
                             Item.LockedOut = await AccessFailed(UserManager, user);
                         }
@@ -67,7 +67,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
                         }
                         else if (Item.ConfirmPassword != Item.Password)
                         {
-                            AddValidationError(string.Empty, "Passwords did not match.");
+                            AddGeneralValidationError("Passwords did not match.");
                             SetUpPasswordReset();
                         }
                         else
@@ -112,7 +112,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
 
     private void SetDetailsNotRecognisedError()
     {
-        AddValidationError(string.Empty, "Details not recognised.");
+        AddGeneralValidationError("Details not recognised.");
         Item.ShowBasicDetails = true;
         Item.ShowSecurityQuestions = false;
         Item.ResetPassword = false;

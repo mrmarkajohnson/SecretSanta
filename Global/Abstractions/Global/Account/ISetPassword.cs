@@ -14,7 +14,7 @@ public interface ISetPassword
     string ConfirmPassword { get; set; }
 }
 
-public class SetPasswordValidator<T> : AbstractValidator<T> where T : ISetPassword
+public class SetPasswordValidator<TItem> : AbstractValidator<TItem> where TItem : ISetPassword
 {
     public SetPasswordValidator()
     {

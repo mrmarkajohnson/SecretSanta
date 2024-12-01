@@ -39,10 +39,18 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     protected abstract Task<ICommandResult<TItem>> HandlePostValidation();
 
-    protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess()
+    protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess(bool ignoreValidationResult = false)
     {
-        await DbContext.SaveChangesAsync();
-        Success = true;
+        if (Validation.IsValid || ignoreValidationResult)
+        {
+            await DbContext.SaveChangesAsync();
+            Success = true;
+        }
+        else
+        {
+            Success = false;
+        }
+
         return await Result();
     }
 
@@ -58,7 +66,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return await Task.FromResult(result);
     }
 
-    protected async Task<ICommandResult<UItem>> Send<UItem>(BaseCommand<UItem> subCommand, AbstractValidator<UItem>? validator)
+    protected async Task<ICommandResult<TExtraItem>> Send<TExtraItem>(BaseCommand<TExtraItem> subCommand, AbstractValidator<TExtraItem>? validator)
     {
         if (validator != null)
         {
@@ -70,7 +78,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             throw new ArgumentException("Services cannot be null");
         }
 
-        ICommandResult<UItem> commandResult = await subCommand.Handle(Services, ClaimsUser);
+        ICommandResult<TExtraItem> commandResult = await subCommand.Handle(Services, ClaimsUser);
 
         Validation.Errors.AddRange(commandResult.Validation.Errors);
 
@@ -79,7 +87,12 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     protected void AddUserNotFoundError()
     {
-        AddValidationError(string.Empty, "User not found. Please log in again.");
+        AddGeneralValidationError("User not found. Please log in again.");
+    }
+
+    protected void AddGeneralValidationError(string errorMessage)
+    {
+        AddValidationError(string.Empty, errorMessage);
     }
 
     protected void AddValidationError(string propertyName, string errorMessage)

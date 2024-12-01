@@ -25,8 +25,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.Id == _applicationId)
-            .FirstOrDefault();
+            .FirstOrDefault(x => x.Id == _applicationId);
 
         if (dbApplication == null)
         {

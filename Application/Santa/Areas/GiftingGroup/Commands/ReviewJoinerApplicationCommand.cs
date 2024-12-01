@@ -21,8 +21,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.Id == Item.ApplicationId)
-            .FirstOrDefault();
+            .FirstOrDefault(x => x.Id == Item.ApplicationId);
 
         if (dbApplication == null)
         {
