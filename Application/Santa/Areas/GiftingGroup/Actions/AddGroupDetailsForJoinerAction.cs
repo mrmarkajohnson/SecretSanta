@@ -18,14 +18,14 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
 
         Santa_GiftingGroup? dbGiftingGroup = null;
 
-        if (Item.GroupId > 0)
+        if (Item.GiftingGroupId > 0)
         {
-            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.Id == Item.GroupId).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.Id == Item.GiftingGroupId).FirstOrDefault();
 
             if (dbGiftingGroup?.Name != Item.Name || dbGiftingGroup?.JoinerToken != Item.JoinerToken) // held on to an old ID?
             {                
                 dbGiftingGroup = null;
-                Item.GroupId = null;
+                Item.GiftingGroupId = null;
             }
         }
 
@@ -50,13 +50,13 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
             .Where(x => x.GiftingGroupId == dbGiftingGroup.Id);
 
-        Item.GroupId = dbGiftingGroup.Id;
+        Item.GiftingGroupId = dbGiftingGroup.Id;
         Item.Description = dbGiftingGroup.Description;
 
         if (existingGroupLinks.Any())
         {
             Item.AlreadyMember = true;
-            Item.GroupId = null;
+            Item.GiftingGroupId = null;
         }
 
         var previousApplications = dbGlobalUser.SantaUser.GiftingGroupApplications

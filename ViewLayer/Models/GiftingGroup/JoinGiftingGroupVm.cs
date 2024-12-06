@@ -7,7 +7,7 @@ namespace ViewLayer.Models.GiftingGroup;
 
 public class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
 {
-    public int? GroupId { get; set; }
+    public int? GiftingGroupId { get; set; }
 
     [Required, Display(Name = "Group Name")]
     public string Name { get; set; } = string.Empty;
