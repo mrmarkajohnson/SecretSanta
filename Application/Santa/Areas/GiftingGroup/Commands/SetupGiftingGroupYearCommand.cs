@@ -130,7 +130,9 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
 
     private async Task CalculateGiversAndReceivers(Santa_GiftingGroup dbGroup, Santa_GiftingGroupYear dbGiftingGroupYear)
     {
-        List<GiverAndReceiverCombination> actualCombinations = await Send(new CalculateGiversAndReceiversQuery(dbGiftingGroupYear));
+        int targetPreviousYears = 2;
+        int actualPreviousYears = targetPreviousYears;
+        List<GiverAndReceiverCombination> actualCombinations = await Send(new CalculateGiversAndReceiversQuery(dbGiftingGroupYear, ref actualPreviousYears));
 
         if (actualCombinations.Count > 0)
         {
@@ -140,6 +142,13 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
             {
                 participatingMembers.First(x => x.SantaUserId == combi.GiverId).GivingToUserId = combi.RecipientId;
             }
+
+            // TODO: Add warnings if the 'previous years' rule couldn't be enforced
+            //if (actualPreviousYears < targetPreviousYears)
+            //{
+            //    string previousYears = "last year" + (actualPreviousYears > 1 ? " or the year before" : "");
+            //    Item.PreviousYearsWarning = $"Some participating members have the same recipient as {previousYears}";
+            //}
         }
         else
         {
