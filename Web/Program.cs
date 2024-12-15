@@ -1,4 +1,5 @@
 using AutoMapper;
+using Global.Extensions.Services;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -7,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System.Reflection;
 using Web.GlobalErrorHandling;
-using static Web.Controllers.BaseController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedEmail = IdentityVal.SignIn.RequireConfirmedEmail;
-    options.SignIn.RequireConfirmedPhoneNumber = IdentityVal.SignIn.RequireConfirmedPhoneNumber;
-    options.SignIn.RequireConfirmedAccount = IdentityVal.SignIn.RequireConfirmedAccount;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationDbContext>();
 
 if (builder.Services.Any(f => f.ServiceType == typeof(IValidationAttributeAdapterProvider)))
 {
@@ -42,8 +37,7 @@ builder.Services.AddRazorPages().AddMvcOptions(options => options.Filters.AddSer
 string[] mapperAssemblyNames = [ "Application", "ViewLayer" ];
 Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => mapperAssemblyNames.Contains(x.GetName().Name)).ToArray();
 var profiles = mapperAssemblies.SelectMany(x => x.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x))).ToArray();
-builder.Services.AddAutoMapper(profiles);
-builder.Services.Configure<IMapper>(cfg => cfg.ConfigurationProvider.AssertConfigurationIsValid()); // test mappings to make sure they are OK
+builder.Services.ConfigureAutoMapperProfiles();
 
 builder.Services.Configure<IdentityOptions>(IdentityVal.ConfigureOptions);
 

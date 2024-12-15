@@ -22,10 +22,12 @@ Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
 Finish setting up group year
+Test calculation
 Audit gifting group year changes
-Set partners
-Assign givers to receivers
-Cancel calculation (automatically if new group members?) and force recalculation/cancellation if changing who's included for the year
+Set partners (including ending relationships, and saying that old relationships can be ignored)
+Prevent users getting the same person as in a different group in the same year
+Allow users to say who they bought for last year (if not set)
+Create messages when calculated, recalculated or cancelled
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?

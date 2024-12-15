@@ -21,16 +21,14 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         _dbGiftingGroupYear = dbGiftingGroupYear;
         _dbGroup = dbGiftingGroupYear.GiftingGroup;
         _participatingMembers = dbGiftingGroupYear.ParticipatingMembers();
-
         _previousYears = previousYears;
     }
 
     protected override Task<List<GiverAndReceiverCombination>> Handle()
     {
         int? previousCombinationCount = null;
-        List<GiverAndReceiverCombination> actualCombinations = new();
 
-        while (_previousYears >= 0)
+        while (_actualCombinations.Count == 0 && _previousYears >= 0)
         {
             // first reset all of the lists (NB: if reducing previousYears, it's still quicker/easier to reset and start again)
             _possibleCombinations = new();
@@ -55,7 +53,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
             }
         }
 
-        return Task.FromResult(actualCombinations);
+        return Task.FromResult(_actualCombinations);
     }
 
     private void SetPossibleCombinations(int previousYears) // TODO: Keep a count of previousYearIDs, and if it doesn't change, stop 
@@ -72,7 +70,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         }
     }
 
-    private List<GiverAndReceiverCombination> SetActualCombinations()
+    private void SetActualCombinations()
     {
         bool combinationWorked = TryCalculatingCombination();
 
@@ -80,8 +78,6 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         {
             _actualCombinations = new(); // return an empty list
         }
-
-        return _actualCombinations;
     }
 
     private void AddPossibleReceipientsForMember(List<Santa_YearGroupUser> previousYearIDs, Santa_YearGroupUser member)
@@ -102,13 +98,17 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
 
     private List<int> GetPartnerIDs(Santa_YearGroupUser member)
     {
-        var suggestingPartnerIDs = DbContext.Santa_PartnerLinks
-            .Where(p => p.ConfirmedByPartner2 && p.RelationshipEnded == null && p.SuggestedById == member.SantaUserId)
+        var activePartnerLinks = DbContext.Santa_PartnerLinks
+            .Where(p => p.Confirmed && p.DateDeleted == null
+                && (p.RelationshipEnded == null || !p.SuggestedByIgnoreOld || !p.ConfirmedByIgnoreOld));
+
+        var suggestingPartnerIDs = activePartnerLinks
+            .Where(p => p.SuggestedById == member.SantaUserId)
             .Select(p => p.ConfirmedById).ToList(); // relationships where this member 'suggested' the partnership
 
-        var confirmedPartnerIDs = DbContext.Santa_PartnerLinks
-            .Where(p => p.ConfirmedByPartner2 && p.RelationshipEnded == null && p.ConfirmedById == member.SantaUserId)
-            .Select(p => p.SuggestedById).ToList(); // relationships where this member confirmed the partnership
+        var confirmedPartnerIDs = activePartnerLinks
+            .Where(p => p.ConfirmedById == member.SantaUserId)
+            .Select(p => p.SuggestedById).ToList(); // relationships where this member 'confirmed' the partnership
 
         List<int> partnerIDs = suggestingPartnerIDs.Union(confirmedPartnerIDs).ToList();
         return partnerIDs;
@@ -118,7 +118,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     {
         bool canContinue = true;
 
-        while (canContinue && _memberPosition < _participatingMembers.Count) // iterate forward through the list of members
+        while (canContinue && _memberPosition < _participatingMembers.Count - 1) // iterate forward through the list of members
         {
             _memberPosition++;
             Santa_YearGroupUser member = _participatingMembers[_memberPosition];

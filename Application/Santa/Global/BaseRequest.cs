@@ -20,6 +20,7 @@ public abstract class BaseRequest<TResult>
     protected IMapper Mapper { get; set; }
 
     protected ClaimsPrincipal ClaimsUser {  get; private set; }
+    public bool ClaimsUserNotRequired { get; set; }
 
     protected UserManager<IdentityUser> UserManager 
     { 
@@ -66,6 +67,8 @@ public abstract class BaseRequest<TResult>
         Services = services;
         Mapper = services.GetRequiredService<IMapper>();
 
+        DbContext = Services.GetService<ApplicationDbContext>() ?? new ApplicationDbContext();
+
         if (Mapper == null)
         {
             throw new ArgumentException("Mapper cannot be null");
@@ -73,8 +76,11 @@ public abstract class BaseRequest<TResult>
 
         ClaimsUser = claimsUser;
 
-        string? currentUserId = GetCurrentUserId();
-        DbContext.CurrentUserId = currentUserId;
+        if (!ClaimsUserNotRequired)
+        {
+            string? currentUserId = GetCurrentUserId();
+            DbContext.CurrentUserId = currentUserId;
+        }
     }
 
     public abstract Task<TResult> Handle(IServiceProvider Services, ClaimsPrincipal claimsUser);
