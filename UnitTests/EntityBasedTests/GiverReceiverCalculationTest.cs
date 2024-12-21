@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.Queries.Internal;
+﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
+using Application.Santa.Areas.GiftingGroup.Queries.Internal;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,16 +19,73 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         
         // TODO: Use CreateSantaUserCommand or similar to set up and sign in CurrentUser when needed?
 
-        foreach (var year in context.Santa_GiftingGroupYears.ToList())
+        foreach (var dbYear in context.Santa_GiftingGroupYears.ToList())
         {
-            int previousYears = 2;
-            var query = new CalculateGiversAndReceiversQuery(year, ref previousYears);
+            int targetPreviousYears = 2;
+            int actualPreviousYears = targetPreviousYears;
+            var query = new CalculateGiversAndReceiversQuery(dbYear, ref actualPreviousYears);
             query.ClaimsUserNotRequired = true;
             var yearResult = await query.Handle(serviceProvider, CurrentUser);
 
-            Assert.True(yearResult.Count() > 0);
-            // TODO: Add more assertions to test that nobody is giving to themself, partners, previous year recipients when possible etc.
+            AssureResultsCalculated(yearResult);
+            EnsureTargetPreviousYearsMet(targetPreviousYears, actualPreviousYears);
+
+            if (yearResult.Count > 0)
+            {
+                var participatingMembers = dbYear.ParticipatingMembers();
+                Assert.True(participatingMembers.Any());
+
+                foreach (GiverAndReceiverCombination combi in yearResult)
+                {
+                    participatingMembers.First(x => x.SantaUserId == combi.GiverId).GivingToUserId = combi.RecipientId;
+                }
+
+                context.ChangeTracker.DetectChanges();
+
+                EnsureEveryoneHasARecipient(participatingMembers);
+                EnsureNobodyGivingToThemself(participatingMembers);
+                EnsureNoDuplication(participatingMembers);
+                EnsureNobodyIsGivingToAPartner(participatingMembers);
+
+                // TODO: Test previous year recipients, and look into whether any previous relationships are involved
+            }
         }
+    }
+
+    private static void AssureResultsCalculated(List<GiverAndReceiverCombination> yearResult)
+    {
+        Assert.True(yearResult.Any());
+    }
+
+    private static void EnsureTargetPreviousYearsMet(int targetPreviousYears, int actualPreviousYears)
+    {
+        Assert.Equal(targetPreviousYears, actualPreviousYears);
+    }
+
+    private static void EnsureEveryoneHasARecipient(List<Santa_YearGroupUser> participatingMembers)
+    {
+        Assert.True(participatingMembers.All(x => x.GivingToUserId != null));
+    }
+
+    private static void EnsureNobodyGivingToThemself(List<Santa_YearGroupUser> participatingMembers)
+    {
+        Assert.DoesNotContain(participatingMembers, x => x.GivingToUserId == x.SantaUserId);
+    }
+
+    private static void EnsureNoDuplication(List<Santa_YearGroupUser> participatingMembers)
+    {
+        Assert.DoesNotContain(participatingMembers.GroupBy(x => x.GivingToUserId), y => y.Count() > 1);
+    }
+
+    private static void EnsureNobodyIsGivingToAPartner(List<Santa_YearGroupUser> participatingMembers)
+    {
+        Assert.DoesNotContain(participatingMembers, x => x.SantaUser.SuggestedRelationships
+            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
+            .Any(y => y.ConfirmedById == x.GivingToUserId));
+
+        Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmedRelationships
+            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
+            .Any(y => y.SuggestedById == x.GivingToUserId));
     }
 
     private static async Task SeedContext(TestDbContext context)

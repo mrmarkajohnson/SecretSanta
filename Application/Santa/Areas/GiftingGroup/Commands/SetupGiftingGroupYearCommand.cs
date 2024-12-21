@@ -143,12 +143,13 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
                 participatingMembers.First(x => x.SantaUserId == combi.GiverId).GivingToUserId = combi.RecipientId;
             }
 
-            // TODO: Add warnings if the 'previous years' rule couldn't be enforced
-            //if (actualPreviousYears < targetPreviousYears)
-            //{
-            //    string previousYears = "last year" + (actualPreviousYears > 1 ? " or the year before" : "");
-            //    Item.PreviousYearsWarning = $"Some participating members have the same recipient as {previousYears}";
-            //}
+            DbContext.ChangeTracker.DetectChanges();
+
+            if (actualPreviousYears < targetPreviousYears)
+            {
+                string previousYears = "last year" + (actualPreviousYears > 1 ? " or the year before" : "");
+                Item.PreviousYearsWarning = $"Some participating members have the same recipient as {previousYears}";
+            }
         }
         else
         {

@@ -15,6 +15,7 @@ public interface IGiftingGroupYear : IGiftingGroupYearBase
     YearCalculationOption CalculationOption { get; set; }
 
     IList<IYearGroupUserBase> GroupMembers { get; }
+    string? PreviousYearsWarning { get; set; }
 }
 
 public class GiftingGroupYearValidator<TItem> : AbstractValidator<TItem> where TItem : IGiftingGroupYear

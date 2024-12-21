@@ -20,6 +20,7 @@ public class GiftingGroupYear : IGiftingGroupYear
 
     public bool Calculated { get; set; }
     public bool RecalculationRequired { get; set; }
+    public string? PreviousYearsWarning { get; set; }
 
     [Display(Name = "Assign givers and receivers")]
     public YearCalculationOption CalculationOption { get; set; }
