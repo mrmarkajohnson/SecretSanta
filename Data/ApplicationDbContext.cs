@@ -143,6 +143,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Santa_GiftingGroupApplication> Santa_GiftingGroupApplications => Set<Santa_GiftingGroupApplication>();
     public DbSet<Santa_GiftingGroupUser> Santa_GiftingGroupUsers => Set<Santa_GiftingGroupUser>();
     public DbSet<Santa_GiftingGroupYear> Santa_GiftingGroupYears => Set<Santa_GiftingGroupYear>();
+    public DbSet<Santa_GiftingGroupYear_Audit> Santa_GiftingGroupYear_Audit => Set<Santa_GiftingGroupYear_Audit>();
+    public DbSet<Santa_GiftingGroupYear_AuditChange> Santa_GiftingGroupYear_AuditChanges => Set<Santa_GiftingGroupYear_AuditChange>();
     public DbSet<Santa_Message> Santa_Messages => Set<Santa_Message>();
     public DbSet<Santa_MessageRecipient> Santa_MessageRecipients => Set<Santa_MessageRecipient>();
     public DbSet<Santa_MessageReply> Santa_MessageReplies => Set<Santa_MessageReply>();

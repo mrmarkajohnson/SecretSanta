@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
+public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase,
+    IAuditableEntity<Santa_GiftingGroupYear_Audit, Santa_GiftingGroupYear_AuditChange>
 {
     public Santa_GiftingGroupYear()
     {
         Users = new HashSet<Santa_YearGroupUser>();
+        AuditTrail = new HashSet<Santa_GiftingGroupYear_Audit>();
     }
 
     [Key]
@@ -23,6 +25,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
     public virtual ICollection<Santa_YearGroupUser> Users { get; set; }
+    public ICollection<Santa_GiftingGroupYear_Audit> AuditTrail { get; }
 
     public IEnumerable<Santa_GiftingGroupUser> ValidGroupMembers()
     {
@@ -36,4 +39,9 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
         .Where(x => x.Included)
         .Where(x => ValidGroupMembers().Any(y => y.SantaUserId == x.SantaUserId))
         .ToList();
+
+    public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
+    {
+        this.AddNewAuditEntry<Santa_GiftingGroupYear, Santa_GiftingGroupYear_Audit, Santa_GiftingGroupYear_AuditChange>(auditTrail, changes);
+    }
 }

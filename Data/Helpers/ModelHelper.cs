@@ -86,6 +86,11 @@ internal static class ModelHelper
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<Santa_GiftingGroupYear_Audit>()
+            .HasMany(e => e.Changes)
+            .WithOne(e => e.Audit)
+            .HasForeignKey(e => e.AuditId);
+
         modelBuilder.Entity<Santa_PartnerLink>()
             .HasOne(e => e.SuggestedBy)
             .WithMany(e => e.SuggestedRelationships)

@@ -22,7 +22,6 @@ Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
 Finish setting up group year
-Test calculation
 Audit gifting group year changes
 Set partners (including ending relationships, and saying that old relationships can be ignored)
 Prevent users getting the same person as in a different group in the same year

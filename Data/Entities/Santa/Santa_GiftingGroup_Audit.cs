@@ -1,5 +1,4 @@
-﻿
-namespace Data.Entities.Santa;
+﻿namespace Data.Entities.Santa;
 
 public class Santa_GiftingGroup_Audit : AuditBaseEntity, IAuditEntity<Santa_GiftingGroup, Santa_GiftingGroup_AuditChange>
 {
