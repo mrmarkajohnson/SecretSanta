@@ -32,7 +32,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
             if (yearResult.Count > 0)
             {
-                var participatingMembers = dbYear.ParticipatingMembers();
+                List<Santa_YearGroupUser> participatingMembers = dbYear.ParticipatingMembers();
                 Assert.True(participatingMembers.Any());
 
                 foreach (GiverAndReceiverCombination combi in yearResult)
@@ -46,8 +46,9 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
                 EnsureNobodyGivingToThemself(participatingMembers);
                 EnsureNoDuplication(participatingMembers);
                 EnsureNobodyIsGivingToAPartner(participatingMembers);
+                TestPreviousYearDuplicates(participatingMembers, dbYear, actualPreviousYears);
 
-                // TODO: Test previous year recipients, and look into whether any previous relationships are involved
+                // TODO: Look into whether any previous relationships are involved
             }
         }
     }
@@ -86,6 +87,16 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmedRelationships
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
             .Any(y => y.SuggestedById == x.GivingToUserId));
+    }
+
+    private static void TestPreviousYearDuplicates(List<Santa_YearGroupUser> participatingMembers, Santa_GiftingGroupYear dbYear, int actualPreviousYears)
+    {
+        var dbPreviousYears = dbYear.GiftingGroup.Years.Where(x => x.Year < dbYear.Year && x.Year >= dbYear.Year - actualPreviousYears);
+
+        Assert.DoesNotContain(participatingMembers, x => dbPreviousYears
+            .Any(y => y.Users
+                .Where(z => z.SantaUserId == x.SantaUserId)
+                .Any(z => z.GivingToUserId == x.GivingToUserId)));
     }
 
     private static async Task SeedContext(TestDbContext context)

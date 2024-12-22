@@ -197,10 +197,10 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         int giverId = member.SantaUserId;
 
         List<int> recipintIDs = _possibleCombinations
-            .Where(pc => pc.GiverId == giverId)
+            .Where(x => x.GiverId == giverId)
             .Where(x => _actualCombinations.Any(y => y.RecipientId == x.RecipientId) == false) // avoid 'taken' recipents
             .Where(x => _failedCombinations.Any(y => y.GiverId == giverId && y.RecipientId == x.RecipientId) == false) // don't repeat combinations that we had to wind back
-            .Select(pc => pc.RecipientId)
+            .Select(x => x.RecipientId)
             .ToList();
 
         if (!recipintIDs.Any())
