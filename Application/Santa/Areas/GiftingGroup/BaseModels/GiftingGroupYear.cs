@@ -9,7 +9,7 @@ public class GiftingGroupYear : IGiftingGroupYear
     public int GiftingGroupId { get; set; }
     public string GiftingGroupName { get; set; } = string.Empty;
 
-    [Required, Length(4, 4)]
+    [Required]
     public int Year { get; set; }
 
     [Display(Name = "Spending Limit")]

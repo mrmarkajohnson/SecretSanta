@@ -23,6 +23,7 @@ public class GiftingGroupYearValidator<TItem> : AbstractValidator<TItem> where T
     public GiftingGroupYearValidator()
     {
         RuleFor(x => x.Limit)
+            .NotNull()
             .GreaterThan(0);
         
         RuleFor(x => x.CalculationOption)

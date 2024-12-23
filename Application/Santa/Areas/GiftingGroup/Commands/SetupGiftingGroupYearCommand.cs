@@ -77,6 +77,8 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
                         SantaUser = dbSantaUser,
                         Included = member.Included
                     };
+
+                    dbGiftingGroupYear.Users.Add(dbYearUser);
                 }
             }
             else

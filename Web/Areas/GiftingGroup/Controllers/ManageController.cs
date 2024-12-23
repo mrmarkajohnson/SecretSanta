@@ -179,7 +179,7 @@ public class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model)
+    public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model, int groupId) // groupId is not used, but preserves the URL
     {
         var commandResult = await Send(new SetupGiftingGroupYearCommand<SetupGiftingGroupYearVm>(model), new SetupGiftingGroupYearVmValidator());
 
