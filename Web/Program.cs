@@ -17,8 +17,10 @@ connectionStringBuilder.UserID = builder.Configuration["DatabaseSettings:DevUser
 connectionStringBuilder.Password = builder.Configuration["DatabaseSettings:DevPassword"];
 string connectionString = connectionStringBuilder.ConnectionString;
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options
+    .UseLazyLoadingProxies()
+    .UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ApplicationDbContext>();

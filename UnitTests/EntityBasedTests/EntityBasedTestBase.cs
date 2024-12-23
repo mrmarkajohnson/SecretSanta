@@ -15,7 +15,7 @@ public abstract class EntityBasedTestBase
     private protected static ServiceProvider GetServiceProvider(TestDbContext context)
     {
         var builder = WebApplication.CreateBuilder();
-        builder.Services.AddSingleton<ApplicationDbContext>(context);
+        builder.Services.AddSingleton<TestDbContext>(context);
 
         builder.Services.AddIdentity<TestDbContext>();
         builder.Services.ConfigureAutoMapperProfiles();
