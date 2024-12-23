@@ -11,7 +11,7 @@ public class Santa_MessageRecipient : ArchivableBaseEntity, IArchivableEntity
     public virtual required Santa_Message Message { get; set; }
 
     public int RecipientId { get; set; }
-    public virtual required Santa_GiftingGroupUser Recipient { get; set; }
+    public virtual required Santa_User Recipient { get; set; }
 
     public bool Read { get; set; }
 }

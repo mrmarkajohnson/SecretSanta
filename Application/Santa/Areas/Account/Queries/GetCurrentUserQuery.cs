@@ -17,11 +17,11 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser?>
     {
         ISantaUser? santaUser = null;
 
-        Global_User? dbGlobalUser = GetCurrentGlobalUser();
+        Global_User? dbCurrentUser = GetCurrentGlobalUser();
 
-        if (dbGlobalUser != null)
+        if (dbCurrentUser != null)
         {
-            santaUser = Mapper.Map<SantaUser>(dbGlobalUser);
+            santaUser = Mapper.Map<SantaUser>(dbCurrentUser);
 
             if (_unHashResults)
             {

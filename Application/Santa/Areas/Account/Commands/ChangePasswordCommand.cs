@@ -25,18 +25,18 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
         string? userId = GetCurrentUserId();
         if (userId != null)
         {
-            Global_User? dbGlobalUser = GetGlobalUser(userId);
+            Global_User? dbCurrentUser = GetGlobalUser(userId);
 
-            if (dbGlobalUser != null)
+            if (dbCurrentUser != null)
             {
-                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, dbGlobalUser);
+                bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, dbCurrentUser);
                 if (!passwordCorrect || !Validation.IsValid)
                 {
                     return await Result();
                 }
                 else
                 {
-                    await ChangePassword(dbGlobalUser);
+                    await ChangePassword(dbCurrentUser);
                 }
             }
             else

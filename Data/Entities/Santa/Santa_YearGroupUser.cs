@@ -5,7 +5,6 @@ public class Santa_YearGroupUser
     public Santa_YearGroupUser()
     {
         Suggestions = new HashSet<Santa_Suggestion>();
-        SentMessages = new HashSet<Santa_Message>();
     }
 
     [Key]
@@ -23,5 +22,4 @@ public class Santa_YearGroupUser
     public virtual Santa_User? GivingToUser { get; set; }
 
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
-    public virtual ICollection<Santa_Message> SentMessages { get; set; }
 }

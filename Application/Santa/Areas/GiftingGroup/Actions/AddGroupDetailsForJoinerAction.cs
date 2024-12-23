@@ -40,13 +40,13 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             return Task.FromResult(false);
         }        
 
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
+        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }
 
-        var existingGroupLinks = dbGlobalUser.SantaUser.GiftingGroupLinks
+        var existingGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
             .Where(x => x.GiftingGroupId == dbGiftingGroup.Id);
 
@@ -59,7 +59,7 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             Item.GiftingGroupId = null;
         }
 
-        var previousApplications = dbGlobalUser.SantaUser.GiftingGroupApplications
+        var previousApplications = dbCurrentUser.SantaUser.GiftingGroupApplications
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
             .Where(x => x.GiftingGroupId == dbGiftingGroup.Id)
             .ToList();

@@ -15,13 +15,13 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
         string? userId = GetCurrentUserId();
         if (userId != null)
         {
-            Global_User? dbGlobalUser = GetGlobalUser(userId);
+            Global_User? dbCurrentUser = GetGlobalUser(userId);
 
-            if (dbGlobalUser != null)
+            if (dbCurrentUser != null)
             {
                 if (Item.Update)
                 {
-                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, dbGlobalUser);
+                    bool passwordCorrect = await CheckPasswordAndHandleFailure(Item, dbCurrentUser);
                     if (!passwordCorrect || !Validation.IsValid)
                     {
                         return await Result();
@@ -32,13 +32,13 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
                     return await Result();
                 }
 
-                dbGlobalUser.SecurityQuestion1 = Item.SecurityQuestion1;
-                dbGlobalUser.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? string.Empty, dbGlobalUser);
-                dbGlobalUser.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
-                dbGlobalUser.SecurityQuestion2 = Item.SecurityQuestion2;
-                dbGlobalUser.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? string.Empty, dbGlobalUser);
-                dbGlobalUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
-                dbGlobalUser.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, dbGlobalUser.Id);
+                dbCurrentUser.SecurityQuestion1 = Item.SecurityQuestion1;
+                dbCurrentUser.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? string.Empty, dbCurrentUser);
+                dbCurrentUser.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
+                dbCurrentUser.SecurityQuestion2 = Item.SecurityQuestion2;
+                dbCurrentUser.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? string.Empty, dbCurrentUser);
+                dbCurrentUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
+                dbCurrentUser.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, dbCurrentUser.Id);
 
                 return await SaveAndReturnSuccess();
             }

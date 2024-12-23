@@ -120,17 +120,17 @@ public abstract class BaseRequest<TResult>
 
     protected Global_User? GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
     {
-        Global_User? dbGlobalUser = null;
+        Global_User? dbCurrentUser = null;
 
         EnsureSignedIn();
 
         string? userId = GetCurrentUserId();
         if (userId != null)
         {
-            dbGlobalUser = GetGlobalUser(userId, includes);
+            dbCurrentUser = GetGlobalUser(userId, includes);
         }
 
-        return dbGlobalUser;
+        return dbCurrentUser;
     }
 
     protected Global_User? GetGlobalUser(IIdentityUser identityUser, params Expression<Func<Global_User, object?>>[] includes)

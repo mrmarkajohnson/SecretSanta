@@ -11,9 +11,9 @@ public class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGroup>>
 
     protected override Task<IList<IUserGiftingGroup>> Handle()
     {
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
-        ICollection<Santa_GiftingGroupUser>? dbGroupLinks = dbGlobalUser?.SantaUser?.GiftingGroupLinks;
+        ICollection<Santa_GiftingGroupUser>? dbGroupLinks = dbCurrentUser?.SantaUser?.GiftingGroupLinks;
         IList<IUserGiftingGroup> userGroups = new List<IUserGiftingGroup>();
 
         if (dbGroupLinks?.Any() == true)

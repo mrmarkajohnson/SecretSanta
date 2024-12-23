@@ -53,16 +53,16 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
                 return await Result();
             }
 
-            Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+            Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
             
-            if (dbGlobalUser == null || dbGlobalUser.SantaUser == null) // just in case
+            if (dbCurrentUser == null || dbCurrentUser.SantaUser == null) // just in case
             {
                 throw new AccessDeniedException();
             }
 
             var dbApplication = new Santa_GiftingGroupApplication
             { 
-                SantaUser = dbGlobalUser.SantaUser,
+                SantaUser = dbCurrentUser.SantaUser,
                 GiftingGroup = dbGiftingGroup,
                 Message = Item.Message
             };

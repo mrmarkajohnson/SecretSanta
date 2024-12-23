@@ -11,13 +11,13 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
+        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }
 
-        var dbApplication = dbGlobalUser.SantaUser?.GiftingGroupLinks
+        var dbApplication = dbCurrentUser.SantaUser?.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
@@ -29,7 +29,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {
-                var dbLinks = dbGlobalUser.SantaUser?.GiftingGroupLinks
+                var dbLinks = dbCurrentUser.SantaUser?.GiftingGroupLinks
                     .Where(x => x.GiftingGroupId == dbApplication.GiftingGroupId && x.GroupAdmin)
                     .ToList();
 
@@ -47,7 +47,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             dbApplication.Accepted = Item.Accepted;
             dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
-            dbApplication.ResponseByUserId = dbGlobalUser.SantaUser?.Id;
+            dbApplication.ResponseByUserId = dbCurrentUser.SantaUser?.Id;
 
             AddToCurrentYear(dbApplication);
 

@@ -6,14 +6,14 @@ public abstract class GiftingGroupBaseQuery<TItem> : BaseQuery<TItem>
 {
     protected async Task<Santa_GiftingGroupUser> GetGiftingGroupUserLink(int groupId, bool adminOnly)
     {
-        Global_User? dbGlobalUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
 
-        if (dbGlobalUser == null || dbGlobalUser.SantaUser == null)
+        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }
 
-        Santa_User? dbSantaUser = dbGlobalUser.SantaUser;
+        Santa_User? dbSantaUser = dbCurrentUser.SantaUser;
 
         if (dbSantaUser != null)
         {

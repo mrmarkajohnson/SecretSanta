@@ -65,4 +65,18 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     {
         this.AddNewAuditEntry<Global_User, Global_User_Audit, Global_User_AuditChange>(auditTrail, changes);
     }
+
+    public string FullName()
+    {
+        string fullName = Forename.Trim() + "";
+
+        if (!string.IsNullOrWhiteSpace(MiddleNames))
+        {
+            fullName += MiddleNames.Trim() + "";
+        }
+
+        fullName += Surname;
+
+        return fullName;
+    }
 }

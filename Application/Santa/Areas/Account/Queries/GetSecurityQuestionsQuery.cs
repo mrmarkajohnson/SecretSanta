@@ -19,33 +19,33 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
     protected override Task<ISecurityQuestions?> Handle()
     {
         ISecurityQuestions? securityQuestions = null;
-        Global_User? dbGlobalUser = null;
+        Global_User? dbCurrentUser = null;
 
         if (ClaimsUser != null && SignInManager.IsSignedIn(ClaimsUser)) // first constructor
         {
             string? userId = GetCurrentUserId();
             if (userId != null)
             {
-                dbGlobalUser = GetGlobalUser(userId);
+                dbCurrentUser = GetGlobalUser(userId);
             }
         }
 
-        if (dbGlobalUser == null && !string.IsNullOrEmpty(_hashedUserName)) // second constructor
+        if (dbCurrentUser == null && !string.IsNullOrEmpty(_hashedUserName)) // second constructor
         {
-            dbGlobalUser = DbContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
+            dbCurrentUser = DbContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
         }
 
-        if (dbGlobalUser != null)
+        if (dbCurrentUser != null)
         {
             securityQuestions = new SecurityQuestions
             {
-                SecurityQuestion1 = dbGlobalUser.SecurityQuestion1,
-                SecurityAnswer1 = dbGlobalUser.SecurityAnswer1,
-                SecurityHint1 = EncryptionHelper.Decrypt(dbGlobalUser.SecurityHint1, false),
-                SecurityQuestion2 = dbGlobalUser.SecurityQuestion2,
-                SecurityAnswer2 = dbGlobalUser.SecurityAnswer2,
-                SecurityHint2 = EncryptionHelper.Decrypt(dbGlobalUser.SecurityHint2, false),
-                Greeting = EncryptionHelper.Decrypt(dbGlobalUser.Greeting, false, dbGlobalUser.Id)
+                SecurityQuestion1 = dbCurrentUser.SecurityQuestion1,
+                SecurityAnswer1 = dbCurrentUser.SecurityAnswer1,
+                SecurityHint1 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint1, false),
+                SecurityQuestion2 = dbCurrentUser.SecurityQuestion2,
+                SecurityAnswer2 = dbCurrentUser.SecurityAnswer2,
+                SecurityHint2 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint2, false),
+                Greeting = EncryptionHelper.Decrypt(dbCurrentUser.Greeting, false, dbCurrentUser.Id)
             };
         }
 
