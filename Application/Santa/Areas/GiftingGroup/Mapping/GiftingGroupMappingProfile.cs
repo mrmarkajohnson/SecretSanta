@@ -39,7 +39,7 @@ public class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users))
             .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)))
             .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)
-                && src.Users.Any(x => x.Included && x.GivingToUserId == null)));
+                && src.Users.Any(x => x.Included == true && x.GivingToUserId == null)));
         CreateMap<Santa_GiftingGroupYear, IGiftingGroupYear>().As<GiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroup, GiftingGroupYear>()

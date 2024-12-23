@@ -25,7 +25,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
     public virtual ICollection<Santa_YearGroupUser> Users { get; set; }
-    public ICollection<Santa_GiftingGroupYear_Audit> AuditTrail { get; }
+    public virtual ICollection<Santa_GiftingGroupYear_Audit> AuditTrail { get; }
 
     public IEnumerable<Santa_GiftingGroupUser> ValidGroupMembers()
     {
@@ -36,7 +36,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     }
 
     public List<Santa_YearGroupUser> ParticipatingMembers() => Users
-        .Where(x => x.Included)
+        .Where(x => x.Included == true)
         .Where(x => ValidGroupMembers().Any(y => y.SantaUserId == x.SantaUserId))
         .ToList();
 

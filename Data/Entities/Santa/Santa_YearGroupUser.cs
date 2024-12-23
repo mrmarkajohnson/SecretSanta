@@ -16,7 +16,7 @@ public class Santa_YearGroupUser
     public int SantaUserId { get; set; }
     public virtual required Santa_User SantaUser { get; set; }
 
-    public bool Included { get; set; }
+    public bool? Included { get; set; }
 
     public int? GivingToUserId { get; set; }
     public virtual Santa_User? GivingToUser { get; set; }

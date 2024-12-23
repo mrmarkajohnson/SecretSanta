@@ -5,5 +5,5 @@ namespace Global.Abstractions.Santa.Areas.GiftingGroup;
 
 public interface IYearGroupUserBase : IBasicSantaUser, IUserNamesBase
 {
-    public bool Included { get; set; }
+    public bool? Included { get; set; }
 }

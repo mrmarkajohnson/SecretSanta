@@ -97,7 +97,7 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
                 if (participatingMembers.Any(x => x.GivingToUserId != null))
                     AddGeneralValidationError("Some participating group members have already been assigned a recipient," +
                         " but others haven't. Please recalculate or cancel recipients.");
-                else if (dbGiftingGroupYear.Users.Any(x => !x.Included && x.GivingToUserId != null))
+                else if (dbGiftingGroupYear.Users.Any(x => !x.Included == true && x.GivingToUserId != null))
                     AddGeneralValidationError("Some non-participating group members have already been assigned a " +
                         "recipient. Please recalculate or cancel recipients.");
 
@@ -119,6 +119,12 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
                 }
 
                 AddGeneralValidationError("New members have been added to the group. Please try again.");
+            }
+            else if (dbGiftingGroupYear.Users
+                .Where(x => dbGiftingGroupYear.ValidGroupMembers().Any(y => y.SantaUserId == x.SantaUserId))
+                .Any(x => x.Included == null))
+            {
+                AddGeneralValidationError("Not all members have been set as participating or not.");
             }
             else
             {

@@ -27,14 +27,19 @@ public class GiftingGroupYearValidator<TItem> : AbstractValidator<TItem> where T
         
         RuleFor(x => x.CalculationOption)
             .NotEqual(YearCalculationOption.Calculate)
-            .When(x => x.GroupMembers.Count(m => m.Included) < MinimumParticipatingMembers)
+            .When(x => x.GroupMembers.Count(m => m.Included == true) < MinimumParticipatingMembers)
             .WithMessage("There are not enough participating members to assign givers and receivers.");
+
+        RuleFor(x => x.CalculationOption)
+            .NotEqual(YearCalculationOption.Calculate)
+            .When(x => x.GroupMembers.Any(m => m.Included == null))
+            .WithMessage("Cannot assign givers and receivers; some members have not been set as participating or not.");
 
         RuleFor(x => x.CalculationOption)
             .NotEqual(YearCalculationOption.None)
             .When(x => x.RecalculationRequired)
             .WithMessage(x => "The current assigned givers and receivers no longer cover the participating members. " +
-                (x.GroupMembers.Count(m => m.Included) < MinimumParticipatingMembers 
+                (x.GroupMembers.Count(m => m.Included == true) < MinimumParticipatingMembers 
                     ? $"There are not enough participating members to reassign, " +
                         $"so please select the '{YearCalculationOption.Cancel.DisplayName()}' option."
                     : "Please either reassign or cancel givers and receivers."));

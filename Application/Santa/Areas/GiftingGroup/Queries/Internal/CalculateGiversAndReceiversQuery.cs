@@ -64,7 +64,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
             .Where(x => x.Year < _dbGiftingGroupYear.Year)
             .Where(x => x.Year >= _dbGiftingGroupYear.Year - previousYears)
             .SelectMany(y => y.Users)
-            .Where(z => z.Included)
+            .Where(z => z.Included == true)
             .ToList();
 
         foreach (Santa_YearGroupUser member in _participatingMembers)
