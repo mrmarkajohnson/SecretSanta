@@ -21,8 +21,6 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-Finish setting up group year
-Audit year group users
 Prevent users getting the same person as in a different group in the same year
 Set partners (including ending relationships, and saying that old relationships can be ignored)
 Allow users to say who they bought for last year (if not set)
@@ -34,6 +32,7 @@ Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?
 Close group?
 Allow years to continue into January, just in case
+Allow admins to set up the whole gifting group etc.?
 
 GIFTS
 Add suggestions

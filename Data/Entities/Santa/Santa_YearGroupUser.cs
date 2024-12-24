@@ -1,6 +1,9 @@
-﻿namespace Data.Entities.Santa;
+﻿
+using Data.Abstractions;
 
-public class Santa_YearGroupUser
+namespace Data.Entities.Santa;
+
+public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupUser_Audit, Santa_YearGroupUser_AuditChange>
 {
     public Santa_YearGroupUser()
     {
@@ -22,4 +25,10 @@ public class Santa_YearGroupUser
     public virtual Santa_User? GivingToUser { get; set; }
 
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
+    public virtual ICollection<Santa_YearGroupUser_Audit> AuditTrail { get; }
+
+    public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
+    {
+        this.AddNewAuditEntry<Santa_YearGroupUser, Santa_YearGroupUser_Audit, Santa_YearGroupUser_AuditChange>(auditTrail, changes);
+    }
 }
