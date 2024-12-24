@@ -24,7 +24,7 @@ GIFTING GROUPS
 Prevent users getting the same person as in a different group in the same year
 Set partners (including ending relationships, and saying that old relationships can be ignored)
 Allow users to say who they bought for last year (if not set)
-Allow users to declare themselves in or out (make 'Included' nullable, and use radio buttons in the year setup)
+Allow users to declare themselves in or out
 Set a deadline/target for members to be in/out and recipients chosen
 Create messages when calculated, recalculated or cancelled
 Remove users from group

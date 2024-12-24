@@ -29,7 +29,7 @@
         <br />
 
         <div class="col-md-12">
-            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+            <div class="@StandardFormGroup">
                 <label asp-for="Name" class="control-label required"></label>
                 <div class="input-group input-info">
                     <input asp-for="Name" class="form-control gifting-group-name" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+            <div class="@StandardFormGroup">
                 <label asp-for="JoinerToken" class="control-label required"></label>
                 <div class="input-group input-info">
                     <input asp-for="JoinerToken" class="form-control joiner-token" autocomplete="off" aria-required="true" placeholder="Enter the group Joiner Token" />
@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+            <div class="@StandardFormGroup">
                 <label asp-for="Message" class="control-label"></label>
                 <div class="input-group input-info">
                     <textarea asp-for="Message" class="form-control" ></textarea>
@@ -70,7 +70,7 @@
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
             <div class="col-md-12">
-                <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                <div class="@StandardFormGroup">
                     <label asp-for="Description" class="control-label">Group Description</label>
                     <div class="control-label fw-normal group-description">
                         @Model.Description

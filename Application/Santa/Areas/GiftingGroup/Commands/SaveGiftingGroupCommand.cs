@@ -82,6 +82,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
             dbGiftingGroup.CultureInfo = Item.CultureInfo;
             dbGiftingGroup.CurrencyCodeOverride = Item.CurrencyCodeOverride;
             dbGiftingGroup.CurrencySymbolOverride = Item.CurrencySymbolOverride;
+            dbGiftingGroup.FirstYear = Item.FirstYear;
 
             return await SaveAndReturnSuccess();
         }

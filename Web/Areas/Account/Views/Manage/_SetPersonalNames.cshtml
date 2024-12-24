@@ -6,7 +6,7 @@
 }
 
 <div class="col-md-12">
-    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+    <div class="@StandardFormGroup">
         <label asp-for="Forename" class="control-label required"></label>
         <input asp-for="Forename" class="form-control" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
         <div>
@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="col-md-12">
-    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+    <div class="@StandardFormGroup">
         <label asp-for="MiddleNames" class="control-label"></label>
         <div class="input-group input-info">
             <input asp-for="MiddleNames" class="form-control" autocomplete="middlenames" aria-required="false" placeholder="Enter any middle names here" />
@@ -27,7 +27,7 @@
     </div>
 </div>
 <div class="col-md-12">
-    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+    <div class="@StandardFormGroup">
         <label asp-for="Surname" class="control-label required"></label>
         <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="true" placeholder="Enter your surname here" />
         <div>

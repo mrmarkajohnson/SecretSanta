@@ -43,7 +43,7 @@ else
 
                 <h2>Your Greeting</h2>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label class="w-100 d-flex align-items-center justify-content-between">
                             <label asp-for="Greeting" class="control-label required"></label>
                             <label class="fw-normal greeting-text">@Model.Greeting</label>
@@ -61,7 +61,7 @@ else
 
                 <h2>Question 1</h2>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityQuestion1" class="control-label required"></label>
                         <input asp-for="SecurityQuestion1" class="form-control" aria-required="true" placeholder="Enter or select a question"
                                 list="questionsList" autocomplete="off" />
@@ -71,7 +71,7 @@ else
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityAnswer1" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input type="text" asp-for="SecurityAnswer1" class="form-control hide-text" aria-required="true" placeholder="Enter the answer"
@@ -84,7 +84,7 @@ else
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityHint1" class="control-label"></label>
                         <div class="input-group input-info">
                             <input asp-for="SecurityHint1" class="form-control" aria-required="false" placeholder="Add a hint if you might need one"
@@ -100,7 +100,7 @@ else
 
                 <h2>Question 2</h2>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityQuestion2" class="control-label required"></label>
                         <input asp-for="SecurityQuestion2" class="form-control" aria-required="true" placeholder="Enter or select a question"
                                 list="questionsList" autocomplete="off" />
@@ -110,7 +110,7 @@ else
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityAnswer2" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input type="text" asp-for="SecurityAnswer2" class="form-control hide-text" aria-required="true" placeholder="Enter the answer"
@@ -123,7 +123,7 @@ else
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="SecurityHint2" class="control-label"></label>
                         <div class="input-group input-info">
                             <input asp-for="SecurityHint2" class="form-control" aria-required="false" placeholder="Add a hint if you might need one"

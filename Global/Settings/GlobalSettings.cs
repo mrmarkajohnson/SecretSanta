@@ -17,4 +17,7 @@ public static class GlobalSettings
         Archive = 3,
         View = 4
     }
+
+    public const string StandardGroupWidth = "col-lg-6 col-md-8 col-sm-10 col-12";
+    public const string StandardFormGroup = $"form-group-ib {StandardGroupWidth} mb-3";
 }

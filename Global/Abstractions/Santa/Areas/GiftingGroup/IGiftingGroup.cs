@@ -7,4 +7,6 @@ public interface IGiftingGroup : IGiftingGroupBase
     string CultureInfo { get; }
     string? CurrencyCodeOverride { get; }
     string? CurrencySymbolOverride { get; }
+
+    int FirstYear { get; }
 }

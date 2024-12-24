@@ -37,6 +37,8 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     [Audit("Currency Symbol"), MaxLength(GiftingGroupVal.CurrencySymbolOverride.MaxLength)]
     public string? CurrencySymbolOverride { get; set; } = "£";
 
+    public int FirstYear { get; set; }
+
     public virtual ICollection<Santa_GiftingGroupUser> UserLinks { get; set; }
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
     public virtual ICollection<Santa_GiftingGroupApplication> MemberApplications { get; set; }

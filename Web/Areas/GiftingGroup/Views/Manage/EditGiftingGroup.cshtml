@@ -9,6 +9,9 @@
     string joinerTokenExplanation = "Give this token to members who want to join the group, to control membership.";
     string cultureInfoExplanation = "This sets the default currency symbol, number formatting etc. for members.";
     string currencyExplanation = "Override the default currency from the location if necessary.";
+    string firstYearExplanation = "If you've been exchanging gifts for longer than a year, "
+        + "this allows members to say who they bought for in the last year or two, to avoid "
+        + "selecting them again if possible.";
 }
 
 <h1>@heading</h1>
@@ -43,7 +46,7 @@
                 <br />
 
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="Name" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="Name" class="form-control" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
@@ -56,7 +59,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="Description" class="control-label required"></label>
                         <input asp-for="Description" class="form-control" autocomplete="off" aria-required="true" placeholder="Enter a description to help identify the group" />
                         <div>
@@ -66,7 +69,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="JoinerToken" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="JoinerToken" class="form-control" readonly />
@@ -79,7 +82,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="CultureInfo" class="control-label required"></label>
                         <div class="input-group input-info">
                             <select asp-for="CultureInfo" class="form-control culture-info-select" aria-required="true">                                
@@ -99,7 +102,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <label asp-for="CurrencyOverride" class="control-label required"></label>
                         <div class="d-flex pe-3 gap-3">
                             <div class="col-6 d-flex">
@@ -128,12 +131,26 @@
                     </div>
                 </div>
 
+                <div class="col-md-12">
+                    <div class="@StandardFormGroup">
+                        <label asp-for="FirstYear" class="control-label required"></label>
+                        <div class="input-group input-info">
+                            <select asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" 
+                                asp-items="@Model.FirstYears" >
+                            </select>
+                            <partial name="_InputQuestion" model="@firstYearExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="FirstYear" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
                 <br />
                 <div class="col-md-12">
                     <partial name="_SubmitButton" />
                 </div>
             </div>
-
         </div>
     </form>
 </section>

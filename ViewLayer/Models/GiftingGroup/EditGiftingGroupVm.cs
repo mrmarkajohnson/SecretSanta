@@ -48,10 +48,38 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
         .OrderBy(x => x.CurrencyString)
         .ToList();
 
+    public IList<StandardSelectable> FirstYears => GetFirstYearSelection();
+
     public virtual string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";
     public virtual string SubmitButtonIcon { get; set; } = "fa-save";
+
+    private List<StandardSelectable> GetFirstYearSelection()
+    {
+        int thisYear = DateTime.Today.Year;
+        
+        if (FirstYear > 0 && FirstYear <= thisYear - 2)
+            return new List<StandardSelectable> { new(FirstYear, FirstYear.ToString()) };
+
+        if (FirstYear == 0 || FirstYear == thisYear)
+        {
+            return new List<StandardSelectable>
+            {
+                new(thisYear, thisYear.ToString()),
+                new(thisYear - 1, (thisYear - 1).ToString()),
+                new(thisYear - 2, $"{thisYear - 2} or before")
+            };
+        }
+        else
+        {
+            return new List<StandardSelectable>
+            {
+                new(thisYear - 1, (thisYear - 1).ToString()),
+                new(thisYear - 2, $"{thisYear - 2} or before")
+            };
+        }
+    }
 }
 
 public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>

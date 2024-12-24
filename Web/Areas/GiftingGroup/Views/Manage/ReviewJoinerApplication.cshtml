@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="accepted-section collapse">
-                    <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                    <div class="@StandardFormGroup">
                         <br />
 
                         @if (Model.CurrentYearCalculated)
@@ -112,7 +112,7 @@
 
                 <div class="rejected-section collapse">
                     <div class="col-md-12">
-                        <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                        <div class="@StandardFormGroup">
                             <label asp-for="RejectionMessage" class="control-label"></label>
                             <div class="input-group input-info">
                                 <textarea asp-for="RejectionMessage" class="form-control"></textarea>
@@ -124,7 +124,7 @@
                     @if (Model.PreviousRequestCount > 2)
                     {
                         <div class="col-md-12">
-                            <div class="form-group-ib col-lg-6 col-md-8 col-sm-10 col-12 mb-3">
+                            <div class="@StandardFormGroup">
                                 <label asp-for="Blocked" class="control-label"></label>
                                 <div class="control-label fw-normal">
                                     <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes

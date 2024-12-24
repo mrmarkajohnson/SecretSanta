@@ -31,4 +31,7 @@ public class CoreGiftingGroup : IGiftingGroup
 
     [MaxLength(GiftingGroupVal.CurrencySymbolOverride.MaxLength)]
     public string? CurrencySymbolOverride { get; set; } = "£";
+
+    [Display(Name = "First Year")]
+    public int FirstYear { get; set; }
 }
