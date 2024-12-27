@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Global.Extensions.System;
@@ -26,5 +27,12 @@ public static class EnumExtensions
             return displayAttribute.Name;
 
         return enumValue.ToString();
+    }
+
+    public static List<SelectListItem> ToSelectList<TEnum>(this IEnumerable<TEnum> list, TEnum? selected = default)
+        where TEnum : Enum
+    {
+        return list.Select(x => new SelectListItem(x.DisplayName(), x.ToString(), 
+            selected != null && selected.Equals(x))).ToList();
     }
 }

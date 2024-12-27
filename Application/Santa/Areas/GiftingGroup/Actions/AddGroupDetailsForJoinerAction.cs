@@ -40,8 +40,8 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             return Task.FromResult(false);
         }        
 
-        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
+        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        if (dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }

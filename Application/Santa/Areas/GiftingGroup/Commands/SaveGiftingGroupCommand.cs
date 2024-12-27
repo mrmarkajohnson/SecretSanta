@@ -14,9 +14,8 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
     {
         Santa_GiftingGroup? dbGiftingGroup = null;
 
-        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-
-        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
+        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        if (dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }

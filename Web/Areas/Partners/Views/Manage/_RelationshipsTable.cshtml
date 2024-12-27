@@ -1,0 +1,83 @@
+﻿@using ViewLayer.Models.Partners
+@using static Global.Settings.PartnerSettings
+
+@model RelationshipsVm
+@{
+    string statusExplanation = "Each relationship must be confirmed by both people involved. "
+        + "If a relationship ends, it can be ignored if both people confirm they're happy to ignore it.";
+}
+
+<div class="mvc-grid mvc-grid-excel-mode" data-name=string.Empty data-filter-mode="Excel" data-url=string.Empty>
+    <div class="mvc-grid-table">
+        <table>
+            <thead>
+                <tr class="mvc-grid-headers">
+                    <th>
+                        <span class="mvc-grid-title">Name</span>
+                    </th>
+                    <th>
+                        <span class="mvc-grid-title">UserName</span>
+                    </th>
+                    <th>
+                        <span class="mvc-grid-title">Shared Group(s)</span>
+                    </th>
+                    <th>
+                        <span class="mvc-grid-title">
+                            Status
+                            <span data-toggle="tooltip" data-html="true" data-bs-container="body" title="@statusExplanation">
+                                <i class="fa fa-circle-question fa-border"></i>
+                            </span>
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.PossibleRelationships.Count == 0)
+                {
+                    <tr>
+                        <td colspan="4">No relationships have been added yet.</td>
+                    </tr>
+                }
+                else
+                {
+                    @for (int i = 0; i < Model.PossibleRelationships.Count; i++)
+                    {
+                        var relationship = Model.PossibleRelationships[i];
+
+                        <tr>
+                            <td>
+                                <span class="hidden">
+                                    <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkId" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Id" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Forename" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.MiddleNames" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Surname" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Email" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.UserName" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].SuggestedByCurrentUser" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
+                                </span>
+                                @relationship.Partner.UserDisplayName
+                            </td>
+                            <td>@relationship.Partner.UserName</td>
+                            <td>@relationship.SharedGroupsDisplay</td>
+                            <td>
+                                @if (relationship.AvailableStatuses.Count == 1)
+                                {
+                                    <span class="hidden">
+                                        <input type="hidden" asp-for="PossibleRelationships[i].Status" />
+                                        @relationship.Status
+                                    </span>
+                                }
+                                else
+                                {
+                                    <select asp-for="PossibleRelationships[i].Status" asp-items="@relationship.AvailableStatuses" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -26,7 +26,7 @@ Set partners (including ending relationships, and saying that old relationships 
 Allow users to say who they bought for last year (if not set)
 Allow users to declare themselves in or out
 Set a deadline/target for members to be in/out and recipients chosen
-Create messages when calculated, recalculated or cancelled
+Show messages when calculated, recalculated or cancelled
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?

@@ -108,16 +108,16 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private List<int> GetPartnerIDs(Santa_YearGroupUser member)
     {
         var activePartnerLinks = DbContext.Santa_PartnerLinks
-            .Where(p => p.Confirmed && p.DateDeleted == null
+            .Where(p => p.Confirmed && p.DateDeleted == null && p.DateArchived == null
                 && (p.RelationshipEnded == null || !p.SuggestedByIgnoreOld || !p.ConfirmedByIgnoreOld));
 
         var suggestingPartnerIDs = activePartnerLinks
-            .Where(p => p.SuggestedById == member.SantaUserId)
-            .Select(p => p.ConfirmedById).ToList(); // relationships where this member 'suggested' the partnership
+            .Where(p => p.SuggestedBySantaUserId == member.SantaUserId)
+            .Select(p => p.ConfirmingSantaUserId).ToList(); // relationships where this member 'suggested' the partnership
 
         var confirmedPartnerIDs = activePartnerLinks
-            .Where(p => p.ConfirmedById == member.SantaUserId)
-            .Select(p => p.SuggestedById).ToList(); // relationships where this member 'confirmed' the partnership
+            .Where(p => p.ConfirmingSantaUserId == member.SantaUserId)
+            .Select(p => p.SuggestedBySantaUserId).ToList(); // relationships where this member 'confirmed' the partnership
 
         List<int> partnerIDs = suggestingPartnerIDs.Union(confirmedPartnerIDs).ToList();
         return partnerIDs;

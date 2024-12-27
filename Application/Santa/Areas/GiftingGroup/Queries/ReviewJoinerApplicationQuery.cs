@@ -15,8 +15,8 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 
     protected async override Task<IReviewApplication> Handle()
     {
-        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser == null || dbCurrentUser.SantaUser == null)
+        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        if (dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();
         }

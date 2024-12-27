@@ -3,7 +3,7 @@ using Global.Abstractions.Global.Shared;
 
 namespace Application.Santa.Areas.GiftingGroup.BaseModels;
 
-public abstract class UserNamesBase : BaseUser, IUserNamesBase
+public class UserNamesBase : BaseUser, IUserNamesBase
 {
     /// <summary>
     /// Allows middle names or other details to be added when needed, e.g. if two people in a list have the same name

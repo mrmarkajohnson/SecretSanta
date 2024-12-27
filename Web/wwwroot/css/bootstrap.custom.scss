@@ -192,7 +192,21 @@ label.control-label.required::after {
     font-size: 15px !important;
 }
 
+th .fa.fa-circle-question {
+    color: $white !important;
+    background: $purple !important;
+    font-size: 15px !important;
+}
+
 .fa.fa-circle-question.fa-border {
+    --fa-border-color: #{$gold};
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 2px !important;
+    --fa-border-style: solid !important;
+}
+
+th .fa.fa-circle-question.fa-border {
     --fa-border-color: #{$gold};
     --fa-border-radius: 50% !important;
     --fa-border-padding: 0 !important;

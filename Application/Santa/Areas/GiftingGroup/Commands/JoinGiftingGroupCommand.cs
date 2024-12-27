@@ -53,9 +53,8 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
                 return await Result();
             }
 
-            Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-            
-            if (dbCurrentUser == null || dbCurrentUser.SantaUser == null) // just in case
+            Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);            
+            if (dbCurrentUser.SantaUser == null)
             {
                 throw new AccessDeniedException();
             }

@@ -92,16 +92,16 @@ internal static class ModelHelper
             .HasForeignKey(e => e.AuditId);
 
         modelBuilder.Entity<Santa_PartnerLink>()
-            .HasOne(e => e.SuggestedBy)
+            .HasOne(e => e.SuggestedBySantaUser)
             .WithMany(e => e.SuggestedRelationships)
-            .HasForeignKey(e => e.SuggestedById)
+            .HasForeignKey(e => e.SuggestedBySantaUserId)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_PartnerLink>()
-            .HasOne(e => e.ConfirmedBy)
-            .WithMany(e => e.ConfirmedRelationships)
-            .HasForeignKey(e => e.ConfirmedById)
+            .HasOne(e => e.ConfirmingSantaUser)
+            .WithMany(e => e.ConfirmingRelationships)
+            .HasForeignKey(e => e.ConfirmingSantaUserId)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
 

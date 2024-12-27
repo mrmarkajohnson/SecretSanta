@@ -45,12 +45,10 @@ public class BaseController : Controller
         try
         {
             HomeModel.CurrentUser = await GetCurrentUser(true);
-            if (HomeModel.CurrentUser != null)
-            {
-                HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
-            }
+            HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
         }
         catch (NotSignedInException) { }
+        catch (AccessDeniedException) { }
     }
 
     public IActionResult RedirectWithMessage(IForm model, string successMessage)
@@ -64,7 +62,7 @@ public class BaseController : Controller
         return LocalRedirect($"{url}{addQuery}SuccessMessage={successMessage}");
     }
 
-    protected async Task<ISantaUser?> GetCurrentUser(bool unHashIdentification)
+    protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)
     {
         return await Send(new GetCurrentUserQuery(unHashIdentification));
     }

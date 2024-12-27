@@ -118,7 +118,7 @@ public abstract class BaseRequest<TResult>
         return UserManager.GetUserId(ClaimsUser);
     }
 
-    protected Global_User? GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
+    protected Global_User GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
     {
         Global_User? dbCurrentUser = null;
 
@@ -128,6 +128,11 @@ public abstract class BaseRequest<TResult>
         if (userId != null)
         {
             dbCurrentUser = GetGlobalUser(userId, includes);
+        }
+
+        if (dbCurrentUser == null)
+        {
+            throw new AccessDeniedException();
         }
 
         return dbCurrentUser;

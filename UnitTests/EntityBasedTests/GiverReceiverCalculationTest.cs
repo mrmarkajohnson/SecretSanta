@@ -82,11 +82,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
     {
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.SuggestedRelationships
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
-            .Any(y => y.ConfirmedById == x.GivingToUserId));
+            .Any(y => y.ConfirmingSantaUserId == x.GivingToUserId));
 
-        Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmedRelationships
+        Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmingRelationships
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
-            .Any(y => y.SuggestedById == x.GivingToUserId));
+            .Any(y => y.SuggestedBySantaUserId == x.GivingToUserId));
     }
 
     private static void TestPreviousYearDuplicates(List<Santa_YearGroupUser> participatingMembers, Santa_GiftingGroupYear dbYear, int actualPreviousYears)
@@ -212,10 +212,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         var relationship1 = new Santa_PartnerLink
         {
             Id = 1,
-            SuggestedById = 1,
-            SuggestedBy = santaUser1,
-            ConfirmedById = 2,
-            ConfirmedBy = santaUser2,
+            SuggestedBySantaUserId = 1,
+            SuggestedBySantaUser = santaUser1,
+            ConfirmingSantaUserId = 2,
+            ConfirmingSantaUser = santaUser2,
             Confirmed = true
         };
 
@@ -225,10 +225,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         var relationship2 = new Santa_PartnerLink
         {
             Id = 2,
-            SuggestedById = 3,
-            SuggestedBy = santaUser3,
-            ConfirmedById = 4,
-            ConfirmedBy = santaUser4,
+            SuggestedBySantaUserId = 3,
+            SuggestedBySantaUser = santaUser3,
+            ConfirmingSantaUserId = 4,
+            ConfirmingSantaUser = santaUser4,
             Confirmed = true,
             RelationshipEnded = DateTime.Today.AddYears(-1) // ended but still counts
         };
@@ -239,10 +239,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         var relationship3 = new Santa_PartnerLink
         {
             Id = 3,
-            SuggestedById = 5,
-            SuggestedBy = santaUser5,
-            ConfirmedById = 6,
-            ConfirmedBy = santaUser6,
+            SuggestedBySantaUserId = 5,
+            SuggestedBySantaUser = santaUser5,
+            ConfirmingSantaUserId = 6,
+            ConfirmingSantaUser = santaUser6,
             Confirmed = true,
             RelationshipEnded = DateTime.Today.AddYears(-1),
             SuggestedByIgnoreOld = true,
