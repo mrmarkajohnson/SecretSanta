@@ -17,7 +17,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         Item = item;
     }
 
-    public override async Task<ICommandResult<TItem>> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
+    public async override Task<ICommandResult<TItem>> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
         Initialise(services, claimsUser);
 

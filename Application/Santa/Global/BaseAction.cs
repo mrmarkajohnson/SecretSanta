@@ -10,7 +10,7 @@ public abstract class BaseAction<TItem> : BaseRequest<bool>
 {
     protected bool Success { get; set; }
 
-    public override async Task<bool> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
+    public async override Task<bool> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
         Initialise(services, claimsUser);
         return await Handle();

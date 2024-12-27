@@ -1,11 +1,12 @@
 ﻿using Application.Santa.Areas.Partners.BaseModels;
+using Global.Abstractions.Global.Partners;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static Global.Settings.PartnerSettings;
 
 namespace ViewLayer.Models.Partners;
 
-public class RelationshipVm : RelationshipBase
+public class RelationshipVm : RelationshipBase, IRelationship
 {
     public override bool SuggestedByCurrentUser { get; set; }
     public string SharedGroupsDisplay => string.Join(", ", SharedGroupsDisplay);

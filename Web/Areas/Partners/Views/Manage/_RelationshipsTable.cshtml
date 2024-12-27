@@ -35,7 +35,10 @@
                 @if (Model.PossibleRelationships.Count == 0)
                 {
                     <tr>
-                        <td colspan="4">No relationships have been added yet.</td>
+                        <td colspan="4">
+                            No relationships have been added yet.
+                            <a asp-area="Partners" asp-controller="Manage" asp-action="AddRelationship">Add A Relationship</a>
+                        </td>
                     </tr>
                 }
                 else

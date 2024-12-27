@@ -8,7 +8,7 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
     {
     }
 
-    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         EnsureSignedIn();
 

@@ -21,6 +21,13 @@ public class ManageController : BaseController
         return View(model);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> AddRelationship()
+    {
+        var possiblePartners = await Send(new GetPossiblePartnersQuery());
+        return View(possiblePartners);
+    }
+
     // TODO: Save changes - make a button appear when changes are made
     // TODO: Add a new relationship, either from the menu or from the Index page
 }

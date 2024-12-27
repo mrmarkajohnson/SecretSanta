@@ -10,7 +10,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
     {
     }
 
-    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         EnsureSignedIn();
 

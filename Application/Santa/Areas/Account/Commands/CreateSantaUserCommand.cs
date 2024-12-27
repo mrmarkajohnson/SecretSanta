@@ -12,7 +12,7 @@ public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TI
     {
     }
 
-    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         string? originalUserName = Item.UserName;
         string? originalEmail = Item.Email;

@@ -5,6 +5,7 @@ using Global.Abstractions.Santa.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using ViewLayer.Models.GiftingGroup;
 using Web.Controllers;
 using static ViewLayer.Models.GiftingGroup.JoinGiftingGroupVm;
@@ -125,6 +126,11 @@ public class ManageController : BaseController
     {
         var model = new JoinerApplicationsVm();
         model.Applications = await Send(new GetJoinerRequestsQuery());
+
+        if (model.Applications.Count() == 1)
+            return LocalRedirect(Url.Action(nameof(ReviewJoinerApplication), 
+                new { applicationId = model.Applications.First().ApplicationId, singleApplication = true }));
+
         return View(model);
     }
 

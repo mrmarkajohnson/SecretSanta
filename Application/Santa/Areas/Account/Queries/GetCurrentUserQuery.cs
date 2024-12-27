@@ -14,7 +14,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser>
         _unHashResults = unHashResults;
     }
 
-    protected override async Task<ISantaUser> Handle()
+    protected async override Task<ISantaUser> Handle()
     {
         Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
 

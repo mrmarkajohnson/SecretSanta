@@ -8,7 +8,7 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
     {
     }
 
-    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         if (!Validation.IsValid)
         {

@@ -28,7 +28,7 @@ public class ApplicationDbContext : IdentityDbContext
 
     public string? CurrentUserId { get; set; }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.DetectChanges();
         AddAuditTrails();

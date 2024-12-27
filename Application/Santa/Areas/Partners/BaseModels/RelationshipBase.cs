@@ -1,5 +1,4 @@
-﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
-using Global.Abstractions.Global.Partners;
+﻿using Global.Abstractions.Global.Partners;
 using Global.Abstractions.Global.Shared;
 using Global.Settings;
 

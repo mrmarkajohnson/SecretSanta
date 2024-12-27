@@ -12,7 +12,7 @@ public class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> wher
         _user = user;
     }
 
-    protected override async Task<ICommandResult<TItem>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
        Global_User? dbGlobalUser = GetGlobalUser(_user);
 

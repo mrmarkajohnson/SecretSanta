@@ -1,7 +1,7 @@
 ﻿using Application.Shared.Identity;
 using Global.Abstractions.Global.Shared;
 
-namespace Application.Santa.Areas.GiftingGroup.BaseModels;
+namespace Application.Santa.Global;
 
 public class UserNamesBase : BaseUser, IUserNamesBase
 {

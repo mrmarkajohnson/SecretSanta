@@ -1,0 +1,29 @@
+﻿@using Global.Abstractions.Global.Shared
+@using NonFactors.Mvc.Grid
+
+@model IEnumerable<IVisibleUser>
+@{
+    Func<IVisibleUser, object> actions =
+    @<text>
+        <input type="radio" class="user-select" name="UserSelect" />
+    </text> ;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(x => x.UserDisplayName).Titled("Name");
+        columns.Add(x => x.UserName).Titled("UserName");
+        columns.Add<string>(x => x.Email ?? string.Empty).Titled("E-mail Address");
+        columns.Add().RenderedAs(actions).Encoded(false);
+    })
+    @* .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    }) *@
+    .Empty("No data found")
+    .Filterable()
+    .Sortable()
+)

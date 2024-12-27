@@ -49,12 +49,27 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
             dbApplication.ResponseByUserId = dbCurrentUser.SantaUser?.Id;
 
-            AddToCurrentYear(dbApplication);
+            if (Item.Accepted)
+            {
+                AddToGiftingGroup(dbApplication);
+                AddToCurrentYear(dbApplication);
+            }
 
             return await SaveAndReturnSuccess();
         }
 
         return await Result();
+    }
+
+    private static void AddToGiftingGroup(Santa_GiftingGroupApplication? dbApplication)
+    {
+        dbApplication.GiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
+        {
+            GiftingGroup = dbApplication.GiftingGroup,
+            GiftingGroupId = dbApplication.GiftingGroupId,
+            SantaUser = dbApplication.SantaUser,
+            SantaUserId = dbApplication.SantaUserId,
+        });
     }
 
     private void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
