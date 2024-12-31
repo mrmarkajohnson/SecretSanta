@@ -184,6 +184,12 @@ label.control-label.required::after {
     text-shadow: $gold-text-shadow; // everything else is in site.css as this sits behind toastr
 }
 
+select.form-control {
+    -webkit-appearance: auto;
+    -moz-appearance: listbox;
+    appearance: auto;
+}
+
 // region info/question circles for tooltips
 
 .fa.fa-circle-question {

@@ -14,6 +14,7 @@ public class HomeController : BaseController
 
     public IActionResult Index(string? successMessage = null)
     {
+        HomeModel.SuccessMessage = successMessage;
         return View(HomeModel);
     }
 

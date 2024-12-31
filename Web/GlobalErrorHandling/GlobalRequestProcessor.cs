@@ -1,4 +1,6 @@
-﻿using Global.Extensions.Exceptions;
+﻿using Azure.Core;
+using Global.Extensions.Exceptions;
+using System;
 using System.Runtime.ExceptionServices;
 
 namespace Web.GlobalErrorHandling;
@@ -26,18 +28,20 @@ public class GlobalRequestProcessor
 
     private static void HandleException(HttpContext context, Exception exception)
     {
+        var baseUrl = $"{context.Request.Scheme}://{context.Request.Host}";
+
         if (exception is NotSignedInException)
         {
             string requestUrl = context.Request.Path.ToString();
-            context.Response.Redirect($"Account/Home/Login?ReturnUrl={requestUrl}&TimedOut=True");
+            context.Response.Redirect($"{baseUrl}/Account/Home/Login?ReturnUrl={requestUrl}&TimedOut=True");
         }
         else if (exception is AccessDeniedException)
         {
-            context.Response.Redirect($"Account/Home/AccessDenied");
+            context.Response.Redirect($"{baseUrl}/Account/Home/AccessDenied");
         }
         else if (exception is NotFoundException)
         {
-            context.Response.Redirect($"Account/Home/NotFound");
+            context.Response.Redirect($"{baseUrl}/Account/Home/NotFound");
         }
         else
         {

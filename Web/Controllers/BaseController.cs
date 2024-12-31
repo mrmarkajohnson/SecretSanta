@@ -8,6 +8,7 @@ using Global.Abstractions.Global;
 using Global.Abstractions.Global.Account;
 using Global.Abstractions.Santa.Areas.Account;
 using Global.Extensions.Exceptions;
+using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,11 @@ public class BaseController : Controller
 
     public IActionResult RedirectWithMessage(string url, string successMessage)
     {
+        if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
+        {
+            url = url.TrimEnd("Controller") + "/Index";
+        }
+        
         string addQuery = url.Contains("?") ? "&" : "?";
         return LocalRedirect($"{url}{addQuery}SuccessMessage={successMessage}");
     }

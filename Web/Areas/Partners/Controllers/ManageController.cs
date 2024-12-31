@@ -19,6 +19,7 @@ public class ManageController : BaseController
     {
         IRelationships relationships = await Send(new GetRelationshipsQuery());
         var model = Mapper.Map<RelationshipsVm>(relationships);
+        model.SuccessMessage = successMessage;
         return View(model);
     }
 
