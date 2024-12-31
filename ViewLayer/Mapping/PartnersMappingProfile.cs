@@ -9,6 +9,7 @@ public class PartnersMappingProfile : Profile
 	public PartnersMappingProfile()
 	{
         CreateMap<IRelationships, RelationshipsVm>();
-        CreateMap<IRelationship, RelationshipVm>();
+        CreateMap<IRelationship, RelationshipVm>()
+            .ForMember(dest => dest.Partner, opt => opt.MapFrom(src => src.Partner)); // just in case
     }
 }

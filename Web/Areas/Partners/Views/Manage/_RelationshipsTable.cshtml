@@ -74,7 +74,8 @@
                                 }
                                 else
                                 {
-                                    <select asp-for="PossibleRelationships[i].Status" asp-items="@relationship.AvailableStatuses" />
+                                    <select asp-for="PossibleRelationships[i].Status" class="form-control"
+                                        asp-items="@relationship.AvailableStatuses" ></select>
                                 }
                             </td>
                         </tr>

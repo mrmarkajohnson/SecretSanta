@@ -9,7 +9,7 @@ namespace ViewLayer.Models.Partners;
 public class RelationshipVm : RelationshipBase, IRelationship
 {
     public override bool SuggestedByCurrentUser { get; set; }
-    public string SharedGroupsDisplay => string.Join(", ", SharedGroupsDisplay);
+    public string SharedGroupsDisplay => string.Join(", ", SharedGroupNames);
 
     public List<SelectListItem> AvailableStatuses => GetAvailableStatusSelect();
 

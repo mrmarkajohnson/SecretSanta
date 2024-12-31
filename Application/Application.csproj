@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Santa\Areas\Partners\Commands\" />
-  </ItemGroup>
-
 </Project>

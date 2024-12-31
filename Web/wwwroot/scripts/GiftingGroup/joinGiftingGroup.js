@@ -28,7 +28,6 @@ function initJoinGiftingGroup() {
                 });
 
             form.innerHTML = await response.text();
-            //document.trigger('ajaxComplete');
             document.dispatchEvent(new Event('ajaxComplete'));
         } else {
             let descriptionSpan = form.querySelector('span.group-description');

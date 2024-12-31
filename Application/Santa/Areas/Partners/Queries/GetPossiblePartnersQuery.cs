@@ -9,7 +9,7 @@ public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
     protected async override Task<IQueryable<IVisibleUser>> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser();
+        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
         if (dbCurrentUser.SantaUser == null)
         {
             throw new AccessDeniedException();

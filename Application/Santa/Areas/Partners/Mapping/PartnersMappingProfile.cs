@@ -1,11 +1,6 @@
 ﻿using Application.Santa.Areas.Partners.BaseModels;
 using Application.Santa.Areas.Partners.Predicates;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Global.Settings.PartnerSettings;
 
 namespace Application.Santa.Areas.Partners.Mapping;

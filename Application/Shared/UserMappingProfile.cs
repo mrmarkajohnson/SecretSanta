@@ -14,5 +14,7 @@ public class UserMappingProfile : Profile
             .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.Surname))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
         CreateMap<Global_User, IUserAllNames>().As<UserNamesBase>();
+
+        CreateMap<IUserNamesBase, UserNamesBase>();
     }
 }

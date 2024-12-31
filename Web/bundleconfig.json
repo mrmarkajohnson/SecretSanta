@@ -103,5 +103,16 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/Partners/Manage/AddRelationship/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Partners/addRelationship.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
   }
 ]

@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.Partners.Queries;
+﻿using Application.Santa.Areas.Partners.Commands;
+using Application.Santa.Areas.Partners.Queries;
 using Global.Abstractions.Global.Partners;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ public class ManageController : BaseController
     {
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
         IRelationships relationships = await Send(new GetRelationshipsQuery());
         var model = Mapper.Map<RelationshipsVm>(relationships);
@@ -26,6 +27,21 @@ public class ManageController : BaseController
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         return View(possiblePartners);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddRelationship(Guid userId)
+    {
+        var result = await Send(new AddRelationshipCommand(userId), null);
+
+        if (result.Success)
+        {
+            return RedirectWithMessage(Url.Action(nameof(Index), nameof(ManageController), new { Area = "Partners" }), "Relationship added successfully");
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
+        }
     }
 
     // TODO: Save changes - make a button appear when changes are made

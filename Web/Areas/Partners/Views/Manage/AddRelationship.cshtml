@@ -16,6 +16,8 @@
     </div>
 
     <div class="ps-4 pe-4 col-12 col-md-10">
-        <partial name="_SelectUserGrid" />
+        <div class="user-grid-container" data-url="@Url.Action("AddRelationship", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())">
+            <partial name="_SelectUserGrid" />
+        </div>
     </div>
 </div>

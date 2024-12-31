@@ -10,7 +10,7 @@ public abstract class RelationshipBase : IRelationship
     public virtual bool SuggestedByCurrentUser { get; set; }
 
     public UserNamesBase Partner { get; set; } = new();
-    IUserNamesBase IRelationship.Parter => Partner;
+    IUserNamesBase IRelationship.Partner => Partner;
 
     public PartnerSettings.RelationshipStatus Status { get; set; }
     public IList<string> SharedGroupNames { get; set; } = new List<string>();

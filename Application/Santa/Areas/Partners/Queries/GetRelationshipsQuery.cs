@@ -1,4 +1,5 @@
-﻿using Application.Santa.Areas.Partners.BaseModels;
+﻿using Application.Santa.Areas.Account.Actions;
+using Application.Santa.Areas.Partners.BaseModels;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Global.Partners;
 
@@ -6,7 +7,7 @@ namespace Application.Santa.Areas.Partners.Queries;
 
 public class GetRelationshipsQuery : BaseQuery<IRelationships>
 {
-    protected override Task<IRelationships> Handle()
+    protected async override Task<IRelationships> Handle()
     {
         Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, 
             g => g.SantaUser.SuggestedRelationships, g => g.SantaUser.ConfirmingRelationships);
@@ -24,6 +25,11 @@ public class GetRelationshipsQuery : BaseQuery<IRelationships>
             PossibleRelationships = suggestedRelationships.Union(confirmingRelationships).ToList()
         };
 
-        return Task.FromResult(relationships);
+        foreach (var relationship in relationships.PossibleRelationships)
+        {
+            await Send(new UnHashUserIdentificationAction(relationship.Partner));
+        }
+
+        return relationships;
     }
 }

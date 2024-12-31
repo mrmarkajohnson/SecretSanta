@@ -12,7 +12,7 @@ public interface IRelationship
     /// </summary>
     bool SuggestedByCurrentUser { get; }
 
-    IUserNamesBase Parter { get;  }
+    IUserNamesBase Partner { get;  }
 
     IList<string> SharedGroupNames { get; }
     RelationshipStatus Status { get; set; }

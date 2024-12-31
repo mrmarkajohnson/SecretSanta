@@ -11,6 +11,4 @@ public class RelationshipsVm : IRelationships
 
     public List<RelationshipVm> PossibleRelationships { get; set; }
     IList<IRelationship> IRelationships.PossibleRelationships => PossibleRelationships.ToList<IRelationship>();
-
-    public RelationshipVm? NewRelationship { get; set; }
 }
