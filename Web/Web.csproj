@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Areas\Account\Views\Home\LockedOut.cshtml" />
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.bundle.js" />
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.bundle.js.map" />
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.bundle.min.js" />
@@ -22,28 +21,14 @@
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
     <Content Remove="C:\Users\Mark\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
     <Content Remove="compilerconfig.json" />
-    <Content Remove="Views\Shared\_SuccessMessage.cshtml" />
-    <Content Remove="wwwroot\js\GiftingGroup\Manage\ReviewJoinerApplication\bundle.js" />
-    <Content Remove="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
-    <Content Remove="wwwroot\scripts\GiftingGroup\reviewJoinerApplication.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Account\Views\Home\LockedOut.cshtml" />
     <_ContentIncludedByDefault Remove="compilerconfig.json" />
-    <_ContentIncludedByDefault Remove="Views\Shared\_SuccessMessage.cshtml" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\GiftingGroup\Manage\ReviewJoinerApplication\bundle.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\scripts\GiftingGroup\reviewJoinerApplication.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Areas\Account\Views\Home\LockedOut.cshtml" />
     <None Include="compilerconfig.json" />
-    <None Include="Views\Shared\_SuccessMessage.cshtml" />
-    <None Include="wwwroot\js\GiftingGroup\Manage\ReviewJoinerApplication\bundle.js" />
-    <None Include="wwwroot\scripts\GiftingGroup\joinGiftingGroup.js" />
-    <None Include="wwwroot\scripts\GiftingGroup\reviewJoinerApplication.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,19 +64,8 @@
     <Folder Include="wwwroot\lib\popper\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Shared\_SuccessMessage.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Account\Views\Home\LockedOut.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Views\Shared\Menu\_AccountMenu.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+  <PropertyGroup>
+    <PrepareForBuildDependsOn>BundleMinify;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
+  </PropertyGroup>
 
 </Project>

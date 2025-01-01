@@ -11,9 +11,9 @@ function initialiseGiftingGroupEdit() {
     if (cultureSelect) {
         let currencyOverrideInput = document.querySelector('input.default-currency');
         if (currencyOverrideInput) {
-            cultureSelect.addEventListener('change', function() {
+            cultureSelect.addEventListener('change', function () {
                 let selectedOption = cultureSelect.options[cultureSelect.selectedIndex];
-                currencyOverrideInput.value = selectedOption?.getAttribute('data-currency-string');
+                currencyOverrideInput.value = selectedOption.getAttribute('data-currency-string');
             });
         }
     }
