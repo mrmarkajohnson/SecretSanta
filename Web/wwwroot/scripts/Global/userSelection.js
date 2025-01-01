@@ -1,4 +1,4 @@
-﻿async function userSelected(radio, url, title, message) {
+﻿async function relationshipStatusChanged(radio, url, title, message) {
     if (message != null && message != '') {
         bootbox.confirm({
             title: title,

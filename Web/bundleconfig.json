@@ -105,6 +105,28 @@
     "sourceMap": true
   },
   {
+    "outputFileName": "wwwroot/js/Partners/Manage/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Partners/manageRelationships.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/Partners/Manage/Index/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Partners/manageRelationships.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
     "outputFileName": "wwwroot/js/Partners/Manage/AddRelationship/bundle.js",
     "inputFiles": [
       "wwwroot/scripts/Partners/addRelationship.js"

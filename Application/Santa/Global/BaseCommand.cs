@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using System.Security.Claims;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Santa.Global;
 
@@ -98,5 +99,27 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     protected void AddValidationError(string propertyName, string errorMessage)
     {
         Validation.Errors.Add(new ValidationFailure(propertyName, errorMessage));
+    }
+
+    protected void SendMessage(Santa_User dbSender, Santa_User dbRecipient, bool showAsFromSanta, MessageRecipientType type,
+        string headerText, string messageText, bool important = false)
+    {
+        var dbMessage = new Santa_Message
+        {
+            Sender = dbSender,
+            ShowAsFromSanta = showAsFromSanta,
+            Important = important,
+            HeaderText = headerText,
+            MessageText = messageText,
+            RecipientTypes = type
+        };
+
+        dbMessage.Recipients.Add(new Santa_MessageRecipient
+        {
+            Message = dbMessage,
+            Recipient = dbRecipient
+        });
+
+        DbContext.Santa_Messages.Add(dbMessage);
     }
 }

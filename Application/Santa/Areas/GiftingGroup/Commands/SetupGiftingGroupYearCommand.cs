@@ -37,7 +37,11 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
             throw new ArgumentException($"You cannot set up year {Item.Year} as it is not the current year."); // TODO: Allow years to continue into January, just in case
         }
 
-        _dbCurrentUser = GetCurrentGlobalUser();
+        _dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
+        if (_dbCurrentUser.SantaUser == null)
+        {
+            throw new AccessDeniedException();
+        }
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupId, true));
         Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
@@ -200,13 +204,18 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
 
     private void SendRecipientMessage(Santa_YearGroupUser dbGiver, bool? cancelled)
     {
+        if (_dbCurrentUser?.SantaUser == null)
+        {
+            throw new AccessDeniedException();
+        }
+
         string headerText = $"Your Secret Santa recipientfor group '{dbGiver.Year.GiftingGroup.Name}' has been " + cancelled switch
         {
             true => "CANCELLED!",
             null => "CHANGED!",
             false => "chosen!"
-        }; 
-        
+        };
+
         string messageText = cancelled switch
         {
             true => $"All recipients for group '{dbGiver.Year.GiftingGroup.Name}' this year have been cancelled and reset. " +
@@ -218,20 +227,6 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
             false => $"This year, you are giving to {dbGiver.GivingToUser.GlobalUser.FullName().ToUpper()}."
         };
 
-        var dbMessage = new Santa_Message
-        {
-            Sender = _dbCurrentUser.SantaUser,
-            ShowAsFromSanta = true,
-            Important = cancelled != false,
-            HeaderText = headerText,
-            MessageText = messageText,
-            RecipientTypes = MessageRecipientType.GiftRecipient
-        };
-
-        dbMessage.Recipients.Add(new Santa_MessageRecipient
-        {
-            Message = dbMessage,
-            Recipient = dbGiver.SantaUser
-        });
+        SendMessage(_dbCurrentUser.SantaUser, dbGiver.SantaUser, true, MessageRecipientType.GiftRecipient, headerText, messageText, cancelled != false);
     }
 }

@@ -14,7 +14,8 @@ public static class MessageSettings
         GroupAllEverMembers = 7,
         OriginalSender = 8,
         OriginalCurrentRecipients = 9,
-        OriginalAllEverRecipients = 10
+        OriginalAllEverRecipients = 10,
+        PotentialPartner = 11
     }
 
     public static List<MessageRecipientType> OriginalOnlyRecipientTypes = new List<MessageRecipientType>

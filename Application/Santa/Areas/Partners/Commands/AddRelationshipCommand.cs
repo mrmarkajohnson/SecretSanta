@@ -1,6 +1,7 @@
 ﻿using Application.Santa.Areas.Partners.Queries;
 using Global.Abstractions.Global.Shared;
 using Global.Extensions.Exceptions;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Santa.Areas.Partners.Commands;
 
@@ -40,6 +41,11 @@ public class AddRelationshipCommand : BaseCommand<Guid>
             ConfirmingSantaUser = dbSelectedUser.SantaUser,
 
         });
+
+        SendMessage(dbCurrentUser.SantaUser, dbSelectedUser.SantaUser, true,
+            MessageRecipientType.PotentialPartner, "Are you in a relationship?", 
+            $"{dbCurrentUser.FullName()} says they are in a relationship with you. Is it true? Please go to 'Manage Relationships' to confirm.", 
+            true);
 
         return await SaveAndReturnSuccess();
     }

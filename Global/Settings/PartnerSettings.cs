@@ -4,7 +4,7 @@ namespace Global.Settings;
 
 public static class PartnerSettings
 {
-    public enum RelationshipStatus
+    public enum RelationshipStatus // Warning: if changing the values, ensure they are matched in the JavaScript
     {
         [Display(Name = "Awaiting confirmation by partner")]
         ToBeConfirmed = 0,
@@ -15,6 +15,8 @@ public static class PartnerSettings
         [Display(Name = "Ended")]
         Ended,
         [Display(Name = "Old and can be ignored")]
-        IgnoreOld
+        IgnoreOld,
+        [Display(Name = "Not a relationship")]
+        NotRelationship
     }
 }

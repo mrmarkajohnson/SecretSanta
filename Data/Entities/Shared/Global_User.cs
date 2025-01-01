@@ -68,11 +68,11 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     public string FullName()
     {
-        string fullName = Forename.Trim() + "";
+        string fullName = Forename.Trim() + " ";
 
         if (!string.IsNullOrWhiteSpace(MiddleNames))
         {
-            fullName += MiddleNames.Trim() + "";
+            fullName += MiddleNames.Trim() + " ";
         }
 
         fullName += Surname;

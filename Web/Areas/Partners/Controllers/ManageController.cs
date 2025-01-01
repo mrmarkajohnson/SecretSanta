@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Partners;
 using Web.Controllers;
+using static Global.Settings.PartnerSettings;
 
 namespace Web.Areas.Partners.Controllers;
 
@@ -23,12 +24,33 @@ public class ManageController : BaseController
         return View(model);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkId, Guid userId, RelationshipStatus newStatus)
+    {
+        var model = new ChangeRelationshipStatusVm(partnerLinkId, userId, newStatus);
+        var result = await Send(new ChangeRelationshipStatusCommand(model), null);
+
+        if (result.Success)
+        {
+            if (model.NewStatus == RelationshipStatus.NotRelationship)
+                return RedirectWithMessage(Url.Action(nameof(Index), nameof(ManageController), new { Area = "Partners" }), "Relationship cancelled successfully");
+
+            return Ok("Relationship updated successfully");
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
+        }
+    }
+
     [HttpGet]
     public async Task<IActionResult> AddRelationship()
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         return View(possiblePartners);
     }
+
+    // TODO: Allow deleting relationships if they haven't been confirmed yet
 
     [HttpPost]
     public async Task<IActionResult> AddRelationship(Guid userId)
@@ -44,7 +66,4 @@ public class ManageController : BaseController
             return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
         }
     }
-
-    // TODO: Save changes - make a button appear when changes are made
-    // TODO: Add a new relationship, either from the menu or from the Index page
 }
