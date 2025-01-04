@@ -1,13 +1,17 @@
-﻿using Global.Abstractions.Global.Shared;
+﻿using Global.Abstractions.Global.Partners;
+using Global.Abstractions.Global.Shared;
 
 namespace ViewLayer.Models.Partners;
 
-internal class AddRelationshipVm
+internal class AddRelationshipVm : IAddRelationship
 {
-    public IList<IVisibleUser> VisibleUsers { get; set; }
-
-    public AddRelationshipVm(IList<IVisibleUser> visibleUsers)
+    public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string manageRelationshipsLink)
     {
-        VisibleUsers = visibleUsers;
+        PossiblePartners = possiblePartners;
+        ManageRelationshipsLink = manageRelationshipsLink;
     }
+
+    public IQueryable<IVisibleUser> PossiblePartners { get; set; }
+    public string ManageRelationshipsLink { get; set; }
+    public Guid UserId { get; set; } = Guid.Empty;
 }

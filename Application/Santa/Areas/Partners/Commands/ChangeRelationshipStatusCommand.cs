@@ -121,7 +121,8 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
             headerText = "Can your old relationship be ignored?";
             messageText = $"{_dbCurrentUser?.FullName()} said that they're happy to ignore their old " +
                 $"relationship with you, so you could exchange presents again. If you're happy to " +
-                $"ignore it too, please go to 'Manage Relationships' to confirm.";
+                $"ignore it too, please go to <a href='{Item.ManageRelationshipsLink}'>'Manage Relationships'</a> " +
+                $"to confirm.";
         }
     }
 

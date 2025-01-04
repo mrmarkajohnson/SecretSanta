@@ -6,12 +6,12 @@ Use IIS?
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 Add gender/pronouns ('What do you prefer to be known as? Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!')
-Add middle names to UserDisplayName when the list has more than one with the same name
+Add middle names to UserDisplayName only when the list has more than one with the same name
+Add preferred forename
 
 USERS/SECURITY
 Go straight to security questions after registering, using text from home page
 Handle 'forgot password' if security questions not yet set
-Add partner
 
 EMAILS
 Enable e-mail functionality
@@ -21,24 +21,25 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-Prevent users getting the same person as in a different group in the same year
-Set partners (including ending relationships, and saying that old relationships can be ignored)
-Allow users to say who they bought for last year (if not set)
-Allow users to declare themselves in or out
-Set a deadline/target for members to be in/out and recipients chosen
-Show messages when calculated, recalculated or cancelled
+* Prevent users from getting the same person as in a different group in the same year
+* Allow users to say who they bought for last year (if not set)
+* Allow users to declare themselves in or out
+Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail?
-Close group?
+Close a group?
 Allow years to continue into January, just in case
 Allow admins to set up the whole gifting group etc.?
 
+RELATIONSHIPS
+* Allow users to 'edit' a relationship in a modal, so they get a bit more help/explanation
+
 GIFTS
 Add suggestions
-Address functionality for sending and receiving gifts (optional and must be enabled by admins)
+Add user postal and e-mail address functionality for sending and receiving gifts (optional, and must be enabled by admins)
 
 MESSAGES
-Send messages
-Reply
+* Show messages for users
+Allow users to reply
 

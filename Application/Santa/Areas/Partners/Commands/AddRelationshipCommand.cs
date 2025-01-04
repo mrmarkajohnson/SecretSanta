@@ -1,20 +1,25 @@
 ﻿using Application.Santa.Areas.Partners.Queries;
+using Global.Abstractions.Global.Partners;
 using Global.Abstractions.Global.Shared;
 using Global.Extensions.Exceptions;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Santa.Areas.Partners.Commands;
 
-public class AddRelationshipCommand : BaseCommand<Guid>
+public class AddRelationshipCommand : BaseCommand<IAddRelationship>
 {
-    public AddRelationshipCommand(Guid item) : base(item)
+    public AddRelationshipCommand(IAddRelationship item) : base(item)
     {
     }
 
-    protected async override Task<ICommandResult<Guid>> HandlePostValidation()
+    protected async override Task<ICommandResult<IAddRelationship>> HandlePostValidation()
     {
-        var possiblePartners = await Send(new GetPossiblePartnersQuery());
-        IVisibleUser? selectedPartner = possiblePartners.FirstOrDefault(x => x.Id == Item.ToString());
+        if (Item.PossiblePartners == null || Item.PossiblePartners.Count() == 0)
+        {
+            Item.PossiblePartners = await Send(new GetPossiblePartnersQuery());
+        }
+
+        IVisibleUser? selectedPartner = Item.PossiblePartners.FirstOrDefault(x => x.Id == Item.UserId.ToString());
 
         if (selectedPartner == null)
         {
@@ -28,7 +33,7 @@ public class AddRelationshipCommand : BaseCommand<Guid>
             throw new AccessDeniedException();
         }
 
-        var dbSelectedUser = GetGlobalUser(Item.ToString(), g => g.SantaUser);
+        var dbSelectedUser = GetGlobalUser(Item.UserId.ToString(), g => g.SantaUser);
         if (dbSelectedUser == null || dbSelectedUser.SantaUser == null)
         {
             AddGeneralValidationError("This person could not be selected as a valid partner.");
@@ -38,13 +43,16 @@ public class AddRelationshipCommand : BaseCommand<Guid>
         dbCurrentUser.SantaUser.SuggestedRelationships.Add(new Santa_PartnerLink
         {
             SuggestedBySantaUser = dbCurrentUser.SantaUser,
-            ConfirmingSantaUser = dbSelectedUser.SantaUser,
-
+            ConfirmingSantaUser = dbSelectedUser.SantaUser
         });
 
-        SendMessage(dbCurrentUser.SantaUser, dbSelectedUser.SantaUser, true,
-            MessageRecipientType.PotentialPartner, "Are you in a relationship?", 
-            $"{dbCurrentUser.FullName()} says they are in a relationship with you. Is it true? Please go to 'Manage Relationships' to confirm.", 
+        SendMessage(dbCurrentUser.SantaUser,
+            dbSelectedUser.SantaUser,
+            true,
+            MessageRecipientType.PotentialPartner,
+            "Are you in a relationship?",
+            $"{dbCurrentUser.FullName()} says they are in a relationship with you. Is it true? Please go to " +
+                $"<a href='{Item.ManageRelationshipsLink}'>'Manage Relationships'</a> to confirm.",
             true);
 
         return await SaveAndReturnSuccess();

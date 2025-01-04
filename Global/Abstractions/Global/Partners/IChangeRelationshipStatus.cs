@@ -2,9 +2,8 @@
 
 namespace Global.Abstractions.Global.Partners;
 
-public interface IChangeRelationshipStatus
+public interface IChangeRelationshipStatus : IRelationshipBase
 {
-    int PartnerLinkId { get; set; }
-    Guid UserId { get; set; }
-    RelationshipStatus NewStatus { get; set; }
+    int PartnerLinkId { get; }
+    RelationshipStatus NewStatus { get; }
 }

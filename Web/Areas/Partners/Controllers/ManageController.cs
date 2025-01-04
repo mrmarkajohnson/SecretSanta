@@ -27,7 +27,8 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkId, Guid userId, RelationshipStatus newStatus)
     {
-        var model = new ChangeRelationshipStatusVm(partnerLinkId, userId, newStatus);
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), "Partners");
+        var model = new ChangeRelationshipStatusVm(partnerLinkId, userId, newStatus, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
@@ -46,8 +47,19 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> AddRelationship()
     {
+        AddRelationshipVm model = await GetAddRelationshipModel();
+        return View(model);
+    }
+
+    private async Task<AddRelationshipVm> GetAddRelationshipModel(Guid? userId = null)
+    {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
-        return View(possiblePartners);
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), "Partners");
+
+        var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink);
+        model.UserId = userId ?? Guid.Empty;
+
+        return model;
     }
 
     // TODO: Allow deleting relationships if they haven't been confirmed yet
@@ -55,7 +67,8 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> AddRelationship(Guid userId)
     {
-        var result = await Send(new AddRelationshipCommand(userId), null);
+        var model = await GetAddRelationshipModel(userId);
+        var result = await Send(new AddRelationshipCommand(model), null);
 
         if (result.Success)
         {

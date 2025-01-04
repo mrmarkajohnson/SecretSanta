@@ -57,8 +57,11 @@ public class BaseController : Controller
         return RedirectWithMessage(model.ReturnUrl ?? Url.Content("~/"), successMessage);
     }
 
-    public IActionResult RedirectWithMessage(string url, string successMessage)
+    public IActionResult RedirectWithMessage(string? url, string successMessage)
     {
+        if (url == null)
+            return Ok();
+        
         if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
         {
             url = url.TrimEnd("Controller") + "/Index";
@@ -178,5 +181,10 @@ public class BaseController : Controller
     new public IActionResult NotFound()
     {
         return View();
+    }
+
+    protected string GetFullUrl(string action, string controller, string area)
+    {
+        return Url.Action(action, controller, new { Area = area }, Request.Scheme, Request.Host.ToString()) ?? "";
     }
 }

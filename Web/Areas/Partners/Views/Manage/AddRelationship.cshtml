@@ -1,6 +1,6 @@
-﻿@using Global.Abstractions.Global.Shared
+﻿@using ViewLayer.Models.Partners
 
-@model IEnumerable<IVisibleUser>
+@model AddRelationshipVm
 @{
     ViewData["Title"] = "Add Relationship";
 }
@@ -17,8 +17,8 @@
 
     <div class="ps-4 pe-4 col-12 col-md-10">
         <div class="user-grid-container" 
-            data-url="@Url.Action("AddRelationship", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())">
-            <partial name="_SelectUserGrid" />
+            data-url="@Model.ManageRelationshipsLink">
+            <partial name="_SelectUserGrid" model="@Model.PossiblePartners" />
         </div>
     </div>
 </div>
