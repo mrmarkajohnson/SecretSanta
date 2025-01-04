@@ -21,7 +21,6 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-* Prevent users from getting the same person as in a different group in the same year
 * Allow users to say who they bought for last year (if not set)
 * Allow users to declare themselves in or out
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)

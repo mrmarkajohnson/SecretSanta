@@ -7,14 +7,15 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private readonly Santa_GiftingGroupYear _dbGiftingGroupYear;
     private readonly Santa_GiftingGroup _dbGroup;
     private readonly List<Santa_YearGroupUser> _participatingMembers;
+    private List<Santa_YearGroupUser> _activeCombinationsInOtherGroups = new();
 
     private int _previousYears = 0;
+    private int _memberPosition = 0;
+    private bool _ignoreOtherGroups = false;
 
     private List<GiverAndReceiverCombination> _possibleCombinations = new();
     private List<GiverAndReceiverCombination> _actualCombinations = new();
     private List<GiverAndReceiverCombination> _failedCombinations = new();
-
-    private int _memberPosition = 0;
 
     public CalculateGiversAndReceiversQuery(Santa_GiftingGroupYear dbGiftingGroupYear, ref int previousYears)
     {
@@ -28,7 +29,15 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     {
         int? lastCombinationCount = null; // used to avoid unnecessary processing, if no improvement on last try
 
-        while (_actualCombinations.Count == 0 && _previousYears >= 0)
+        List<Santa_YearGroupUser> _activeCombinationsInOtherGroups = DbContext.Santa_YearGroupUsers
+            .Where(x => x.GivingToUserId != null)
+            .Where(x => x.Year.Year == _dbGiftingGroupYear.Year)
+            .Where(x => x.Year.GiftingGroupId != _dbGiftingGroupYear.GiftingGroupId)
+            .Where(x => _participatingMembers.Any(y => y.SantaUserId == x.SantaUserId))
+            .Where(x => _participatingMembers.Any(y => y.SantaUserId == x.GivingToUserId))
+            .ToList();
+
+        while (_actualCombinations.Count == 0 && (_previousYears >= 0 || _ignoreOtherGroups == false))
         {
             // first reset all of the lists (NB: if reducing previousYears, it's still quicker/easier to reset and start again)
             _possibleCombinations = new();
@@ -40,7 +49,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
             if (_possibleCombinations.Count == 0 
                 || (lastCombinationCount != null && _possibleCombinations.Count <= lastCombinationCount))
             {
-                _previousYears--; // no point trying again
+                ReducePreviousYearOrIgnoreOtherGroups(); // no point trying again without changing something
             }
             else
             {
@@ -48,7 +57,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
 
                 if (_actualCombinations.Count == 0)
                 {
-                    _previousYears--; // reduce the number of years to go back, to increase the number of possible combinations                    
+                    ReducePreviousYearOrIgnoreOtherGroups(); // reduce the number of years to go back, to increase the number of possible combinations                    
                 }
             }
 
@@ -56,6 +65,18 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         }
 
         return Task.FromResult(_actualCombinations);
+    }
+
+    private void ReducePreviousYearOrIgnoreOtherGroups()
+    {
+        if (_previousYears == 0 && _ignoreOtherGroups == false)
+        {
+            _ignoreOtherGroups = true;
+        }
+        else
+        {
+            _previousYears--;
+        }
     }
 
     private void SetPossibleCombinations(int previousYears) // TODO: Keep a count of previousYearParticipants, and if it doesn't change, stop 
@@ -86,16 +107,26 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private void AddPossibleReceipientsForMember(List<Santa_YearGroupUser> previousYearParticipants, Santa_YearGroupUser member)
     {
         List<int> partnerIDs = GetPartnerIDs(member);
+        List<int> recipientIDsInOtherGroups = new();
 
         var memberPreviousRecipientIDs = previousYearParticipants
             .Where(u => u.SantaUserId == member.SantaUserId)
             .Select(u => u.GivingToUserId)
             .ToList();
 
+        if (_ignoreOtherGroups == false)
+        {
+            recipientIDsInOtherGroups = _activeCombinationsInOtherGroups
+                .Where(x => x.SantaUserId == member.SantaUserId)
+                .Select(x => x.GivingToUserId ?? 0)
+                .ToList();
+        }
+
         var possibleRecipients = _participatingMembers
             .Where(x => x.SantaUserId != member.SantaUserId
                 && !partnerIDs.Contains(x.SantaUserId)
-                && !memberPreviousRecipientIDs.Contains(x.SantaUserId))
+                && !memberPreviousRecipientIDs.Contains(x.SantaUserId)
+                && !recipientIDsInOtherGroups.Contains(x.SantaUserId))
             .ToList();
 
         foreach (var recipient in possibleRecipients)
