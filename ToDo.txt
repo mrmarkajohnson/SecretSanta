@@ -1,4 +1,5 @@
 GENERAL
+Finish grid functionality - paging, sorting and filtering
 Create menus and rework main page
 Add testing and production configuration
 Add back buttons to relevant pages

@@ -58,8 +58,10 @@ public class BaseController : Controller
 
     public IActionResult RedirectWithMessage(string? url, string successMessage)
     {
-        if (url == null)
-            return Ok();
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            url = Url.Content("~/");
+        }
         
         if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
         {
@@ -67,7 +69,7 @@ public class BaseController : Controller
         }
         
         string addQuery = url.Contains("?") ? "&" : "?";
-        return LocalRedirect($"{url}{addQuery}SuccessMessage={successMessage}");
+        return LocalRedirect($"{url}{addQuery}successMessage={successMessage}");
     }
 
     protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)

@@ -5,13 +5,13 @@
     @if (!SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="Register" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty })">Register</a>
+            <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty })">Login</a>
+            <a class="nav-link" asp-area="Account" asp-controller="Home" asp-action="Login">Login</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty })">Forgot Password</a>
+            <a class="nav-link" asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">Forgot Password</a>
         </li>
     }
 </ul>
