@@ -2,7 +2,7 @@
 
 namespace Data.Entities.Shared.Base;
 
-public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessage
+public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessageEntity
 {
     [Key]
     public int Id { get; set; }
@@ -12,7 +12,7 @@ public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessage
     public MessageRecipientType RecipientTypes { get; set; }
 
     [MaxLength(200)]
-    public string? HeaderText { get; set; }
+    public required string HeaderText { get; set; }
 
     public required string MessageText { get; set; }
 

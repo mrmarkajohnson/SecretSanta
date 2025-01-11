@@ -337,7 +337,11 @@ namespace Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GiftingGroupYearId")
+                        .HasColumnType("int");
+
                     b.Property<string>("HeaderText")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -358,6 +362,8 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GiftingGroupYearId");
 
                     b.HasIndex("SenderId");
 
@@ -1060,11 +1066,18 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroupYear", "GiftingGroupYear")
+                        .WithMany("Messages")
+                        .HasForeignKey("GiftingGroupYearId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Data.Entities.Santa.Santa_User", "Sender")
                         .WithMany("SentMessages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("GiftingGroupYear");
 
                     b.Navigation("Sender");
                 });
@@ -1300,6 +1313,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Entities.Santa.Santa_GiftingGroupYear", b =>
                 {
                     b.Navigation("AuditTrail");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("Users");
                 });

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Global.Abstractions.Global.Account;
+using Global.Abstractions.Areas.Account;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;

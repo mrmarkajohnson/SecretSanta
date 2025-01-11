@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Global.Abstractions.Global.Account;
+using Global.Abstractions.Areas.Account;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 

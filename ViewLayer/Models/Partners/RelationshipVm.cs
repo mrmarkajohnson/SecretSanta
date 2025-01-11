@@ -1,5 +1,5 @@
-﻿using Application.Santa.Areas.Partners.BaseModels;
-using Global.Abstractions.Global.Partners;
+﻿using Application.Areas.Partners.BaseModels;
+using Global.Abstractions.Areas.Partners;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static Global.Settings.PartnerSettings;

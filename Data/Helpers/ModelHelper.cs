@@ -106,6 +106,13 @@ internal static class ModelHelper
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_Message>()
+            .HasOne(e => e.GiftingGroupYear)
+            .WithMany(e => e.Messages)
+            .HasForeignKey(e => e.GiftingGroupYearId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Message>()
             .HasOne(e => e.Sender)
             .WithMany(e => e.SentMessages) 
             .HasForeignKey(e => e.SenderId)

@@ -1,6 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
-using AutoMapper;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using AutoMapper;
+using Global.Abstractions.Areas.GiftingGroup;
 using ViewLayer.Models.GiftingGroup;
 
 namespace ViewLayer.Mapping;

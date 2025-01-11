@@ -1,5 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
-using Application.Santa.Areas.GiftingGroup.Queries.Internal;
+﻿using Application.Areas.GiftingGroup.BaseModels;
+using Application.Areas.GiftingGroup.Queries.Internal;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using Microsoft.Extensions.DependencyInjection;

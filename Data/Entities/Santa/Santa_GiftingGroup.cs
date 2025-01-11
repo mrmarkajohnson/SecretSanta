@@ -1,5 +1,5 @@
 ﻿using Data.Attributes;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Names;
 using Global.Validation;
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Global.Abstractions.Global.Account;
-using Global.Abstractions.Santa.Areas.Account;
+using Global.Abstractions.Areas.Account;
 using ViewLayer.Models.Account;
 
 namespace ViewLayer.Mapping;

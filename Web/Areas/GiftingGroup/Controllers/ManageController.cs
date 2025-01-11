@@ -1,13 +1,9 @@
-﻿using Application.Santa.Areas.GiftingGroup.Actions;
-using Application.Santa.Areas.GiftingGroup.Commands;
-using Application.Santa.Areas.GiftingGroup.Queries;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Application.Areas.GiftingGroup.Actions;
+using Application.Areas.GiftingGroup.Commands;
+using Application.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using ViewLayer.Models.GiftingGroup;
-using Web.Controllers;
 using static ViewLayer.Models.GiftingGroup.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;

@@ -1,5 +1,4 @@
-﻿using Global.Abstractions.Global.Shared;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
 

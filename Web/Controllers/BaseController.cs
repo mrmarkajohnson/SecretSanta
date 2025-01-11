@@ -1,12 +1,11 @@
-﻿using Application.Santa.Areas.Account.Queries;
-using Application.Santa.Areas.GiftingGroup.Queries;
-using Application.Santa.Global;
+﻿using Application.Areas.Account.Queries;
+using Application.Areas.GiftingGroup.Queries;
+using Application.Shared.Requests;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Global;
-using Global.Abstractions.Global.Account;
-using Global.Abstractions.Santa.Areas.Account;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;

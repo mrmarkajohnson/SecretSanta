@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using SecretSanta.ViewLayer.Models;
+﻿using SecretSanta.ViewLayer.Models;
 using System.Diagnostics;
-using Web.Controllers;
 
 namespace SecretSanta.Controllers;
 

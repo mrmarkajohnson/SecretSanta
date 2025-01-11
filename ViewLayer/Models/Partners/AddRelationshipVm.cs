@@ -1,5 +1,4 @@
-﻿using Global.Abstractions.Global.Partners;
-using Global.Abstractions.Global.Shared;
+﻿using Global.Abstractions.Areas.Partners;
 
 namespace ViewLayer.Models.Partners;
 

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Global.Abstractions.Global.Account;
+using Global.Abstractions.Areas.Account;
 
 namespace ViewLayer.Models.Account;
 

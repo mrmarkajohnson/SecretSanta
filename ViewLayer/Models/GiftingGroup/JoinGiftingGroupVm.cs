@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 

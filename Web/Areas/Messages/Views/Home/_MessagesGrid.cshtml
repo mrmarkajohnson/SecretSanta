@@ -1,0 +1,33 @@
+﻿@using Global.Abstractions.Global.Messages
+@using Global.Extensions.System
+@using NonFactors.Mvc.Grid
+
+@model IQueryable<IReadMessage>
+@{
+    Func<IReadMessage, object> actions =
+    @<text>
+        <a asp-action="ViewMessage" asp-controller="Home" asp-area="Messages" asp-route-id="@item.RecipientId" data-toggle="tooltip" title="View Message">
+            <i class="fa fa-eye"></i>
+        </a>
+    </text> ;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(x => x.SenderName).Titled("From");
+        columns.Add(x => x.RecipientTypes).RenderedAs(x => x.RecipientTypes.DisplayName()).Titled("To");
+        columns.Add(x => x.HeaderText).Titled("Subject");
+        columns.Add().RenderedAs(actions).Encoded(false);
+    })
+    @* .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    }) *@
+    .Empty("No messages found")
+    .Filterable()
+    .Sortable()
+    .RowAttributed(model => new { @class = (model.Important ? "bold " : "") + (!model.Read ? "text-danger" : "") })
+)

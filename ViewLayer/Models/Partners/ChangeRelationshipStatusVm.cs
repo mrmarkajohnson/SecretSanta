@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Global.Partners;
+﻿using Global.Abstractions.Areas.Partners;
 using static Global.Settings.PartnerSettings;
 
 namespace ViewLayer.Models.Partners;

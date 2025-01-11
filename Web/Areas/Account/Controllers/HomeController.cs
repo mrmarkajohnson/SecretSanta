@@ -1,12 +1,10 @@
-﻿using Application.Santa.Areas.Account.Commands;
-using Application.Santa.Areas.Account.Queries;
+﻿using Application.Areas.Account.Commands;
+using Application.Areas.Account.Queries;
 using Global.Extensions.System;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
-using Web.Controllers;
 
 namespace Web.Areas.Account.Controllers;
 

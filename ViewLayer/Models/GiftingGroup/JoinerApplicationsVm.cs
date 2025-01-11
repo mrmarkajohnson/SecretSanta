@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Global.Abstractions.Areas.GiftingGroup;
 
 namespace ViewLayer.Models.GiftingGroup;
 

@@ -22,6 +22,10 @@ p {
     margin-bottom: 6px;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .thinking {
     position: absolute;
     display: block;
@@ -42,12 +46,12 @@ p {
     width: fit-content !important;
 }
 
-    .tooltip.bs-tooltip-auto {
-        z-index: 50000;
-        border-style: solid;
-        position: absolute !important;
-        width: fit-content !important;
-    }
+.tooltip.bs-tooltip-auto {
+    z-index: 50000;
+    border-style: solid;
+    position: absolute !important;
+    width: fit-content !important;
+}
 
 .input-group.input-info input.form-control {
     border-right: none !important;
@@ -77,9 +81,9 @@ input.form-control:read-only {
     text-align: left !important;
 }
 
-    .control-label.text-center {
-        text-align: center !important;
-    }
+.control-label.text-center {
+    text-align: center !important;
+}
 
 label.control-label-inline {
     font-weight: 500 !important;

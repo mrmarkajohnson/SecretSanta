@@ -1,10 +1,7 @@
-﻿using Application.Santa.Areas.Partners.Commands;
-using Application.Santa.Areas.Partners.Queries;
-using Global.Abstractions.Global.Partners;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.Areas.Partners.Commands;
+using Application.Areas.Partners.Queries;
+using Global.Abstractions.Areas.Partners;
 using ViewLayer.Models.Partners;
-using Web.Controllers;
 using static Global.Settings.PartnerSettings;
 
 namespace Web.Areas.Partners.Controllers;

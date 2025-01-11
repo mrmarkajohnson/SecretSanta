@@ -6,25 +6,18 @@
         + (string.IsNullOrEmpty(Model.DropdownClass) ? string.Empty : (" " + Model.DropdownClass));
 }
 
-<ul class="navbar-nav">
-    <li class="@navItemClass">
-        <partial name="Menu/_GiftingMenu" />
-    </li>
-</ul>
-
-<ul class="navbar-nav">
-    <li class="@navItemClass">
-        <partial name="Menu/_PartnersMenu" />
-    </li>
-</ul>
-
-@if (!Model.Small)
+@foreach (string menuItem in Model.LoggedInMenuItems)
 {
-    <text>&nbsp;</text>
-}
+    string menuPath = $"Menu/_{menuItem}";
+    
+    @if (!Model.Small)
+    {
+        <text>&nbsp;</text>
+    }
 
-<ul class="navbar-nav">
-    <li class="@navItemClass">
-        <partial name="Menu/_AccountMenu" />
-    </li>
-</ul>
+    <ul class="navbar-nav">
+        <li class="@navItemClass">
+            <partial name="@menuPath" />
+        </li>
+    </ul>
+}

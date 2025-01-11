@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Messages\Commands\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
@@ -10,6 +10,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     {
         Users = new HashSet<Santa_YearGroupUser>();
         AuditTrail = new HashSet<Santa_GiftingGroupYear_Audit>();
+        Messages = new HashSet<Santa_Message>();
     }
 
     [Key]
@@ -25,7 +26,8 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
     public virtual ICollection<Santa_YearGroupUser> Users { get; set; }
-    public virtual ICollection<Santa_GiftingGroupYear_Audit> AuditTrail { get; }
+    public virtual ICollection<Santa_GiftingGroupYear_Audit> AuditTrail { get; set; }
+    public virtual ICollection<Santa_Message> Messages { get; set; }
 
     public IEnumerable<Santa_GiftingGroupUser> ValidGroupMembers()
     {

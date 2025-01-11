@@ -1,5 +1,5 @@
-﻿using Application.Santa.Areas.GiftingGroup.BaseModels;
-using Global.Abstractions.Santa.Areas.GiftingGroup;
+﻿using Application.Areas.GiftingGroup.BaseModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using static Global.Settings.GiftingGroupSettings;
 
 namespace ViewLayer.Models.GiftingGroup;

@@ -1,7 +1,7 @@
 ﻿using Data.Attributes;
 using Data.Entities.Santa;
+using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Global;
-using Global.Abstractions.Global.Account;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;

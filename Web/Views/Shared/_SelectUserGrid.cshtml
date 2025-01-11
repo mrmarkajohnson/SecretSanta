@@ -1,11 +1,11 @@
-﻿@using Global.Abstractions.Global.Shared
+﻿@using Global.Abstractions.Global
 @using NonFactors.Mvc.Grid
 
 @model IEnumerable<IVisibleUser>
 @{
     Func<IVisibleUser, object> actions =
     @<text>
-        <input type="radio" class="user-select" name="UserSelect" data-id="@item.Id" data-name="@item.UserDisplayName" />
+        <input type="radio" class="user-select" name="UserSelect" data-id="@item.Id" data-name="@item.UserDisplayName" data-toggle="tooltip" title="Select" />
     </text> ;
 }
 
@@ -23,7 +23,7 @@
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     }) *@
-    .Empty("No data found")
+    .Empty("Nobody found")
     .Filterable()
     .Sortable()
 )

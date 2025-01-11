@@ -1,5 +1,5 @@
-﻿using Application.Santa.Areas.Account.BaseModels;
-using Global.Abstractions.Santa.Areas.Account;
+﻿using Application.Areas.Account.BaseModels;
+using Global.Abstractions.Areas.Account;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 

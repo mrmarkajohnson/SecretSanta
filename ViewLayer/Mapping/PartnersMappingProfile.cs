@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Global.Abstractions.Global.Partners;
+using Global.Abstractions.Areas.Partners;
 using ViewLayer.Models.Partners;
 
 namespace ViewLayer.Mapping;

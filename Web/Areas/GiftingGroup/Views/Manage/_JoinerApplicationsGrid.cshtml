@@ -1,4 +1,4 @@
-﻿@using Global.Abstractions.Santa.Areas.GiftingGroup
+﻿@using Global.Abstractions.Areas.GiftingGroup
 @using NonFactors.Mvc.Grid
 
 @model JoinerApplicationsVm
@@ -7,7 +7,8 @@
 
     Func<IReviewApplication, object> actions = 
     @<text>
-        <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" asp-route-applicationId="@item.ApplicationId" asp-route-singleApplication="@singleApplication">
+        <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" data-toggle="tooltip" title="Review Application"
+            asp-route-applicationId="@item.ApplicationId" asp-route-singleApplication="@singleApplication">
             <i class="fa fa-pencil"></i>
         </a>
     </text> ;
@@ -28,7 +29,7 @@
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     }) *@
-    .Empty("No data found")
+    .Empty("No active applications found")
     .Filterable()
     .Sortable()
 )

@@ -1,13 +1,10 @@
-﻿using Application.Santa.Areas.Account.Commands;
-using Application.Santa.Areas.Account.Queries;
-using Global.Abstractions.Global.Account;
+﻿using Application.Areas.Account.Commands;
+using Application.Areas.Account.Queries;
+using Global.Abstractions.Areas.Account;
 using Global.Extensions.System;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Account;
-using Web.Controllers;
 
 namespace Web.Areas.Account.Controllers;
 
