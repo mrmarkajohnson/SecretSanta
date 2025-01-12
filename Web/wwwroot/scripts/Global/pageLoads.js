@@ -7,6 +7,7 @@ window.addEventListener('load', function () {
     initEyeSymbols();
     initDataLists()
     initThinking();
+    initModalLinks();
 });
 
 $(document).on('ajaxComplete', function () { // this is very difficult without JQuery
@@ -14,4 +15,5 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
     initEyeSymbols();
     initDataLists()
     initThinking();
+    initModalLinks();
 });

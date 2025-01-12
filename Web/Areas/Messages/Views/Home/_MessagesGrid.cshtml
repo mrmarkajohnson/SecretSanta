@@ -1,12 +1,14 @@
 ﻿@using Global.Abstractions.Global.Messages
 @using Global.Extensions.System
 @using NonFactors.Mvc.Grid
+@using Web.Helpers
 
 @model IQueryable<IReadMessage>
 @{
     Func<IReadMessage, object> actions =
     @<text>
-        <a asp-action="ViewMessage" asp-controller="Home" asp-area="Messages" asp-route-id="@item.RecipientId" data-toggle="tooltip" title="View Message">
+        <a class="modal-link" data-url="@Url.Action(Context.Request, "ViewMessage", "Home", "Messages", new { id = item.Id })"
+           data-toggle="tooltip" title="View Message">
             <i class="fa fa-eye"></i>
         </a>
     </text> ;
@@ -16,6 +18,7 @@
     .Grid(Model)
     .Build(columns =>
     {
+        columns.Add(x => x.Sent).Titled("Sent");
         columns.Add(x => x.SenderName).Titled("From");
         columns.Add(x => x.RecipientTypes).RenderedAs(x => x.RecipientTypes.DisplayName()).Titled("To");
         columns.Add(x => x.HeaderText).Titled("Subject");

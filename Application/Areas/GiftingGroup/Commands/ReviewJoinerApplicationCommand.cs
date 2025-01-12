@@ -40,7 +40,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
                 }
             }
 
-            throw new NotFoundException("application");
+            throw new NotFoundException("Application");
         }
 
         if (Validation.IsValid && dbApplication != null)

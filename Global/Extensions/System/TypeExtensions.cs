@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
 
 namespace Global.Extensions.System;
 
@@ -44,5 +44,25 @@ public static class TypeExtensions
     {
         var random = new Random();
         return Get1FromList(random, list.ToList());
+    }
+
+    public static object AddProperty(this object obj, string name, object? value) // Thanks to Khaja Minhajuddin and Mark Bell for this (adapted)
+    {
+        var dictionary = obj.ToDictionary();
+        dictionary.Add(name, value);
+        return dictionary;
+    }
+
+    public static IDictionary<string, object?> ToDictionary(this object obj) // Thanks to Khaja Minhajuddin and Mark Bell for this (adapted)
+    {
+        IDictionary<string, object?> result = new Dictionary<string, object?>();
+        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+
+        foreach (PropertyDescriptor property in properties)
+        {
+            result.Add(property.Name, property.GetValue(obj));
+        }
+
+        return result;
     }
 }

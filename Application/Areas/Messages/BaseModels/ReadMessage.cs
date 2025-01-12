@@ -5,9 +5,13 @@ namespace Application.Areas.Messages.BaseModels;
 
 internal class ReadMessage : MessageBase, IReadMessage
 {
-    public int RecipientId { get; set; }
+    public int Id { get; set; }
+    public int MessageId { get; set; }
+    public DateTime Sent { get; set; }
+
     public IUserNamesBase? Sender { get; set; } = new UserNamesBase();
-    public bool Read { get; set; }
     public bool ShowAsFromSanta { get; set; }
     public string SenderName => (ShowAsFromSanta || Sender == null) ? "Santa" : Sender.UserDisplayName;
+
+    public bool Read { get; set; }
 }

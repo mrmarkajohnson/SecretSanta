@@ -24,14 +24,14 @@ public class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkId, Guid userId, RelationshipStatus newStatus)
     {
-        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), "Partners");
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
         var model = new ChangeRelationshipStatusVm(partnerLinkId, userId, newStatus, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
         {
             if (model.NewStatus == RelationshipStatus.NotRelationship)
-                return RedirectWithMessage(Url.Action(nameof(Index), nameof(ManageController), new { Area = "Partners" }), "Relationship cancelled successfully");
+                return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
 
             return Ok("Relationship updated successfully");
         }
@@ -51,7 +51,7 @@ public class ManageController : BaseController
     private async Task<AddRelationshipVm> GetAddRelationshipModel(Guid? userId = null)
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
-        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), "Partners");
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
 
         var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink);
         model.UserId = userId ?? Guid.Empty;
@@ -69,7 +69,7 @@ public class ManageController : BaseController
 
         if (result.Success)
         {
-            return RedirectWithMessage(Url.Action(nameof(Index), nameof(ManageController), new { Area = "Partners" }), "Relationship added successfully");
+            return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship added successfully");
         }
         else
         {

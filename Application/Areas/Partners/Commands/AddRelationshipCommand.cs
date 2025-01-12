@@ -48,7 +48,7 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
         });
 
         string messageText = $"{dbCurrentUser.FullName()} says they are in a relationship with you. Is it true? Please go to " +
-                $"<a href='{Item.ManageRelationshipsLink}'>'Manage Relationships'</a> to confirm.";
+                $"<a href='{Item.ManageRelationshipsLink}'>'Manage Your Relationships'</a> to confirm.";
 
         var message = new SendSantaMessage
         {
@@ -58,6 +58,8 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
             Important = true,
             ShowAsFromSanta = true
         };
+
+        SendMessage(message, dbCurrentUser.SantaUser, dbSelectedUser.SantaUser);
 
         return await SaveAndReturnSuccess();
     }

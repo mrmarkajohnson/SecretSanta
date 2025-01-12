@@ -54,6 +54,50 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
         dataListInput.setAttribute('placeholder', defaultPlaceholder);
     }
 }
+function initModalLinks() {
+    let modalLinks = document.querySelectorAll('a.modal-link');
+    modalLinks.forEach(initModalLink);
+}
+
+function initModalLink(modalLink) {
+    modalLink.addEventListener('click', function () {
+        showModal(modalLink);
+    });
+}
+
+async function showModal(modalLink) {
+    let linkUrl = modalLink.getAttribute('data-url');
+    let url = new URL(linkUrl);
+
+    let response = await fetch(url.href,
+        {
+            method: "GET",
+        });
+
+    await response;
+    //document.dispatchEvent(new Event('ajaxComplete'));
+
+    let responseText = await response.text();
+
+    if (response.ok) {
+        let modalContainer = document.getElementById('modalContainer');
+
+        if (modalContainer) {
+            modalContainer.innerHTML = responseText;
+        }
+        else {
+            document.body.insertAdjacentHTML('afterbegin', '<div id="modalContainer">' + responseText + '</div>');
+            modalContainer = document.getElementById('modalContainer');
+        }
+
+        let modalContent = modalContainer.querySelector('div.modal');
+
+        let modal = new bootstrap.Modal(modalContent);
+        modal.show();
+    } else {
+        toastr.error(responseText);
+    }
+}
 let isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 let isEdge = navigator.userAgent.toLowerCase().includes('edge');
 
@@ -63,6 +107,7 @@ window.addEventListener('load', function () {
     initEyeSymbols();
     initDataLists()
     initThinking();
+    initModalLinks();
 });
 
 $(document).on('ajaxComplete', function () { // this is very difficult without JQuery
@@ -70,6 +115,7 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
     initEyeSymbols();
     initDataLists()
     initThinking();
+    initModalLinks();
 });
 function initPopper() {
     $('[data-toggle="popover"]').popover();

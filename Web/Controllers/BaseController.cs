@@ -9,9 +9,8 @@ using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using ViewLayer.Models.Home;
+using Web.Helpers;
 
 namespace Web.Controllers;
 
@@ -186,6 +185,11 @@ public class BaseController : Controller
 
     protected string GetFullUrl(string action, string controller, string area)
     {
-        return Url.Action(action, controller, new { Area = area }, Request.Scheme, Request.Host.ToString()) ?? "";
+        return GetFullUrl(Request, action, controller, area);
+    }
+
+    private string GetFullUrl(HttpRequest request, string action, string controller, string area)
+    {
+        return Url.Action(request, action, controller, area);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Areas.Messages.Queries;
 using Global.Abstractions.Global.Messages;
+using Global.Extensions.Exceptions;
 
 namespace Web.Areas.Messages.Controllers;
 
@@ -14,5 +15,18 @@ public class HomeController : BaseController
     {
         IQueryable<IReadMessage> messages = await Send(new GetMessagesQuery());
         return View(messages);
+    }
+
+    public async Task<IActionResult> ViewMessage(int id)
+    {
+        try
+        {
+            IReadMessage message = await Send(new ViewMessageQuery(id));
+            return PartialView("_ViewMessageModal", message);
+        }
+        catch (NotFoundException ex)
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
+        }
     }
 }

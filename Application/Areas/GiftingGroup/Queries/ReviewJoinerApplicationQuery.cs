@@ -44,7 +44,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
                 }
             }
 
-            throw new NotFoundException("application");
+            throw new NotFoundException("Application");
         }
 
         var application = Mapper.Map<IReviewApplication>(dbApplication);

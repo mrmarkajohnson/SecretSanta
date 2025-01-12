@@ -71,6 +71,18 @@ h3 {
     text-decoration: underline !important;
 }
 
+.btn-default {
+    background: $gold-glow;
+    border: 1px solid $purple-200;
+    box-shadow: $purple-box-shadow;
+    color: $black;
+}
+
+.btn-default:hover {
+    border: 1px solid $purple !important;
+    background: $gold-background;
+}
+
 .btn.btn-md {
     --bs-btn-padding-y: 0.45rem;
     font-size: 1rem;
