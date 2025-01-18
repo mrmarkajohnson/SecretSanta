@@ -17,7 +17,9 @@ $primary-shadow-2: #45797d;
 
 $red-glow: #ff000099; 
 $gold-glow: #ffd70020;
+$gold-glow-solid: #fffade;
 $green-gold-glow: #efffcc20;
+$green-gold-glow-solid: #fdfff8;
 $grey-blue-glow: #9999ff10;
 $white-half-opaque: #ffffff99;
 
@@ -55,6 +57,11 @@ h3 {
     margin-bottom: 8px !important;
 }
 
+h4 {
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+}
+
 .btn-primary {
     background: radial-gradient(100% 100% at 100% 0, $primary-bg-subtle 0, $primary 100%);
     box-shadow: $btn-box-shadow;
@@ -72,10 +79,11 @@ h3 {
 }
 
 .btn-default {
-    background: $gold-glow;
+    background: $gold-glow-solid;
     border: 1px solid $purple-200;
     box-shadow: $purple-box-shadow;
     color: $black;
+    opacity: 1;
 }
 
 .btn-default:hover {
@@ -170,6 +178,20 @@ a:hover {
 .text-glow {
     text-shadow: $gold-text-shadow !important;
     font-weight: 500;
+}
+
+.modal-header {
+    background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
+    color: $white;
+}
+
+.modal-header modal-title.h4 {
+    color: $white;
+}
+
+.modal-footer {
+    background: linear-gradient(180deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
+    padding: 6px;
 }
 
 label.control-label {

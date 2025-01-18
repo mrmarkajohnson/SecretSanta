@@ -42,6 +42,6 @@ Add suggestions
 Add user postal and e-mail address functionality for sending and receiving gifts (optional, and must be enabled by admins)
 
 MESSAGES
-* Add content to view message window
+* Mark messages as read
 Allow users to reply
 
