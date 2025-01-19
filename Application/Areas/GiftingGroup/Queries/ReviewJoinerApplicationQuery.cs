@@ -16,13 +16,9 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 
     protected async override Task<IReviewApplication> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var dbApplication = dbCurrentUser.SantaUser?.GiftingGroupLinks
+        var dbApplication = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
@@ -34,7 +30,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {
-                var dbLinks = dbCurrentUser.SantaUser?.GiftingGroupLinks
+                var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
                     .Where(x => x.GiftingGroupId == dbApplication.GiftingGroupId && x.GroupAdmin)
                     .ToList();
 

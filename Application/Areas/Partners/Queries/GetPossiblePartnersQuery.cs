@@ -9,29 +9,25 @@ public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
     protected async override Task<IQueryable<IVisibleUser>> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var groupNames = dbCurrentUser.SantaUser.GiftingGroupLinks
+        var groupNames = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .Select(x => x.GiftingGroup.Name)
             .ToList();
 
-        var visibleUsers = dbCurrentUser.SantaUser.GiftingGroupLinks
+        var visibleUsers =dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .SelectMany(x => x.GiftingGroup.UserLinks)
             .Where(y => y.DateArchived == null && y.DateDeleted == null)
-            .Where(y => y.SantaUser != null && y.SantaUserId != dbCurrentUser.SantaUser.Id)
+            .Where(y => y.SantaUser != null && y.SantaUserId != dbCurrentSantaUser.Id)
             .Select(y => y.SantaUser)
             .Where(z => z.SuggestedRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
-                .Any(r => r.ConfirmingSantaUserId == dbCurrentUser.SantaUser.Id && r.RelationshipEnded == null) == false)
+                .Any(r => r.ConfirmingSantaUserId == dbCurrentSantaUser.Id && r.RelationshipEnded == null) == false)
             .Where(z => z.ConfirmingRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
-                .Any(r => r.SuggestedBySantaUserId == dbCurrentUser.SantaUser.Id && r.RelationshipEnded == null) == false)
+                .Any(r => r.SuggestedBySantaUserId == dbCurrentSantaUser.Id && r.RelationshipEnded == null) == false)
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)
             .AsQueryable()

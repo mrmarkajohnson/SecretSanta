@@ -13,9 +13,9 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
 
     protected async override Task<IQueryable<IReviewApplication>> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var dbApplications = dbCurrentUser.SantaUser?.GiftingGroupLinks
+        var dbApplications = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)

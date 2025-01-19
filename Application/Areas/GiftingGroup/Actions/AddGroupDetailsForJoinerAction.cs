@@ -1,6 +1,5 @@
 ﻿using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
-using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Actions;
 
@@ -41,13 +40,9 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             return Task.FromResult(false);
         }
 
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var existingGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks
+        var existingGroupLinks = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
             .Where(x => x.GiftingGroupId == dbGiftingGroup.Id);
 
@@ -60,7 +55,7 @@ public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
             Item.GiftingGroupId = null;
         }
 
-        var previousApplications = dbCurrentUser.SantaUser.GiftingGroupApplications
+        var previousApplications = dbCurrentSantaUser.GiftingGroupApplications
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
             .Where(x => x.GiftingGroupId == dbGiftingGroup.Id)
             .ToList();

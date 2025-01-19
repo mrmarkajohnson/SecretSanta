@@ -118,6 +118,41 @@ public abstract class BaseRequest<TResult>
         return UserManager.GetUserId(ClaimsUser);
     }
 
+    protected Santa_User GetCurrentSantaUser(params Expression<Func<Santa_User, object?>>[] includes)
+    {
+        Santa_User? dbSantaUser = null;
+
+        EnsureSignedIn();
+
+        string? userId = GetCurrentUserId();
+        if (userId != null)
+        {
+            dbSantaUser = GetSantalUser(userId, includes);
+        }
+
+        if (dbSantaUser == null)
+        {
+            throw new AccessDeniedException();
+        }
+
+        return dbSantaUser;
+    }
+
+    protected Santa_User? GetSantalUser(string userId, params Expression<Func<Santa_User, object?>>[] includes)
+    {
+        if (includes != null && includes.Any())
+        {
+            var query = DbContext.Santa_Users;
+            return includes
+                .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
+                .FirstOrDefault(x => x.GlobalUserId == userId);
+        }
+        else
+        {
+            return DbContext.Santa_Users.FirstOrDefault(x => x.GlobalUserId == userId);
+        }
+    }
+
     protected Global_User GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
     {
         Global_User? dbCurrentUser = null;

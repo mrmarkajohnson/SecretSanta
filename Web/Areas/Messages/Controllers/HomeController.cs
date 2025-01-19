@@ -1,4 +1,5 @@
-﻿using Application.Areas.Messages.Queries;
+﻿using Application.Areas.Messages.Commands;
+using Application.Areas.Messages.Queries;
 using Global.Abstractions.Global.Messages;
 using Global.Extensions.Exceptions;
 
@@ -28,5 +29,20 @@ public class HomeController : BaseController
         {
             return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
         }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> MarkMessageRead(int id)
+    {
+        try
+        {
+            await Send(new MarkMessageReadCommand(id), null);
+        }
+        catch
+        {
+            // no point throwing an exception here
+        }
+
+        return Ok();
     }
 }

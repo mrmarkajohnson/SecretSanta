@@ -74,30 +74,43 @@ async function showModal(modalLink) {
             method: "GET",
         });
 
-    await response;
-    //document.dispatchEvent(new Event('ajaxComplete'));
+    await response;    
 
     let responseText = await response.text();
 
     if (response.ok) {
-        let modalContainer = document.getElementById('modalContainer');
-
-        if (modalContainer) {
-            modalContainer.innerHTML = responseText;
-        }
-        else {
-            document.body.insertAdjacentHTML('afterbegin', '<div id="modalContainer">' + responseText + '</div>');
-            modalContainer = document.getElementById('modalContainer');
-        }
-
-        let modalContent = modalContainer.querySelector('div.modal');
-
-        let modal = new bootstrap.Modal(modalContent);
-        modal.show();
+        showModalResponse(responseText);
+        document.dispatchEvent(new Event('ajaxComplete'));
     } else {
         toastr.error(responseText);
     }
 }
+
+function showModalResponse(responseText) {
+    let modalContainer = document.getElementById('modalContainer');
+
+    if (modalContainer) {
+        modalContainer.innerHTML = responseText;
+    }
+    else {
+        document.body.insertAdjacentHTML('afterbegin', '<div id="modalContainer">' + responseText + '</div>');
+        modalContainer = document.getElementById('modalContainer');
+    }
+
+    let modal = modalContainer.querySelector('div.modal');
+    let modalObject = new bootstrap.Modal(modal);
+
+    modalContainer.addEventListener('hidden.bs.modal', function () {
+        if (document.activeElement) {
+            document.activeElement.blur(); // avoid annoying 'Blocked aria-hidden on an element...' message
+        }
+
+        document.dispatchEvent(new CustomEvent('modalClosed', { detail: { modal: modal } }));
+    });
+
+    modalObject.show();
+}
+
 let isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 let isEdge = navigator.userAgent.toLowerCase().includes('edge');
 
@@ -120,6 +133,9 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 function initPopper() {
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
+}
+function isEmptyString(remainingUntilNext) {
+    return remainingUntilNext == 'undefined' || remainingUntilNext == 'null' || remainingUntilNext == '';
 }
 let successMessageUrlStart = 'successMessage=';
 
@@ -145,7 +161,7 @@ function handleSuccessFromUrl(currentUrl) {
         let encodedSuccessMessage = '';
         let remainingUntilNext = remainingUrl.substring(0, remainingUrl.indexOf('&'));
 
-        if (remainingUntilNext == 'undefined' || remainingUntilNext == 'null' || remainingUntilNext == '') {
+        if (isEmptyString(remainingUntilNext)) {
             encodedSuccessMessage = remainingUrl;
         } else {
             encodedSuccessMessage = remainingUntilNext;

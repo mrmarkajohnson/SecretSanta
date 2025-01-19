@@ -54,15 +54,15 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
                 return await Result();
             }
 
-            Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-            if (dbCurrentUser.SantaUser == null)
+            Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+            if (dbCurrentSantaUser == null)
             {
                 throw new AccessDeniedException();
             }
 
             var dbApplication = new Santa_GiftingGroupApplication
             {
-                SantaUser = dbCurrentUser.SantaUser,
+                SantaUser = dbCurrentSantaUser,
                 GiftingGroup = dbGiftingGroup,
                 Message = Item.Message
             };

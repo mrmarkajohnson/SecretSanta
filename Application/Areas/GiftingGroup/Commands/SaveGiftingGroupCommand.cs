@@ -15,15 +15,11 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
     {
         Santa_GiftingGroup? dbGiftingGroup = null;
 
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         if (Item.Id > 0)
         {
-            Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentUser.SantaUser.GiftingGroupLinks
+            Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
                 .FirstOrDefault(x => x.GiftingGroupId == Item.Id);
 
@@ -44,7 +40,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
                 }
             }
         }
-        else if (dbCurrentUser?.SantaUser != null)
+        else
         {
             await ReplaceTokenIfNotUnique();
 
@@ -54,8 +50,8 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
             dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
             {
                 GroupAdmin = true,
-                SantaUserId = dbCurrentUser.SantaUser.Id,
-                SantaUser = dbCurrentUser.SantaUser,
+                SantaUserId = dbCurrentSantaUser.Id,
+                SantaUser = dbCurrentSantaUser,
                 GiftingGroup = dbGiftingGroup
             });
         }

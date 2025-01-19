@@ -96,6 +96,16 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action:exists}/{id?}",
     constraints: new { id = @"\d*" });
 
+app.MapControllerRoute(
+    name: "home",
+    pattern: "home/{*url}",
+    defaults: new { controller = "Home", action = "Index" });
+
+app.MapControllerRoute(
+    name: "index",
+    pattern: "index",
+    defaults: new { action = "Index" });
+
 app.MapRazorPages();
 
 FluentValidationConfiguration.SetFluentValidationOptions();

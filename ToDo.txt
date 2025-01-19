@@ -1,4 +1,5 @@
 GENERAL
+* Handle index pages etc. in bundles/routing
 Finish grid functionality - paging, sorting and filtering
 Create menus and rework main page
 Add testing and production configuration
@@ -42,6 +43,6 @@ Add suggestions
 Add user postal and e-mail address functionality for sending and receiving gifts (optional, and must be enabled by admins)
 
 MESSAGES
-* Mark messages as read
+* Refresh the grid after marking messages as read
 Allow users to reply
 

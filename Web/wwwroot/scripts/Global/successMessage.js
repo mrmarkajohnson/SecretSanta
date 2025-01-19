@@ -22,7 +22,7 @@ function handleSuccessFromUrl(currentUrl) {
         let encodedSuccessMessage = '';
         let remainingUntilNext = remainingUrl.substring(0, remainingUrl.indexOf('&'));
 
-        if (remainingUntilNext == 'undefined' || remainingUntilNext == 'null' || remainingUntilNext == '') {
+        if (isEmptyString(remainingUntilNext)) {
             encodedSuccessMessage = remainingUrl;
         } else {
             encodedSuccessMessage = remainingUntilNext;

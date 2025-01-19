@@ -9,20 +9,16 @@ public class ViewMessageQuery : BaseQuery<IReadMessage>
 {
     public int Id { get; }
 
-    public ViewMessageQuery(int recipientId)
+    public ViewMessageQuery(int id)
     {
-        Id = recipientId;
+        Id = id;
     }
 
     protected override Task<IReadMessage> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.ReceivedMessages);
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
-        var message = dbCurrentUser.SantaUser.ReceivedMessages            
+        var message = dbCurrentSantaUser.ReceivedMessages            
             .Where(x => x.Id == Id)
             .AsQueryable()
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
