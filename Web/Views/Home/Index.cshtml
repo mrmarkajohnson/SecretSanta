@@ -74,6 +74,11 @@
                     Apply to Join a Gifting Group
                 </a>
             </p>
+            <p>
+                <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                    Participate for @DateTime.Today.Year
+                </a>
+            </p>
 
             @if (Model?.GiftingGroups?.Any() == true)
             {
@@ -86,16 +91,25 @@
                     </p>
                 }
                 
-                @foreach (var giftingGroup in Model.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+                @foreach (var giftingGroup in Model.GiftingGroups.ToList())
                 {
+                    if (giftingGroup.GroupAdmin)
+                    {
+                        <p>
+                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId = "@giftingGroup.GiftingGroupId">
+                                Edit Gifting Group '@giftingGroup.GroupName'
+                            </a>
+                        </p>
+                        <p>
+                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                                Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                            </a>
+                        </p>
+                    }
+
                     <p>
-                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId = "@giftingGroup.GiftingGroupId">
-                            Edit Gifting Group '@giftingGroup.GroupName'
-                        </a>
-                    </p>
-                    <p>
-                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                            Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
                         </a>
                     </p>
                 }

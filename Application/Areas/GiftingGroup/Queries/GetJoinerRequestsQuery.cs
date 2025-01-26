@@ -22,12 +22,8 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
             .Where(y => y.ResponseByUserId == null)
             .AsQueryable();
 
-        var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();
-
-        foreach (var application in applications)
-        {
-            await Send(new UnHashUserIdentificationAction(application));
-        }
+        var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();        
+        applications.ForEach(x => x.UnHash());
 
         return applications.AsQueryable();
     }

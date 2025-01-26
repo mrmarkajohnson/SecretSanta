@@ -29,13 +29,14 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     protected override Task<List<GiverAndReceiverCombination>> Handle()
     {
         int? lastCombinationCount = null; // used to avoid unnecessary processing, if no improvement on last try
+        List<int> participatingMemberIds = _participatingMembers.Select(y => y.SantaUserId).ToList();
 
-        List<Santa_YearGroupUser> _activeCombinationsInOtherGroups = DbContext.Santa_YearGroupUsers
+        List <Santa_YearGroupUser> _activeCombinationsInOtherGroups = DbContext.Santa_YearGroupUsers
             .Where(x => x.GivingToUserId != null)
-            .Where(x => x.Year.Year == _dbGiftingGroupYear.Year)
+            .Where(x => x.YearId == _dbGiftingGroupYear.Id)
             .Where(x => x.Year.GiftingGroupId != _dbGiftingGroupYear.GiftingGroupId)
-            .Where(x => _participatingMembers.Any(y => y.SantaUserId == x.SantaUserId))
-            .Where(x => _participatingMembers.Any(y => y.SantaUserId == x.GivingToUserId))
+            .Where(x => participatingMemberIds.Contains(x.SantaUserId))
+            .Where(x => x.GivingToUserId != null && participatingMemberIds.Contains(x.GivingToUserId.Value))
             .ToList();
 
         while (_actualCombinations.Count == 0 && (_previousYears >= 0 || _ignoreOtherGroups == false))

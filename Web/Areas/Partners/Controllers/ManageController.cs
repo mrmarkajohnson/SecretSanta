@@ -1,12 +1,14 @@
 ﻿using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
 using Global.Abstractions.Areas.Partners;
+using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Partners;
 using static Global.Settings.PartnerSettings;
 
 namespace Web.Areas.Partners.Controllers;
 
 [Area("Partners")]
+[Authorize]
 public class ManageController : BaseController
 {
     public ManageController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)

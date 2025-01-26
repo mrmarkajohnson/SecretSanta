@@ -8,9 +8,10 @@ public class MainMenuVm
 
     public List<string> LoggedInMenuItems =
     [
+        "YearMenu",
         "MessagesMenu",
         "GiftingMenu",
         "PartnersMenu",
-        "AccountMenu"
+        "AccountMenu",
     ];
 }

@@ -9,7 +9,7 @@
     string calculateTitle = Model.Calculated ? "Reassign" : YearCalculationOption.Calculate.DisplayName();
     string calculateExplanation = Model.Calculated
         ? "If necessary you can recalculate the Secret Santa recipient for each participating member, or cancel the calculation and leave recalculation until later."
-            + "Both options would out all previous givers and receivers."
+            + "<br><br>Both options would out all previous givers and receivers."
         : "Calculate the Secret Santa recipient for each participating member";
 }
 
@@ -97,7 +97,7 @@
                                     &nbsp;
                                 </text>
                             }
-                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@calculateExplanation">
+                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@calculateExplanation">
                                 <i class="fa fa-circle-question fa-border"></i>
                             </div>
                         </div>

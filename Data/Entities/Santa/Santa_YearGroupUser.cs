@@ -1,13 +1,11 @@
-﻿
-using Data.Abstractions;
-
-namespace Data.Entities.Santa;
+﻿namespace Data.Entities.Santa;
 
 public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupUser_Audit, Santa_YearGroupUser_AuditChange>
 {
     public Santa_YearGroupUser()
     {
         Suggestions = new HashSet<Santa_Suggestion>();
+        AuditTrail = new HashSet<Santa_YearGroupUser_Audit>();
     }
 
     [Key]
@@ -25,7 +23,7 @@ public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupU
     public virtual Santa_User? GivingToUser { get; set; }
 
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
-    public virtual ICollection<Santa_YearGroupUser_Audit> AuditTrail { get; }
+    public virtual ICollection<Santa_YearGroupUser_Audit> AuditTrail { get; set; }
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
     {

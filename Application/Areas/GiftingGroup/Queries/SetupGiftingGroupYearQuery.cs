@@ -45,7 +45,7 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
 
             if (missingGroupMembers.Any())
             {
-                missingGroupMembers.ForEach(x => x.Included = true);
+                //missingGroupMembers.ForEach(x => x.Included = true);
                 giftingGroupYear.GroupMembers.AddRange(missingGroupMembers);
             }
         }
@@ -58,14 +58,7 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
             giftingGroupYear.GroupMembers = validGroupMembers
                 .Select(x => Mapper.Map(x, new YearGroupUserBase()))
                 .ToList();
-
-            giftingGroupYear.GroupMembers.ForEach(x => x.Included = true);
-        }
-
-        foreach (var member in giftingGroupYear.GroupMembers)
-        {
-            await Send(new UnHashUserIdentificationAction(member));
-        }
+        }        
 
         if (string.IsNullOrEmpty(giftingGroupYear.CurrencyCode))
         {
@@ -77,7 +70,10 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
             giftingGroupYear.CurrencySymbol = CultureInfoExtensions.GetDefultCurrencySymbol(dbGroup.CultureInfo);
         }
 
-        giftingGroupYear.GroupMembers = giftingGroupYear.GroupMembers.OrderBy(x => x.Forename).ThenBy(x => x.Surname).ToList();
+        giftingGroupYear.GroupMembers = giftingGroupYear.GroupMembers
+            .Select(x => x.UnHash())
+            .OrderBy(x => x.Forename).ThenBy(x => x.Surname)
+            .ToList();
 
         return giftingGroupYear;
     }

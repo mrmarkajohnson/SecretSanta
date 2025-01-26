@@ -25,7 +25,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser>
 
             if (_unHashResults)
             {
-                await Send(new UnHashUserIdentificationAction(santaUser));
+                santaUser.UnHash();
             }
 
             return santaUser;

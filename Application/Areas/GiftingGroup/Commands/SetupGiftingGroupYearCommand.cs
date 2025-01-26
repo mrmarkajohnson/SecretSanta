@@ -117,7 +117,7 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
         {
             var missingGroupMembers = dbGiftingGroupYear.ValidGroupMembers()
                 .Where(x => dbGroup.UserLinks.Any(y => y.SantaUserId == x.SantaUserId) == false
-                    || Item.GroupMembers.Any(y => y.SantaUserId == x.SantaUserId == false));
+                    || Item.GroupMembers.Any(y => y.SantaUserId == x.SantaUserId) == false);
 
             if (missingGroupMembers.Any())
             {

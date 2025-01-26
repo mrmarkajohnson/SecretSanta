@@ -1,6 +1,7 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Shared.Requests;
+﻿using Application.Shared.Requests;
+using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.GiftingGroup;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -13,22 +14,20 @@ public class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGroup>>
     protected override Task<IList<IUserGiftingGroup>> Handle()
     {
         Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
-
-        ICollection<Santa_GiftingGroupUser>? dbGroupLinks = dbCurrentUser?.SantaUser?.GiftingGroupLinks;
         IList<IUserGiftingGroup> userGroups = new List<IUserGiftingGroup>();
 
-        if (dbGroupLinks?.Any() == true)
+        if (dbCurrentUser?.SantaUser != null)
         {
-            userGroups = dbGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null)
-                .Select(x => new UserGiftingGroup
-                {
-                    GiftingGroupId = x.GiftingGroupId,
-                    GroupName = x.GiftingGroup.Name,
-                    GroupAdmin = x.GroupAdmin,
-                    NewApplications = x.GroupAdmin ? x.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseByUserId == null).Count() : 0,
-                })
-                .ToList<IUserGiftingGroup>();
+            ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks;            
+
+            if (dbGroupLinks?.Any() == true)
+            {
+                userGroups = dbGroupLinks
+                    .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null)
+                    .AsQueryable()
+                    .ProjectTo<IUserGiftingGroup>(Mapper.ConfigurationProvider)
+                    .ToList();
+            }
         }
 
         return Task.FromResult(userGroups);

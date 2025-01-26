@@ -12,7 +12,7 @@ internal interface IAuditableEntity<TAuditEntity, TChangeEntity> : IAuditableEnt
     where TAuditEntity : class, IAuditEntity<TChangeEntity>, new()
     where TChangeEntity : class, IAuditChangeEntity, new()
 {
-    ICollection<TAuditEntity> AuditTrail { get; }
+    ICollection<TAuditEntity> AuditTrail { get; set; }
 }
 
 internal static class AuditableEntityExtensions
@@ -42,6 +42,7 @@ internal static class AuditableEntityExtensions
 
         auditEntity.Changes = changesList.ToList();
 
+        parent.AuditTrail ??= new HashSet<TAuditEntity>(); // just in case
         parent.AuditTrail.Add(auditEntity);
     }
 }

@@ -14,7 +14,7 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
         _applicationId = applicationId;
     }
 
-    protected async override Task<IReviewApplication> Handle()
+    protected override Task<IReviewApplication> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
@@ -43,9 +43,8 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             throw new NotFoundException("Application");
         }
 
-        var application = Mapper.Map<IReviewApplication>(dbApplication);
-        await Send(new UnHashUserIdentificationAction(application));
+        var application = Mapper.Map<IReviewApplication>(dbApplication).UnHash();
 
-        return application;
+        return Task.FromResult(application);
     }
 }

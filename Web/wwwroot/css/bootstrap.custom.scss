@@ -180,16 +180,16 @@ a:hover {
     font-weight: 500;
 }
 
-.modal-header {
+.modal.santa-modal .modal-header {
     background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
     color: $white;
 }
 
-.modal-header modal-title.h4 {
+.modal.santa-modal .modal-header modal-title.h4 {
     color: $white;
 }
 
-.modal-footer {
+.modal.santa-modal .modal-footer {
     background: linear-gradient(180deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
     padding: 6px;
 }

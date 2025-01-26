@@ -2,10 +2,12 @@
 using Application.Areas.Messages.Queries;
 using Global.Abstractions.Global.Messages;
 using Global.Extensions.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.Messages.Controllers;
 
 [Area("Messages")]
+[Authorize]
 public class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)

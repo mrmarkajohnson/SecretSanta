@@ -7,7 +7,7 @@ namespace Application.Areas.Partners.Queries;
 
 public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
-    protected async override Task<IQueryable<IVisibleUser>> Handle()
+    protected override Task<IQueryable<IVisibleUser>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
@@ -34,11 +34,8 @@ public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
             .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, new { GroupNames = groupNames })
             .ToList();
 
-        foreach (var user in visibleUsers)
-        {
-            await Send(new UnHashUserIdentificationAction(user));
-        }
+        visibleUsers.ForEach(x => x.UnHash());
 
-        return visibleUsers.AsQueryable();
+        return Task.FromResult(visibleUsers.AsQueryable());
     }
 }

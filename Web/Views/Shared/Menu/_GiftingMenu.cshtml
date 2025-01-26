@@ -6,6 +6,8 @@
 
 @if (SignInManager.IsSignedIn(User))
 {    
+    var giftingGroups = Model?.HomeModel?.GiftingGroups;
+
     <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="giftingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <span class="fa-solid fa-gift">&nbsp;</span>Gifts
     </a>
@@ -20,10 +22,15 @@
                 Apply to Join a Group
             </a>
         </li>
+        <li>
+            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                Participate for @DateTime.Today.Year
+            </a>
+        </li>
 
-        @if (Model?.HomeModel?.GiftingGroups?.Any() == true)
+        @if (giftingGroups?.Any() == true)
         {
-            @if (Model.HomeModel.NewJoinerApplications > 0)
+            @if (Model?.HomeModel.NewJoinerApplications > 0)
             {
                 <li>
                     <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
@@ -32,7 +39,7 @@
                 </li>
             }
 
-            @foreach (var giftingGroup in Model.HomeModel.GiftingGroups.Where(x => x.GroupAdmin).ToList())
+            @foreach (var giftingGroup in giftingGroups.Where(x => x.GroupAdmin).ToList())
             {
                 <li><hr class="dropdown-divider"></li>
 
@@ -44,6 +51,29 @@
                 <li>
                     <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
                         Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                        View '@giftingGroup.GroupName' for @DateTime.Today.Year
+                    </a>
+                </li>
+            }
+
+            int position = 0;
+
+            @foreach (var giftingGroup in giftingGroups.Where(x => !x.GroupAdmin).ToList())
+            {
+                position++;
+
+                if (position == 1 && giftingGroups.Any(x => x.GroupAdmin))
+                {
+                    <li><hr class="dropdown-divider"></li>
+                }
+
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                        View '@giftingGroup.GroupName' for @DateTime.Today.Year
                     </a>
                 </li>
             }

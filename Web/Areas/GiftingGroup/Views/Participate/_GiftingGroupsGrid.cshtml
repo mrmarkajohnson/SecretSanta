@@ -1,0 +1,57 @@
+﻿@using Global.Abstractions.Areas.GiftingGroup
+@using NonFactors.Mvc.Grid
+@using ViewLayer.Models.Home
+
+@model IQueryable<IUserGiftingGroupYear>
+@{
+    Func<IUserGiftingGroupYear, object> actions =
+    @<text>
+        <a asp-action="Year" asp-controller="Participate" asp-area="GiftingGroup" data-toggle="tooltip" title="View details and participate"
+           asp-route-groupId="@item.GiftingGroupId">
+            <i class="fa fa-eye"></i>
+        </a>
+
+        @if (item.GroupAdmin)
+        {
+        <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-groupId="@item.GiftingGroupId"
+                data-toggle="tooltip" title="Set Up Group '@item.GroupName' for @DateTime.Today.Year">
+                    <i class="fa fa-pencil"></i>
+            </a>
+        }
+    </text>;
+
+    Func<IUserGiftingGroupYear, object> recipientName =
+    @<text>        
+        @if (item.Included && item.Recipient != null)
+        {
+            <a href="#" data-name="@item.Recipient?.UserDisplayName" data-user-name="@item.Recipient?.UserName"
+                data-toggle="tooltip" title="Show who you are giving to" onclick="showRecipient(this)">
+                Show
+            </a>
+        }
+        else
+        {
+            <text>Not yet selected</text>
+        }
+    </text>;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(x => x.GroupName).Titled("Group Name");
+        columns.Add(x => x.GroupAdmin).Titled("Administrator");
+        columns.Add(x => x.Included).Titled($"Participating in {DateTime.Today.Year}");
+        columns.Add().RenderedAs(recipientName).Titled("Recipient");
+        columns.Add().RenderedAs(actions).Encoded(false);
+    })
+    @* .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    }) *@
+    .Empty("No active applications found")
+    .Filterable()
+    .Sortable()
+)

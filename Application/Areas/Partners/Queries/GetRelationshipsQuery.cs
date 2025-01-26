@@ -9,7 +9,7 @@ namespace Application.Areas.Partners.Queries;
 
 public class GetRelationshipsQuery : BaseQuery<IRelationships>
 {
-    protected async override Task<IRelationships> Handle()
+    protected override Task<IRelationships> Handle()
     {
         Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser,
             g => g.SantaUser.SuggestedRelationships, g => g.SantaUser.ConfirmingRelationships);
@@ -36,9 +36,9 @@ public class GetRelationshipsQuery : BaseQuery<IRelationships>
 
         foreach (var relationship in relationships.PossibleRelationships)
         {
-            await Send(new UnHashUserIdentificationAction(relationship.Partner));
+            relationship.Partner.UnHash();
         }
 
-        return relationships;
+        return Task.FromResult(relationships);
     }
 }

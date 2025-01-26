@@ -48,7 +48,7 @@ else
                             <label asp-for="Greeting" class="control-label required"></label>
                             <label class="fw-normal greeting-text">@Model.Greeting</label>
                             <a href="#" class="btn btn-sm btn-primary change-greeting" onClick="changeGreeting()"><i class="fa fa-dice"></i> &nbsp; <span class="btn-text">Change</span></a>
-                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-container="label" title="@greetingExplanation">
+                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@greetingExplanation">
                                 <i class="fa fa-circle-question fa-border"></i>
                             </div>
                         </label>

@@ -1,0 +1,57 @@
+﻿@using ViewLayer.Models.Home
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@model MainMenuVm
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var giftingGroups = Model?.HomeModel?.GiftingGroups;
+
+    @if (giftingGroups?.Any() == true)
+    {
+        int position = 0;
+
+        <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="giftingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="fa-solid fa-gift">&nbsp;</span>@DateTime.Today.Year
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="giftingDropdown">
+
+            @if (giftingGroups.Count > 1)
+            {
+                <li>
+                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                        Participate for @DateTime.Today.Year
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+            }
+
+            @foreach (var giftingGroup in giftingGroups.ToList())
+            {
+                position++;
+
+                if (position > 1 && giftingGroups.Any(x => x.GroupAdmin))
+                {
+                    <li><hr class="dropdown-divider"></li>
+                }
+                
+                @if (giftingGroup.GroupAdmin)
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                            Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </li>
+                }
+            }
+    </ul>
+
+    }
+}
