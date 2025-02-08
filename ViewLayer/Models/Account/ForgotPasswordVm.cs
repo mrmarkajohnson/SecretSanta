@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Global.Abstractions.Areas.Account;
+using Global.Settings;
 using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
@@ -42,8 +43,10 @@ public class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>
 {
     public ForgotPasswordVmValidator()
     {
-        RuleFor(x => x.EmailOrUserName).NotNull().NotEmpty().When(x => x.ShowBasicDetails);
-        RuleFor(x => x.Forename).NotNull().NotEmpty().When(x => x.ShowBasicDetails);
+        RuleFor(x => x.EmailOrUserName).NotNullOrEmpty().When(x => x.ShowBasicDetails);
+        RuleFor(x => x.Forename).NotNullOrEmpty().When(x => x.ShowBasicDetails);
+        
+        RuleFor(x => x.Greeting).IsInDropDownList(x => Greetings.Messages, false).When(x => x.ShowBasicDetails);
 
         RuleFor(x => x.SecurityAnswer1).NotNull().NotEmpty().When(x => x.ShowSecurityQuestions);
         RuleFor(x => x.SecurityAnswer2).NotNull().NotEmpty().When(x => x.ShowSecurityQuestions);

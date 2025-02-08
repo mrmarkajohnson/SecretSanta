@@ -128,6 +128,8 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             return await Result();
 
         dbGiftingGroupYear.Limit = Item.Limit;
+        dbGiftingGroupYear.CurrencyCode = Item.CurrencyCode ?? dbGroup.GetCurrencyCode();
+        dbGiftingGroupYear.CurrencySymbol = Item.CurrencySymbol ?? dbGroup.GetCurrencySymbol();
 
         return await SaveAndReturnSuccess();
     }

@@ -30,7 +30,7 @@ public class ManageController : BaseController
             JoinerToken = await Send(new GetUniqueJoinerTokenQuery())
         };
 
-        return EditGiftingGroup(model);
+        return ShowEditGiftingGroup(model);
     }
 
     [HttpGet]
@@ -48,20 +48,20 @@ public class ManageController : BaseController
             Mapper.Map(groupDetails, model);
         }
 
-        return EditGiftingGroup(model);
+        return ShowEditGiftingGroup(model);
     }
 
-    private IActionResult EditGiftingGroup(EditGiftingGroupVm model)
+    private IActionResult ShowEditGiftingGroup(EditGiftingGroupVm model)
     {
         return View("EditGiftingGroup", model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveGiftingGroup(EditGiftingGroupVm model)
+    public async Task<IActionResult> EditGiftingGroup(EditGiftingGroupVm model)
     {
         ModelState.Clear();
 
-        string saved = model.Id > 0 ? "Created" : "Updated";
+        string saved = model.Id > 0 ? "Updated" : "Created";
 
         var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
         
@@ -70,8 +70,8 @@ public class ManageController : BaseController
             return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
         }
 
-        model.SubmitButtonText = model.Id > 0 ? "Create" : "Save Changes";
-        return EditGiftingGroup(model);
+        model.SubmitButtonText = model.Id > 0 ? "Save Changes" : "Create" ;
+        return ShowEditGiftingGroup(model);
     }
 
     [HttpGet]
