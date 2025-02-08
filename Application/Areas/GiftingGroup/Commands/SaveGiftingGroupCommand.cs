@@ -58,7 +58,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         if (dbGiftingGroup == null)
         {
-            throw new NotFoundException("Gifting Group");
+            throw new NotFoundException($"Gifting Group '{Item.Name}'");
         }
 
         if (Item.Name != dbGiftingGroup.Name)

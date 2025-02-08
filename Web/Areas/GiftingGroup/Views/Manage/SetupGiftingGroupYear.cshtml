@@ -5,7 +5,7 @@
 @model SetupGiftingGroupYearVm
 @{
     ViewData["Title"] = $"Year Setup";
-    string limitExplanation = $"Set the limit for members to spend on each other this year, in {Model.CurrencyCode}";
+    string limitExplanation = $"Set the suggested limit for members to spend on each other this year, in {Model.CurrencyCode}";
     string calculateTitle = Model.Calculated ? "Reassign" : YearCalculationOption.Calculate.DisplayName();
     string calculateExplanation = Model.Calculated
         ? "If necessary you can recalculate the Secret Santa recipient for each participating member, or cancel the calculation and leave recalculation until later."

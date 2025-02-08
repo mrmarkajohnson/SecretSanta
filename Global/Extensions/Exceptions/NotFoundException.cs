@@ -2,9 +2,9 @@
 
 public class NotFoundException : Exception
 {
-	public NotFoundException(string itemType)
+	public NotFoundException(string itemDescription)
 	{
-		Message = $"{itemType} not found";
+		Message = $"{itemDescription} was not found";
 	}
 
 	public override string Message { get; }

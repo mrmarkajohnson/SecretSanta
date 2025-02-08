@@ -1,7 +1,6 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Queries.Internal;
 using Application.Areas.Messages.BaseModels;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using static Global.Settings.GiftingGroupSettings;
@@ -9,7 +8,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TItem : IGiftingGroupYear
+public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IGiftingGroupYear
 {
     private Global_User? _dbCurrentUser;
 
@@ -27,7 +26,7 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
     {
         if (Item.GiftingGroupId == 0)
         {
-            throw new NotFoundException("Gifting Group");
+            throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
         }
 
         if (Item.Year == 0)
@@ -51,46 +50,12 @@ public class SetupGiftingGroupYearCommand<TItem> : BaseCommand<TItem> where TIte
 
         if (dbGiftingGroupYear == null)
         {
-            dbGiftingGroupYear = new Santa_GiftingGroupYear
-            {
-                GiftingGroup = dbGroup,
-                Year = Item.Year
-            };
-
-            dbGroup.Years.Add(dbGiftingGroupYear);
-            DbContext.ChangeTracker.DetectChanges();
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGroup);
         }
 
         foreach (IYearGroupUserBase member in Item.GroupMembers)
         {
-            Santa_YearGroupUser? dbYearUser = dbGiftingGroupYear.Users.FirstOrDefault(x => x.SantaUserId == member.SantaUserId);
-
-            if (dbYearUser == null)
-            {
-                var dbSantaUser = DbContext.Santa_Users.FirstOrDefault(x => x.Id == member.SantaUserId);
-
-                if (dbSantaUser == null)
-                {
-                    AddGeneralValidationError($"User {member.UserDisplayName} could not be found.");
-                }
-                else
-                {
-                    dbYearUser = new Santa_YearGroupUser
-                    {
-                        YearId = dbGiftingGroupYear.Id,
-                        Year = dbGiftingGroupYear,
-                        SantaUserId = member.SantaUserId,
-                        SantaUser = dbSantaUser,
-                        Included = member.Included
-                    };
-
-                    dbGiftingGroupYear.Users.Add(dbYearUser);
-                }
-            }
-            else
-            {
-                dbYearUser.Included = member.Included; // must be set before the next stage
-            }
+            AddOrUpdateUserGroupYear(dbGiftingGroupYear, member.Included, member.SantaUserId, member.UserDisplayName); // must be done before the next stage
         }
 
         if (!Validation.IsValid)

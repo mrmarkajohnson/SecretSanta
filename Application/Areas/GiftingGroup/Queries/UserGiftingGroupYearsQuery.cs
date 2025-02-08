@@ -1,9 +1,7 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Areas.GiftingGroup.Mapping;
+﻿using Application.Areas.GiftingGroup.Mapping;
 using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.GiftingGroup;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -14,18 +12,15 @@ public class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupY
         Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
         IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
 
-        if (dbSantaUser != null)
+        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbSantaUser.GiftingGroupLinks;
+
+        if (dbGroupLinks?.Any() == true)
         {
-            ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbSantaUser.GiftingGroupLinks;
+            var dbActiveLinks = dbGroupLinks
+                .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
 
-            if (dbGroupLinks?.Any() == true)
-            {
-                var dbActiveLinks = dbGroupLinks
-                    .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
-
-                userGroups = GetYearsWithMemberSet(dbSantaUser, dbActiveLinks)
-                    .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks));
-            }
+            userGroups = GetYearsWithMemberSet(dbSantaUser, dbActiveLinks)
+                .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks));
         }
 
         return Task.FromResult(userGroups);

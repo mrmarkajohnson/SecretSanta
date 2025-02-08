@@ -51,9 +51,7 @@
                                 &nbsp;
                                 <input class="form-check-input" asp-for="RememberMe" />
                                 &nbsp;
-                                <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@rememberMeExplanation">
-                                    <i class="fa fa-circle-question fa-border"></i>
-                                </div>
+                                <partial name="_InlineQuestion" model="@rememberMeExplanation" />
                             </label>
                         </div>
                     </div>

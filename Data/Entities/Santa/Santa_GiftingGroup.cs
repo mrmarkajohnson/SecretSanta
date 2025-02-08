@@ -1,7 +1,11 @@
 ﻿using Data.Attributes;
 using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.System;
 using Global.Names;
+using Global.Settings;
 using Global.Validation;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Data.Entities.Santa;
 
@@ -43,6 +47,10 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
     public virtual ICollection<Santa_GiftingGroupApplication> MemberApplications { get; set; }
     public virtual ICollection<Santa_GiftingGroup_Audit> AuditTrail { get; set; }
+
+    public CultureInfo? GetCultureInfo() => GlobalSettings.AvailableCultures.FirstOrDefault(x => x.Name == CultureInfo);
+    public string GetCurrencyCode() => CurrencyCodeOverride ?? GetCultureInfo()?.CultureLocation()?.CurrencyString ?? "GBP";
+    public string GetCurrencySymbol() => CurrencySymbolOverride ?? GetCultureInfo()?.CultureLocation()?.CurrencySymbol ?? "£";
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
     {

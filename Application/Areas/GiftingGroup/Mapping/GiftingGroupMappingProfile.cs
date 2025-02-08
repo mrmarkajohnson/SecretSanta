@@ -14,7 +14,7 @@ public class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroupYear>()
             .ForMember(dest => dest.GiftingGroupId, opt => opt.MapFrom(src => src.GiftingGroupId))
-            .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
+            .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.Included, opt => opt.Ignore())
             .ForMember(dest => dest.Recipient, opt => opt.Ignore());
@@ -53,6 +53,9 @@ public class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()
             .IncludeMembers(src => src.GiftingGroup)
+            .ForMember(src => src.Limit, opt => opt.MapFrom(dest => dest.Limit))
+            .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCode))
+            .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbol))
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users))
             .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)))
             .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)

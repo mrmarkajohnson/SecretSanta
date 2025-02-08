@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+
+@model UserGiftingGroupYearVm
+@{
+    ViewData["Title"] = $"'{Model.GiftingGroupName}' for {Model.Year}";
+    string includedExplanation = "Will you join in this year?";
+    string limitExplanation = $"The suggested limit for members to spend on each other this year, in {Model.CurrencyCode}";
+    string recipientExplanation = "The person who you will be giving to this year";
+}
+
+<h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year"</h1>
+
+<section>
+    <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" method="post">
+
+        <partial name="_FormHiddenInputs" />
+
+        <div class="row d-flex align-items-center justify-content-center text-center">
+
+            <div class="collapse">
+                <input type="hidden" asp-for="GiftingGroupId">
+                <input type="hidden" asp-for="GiftingGroupName">
+                <input type="hidden" asp-for="Limit">
+                <input type="hidden" asp-for="CurrencyCode">
+                <input type="hidden" asp-for="CurrencySymbol">
+                <input type="hidden" asp-for="Year">
+            </div>
+
+            <div class="mb-5 mt-2">
+                <p>
+                    A gifting group is a group of people who exchange 'Secret Santa' gifts at Christmas.
+                </p>
+                <p>
+                    Here you can choose whether participate in the group this year, and view the group limit and who you are giving to etc.
+                </p>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <br />
+
+                <div class="col-md-12">
+                    <div class="@StandardFormGroup">
+                        <label asp-for="Included" class="control-label"></label>
+                        <div data-url="@Url.Action("ParticipateInYear")" class="control-label fw-normal">
+                            <span class="text-secondary">No</span> 
+                            <input type="radio" asp-for="Included" value="@false" class="included-radio" />
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <span class="text-primary">Yes</span> 
+                            <input type="radio" asp-for="Included" value="@true" class="included-radio" />
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <partial name="_InlineQuestion" model="@includedExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="Included" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="@StandardFormGroup">
+                        <label asp-for="Limit" class="control-label"></label>
+                        <div class="control-label fw-normal">
+                            <text>@Model.LimitString</text>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <partial name="_InlineQuestion" model="@limitExplanation" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="@StandardFormGroup">
+                        <label asp-for="Recipient" class="control-label"></label>
+                        <div class="control-label fw-normal">
+                            <text>@Model.RecipientString</text>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <partial name="_InlineQuestion" model="@recipientExplanation" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @if (Model.GroupAdmin)
+        {
+            <div class="row d-flex align-items-center justify-content-center text-center">
+
+                <div class="@StandardGroupWidth d-flex flex-wrap justify-content-between text-center">
+                    <div>
+                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@Model.GiftingGroupId"
+                           asp-route-returnUrl="@Context.Request.GetEncodedUrl()">
+                            Set Up Group '@Model.GiftingGroupName' for @Model.Year
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+
+    </form>
+</section>

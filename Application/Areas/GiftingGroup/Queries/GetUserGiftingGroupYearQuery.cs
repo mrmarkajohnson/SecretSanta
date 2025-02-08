@@ -1,0 +1,49 @@
+﻿using Application.Areas.GiftingGroup.BaseModels;
+using Application.Shared.Requests;
+using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
+using Global.Settings;
+
+namespace Application.Areas.GiftingGroup.Queries;
+
+public class GetUserGiftingGroupYearQuery : BaseQuery<IUserGiftingGroupYear>
+{
+    public int GroupId { get; }
+
+    public GetUserGiftingGroupYearQuery(int groupId)
+    {
+        GroupId = groupId;
+    }
+
+    protected async override Task<IUserGiftingGroupYear> Handle()
+    {
+        var dbGiftingGroupYears = await Send(new UserGiftingGroupYearsQuery());
+        var dbGiftingGroupYear = dbGiftingGroupYears.FirstOrDefault(x => x.GiftingGroupId == GroupId);
+
+        if (dbGiftingGroupYear == null) // not created yet
+        {
+            Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupLinks.Select(x => x.GiftingGroup.Years));
+
+            var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
+                    .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupId == GroupId && x.GiftingGroup.DateDeleted == null);
+
+            if (dbGiftingGroupLink == null)
+                throw new NotFoundException("Gifting Group");
+
+            Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
+            System.Globalization.CultureInfo? groupCultureInfo = GlobalSettings.AvailableCultures.FirstOrDefault(x => x.Name == dbGroup.CultureInfo);
+
+            dbGiftingGroupYear = new UserGiftingGroupYear
+            {
+                GiftingGroupId = dbGiftingGroupLink.GiftingGroupId,
+                GiftingGroupName = dbGroup.Name,
+                CurrencyCode = dbGroup.GetCurrencyCode(),
+                CurrencySymbol = dbGroup.GetCurrencySymbol(),
+                Year = DateTime.Today.Year,
+                GroupAdmin = dbGiftingGroupLink.GroupAdmin
+            };
+        }
+
+        return dbGiftingGroupYear;
+    }
+}

@@ -22,6 +22,9 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     [Precision(10, 2)]
     public decimal? Limit { get; set; }
 
+    public string CurrencyCode { get; set; }
+    public string CurrencySymbol { get; set; }
+
     public int GiftingGroupId { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 

@@ -36,8 +36,16 @@
                             @user.UserDisplayName</td>
                         <td>@user.UserName</td>
                         <td>
-                            <span class="text-secondary">No</span> <input type="radio" asp-for="GroupMembers[i].Included" value="@false" />
-                            <span class="text-primary">Yes</span> <input type="radio" asp-for="GroupMembers[i].Included" value="@true" />
+                            <span class="text-secondary">No</span> 
+                            <input type="radio" asp-for="GroupMembers[i].Included" value="@false" />
+
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <span class="text-primary">Yes</span> 
+                            <input type="radio" asp-for="GroupMembers[i].Included" value="@true" />
                         </td>
                     </tr>
                 }
