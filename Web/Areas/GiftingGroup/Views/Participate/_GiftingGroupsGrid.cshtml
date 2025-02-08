@@ -24,7 +24,7 @@
     @<text>        
         @if (item.Included && item.Recipient != null)
         {
-            <a href="#" data-name="@item.Recipient?.UserDisplayName" data-user-name="@item.Recipient?.UserName"
+            <a href="#" data-name="@item.Recipient?.UserDisplayName" data-user-name="@item.RecipientString"
                 data-toggle="tooltip" title="Show who you are giving to" onclick="showRecipient(this)">
                 Show
             </a>
@@ -43,6 +43,7 @@
         columns.Add(x => x.GiftingGroupName).Titled("Group Name");
         columns.Add(x => x.GroupAdmin).Titled("Administrator");
         columns.Add(x => x.Included).Titled($"Participating in {DateTime.Today.Year}");
+        columns.Add(x => x.Limit).RenderedAs(x => x.LimitString).Titled("Spending Limit");
         columns.Add().RenderedAs(recipientName).Titled("Recipient");
         columns.Add().RenderedAs(actions).Encoded(false);
     })

@@ -21,6 +21,7 @@ internal static class GiftingGroupManualMappings
             Recipient = dbYearGroupUser.GivingToUserId > 0 
                 ?  (mapper.Map<IUserNamesBase>(dbYearGroupUser.GivingToUser).UnHash()) 
                 : null,
+            Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),
             CurrencySymbol = dbGiftingGroupYear.CurrencySymbol ?? dbGiftingGroupYear.GiftingGroup.GetCurrencySymbol(),
             Year = dbGiftingGroupYear.Year

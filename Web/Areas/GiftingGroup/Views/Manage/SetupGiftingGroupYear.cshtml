@@ -31,7 +31,7 @@
                 <input type="hidden" asp-for="Year">
             </div>
 
-            <div class="mb-5 mt-2">
+            <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <p>
                     Set the spending limit and participating members for the '@Model.GiftingGroupName' group in @Model.Year.
                     Once everything is ready, you can trigger to match givers and receivers at random.
@@ -44,65 +44,65 @@
                 }
                 <br />
 
-                <div class="col-md-12">
-                    <div class="@StandardFormGroup">
-                        <label asp-for="Limit" class="control-label"></label>
-                        <div class="input-group input-info">
-                            <div class="input-group-text">@Model.CurrencySymbol</div>
-                            <input asp-for="Limit" class="form-control" />
-                            <partial name="_InputQuestion" model="@limitExplanation" />
-                        </div><div>
-                            <span asp-validation-for="Limit" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="@StandardFormGroup">
-                        <label asp-for="Calculate" class="control-label"></label>
-                        <div class="control-label fw-normal">
-                            @if (Model.Calculated)
-                            {
-                                <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.Calculate" />
-                                <text>
-                                    &nbsp; @YearCalculationOption.Calculate.DisplayName()
-
-                                    &nbsp;
-                                    &nbsp;
-                                </text>
-                                <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.Cancel" />
-                                <text>
-                                    &nbsp; @YearCalculationOption.Cancel.DisplayName()
-
-                                    &nbsp;
-                                    &nbsp;
-                                </text>
-                                <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.None" />
-                                <text>
-                                    &nbsp; @YearCalculationOption.None.DisplayName() @* TODO: Only show this once one of the others is selected *@
-
-                                    &nbsp;
-                                    &nbsp;
-                                </text>
-                            }
-                            else
-                            {
-                                <input type="checkbox" asp-for="Calculate" class="form-check-input" autocomplete="off" aria-required="false" />
-                                <text>
-                                    &nbsp; Yes
-
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                </text>
-                            }
-                            <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@calculateExplanation">
-                                <i class="fa fa-circle-question fa-border"></i>
+                <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
+                    <div>
+                        <div class="mb-3">
+                            <label asp-for="Limit" class="control-label"></label>
+                            <div class="input-group input-info">
+                                <div class="input-group-text">@Model.CurrencySymbol</div>
+                                <input asp-for="Limit" class="form-control" />
+                                <partial name="_InputQuestion" model="@limitExplanation" />
+                            </div><div>
+                                <span asp-validation-for="Limit" class="text-danger"></span>
                             </div>
                         </div>
-                        <div>
-                            <span asp-validation-for="CalculationOption" class="text-danger"></span>
+
+                        <div class="mb-3">
+                            <label asp-for="Calculate" class="control-label"></label>
+                            <div class="control-label fw-normal">
+                                @if (Model.Calculated)
+                                {
+                                    <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.Calculate" />
+                                    <text>
+                                        &nbsp; @YearCalculationOption.Calculate.DisplayName()
+
+                                        &nbsp;
+                                        &nbsp;
+                                    </text>
+                                    <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.Cancel" />
+                                    <text>
+                                        &nbsp; @YearCalculationOption.Cancel.DisplayName()
+
+                                        &nbsp;
+                                        &nbsp;
+                                    </text>
+                                    <input type="radio" asp-for="CalculationOption" class="form-check-input" autocomplete="off" aria-required="false" value="@YearCalculationOption.None" />
+                                    <text>
+                                        &nbsp; @YearCalculationOption.None.DisplayName() @* TODO: Only show this once one of the others is selected *@
+
+                                        &nbsp;
+                                        &nbsp;
+                                    </text>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" asp-for="Calculate" class="form-check-input" autocomplete="off" aria-required="false" />
+                                    <text>
+                                        &nbsp; Yes
+
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                    </text>
+                                }
+                                <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@calculateExplanation">
+                                    <i class="fa fa-circle-question fa-border"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <span asp-validation-for="CalculationOption" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
 
             <br />
 
-            <div class="mb-5 mt-2">
+            <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <h2>Participating group members</h2>
                 <p>
                     Here you can control which group members will participate this year.

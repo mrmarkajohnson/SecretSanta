@@ -17,7 +17,16 @@ public class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.Included, opt => opt.Ignore())
-            .ForMember(dest => dest.Recipient, opt => opt.Ignore());
+            .ForMember(dest => dest.Recipient, opt => opt.Ignore())
+            .ForMember(dest => dest.Year, opt => opt.MapFrom(src => DateTime.Today.Year))
+            .ForMember(dest => dest.Limit, opt => opt.MapFrom(src => src.GiftingGroup.Years
+                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.Limit).FirstOrDefault()))
+            .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.GiftingGroup.Years
+                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.CurrencyCode).FirstOrDefault()
+                    ?? src.GiftingGroup.CurrencyCodeOverride))
+            .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.GiftingGroup.Years
+                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.CurrencySymbol).FirstOrDefault()
+                    ?? src.GiftingGroup.CurrencySymbolOverride));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroup>()

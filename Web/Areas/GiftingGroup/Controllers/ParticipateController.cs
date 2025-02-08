@@ -1,7 +1,7 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.GiftingGroup;
+using ViewLayer.Models.Participate;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 

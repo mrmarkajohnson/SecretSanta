@@ -4,7 +4,8 @@ window.addEventListener('load', function () {
 
 function initLinkUserNameAndEmail() {
     let emailInput = document.querySelector('input.email-input');
-    let userNameInput = document.querySelector('input.username-input');
+    let userNameContainer = document.querySelector('div.username-container');
+    let userNameInput = userNameContainer.querySelector('input.username-input');
     let useEmailCheckboxContainer = document.querySelector('div.use-email-checkbox-container');
     let useEmailCheckbox = useEmailCheckboxContainer.querySelector('input.use-email-checkbox');
     let useEmail = false;
@@ -19,21 +20,33 @@ function initLinkUserNameAndEmail() {
         let email = emailInput.value;
         if (notEmptyValue(email) && userName == email) {
             useEmail = true;
-            useEmailCheckboxContainer.style.display = 'block';
+            toggleUseEmailContainer(true);
             useEmailCheckbox.checked = true;
             userNameInput.addEventListener('change', userNameChanged);
+        }
+    }
+
+    function toggleUseEmailContainer(show) {
+        if (show) {
+            useEmailCheckboxContainer.setAttribute('style', 'display:block !important');
+            userNameContainer.classList.remove('col-sm-12');
+            userNameContainer.classList.add('col-sm-9', 'col-8');
+        } else {
+            useEmailCheckboxContainer.setAttribute('style', 'display:none !important');
+            userNameContainer.classList.add('col-sm-12');
+            userNameContainer.classList.remove('col-sm-9', 'col-8');
         }
     }
 
     function emailChanged() {
         let email = emailInput.value;
         if (notEmptyValue(email)) {
-            useEmailCheckboxContainer.style.display = 'block';
+            toggleUseEmailContainer(true);
             if (useEmail) {
                 updateUserNameFromEmail();
             }
         } else {
-            useEmailCheckboxContainer.style.display = 'none';
+            toggleUseEmailContainer(false);
         }
     }
 

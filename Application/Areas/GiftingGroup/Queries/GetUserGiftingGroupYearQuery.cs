@@ -17,10 +17,10 @@ public class GetUserGiftingGroupYearQuery : BaseQuery<IUserGiftingGroupYear>
 
     protected async override Task<IUserGiftingGroupYear> Handle()
     {
-        var dbGiftingGroupYears = await Send(new UserGiftingGroupYearsQuery());
-        var dbGiftingGroupYear = dbGiftingGroupYears.FirstOrDefault(x => x.GiftingGroupId == GroupId);
+        IQueryable<IUserGiftingGroupYear> GiftingGroupYears = await Send(new UserGiftingGroupYearsQuery());
+        IUserGiftingGroupYear? GiftingGroupYear = GiftingGroupYears.FirstOrDefault(x => x.GiftingGroupId == GroupId);
 
-        if (dbGiftingGroupYear == null) // not created yet
+        if (GiftingGroupYear == null) // not created yet
         {
             Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupLinks.Select(x => x.GiftingGroup.Years));
 
@@ -33,7 +33,7 @@ public class GetUserGiftingGroupYearQuery : BaseQuery<IUserGiftingGroupYear>
             Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
             System.Globalization.CultureInfo? groupCultureInfo = GlobalSettings.AvailableCultures.FirstOrDefault(x => x.Name == dbGroup.CultureInfo);
 
-            dbGiftingGroupYear = new UserGiftingGroupYear
+            GiftingGroupYear = new UserGiftingGroupYear
             {
                 GiftingGroupId = dbGiftingGroupLink.GiftingGroupId,
                 GiftingGroupName = dbGroup.Name,
@@ -44,6 +44,6 @@ public class GetUserGiftingGroupYearQuery : BaseQuery<IUserGiftingGroupYear>
             };
         }
 
-        return dbGiftingGroupYear;
+        return GiftingGroupYear;
     }
 }

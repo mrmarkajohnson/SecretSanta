@@ -8,4 +8,7 @@ public interface IUserGiftingGroupYear : IGiftingGroupYearBase
     bool GroupAdmin { get; }
     bool Included { get; set; }
     IUserNamesBase? Recipient { get; set; }
+
+    string LimitString { get; }
+    string RecipientString { get; }
 }

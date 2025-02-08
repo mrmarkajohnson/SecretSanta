@@ -67,7 +67,7 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
 
             if (participatingMembers.Any(x => x.GivingToUserId != null))
             {
-                if (participatingMembers.Any(x => x.GivingToUserId != null))
+                if (participatingMembers.Any(x => x.GivingToUserId == null))
                     AddGeneralValidationError("Some participating group members have already been assigned a recipient," +
                         " but others haven't. Please recalculate or cancel recipients.");
                 else if (dbGiftingGroupYear.Users.Any(x => !x.Included == true && x.GivingToUserId != null))

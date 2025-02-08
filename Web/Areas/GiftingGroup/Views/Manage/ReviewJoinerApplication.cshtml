@@ -30,7 +30,7 @@
                 <input type="hidden" asp-for="CurrentYearCalculated" />
             </div>
 
-            <div class="mb-5 mt-2">
+            <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <p>
                     @Model.ApplicantName has asked to join group '@Model.GroupName'. Can they join?
                 </p>
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="accepted-section collapse">
-                    <div class="@StandardFormGroup">
+                    <div class="mb-3">
                         <br />
 
                         @if (Model.CurrentYearCalculated)
@@ -112,7 +112,7 @@
 
                 <div class="rejected-section collapse">
                     <div class="col-md-12">
-                        <div class="@StandardFormGroup">
+                        <div class="mb-3">
                             <label asp-for="RejectionMessage" class="control-label"></label>
                             <div class="input-group input-info">
                                 <textarea asp-for="RejectionMessage" class="form-control"></textarea>
@@ -124,7 +124,7 @@
                     @if (Model.PreviousRequestCount > 2)
                     {
                         <div class="col-md-12">
-                            <div class="@StandardFormGroup">
+                            <div class="mb-3">
                                 <label asp-for="Blocked" class="control-label"></label>
                                 <div class="control-label fw-normal">
                                     <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes

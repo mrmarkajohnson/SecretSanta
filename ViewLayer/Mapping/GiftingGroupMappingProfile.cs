@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
 using ViewLayer.Models.GiftingGroup;
+using ViewLayer.Models.Participate;
 
 namespace ViewLayer.Mapping;
 

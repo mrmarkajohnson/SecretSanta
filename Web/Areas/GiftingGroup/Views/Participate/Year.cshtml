@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
+@using ViewLayer.Models.Participate
 
 @model UserGiftingGroupYearVm
 @{
@@ -8,7 +9,7 @@
     string recipientExplanation = "The person who you will be giving to this year";
 }
 
-<h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year"</h1>
+<h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year</h1>
 
 <section>
     <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" method="post">
@@ -26,7 +27,7 @@
                 <input type="hidden" asp-for="Year">
             </div>
 
-            <div class="mb-5 mt-2">
+            <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <p>
                     A gifting group is a group of people who exchange 'Secret Santa' gifts at Christmas.
                 </p>
@@ -37,59 +38,59 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <br />
 
-                <div class="col-md-12">
-                    <div class="@StandardFormGroup">
-                        <label asp-for="Included" class="control-label"></label>
-                        <div data-url="@Url.Action("ParticipateInYear")" class="control-label fw-normal">
-                            <span class="text-secondary">No</span> 
-                            <input type="radio" asp-for="Included" value="@false" class="included-radio" />
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
+                <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
+                    <div>
 
-                            <span class="text-primary">Yes</span> 
-                            <input type="radio" asp-for="Included" value="@true" class="included-radio" />
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
+                        <div class="mb-3">
+                            <label asp-for="Included" class="control-label"></label>
+                            <div data-url="@Url.Action("ParticipateInYear")" class="control-label fw-normal">
+                                <span class="text-secondary">No</span> 
+                                <input type="radio" asp-for="Included" value="@false" class="included-radio" />
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
 
-                            <partial name="_InlineQuestion" model="@includedExplanation" />
+                                <span class="text-primary">Yes</span> 
+                                <input type="radio" asp-for="Included" value="@true" class="included-radio" />
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+
+                                <partial name="_InlineQuestion" model="@includedExplanation" />
+                            </div>
+                            <div>
+                                <span asp-validation-for="Included" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div>
-                            <span asp-validation-for="Included" class="text-danger"></span>
+
+                        <div class="mb-3">
+                            <label asp-for="Limit" class="control-label"></label>
+                            <div class="control-label fw-normal">
+                                <text>@Model.LimitString</text>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+
+                                <partial name="_InlineQuestion" model="@limitExplanation" />
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="@StandardFormGroup">
-                        <label asp-for="Limit" class="control-label"></label>
-                        <div class="control-label fw-normal">
-                            <text>@Model.LimitString</text>
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
+                        <div class="mb-3">
+                            <label asp-for="Recipient" class="control-label"></label>
+                            <div class="control-label fw-normal">
+                                <text>@Model.RecipientString</text>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
 
-                            <partial name="_InlineQuestion" model="@limitExplanation" />
+                                <partial name="_InlineQuestion" model="@recipientExplanation" />
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="@StandardFormGroup">
-                        <label asp-for="Recipient" class="control-label"></label>
-                        <div class="control-label fw-normal">
-                            <text>@Model.RecipientString</text>
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-
-                            <partial name="_InlineQuestion" model="@recipientExplanation" />
-                        </div>
+                    
                     </div>
                 </div>
 
@@ -100,7 +101,7 @@
         {
             <div class="row d-flex align-items-center justify-content-center text-center">
 
-                <div class="@StandardGroupWidth d-flex flex-wrap justify-content-between text-center">
+                <div class="@StandardGroupWidth text-center">
                     <div>
                         <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@Model.GiftingGroupId"
                            asp-route-returnUrl="@Context.Request.GetEncodedUrl()">

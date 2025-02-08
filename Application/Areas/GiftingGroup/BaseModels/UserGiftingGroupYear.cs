@@ -11,4 +11,10 @@ public class UserGiftingGroupYear : GiftingGroupYearBase, IUserGiftingGroupYear
     public bool Included { get; set; }
 
     public IUserNamesBase? Recipient { get; set; }
+
+    public string LimitString => Limit > 0 ? $"{CurrencySymbol}{Limit}" : "Not set yet";
+
+    public string RecipientString => Recipient == null
+        ? "Not yet selected"
+        : $"{Recipient.UserDisplayName} ({Recipient.UserName})";
 }

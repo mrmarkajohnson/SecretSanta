@@ -6,39 +6,41 @@
     string userNameExplanation = "Required if E-mail is not provided; you can use either to log in.";
 }
 
-<div class="col-md-12">
-    <div class="@StandardFormGroup">
-        <label asp-for="Email" class="control-label"></label>
-        <div class="input-group input-info">
-            <input asp-for="Email" class="form-control email-input" autocomplete="email" aria-required="false" placeholder="name@example.com" />
-            <partial name="_InputQuestion" model="@emailExplanation" />
+<div class="d-flex flex-wrap text-center justify-content-center align-content-center">
+    <div class="@StandardGroupWidth">
+        <div class="mb-3">
+            <label asp-for="Email" class="control-label"></label>
+            <div class="input-group input-info">
+                <input asp-for="Email" class="form-control email-input" autocomplete="email" aria-required="false" placeholder="name@example.com" />
+                <partial name="_InputQuestion" model="@emailExplanation" />
+            </div>
+            <div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
         </div>
-        <div>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 d-flex mb-3">
-    <div class="col-lg-3 col-md-2 col-sm-1 d-none d-sm-inline-block"></div>
-    <div class="form-group-ib col-lg-6 col-md-8 col-sm-8 col-8">
-        <label asp-for="UserName" class="control-label"></label>
-        <div class="input-group input-info">
-            <input asp-for="UserName" class="form-control username-input" autocomplete="username" aria-required="false" placeholder="Create a username" />
-            <partial name="_InputQuestion" model="@userNameExplanation" />
-        </div>
-        <div>
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group-ib col-md-3 col-sm-3 col-4">
-        &nbsp;
-        <div class="use-email-checkbox-container" style="display:none">
-            <label class="control-label pt-1 ps-2">
+
+        <div class="mb-3 d-flex">
+            <div class="form-group-ib col-sm-12 username-container">
+                <label asp-for="UserName" class="control-label"></label>
+                <div class="input-group input-info">
+                    <input asp-for="UserName" class="form-control username-input" autocomplete="username" aria-required="false" placeholder="Create a username" />
+                    <partial name="_InputQuestion" model="@userNameExplanation" />
+                </div>
+                <div>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group-ib col-sm-3 col-4 use-email-checkbox-container" style="display: none !important">
                 &nbsp;
-                Use E-mail
-                &nbsp;
-                <input type="checkbox" class="form-check-input use-email-checkbox" />
-            </label>
+                <div>
+                    <label class="control-label pt-1 ps-2 d-flex justify-content-end">
+                        &nbsp;
+                        Use E-mail
+                        &nbsp;
+                        <input type="checkbox" class="form-check-input use-email-checkbox" />
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 </div>

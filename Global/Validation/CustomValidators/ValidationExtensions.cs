@@ -23,7 +23,7 @@ public static class ValidationExtensions
         where TEnumerable : IEnumerable<TProperty>
     {
         return ruleBuilder
-            .Must((root, x, context) => (allowEmpty && (x == null || Equals(x, default(TProperty)) || x is string xString && xString == string.Empty))
+            .Must((root, x, context) => (allowEmpty && (x == null || Equals(x, default(TProperty)) || (x is string xString && string.IsNullOrWhiteSpace(xString))))
                 || ((TEnumerable?)list.DynamicInvoke(root))?.ToList().Contains(x) == true) 
             .WithMessage(ConvertMessageForFluentValidation(ValidationMessages.NotInDropDownError));
     }
