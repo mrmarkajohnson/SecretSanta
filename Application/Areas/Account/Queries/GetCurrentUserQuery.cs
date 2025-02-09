@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Account.BaseModels;
-using Application.Areas.Account.Actions;
 using Application.Shared.Requests;
 using Global.Abstractions.Areas.Account;
 using Global.Extensions.Exceptions;
@@ -15,7 +14,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser>
         _unHashResults = unHashResults;
     }
 
-    protected async override Task<ISantaUser> Handle()
+    protected override Task<ISantaUser> Handle()
     {
         Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
 
@@ -28,7 +27,7 @@ public class GetCurrentUserQuery : BaseQuery<ISantaUser>
                 santaUser.UnHash();
             }
 
-            return santaUser;
+            return Task.FromResult(santaUser);
         }
 
         throw new AccessDeniedException();

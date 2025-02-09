@@ -31,7 +31,7 @@ function initIncludedRadios() {
                     }
                 },
                 callback: function (result) {
-                    bootbox.hideAll();
+                    bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
                     if (result) {
                         statusChanged(x);
                     } else {

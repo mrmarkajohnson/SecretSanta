@@ -53,8 +53,9 @@ async function relationshipStatusChanged(select, url, title, message) {
             if (result) {
                 statusChanged();
             }
-
-            select.value = originalValue;
+            else {
+                select.value = originalValue;
+            }
         }
     });
 

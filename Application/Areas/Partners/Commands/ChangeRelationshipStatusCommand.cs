@@ -59,6 +59,9 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
                 messageText = $"Santa is sorry to hear that {_dbCurrentUser.FullName()} said that they're no " +
                     $"longer in a relationship with you. He hopes that you're both OK.";
                 break;
+            case RelationshipStatus.EndedBeforeConfirmation:
+                dbRelationship.RelationshipEnded ??= DateTime.Now;
+                break;
             case RelationshipStatus.IgnoreOld:
                 IgnoreOldRelationship(dbRelationship, currentUserSuggested, ref headerText, ref messageText);
 
