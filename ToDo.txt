@@ -23,8 +23,7 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-* Finish setting up participation
-* Include applications in groups list for the year (but don't show any actions) and use a status of 'Administrator', 'Member' or 'Applied to Join'
+* Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
 * Allow users to say who they bought for last year (if not set)
 * Allow users to declare themselves in or out
 * Allow updating the currency for the current year, if the group currency has changed

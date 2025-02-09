@@ -191,5 +191,16 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/GiftingGroup/Participate/Year/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/GiftingGroup/year.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
   }
 ]

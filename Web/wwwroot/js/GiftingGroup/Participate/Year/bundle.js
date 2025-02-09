@@ -1,4 +1,4 @@
-﻿window.addEventListener('load', function () {
+window.addEventListener('load', function () {
     initIncludedRadios();
 });
 
@@ -31,7 +31,7 @@ function initIncludedRadios() {
                     }
                 },
                 callback: function (result) {
-                    bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+                    bootbox.hideAll();
                     if (result) {
                         statusChanged(x);
                     } else {

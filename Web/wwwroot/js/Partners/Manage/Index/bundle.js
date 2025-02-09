@@ -44,12 +44,14 @@ async function relationshipStatusChanged(select, url, title, message) {
             },
             cancel: {
                 label: 'No',
-                className: 'btn-danger'
+                className: 'btn-no'
             }
         },
-        callback: async function (result) {
+        callback: function (result) {
+            bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+
             if (result) {
-                await statusChanged();
+                statusChanged();
             }
 
             select.value = originalValue;

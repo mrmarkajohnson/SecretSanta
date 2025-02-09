@@ -11,7 +11,7 @@ public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupLinks.Select(x => x.GiftingGroup.Years));
+        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
                 .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupId == Item.GiftingGroupId && x.GiftingGroup.DateDeleted == null);

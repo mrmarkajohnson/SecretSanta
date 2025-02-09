@@ -279,7 +279,7 @@ async function relationshipStatusChanged(radio, url, title, message) {
                 },
                 cancel: {
                     label: 'No',
-                    className: 'btn-danger'
+                    className: 'btn-no'
                 }
             },
             callback: async function (result) {

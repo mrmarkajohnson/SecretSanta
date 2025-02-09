@@ -22,7 +22,7 @@ public class GetUserGiftingGroupYearQuery : BaseQuery<IUserGiftingGroupYear>
 
         if (GiftingGroupYear == null) // not created yet
         {
-            Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupLinks.Select(x => x.GiftingGroup.Years));
+            Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
             var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
                     .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupId == GroupId && x.GiftingGroup.DateDeleted == null);

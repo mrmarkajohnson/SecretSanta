@@ -10,7 +10,7 @@
                 },
                 cancel: {
                     label: 'No',
-                    className: 'btn-danger'
+                    className: 'btn-no'
                 }
             },
             callback: async function (result) {

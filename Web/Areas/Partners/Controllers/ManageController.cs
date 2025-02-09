@@ -39,7 +39,7 @@ public class ManageController : BaseController
         }
         else
         {
-            return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
+            return FirstValidationError(result);
         }
     }
 

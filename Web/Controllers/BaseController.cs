@@ -5,6 +5,7 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
+using Global.Abstractions.Areas.Partners;
 using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
@@ -142,6 +143,13 @@ public class BaseController : Controller
         {
             ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
+    }
+
+    protected ObjectResult FirstValidationError<T>(ICommandResult<T> result)
+    {
+        string message = result?.Validation?.Errors?.Count > 0 ? result.Validation.Errors[0].ErrorMessage : "An error occurred.";
+
+        return StatusCode(StatusCodes.Status422UnprocessableEntity, message);
     }
 
     protected async Task<IActionResult> RedirectIfLockedOut(string viewName, ICheckLockout model)

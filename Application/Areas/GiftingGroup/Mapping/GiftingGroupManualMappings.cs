@@ -1,4 +1,5 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
+using Application.Shared.BaseModels;
 using AutoMapper;
 
 namespace Application.Areas.GiftingGroup.Mapping;
@@ -19,7 +20,7 @@ internal static class GiftingGroupManualMappings
             GroupAdmin = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserId == u.SantaUserId).GroupAdmin,
             Included = dbYearGroupUser.Included ?? false,
             Recipient = dbYearGroupUser.GivingToUserId > 0 
-                ?  (mapper.Map<IUserNamesBase>(dbYearGroupUser.GivingToUser).UnHash()) 
+                ?  (mapper.Map<UserNamesBase>(dbYearGroupUser.GivingToUser).UnHash()) 
                 : null,
             Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),

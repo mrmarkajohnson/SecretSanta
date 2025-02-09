@@ -32,12 +32,25 @@ public class ParticipateController : BaseController
     {
         var commandResult = await Send(new ParticipateInYearCommand<UserGiftingGroupYearVm>(model), new UserGiftingGroupYearVmValidator());
 
-        if (commandResult.Success && !string.IsNullOrEmpty(model.ReturnUrl))
+        if (commandResult.Success)
         {
             string changed = model.Included ? "Included" : "Excluded";
-            return RedirectWithMessage(model.ReturnUrl, $"{changed} Successfully");
+            string message = $"{changed} Successfully";
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl))
+            {
+                return RedirectWithMessage(model.ReturnUrl, message);
+            }
+            else
+            {
+                return Ok(message);
+            }
+        }
+        else
+        {
+            return FirstValidationError(commandResult);
         }
 
-        return View("Year", model);
+        //return View("Year", model);
     }
 }

@@ -27,11 +27,7 @@
                         <td>
                             <span class="hidden">
                                 <input type="hidden" asp-for="GroupMembers[i].SantaUserId" />
-                                <input type="hidden" asp-for="GroupMembers[i].UserDisplayName" />
-                                <input type="hidden" asp-for="GroupMembers[i].Email" />
-                                <input type="hidden" asp-for="GroupMembers[i].UserName" />
-                                <input type="hidden" asp-for="GroupMembers[i].Forename" />
-                                <input type="hidden" asp-for="GroupMembers[i].Surname" />
+                                <partial name="_UserHiddenInputs" for="GroupMembers[i]" />
                             </span>
                             @user.UserDisplayName</td>
                         <td>@user.UserName</td>

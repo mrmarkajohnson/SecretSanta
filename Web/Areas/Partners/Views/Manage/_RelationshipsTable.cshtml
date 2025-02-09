@@ -51,12 +51,7 @@
                             <td>
                                 <span class="hidden">
                                     <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkId" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Id" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Forename" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.MiddleNames" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Surname" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.Email" />
-                                    <input type="hidden" asp-for="PossibleRelationships[i].Partner.UserName" />
+                                    <partial name="_UserHiddenInputs" for="PossibleRelationships[i].Partner" />                                    
                                     <input type="hidden" asp-for="PossibleRelationships[i].SuggestedByCurrentUser" />
                                     <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
                                 </span>

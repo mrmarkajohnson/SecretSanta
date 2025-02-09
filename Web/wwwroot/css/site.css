@@ -66,6 +66,16 @@ input:read-only:not([type='checkbox']):not([type='radio']) {
     background-color: #eeeeee !important;
 }
 
+input[type=checkbox][readonly], input[type=radio][readonly] {
+    opacity: 0.5 !important;
+    cursor: default;
+    filter: invert(25%);
+}
+
+input[type=checkbox][readonly]:hover, input[type=radio][readonly]:hover {
+    pointer-events: none;
+}
+
 input.form-control:read-only {
     background-color: #eeeeee !important;
 }
@@ -140,4 +150,8 @@ input.hide-text {
 
 input::-ms-reveal, input::-ms-clear {
     display: none;
+}
+
+.btn.bootbox-cancel {
+    border-color: black !important;
 }

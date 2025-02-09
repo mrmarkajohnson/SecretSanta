@@ -1,12 +1,15 @@
-﻿@using Microsoft.AspNetCore.Http.Extensions
+﻿@using Global.Names
+@using Microsoft.AspNetCore.Http.Extensions
 @using ViewLayer.Models.Participate
+@using Web.Helpers
 
 @model UserGiftingGroupYearVm
 @{
     ViewData["Title"] = $"'{Model.GiftingGroupName}' for {Model.Year}";
-    string includedExplanation = "Will you join in this year?";
+    string includedExplanation = Model.Recipient != null ? GiftingGroupNames.NoOptOutWithRecipient : "Will you join in this year?";
     string limitExplanation = $"The suggested limit for members to spend on each other this year, in {Model.CurrencyCode}";
     string recipientExplanation = "The person who you will be giving to this year";
+    bool radiosReadonly = !Model.CanChangeIncluded;
 }
 
 <h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year</h1>
@@ -25,6 +28,11 @@
                 <input type="hidden" asp-for="CurrencyCode">
                 <input type="hidden" asp-for="CurrencySymbol">
                 <input type="hidden" asp-for="Year">
+
+                @if (Model.Recipient != null)
+                {
+                    <partial name="_UserHiddenInputs" for="Recipient" />
+                }
             </div>
 
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
@@ -43,16 +51,16 @@
 
                         <div class="mb-3">
                             <label asp-for="Included" class="control-label"></label>
-                            <div data-url="@Url.Action("ParticipateInYear")" class="control-label fw-normal">
+                            <div data-url="@Url.Action(Context, "ParticipateInYear", "Participate", "GiftingGroup")" class="control-label fw-normal">
                                 <span class="text-secondary">No</span> 
-                                <input type="radio" asp-for="Included" value="@false" class="included-radio" />
+                                <input type="radio" asp-for="Included" value="@false" class="included-radio" readonly=@radiosReadonly />
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
 
                                 <span class="text-primary">Yes</span> 
-                                <input type="radio" asp-for="Included" value="@true" class="included-radio" />
+                                <input type="radio" asp-for="Included" value="@true" class="included-radio" readonly=@radiosReadonly />
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
