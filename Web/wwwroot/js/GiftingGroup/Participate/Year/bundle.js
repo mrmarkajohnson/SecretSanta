@@ -12,34 +12,38 @@ function initIncludedRadios() {
     includedRadios.forEach(function (x) {
         x.setAttribute('data-original-value', x.checked);
 
-        x.addEventListener('click', function (e) {
-            let included = x.value == 'True';
-            let title = included ? 'Confirm participation' : 'Don\'t participate';
-            let message = 'Are you sure you ' + (included ? '' : 'DON\'T ') + 'want to participate this year?'
+        if (!x.getAttribute('data-initialised')) {
+            x.setAttribute('data-initialised', true);
 
-            bootbox.confirm({
-                title: title,
-                message: message,
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-success'
+            x.addEventListener('click', function (e) {
+                let included = x.value == 'True';
+                let title = included ? 'Confirm participation' : 'Don\'t participate';
+                let message = 'Are you sure you ' + (included ? '' : 'DON\'T ') + 'want to participate this year?'
+
+                bootbox.confirm({
+                    title: title,
+                    message: message,
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-no'
+                        }
                     },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-no'
+                    callback: function (result) {
+                        bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+                        if (result) {
+                            statusChanged(x);
+                        } else {
+                            resetIncludedRadios();
+                        }
                     }
-                },
-                callback: function (result) {
-                    bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
-                    if (result) {
-                        statusChanged(x);
-                    } else {
-                        resetIncludedRadios();
-                    }
-                }
+                });
             });
-        });
+        }
     });
 
     async function statusChanged(radio) {

@@ -56,7 +56,7 @@
                         <div class="form-group-ib col-12 mb-3">
                             <label asp-for="MessageText" class="control-label"></label>
                             <div class="control-label fw-normal">
-                                @Model.MessageText
+                                @Model.MessageText.ToRawHtml()
                             </div>
                         </div>
                     </div>

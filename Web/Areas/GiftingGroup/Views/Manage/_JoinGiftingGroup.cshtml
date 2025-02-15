@@ -31,50 +31,50 @@
         <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
             <div class="@StandardGroupWidth">
                 <div class="mb-3">
-                <label asp-for="Name" class="control-label required"></label>
-                <div class="input-group input-info">
-                    <input asp-for="Name" class="form-control gifting-group-name" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
-                    <partial name="_InputQuestion" model="@groupNameExplanation" />
-                </div>
-                <div>
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="JoinerToken" class="control-label required"></label>
-                <div class="input-group input-info">
-                    <input asp-for="JoinerToken" class="form-control joiner-token" autocomplete="off" aria-required="true" placeholder="Enter the group Joiner Token" />
-                    <partial name="_InputQuestion" model="@joinerTokenExplanation" />
-                </div>
-                <div>
-                    <span asp-validation-for="JoinerToken" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Message" class="control-label"></label>
-                <div class="input-group input-info">
-                    <textarea asp-for="Message" class="form-control" ></textarea>
-                    <partial name="_InputQuestion" model="@messageExplanation" />
-                </div>
-                <div>
-                    <span asp-validation-for="Message" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        @if (!string.IsNullOrWhiteSpace(Model.Description))
-        {
-            <div class="col-md-12">
-                <div class="mb-3">
-                    <label asp-for="Description" class="control-label">Group Description</label>
-                    <div class="control-label fw-normal group-description">
-                        @Model.Description
+                    <label asp-for="Name" class="control-label required"></label>
+                    <div class="input-group input-info">
+                        <input asp-for="Name" class="form-control gifting-group-name" autocomplete="off" aria-required="true" placeholder="Enter the group name here" />
+                        <partial name="_InputQuestion" model="@groupNameExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
+
+                <div class="mb-3">
+                    <label asp-for="JoinerToken" class="control-label required"></label>
+                    <div class="input-group input-info">
+                        <input asp-for="JoinerToken" class="form-control joiner-token" autocomplete="off" aria-required="true" placeholder="Enter the group Joiner Token" />
+                        <partial name="_InputQuestion" model="@joinerTokenExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="JoinerToken" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Message" class="control-label"></label>
+                    <div class="input-group input-info">
+                        <textarea asp-for="Message" class="form-control" ></textarea>
+                        <partial name="_InputQuestion" model="@messageExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <div class="mb-3">
+                        <label asp-for="Description" class="control-label">Group Description</label>
+                        <div class="control-label fw-normal group-description">
+                            @Model.Description
+                        </div>
+                    </div>
+                }
+
             </div>
-        }
+        </div>
 
         @if (!Model.Blocked)
         {

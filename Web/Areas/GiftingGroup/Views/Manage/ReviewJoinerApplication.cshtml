@@ -38,113 +38,114 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <br />
 
-                <div class="col-md-12">
-                    <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
-                        <label asp-for="ApplicantName" class="control-label"></label>
-                        <div class="control-label fw-normal">
-                            @Model.ApplicantName
-                        </div>
-                    </div>
-                    <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <div class="control-label fw-normal">
-                            @Model.UserName
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    @if (!string.IsNullOrWhiteSpace(Model.Email))
-                    {
-                        <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
-                            <label asp-for="Email" class="control-label"></label>
-                            <div class="control-label fw-normal">
-                                @Model.Email
-                            </div>
-                        </div>
-                    }
-
-                    <div class="form-group-ib col-lg-3 col-md-4 col-sm-5 col-6 mb-3">
-                        <label asp-for="AcceptedOption" class="control-label required"></label>
-                        <div class="control-label fw-normal">
-                            <span class="text-secondary">No</span>
-                            <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
-                                   value="false" />
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            
-                            <span class="text-primary">Yes</span>
-                            <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
-                                   value="true" />
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-
-                            <partial name="_InlineQuestion" model="@allowExplanation" />
-                        </div>
-                        <div>
-                            <span asp-validation-for="AcceptedOption" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accepted-section collapse">
-                    <div class="mb-3">
-                        <br />
-
-                        @if (Model.CurrentYearCalculated)
-                        {
-                            <div class="alert alert-warning">
-                                <text>@Model.Forename <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-info">
-                                <text>@Model.Forename will be added to the current year automatically. You can remove them by editing the group's settings for @DateTime.Today.Year.</text>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <div class="rejected-section collapse">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label asp-for="RejectionMessage" class="control-label"></label>
-                            <div class="input-group input-info">
-                                <textarea asp-for="RejectionMessage" class="form-control"></textarea>
-                                <partial name="_InputQuestion" model="@rejectionMessageExplanation" />
-                            </div>
-                        </div>
-                    </div>
-
-                    @if (Model.PreviousRequestCount > 2)
-                    {
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label asp-for="Blocked" class="control-label"></label>
+                <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
+                    <div class="@StandardGroupWidth">
+                        <div class="mb-3 d-flex">
+                            <div class="form-group-ib col-6">
+                                <label asp-for="ApplicantName" class="control-label"></label>
                                 <div class="control-label fw-normal">
-                                    <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes
+                                    @Model.ApplicantName
+                                </div>
+                            </div>
 
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-
-                                    <partial name="_InlineQuestion" model="@blockExplanation" />
+                            <div class="form-group-ib col-6">
+                                <label asp-for="UserName" class="control-label"></label>
+                                <div class="control-label fw-normal">
+                                    @Model.UserName
                                 </div>
                             </div>
                         </div>
-                    }
-                </div>
 
-                <br />
-                <div class="col-md-12">
-                    <partial name="_SubmitButton" />
+                        <div class="mb-3 d-flex">
+                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                            {
+                                <div class="form-group-ib col-6">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <div class="control-label fw-normal">
+                                        @Model.Email
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group-ib col-6">
+                                <label asp-for="AcceptedOption" class="control-label required"></label>
+                                <div class="control-label fw-normal">
+                                    <span class="text-secondary">No</span>
+                                    <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
+                                           value="false" />
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                            
+                                    <span class="text-primary">Yes</span>
+                                    <input type="radio" asp-for="AcceptedOption" class="form-check-input accepted-option" autocomplete="off" aria-required="true"
+                                           value="true" />
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+
+                                    <partial name="_InlineQuestion" model="@allowExplanation" />
+                                </div>
+                                <div>
+                                    <span asp-validation-for="AcceptedOption" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accepted-section collapse">
+                            <div class="mb-3">
+                                <br />
+
+                                @if (Model.CurrentYearCalculated)
+                                {
+                                    <div class="alert alert-warning">
+                                        <text>@Model.Forename <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <text>@Model.Forename will be added to the current year automatically. You can remove them by editing the group's settings for @DateTime.Today.Year.</text>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="rejected-section collapse">
+                            <div class="mb-3">
+                                <label asp-for="RejectionMessage" class="control-label"></label>
+                                <div class="input-group input-info">
+                                    <textarea asp-for="RejectionMessage" class="form-control"></textarea>
+                                    <partial name="_InputQuestion" model="@rejectionMessageExplanation" />
+                                </div>
+                            </div>
+
+                            @if (Model.PreviousRequestCount >= 2)
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="Blocked" class="control-label"></label>
+                                    <div class="control-label fw-normal">
+                                        <input type="checkbox" asp-for="Blocked" class="form-check-input" autocomplete="off" aria-required="false" /> &nbsp; Yes
+
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        <partial name="_InlineQuestion" model="@blockExplanation" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <br />
+            <div class="col-md-12">
+                <partial name="_SubmitButton" />
             </div>
 
         </div>

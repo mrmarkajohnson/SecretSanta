@@ -54,6 +54,12 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
         dataListInput.setAttribute('placeholder', defaultPlaceholder);
     }
 }
+document.addEventListener('reloadstart', function (e) {
+    //console.log('grid: ', e.detail.grid);
+    let gridId = e.detail.grid.element.id;
+    document.getElementById(gridId).insertAdjacentHTML('afterbegin', '<i>Loading, please wait...</i>');
+});
+
 function reloadGrid() {
     let grid = new MvcGrid(document.querySelector('.mvc-grid'));
     grid.reload();
@@ -139,6 +145,10 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
     initEyeSymbols();
     initDataLists()
     initThinking();
+    initModalLinks();
+});
+
+document.addEventListener('reloadend', function (e) {
     initModalLinks();
 });
 function initPopper() {

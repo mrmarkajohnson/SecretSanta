@@ -1,7 +1,6 @@
-﻿@using ViewLayer.Models.Partners
+﻿@using NonFactors.Mvc.Grid
 @using Web.Helpers
 
-@model AddRelationshipVm
 @{
     ViewData["Title"] = "Add Relationship";
 }
@@ -17,9 +16,8 @@
     </div>
 
     <div class="ps-4 pe-4 col-12 col-md-10">
-        <div class="user-grid-container"
-             data-url="@Url.Action(Context, "AddRelationship", "Manage", "Partners")">
-            <partial name="_SelectUserGrid" model="@Model.PossiblePartners" />
+        <div class="user-grid-container" data-url="@Url.Action(Context, "AddRelationship", "Manage", "Partners")">
+            @Html.AjaxGrid(Url.Action("SelectRelationshipUserGrid"), new { id = "select-user-grid" })
         </div>
     </div>
 </div>

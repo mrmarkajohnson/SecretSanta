@@ -61,6 +61,12 @@ public class ManageController : BaseController
         return model;
     }
 
+    public async Task<IActionResult> SelectRelationshipUserGrid()
+    {
+        var possiblePartners = await Send(new GetPossiblePartnersQuery());
+        return PartialView("_SelectUserGrid", possiblePartners);
+    }
+
     // TODO: Allow deleting relationships if they haven't been confirmed yet
 
     [HttpPost]

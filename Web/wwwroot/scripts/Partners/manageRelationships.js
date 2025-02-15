@@ -9,25 +9,30 @@ function initStatusSelect() {
 
     statusSelects.forEach(function (x) {
         x.setAttribute('data-original-value', x.value);
-        x.addEventListener('click', function (e) {
-            let originalValue = x.getAttribute('data-original-value');
 
-            if (x.value != originalValue) {
-                let name = x.getAttribute('data-name');
-                let headerText = 'Change relationship status';
-                let messageText = 'Are you sure you want to change the status of your relationship with ' + name + '?';
+        if (!x.getAttribute('data-initialised')) {
+            x.setAttribute('data-initialised', true);
 
-                if (x.value == 'NotRelationship') { // TODO: More specific wording for other values
-                    headerText = 'Deny suggesteed relationship'
-                    messageText = 'You\'re NOT in a relationship with ' + name + ', is that correct?';
+            x.addEventListener('click', function (e) {
+                let originalValue = x.getAttribute('data-original-value');
+
+                if (x.value != originalValue) {
+                    let name = x.getAttribute('data-name');
+                    let headerText = 'Change relationship status';
+                    let messageText = 'Are you sure you want to change the status of your relationship with ' + name + '?';
+
+                    if (x.value == 'NotRelationship') { // TODO: More specific wording for other values
+                        headerText = 'Deny suggesteed relationship'
+                        messageText = 'You\'re NOT in a relationship with ' + name + ', is that correct?';
+                    }
+
+                    relationshipStatusChanged(e.currentTarget,
+                        url,
+                        headerText,
+                        messageText);
                 }
-
-                relationshipStatusChanged(e.currentTarget,
-                    url,
-                    headerText,
-                    messageText);
-            }
-        });
+            });
+        }
     });
 }
 

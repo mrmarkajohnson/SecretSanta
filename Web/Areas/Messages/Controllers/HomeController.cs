@@ -14,10 +14,16 @@ public class HomeController : BaseController
     {
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MessagesGrid()
     {
         IQueryable<IReadMessage> messages = await Send(new GetMessagesQuery());
-        return View(messages);
+        return PartialView("_MessagesGrid", messages);
     }
 
     public async Task<IActionResult> ViewMessage(int id)

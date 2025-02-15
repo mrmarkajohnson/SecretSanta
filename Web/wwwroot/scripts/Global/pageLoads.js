@@ -17,3 +17,7 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
     initThinking();
     initModalLinks();
 });
+
+document.addEventListener('reloadend', function (e) {
+    initModalLinks();
+});

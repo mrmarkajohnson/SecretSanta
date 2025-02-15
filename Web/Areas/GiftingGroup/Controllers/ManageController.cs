@@ -120,14 +120,20 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> JoinerApplications()
     {
+        var applications = await Send(new GetJoinerRequestsQuery());
+
+        if (applications.Count() == 1)
+            return LocalRedirect(Url.Action(nameof(ReviewJoinerApplication), 
+                new { applicationId = applications.First().ApplicationId, singleApplication = true }));
+
+        return View();
+    }
+
+    public async Task<IActionResult> JoinerApplicationsGrid()
+    {
         var model = new JoinerApplicationsVm();
         model.Applications = await Send(new GetJoinerRequestsQuery());
-
-        if (model.Applications.Count() == 1)
-            return LocalRedirect(Url.Action(nameof(ReviewJoinerApplication), 
-                new { applicationId = model.Applications.First().ApplicationId, singleApplication = true }));
-
-        return View(model);
+        return PartialView("_JoinerApplicationsGrid", model);
     }
 
     [HttpGet]

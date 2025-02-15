@@ -30,6 +30,7 @@
         pager.ShowPageSizes = true;
     }) *@
     .Empty("No messages found")
+    .Id("messages-grid")
     .Filterable()
     .Sortable()
     .RowAttributed(model => new { @class = (model.Important ? "bold " : "") + (!model.Read ? "text-danger" : "") })
