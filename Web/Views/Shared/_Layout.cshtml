@@ -148,6 +148,12 @@
         <script src="~/js/global.min.js" asp-append-version="true"></script>
     </environment>
 
+    <script>
+        [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
+            new MvcGrid(element);
+        });
+    </script>
+
     @{
         string relativePath = Context.Request.Path.ToString().Trim('/');
         string bundlePath = $"js/{relativePath}/" + (environment.IsDevelopment() ? "bundle.js" : "bundle.min.js");
