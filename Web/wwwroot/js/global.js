@@ -54,6 +54,10 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
         dataListInput.setAttribute('placeholder', defaultPlaceholder);
     }
 }
+function reloadGrid() {
+    let grid = new MvcGrid(document.querySelector('.mvc-grid'));
+    grid.reload();
+}
 function initModalLinks() {
     let modalLinks = document.querySelectorAll('a.modal-link');
     modalLinks.forEach(initModalLink);

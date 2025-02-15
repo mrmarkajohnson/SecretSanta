@@ -18,7 +18,7 @@ async function messageModalClosed(e) {
                 });
 
             await response;
-            // TODO: Refresh message grid
+            reloadGrid();
         }
     }
 }

@@ -36,7 +36,7 @@ Allow admins to set up the whole gifting group etc.?
 
 RELATIONSHIPS
 * Allow users to 'edit' a relationship in a modal, so they get a bit more help/explanation
-* Reload the page or update the relationship statuses after changing a status and confirming
+Allow deleting relationships if they haven't been confirmed yet
 
 GIFTS
 Add suggestions

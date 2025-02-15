@@ -82,6 +82,8 @@ async function relationshipStatusChanged(select, url, title, message) {
         }
         else if (response.ok) {
             select.setAttribute('data-original-value', select.value);
+
+            reloadGrid();
         } else {
             select.value = originalValue;
         }
@@ -96,3 +98,8 @@ async function relationshipStatusChanged(select, url, title, message) {
     }
 }
 
+
+function reloadGrid() {
+    let grid = new MvcGrid(document.querySelector('.mvc-grid'));
+    grid.reload();
+}
