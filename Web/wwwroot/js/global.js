@@ -60,9 +60,13 @@ function initModalLinks() {
 }
 
 function initModalLink(modalLink) {
-    modalLink.addEventListener('click', function () {
-        showModal(modalLink);
-    });
+    if (!modalLink.getAttribute('data-initialised')) {
+        modalLink.setAttribute('data-initialised', true);
+
+        modalLink.addEventListener('click', function () {
+            showModal(modalLink);
+        });
+    }
 }
 
 async function showModal(modalLink) {
@@ -106,6 +110,9 @@ function showModalResponse(responseText) {
         }
 
         document.dispatchEvent(new CustomEvent('modalClosed', { detail: { modal: modal } }));
+        document.querySelectorAll('.modal-backdrop').forEach(function (x) {
+            x.remove();
+        })
     });
 
     modalObject.show();
