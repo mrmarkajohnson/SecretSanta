@@ -27,7 +27,7 @@ function initReviewApplication() {
 
         function acceptedOptionChanged(radioOption) {
             let checked = radioOption.checked == true ? true : null;
-            let rejectedOption = !!radioOption.value == false || radioOption.value == 'false';
+            let rejectedOption = !isTrueValue(radioOption.value); // don't use isTrueInput(), as it's the value we want to know about
             let newValue = checked && rejectedOption;
 
             if (newValue != rejected) {

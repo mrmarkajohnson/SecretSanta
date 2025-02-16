@@ -141,6 +141,11 @@ button.navbar-toggler:hover {
     text-decoration: none !important;
 }
 
+ul.dropdown-menu a.dropdown-item:hover, button.dropdown-item:hover {
+    color: $blue;
+    text-decoration: underline !important;
+}
+
 .navbar-togger {
     border: none !important;
 }

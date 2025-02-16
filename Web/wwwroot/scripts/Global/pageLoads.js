@@ -19,5 +19,6 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 });
 
 document.addEventListener('reloadend', function (e) {
+    initPopper();
     initModalLinks();
 });

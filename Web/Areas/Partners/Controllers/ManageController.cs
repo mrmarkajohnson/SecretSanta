@@ -3,6 +3,7 @@ using Application.Areas.Partners.Queries;
 using Global.Abstractions.Areas.Partners;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Partners;
+using ViewLayer.Models.Shared;
 using static Global.Settings.PartnerSettings;
 
 namespace Web.Areas.Partners.Controllers;
@@ -46,6 +47,9 @@ public class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> AddRelationship()
     {
+        if (AjaxRequest())
+            return await SelectRelationshipUserGrid();
+
         AddRelationshipVm model = await GetAddRelationshipModel();
         return View(model);
     }
@@ -55,7 +59,7 @@ public class ManageController : BaseController
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
 
-        var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink);
+        var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));
         model.UserId = userId ?? Guid.Empty;
 
         return model;
@@ -64,7 +68,8 @@ public class ManageController : BaseController
     public async Task<IActionResult> SelectRelationshipUserGrid()
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
-        return PartialView("_SelectUserGrid", possiblePartners);
+        var model = new UserGridVm(possiblePartners, nameof(SelectRelationshipUserGrid));
+        return PartialView("_SelectUserGrid", model);
     }
 
     // TODO: Allow deleting relationships if they haven't been confirmed yet

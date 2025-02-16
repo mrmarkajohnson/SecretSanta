@@ -14,9 +14,13 @@ public class HomeController : BaseController
     {
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        if (AjaxRequest())
+            return await MessagesGrid();
+
+        IQueryable<IReadMessage> messages = await Send(new GetMessagesQuery());
+        return View(messages);
     }
 
     [HttpGet]

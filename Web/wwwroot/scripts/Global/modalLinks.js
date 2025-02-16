@@ -38,6 +38,7 @@ function showModalResponse(responseText) {
     let modalContainer = document.getElementById('modalContainer');
 
     if (modalContainer) {
+        modalContainer.removeEventListener('hidden.bs.modal', modalClosed); // prevent previous versions from throwing closure events
         modalContainer.innerHTML = responseText;
     }
     else {
@@ -48,7 +49,15 @@ function showModalResponse(responseText) {
     let modal = modalContainer.querySelector('div.modal');
     let modalObject = new bootstrap.Modal(modal);
 
-    modalContainer.addEventListener('hidden.bs.modal', function () {
+    modalContainer.addEventListener('hidden.bs.modal', modalClosed);
+
+    modalObject.show();
+}
+
+function modalClosed(e) {
+    let modal = e.target;
+
+    if (modal) {
         if (document.activeElement) {
             document.activeElement.blur(); // avoid annoying 'Blocked aria-hidden on an element...' message
         }
@@ -56,8 +65,6 @@ function showModalResponse(responseText) {
         document.dispatchEvent(new CustomEvent('modalClosed', { detail: { modal: modal } }));
         document.querySelectorAll('.modal-backdrop').forEach(function (x) {
             x.remove();
-        })
-    });
-
-    modalObject.show();
+        });
+    }
 }

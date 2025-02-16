@@ -1,5 +1,6 @@
-﻿@using NonFactors.Mvc.Grid
+﻿@using Global.Abstractions.Areas.GiftingGroup
 
+@model IQueryable<IUserGiftingGroupYear>
 @{
     ViewData["Title"] = "Participate in Groups";
 }
@@ -14,7 +15,8 @@
         </p>
     </div>
 
-    <div class="ps-4 pe-4 col-12 col-md-10">
-        @Html.AjaxGrid(Url.Action("GiftingGroupsGrid"), new { id = "gifting-groups-grid" })
+    <div class="@StandardFullWidthGridContainer">
+        <partial name="_GiftingGroupsGrid" />
+        @* @Html.AjaxGrid(Url.Action("GiftingGroupsGrid"), new { id = "gifting-groups-grid" }) *@
     </div>
 </div>

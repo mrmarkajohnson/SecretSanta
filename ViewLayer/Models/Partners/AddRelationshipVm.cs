@@ -2,15 +2,19 @@
 
 namespace ViewLayer.Models.Partners;
 
-internal class AddRelationshipVm : IAddRelationship
+public class AddRelationshipVm : IAddRelationship
 {
-    public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string manageRelationshipsLink)
+    public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string manageRelationshipsLink, string userGridAction)
     {
         PossiblePartners = possiblePartners;
         ManageRelationshipsLink = manageRelationshipsLink;
+        UserGridAction = userGridAction;
     }
 
     public IQueryable<IVisibleUser> PossiblePartners { get; set; }
     public string ManageRelationshipsLink { get; set; }
+    public string UserGridAction { get; }
     public Guid UserId { get; set; } = Guid.Empty;
+
+    public UserGridVm UserGridModel => new UserGridVm(PossiblePartners, UserGridAction);    
 }

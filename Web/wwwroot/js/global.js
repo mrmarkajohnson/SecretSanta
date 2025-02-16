@@ -12,7 +12,7 @@ function initDataLists() {
 function handleDataListIssues(dataListInput) { // ensure the full list is shown even when it has a value    
 
     let defaultPlaceholder = dataListInput.getAttribute('placeholder');
-    if (emptyValue(defaultPlaceholder)) {
+    if (isEmptyValue(defaultPlaceholder)) {
         defaultPlaceholder = dataListStandardPlaceholder;
     }
 
@@ -33,7 +33,7 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
     });
 
     function setPlaceholderAndClearValue() {
-        if (!emptyInput(dataListInput)) {
+        if (!isEmptyInput(dataListInput)) {
             let currentValue = dataListInput.value;
             dataListInput.setAttribute('placeholder', currentValue);
             dataListInput.value = '';
@@ -57,7 +57,29 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
 document.addEventListener('reloadstart', function (e) {
     //console.log('grid: ', e.detail.grid);
     let gridId = e.detail.grid.element.id;
-    document.getElementById(gridId).insertAdjacentHTML('afterbegin', '<i>Loading, please wait...</i>');
+    let grid = document.getElementById(gridId);
+
+    if (!!grid && isEmptyValue(grid.innerHTML)) {
+        grid.insertAdjacentHTML('afterbegin', '<i>Loading, please wait...</i>');
+    }
+});
+
+document.addEventListener('click', function (e) {
+    try {
+        if (e.target && e.target.classList && e.target.classList.contains('grid-content-refresh')) {
+            let gridElement = e.target.closest('.mvc-grid');
+
+            if (gridElement) {
+                let grid = new MvcGrid(gridElement);
+
+                //grid.requestType = 'post'; // defaults to get
+                //grid.query.set('name', 'Joe');
+                grid.reload();
+            }
+        }
+    } catch {
+        console.log('Grid reload failed');
+    }
 });
 
 function reloadGrid() {
@@ -104,6 +126,7 @@ function showModalResponse(responseText) {
     let modalContainer = document.getElementById('modalContainer');
 
     if (modalContainer) {
+        modalContainer.removeEventListener('hidden.bs.modal', modalClosed); // prevent previous versions from throwing closure events
         modalContainer.innerHTML = responseText;
     }
     else {
@@ -114,7 +137,15 @@ function showModalResponse(responseText) {
     let modal = modalContainer.querySelector('div.modal');
     let modalObject = new bootstrap.Modal(modal);
 
-    modalContainer.addEventListener('hidden.bs.modal', function () {
+    modalContainer.addEventListener('hidden.bs.modal', modalClosed);
+
+    modalObject.show();
+}
+
+function modalClosed(e) {
+    let modal = e.target;
+
+    if (modal) {
         if (document.activeElement) {
             document.activeElement.blur(); // avoid annoying 'Blocked aria-hidden on an element...' message
         }
@@ -122,10 +153,8 @@ function showModalResponse(responseText) {
         document.dispatchEvent(new CustomEvent('modalClosed', { detail: { modal: modal } }));
         document.querySelectorAll('.modal-backdrop').forEach(function (x) {
             x.remove();
-        })
-    });
-
-    modalObject.show();
+        });
+    }
 }
 
 let isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
@@ -149,14 +178,12 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 });
 
 document.addEventListener('reloadend', function (e) {
+    initPopper();
     initModalLinks();
 });
 function initPopper() {
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
-}
-function isEmptyString(remainingUntilNext) {
-    return remainingUntilNext == 'undefined' || remainingUntilNext == 'null' || remainingUntilNext == '';
 }
 let successMessageUrlStart = 'successMessage=';
 
@@ -182,7 +209,7 @@ function handleSuccessFromUrl(currentUrl) {
         let encodedSuccessMessage = '';
         let remainingUntilNext = remainingUrl.substring(0, remainingUrl.indexOf('&'));
 
-        if (isEmptyString(remainingUntilNext)) {
+        if (isEmptyValue(remainingUntilNext)) {
             encodedSuccessMessage = remainingUrl;
         } else {
             encodedSuccessMessage = remainingUntilNext;
@@ -193,8 +220,12 @@ function handleSuccessFromUrl(currentUrl) {
         try {
             let successMessage = decodeURIComponent(encodedSuccessMessage);
             showSuccessMessage(successMessage);
-        } catch {}  // not worth failing over for
-    } catch {} // ditto
+        } catch {
+            console.log('Showing success message failed'); // not worth failing over for
+        } 
+    } catch {
+        console.log('Success message handling failed'); // ditto
+    }
 }
 
 function removeSuccessMessageFromUrl(message, alreadyEncoded) {
@@ -377,7 +408,7 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             input.addEventListener('focus', function () {
-                if (!emptyInput(input) && !showText) {
+                if (!isEmptyInput(input) && !showText) {
                     eyeSymbol.classList.remove('collapse');
                     if (noEyeSymbol) {
                         noEyeSymbol.classList.add('collapse');
@@ -386,7 +417,7 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             function toggleEyeSymbol() {
-                if (emptyInput(input)) {
+                if (isEmptyInput(input)) {
                     if (!showText) {
                         eyeSymbol.classList.add('collapse');
                     } else if (noEyeSymbol) {

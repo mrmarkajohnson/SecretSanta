@@ -16,7 +16,7 @@ function initIncludedRadios() {
             x.setAttribute('data-initialised', true);
 
             x.addEventListener('click', function (e) {
-                let included = x.value == 'True';
+                let included = isTrueValue(x.value);
                 let title = included ? 'Confirm participation' : 'Don\'t participate';
                 let message = 'Are you sure you ' + (included ? '' : 'DON\'T ') + 'want to participate this year?'
 

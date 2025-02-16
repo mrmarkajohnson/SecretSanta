@@ -13,9 +13,13 @@ public class ParticipateController : BaseController
     {
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        if (AjaxRequest())
+            return await GiftingGroupsGrid();
+
+        var groups = await Send(new UserGiftingGroupYearsQuery());
+        return View(groups);
     }
 
     public async Task<IActionResult> GiftingGroupsGrid()

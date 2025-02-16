@@ -1,5 +1,6 @@
-﻿@using NonFactors.Mvc.Grid
+﻿@using Global.Abstractions.Global.Messages
 
+@model IQueryable<IReadMessage>
 @{
     ViewData["Title"] = "Messages";
 }
@@ -14,7 +15,8 @@
         </p>
     </div>
 
-    <div class="ps-4 pe-4 col-12 col-md-10">
-        @Html.AjaxGrid(Url.Action("MessagesGrid"), new { id = "messages-grid" })
+    <div class="@StandardFullWidthGridContainer">
+        <partial name="_MessagesGrid" />
+        @* @Html.AjaxGrid(Url.Action("MessagesGrid"), new { id = "messages-grid" }) *@
     </div>
 </div>

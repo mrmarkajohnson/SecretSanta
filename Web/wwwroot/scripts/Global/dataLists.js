@@ -12,7 +12,7 @@ function initDataLists() {
 function handleDataListIssues(dataListInput) { // ensure the full list is shown even when it has a value    
 
     let defaultPlaceholder = dataListInput.getAttribute('placeholder');
-    if (emptyValue(defaultPlaceholder)) {
+    if (isEmptyValue(defaultPlaceholder)) {
         defaultPlaceholder = dataListStandardPlaceholder;
     }
 
@@ -33,7 +33,7 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
     });
 
     function setPlaceholderAndClearValue() {
-        if (!emptyInput(dataListInput)) {
+        if (!isEmptyInput(dataListInput)) {
             let currentValue = dataListInput.value;
             dataListInput.setAttribute('placeholder', currentValue);
             dataListInput.value = '';

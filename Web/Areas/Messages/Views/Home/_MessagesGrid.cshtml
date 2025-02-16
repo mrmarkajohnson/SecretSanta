@@ -24,11 +24,12 @@
         columns.Add(x => x.HeaderText).Titled("Subject");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
-    @* .Pageable(pager =>
+    .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
-    }) *@
+    })
+    .UsingUrl(Url.Action("MessagesGrid"))
     .Empty("No messages found")
     .Id("messages-grid")
     .Filterable()

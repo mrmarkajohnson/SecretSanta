@@ -1,4 +1,4 @@
-﻿@using NonFactors.Mvc.Grid
+﻿@model JoinerApplicationsVm
 
 @{
     ViewData["Title"] = "Joiner Applications";
@@ -14,7 +14,8 @@
         </p>
     </div>
 
-    <div class="ps-4 pe-4 col-12 col-md-10">
-        @Html.AjaxGrid(Url.Action("JoinerApplicationsGrid"), new { id = "joiner-applications-grid" })
+    <div class="@StandardFullWidthGridContainer">
+        <partial name="_JoinerApplicationsGrid" />
+        @* @Html.AjaxGrid(Url.Action("JoinerApplicationsGrid"), new { id = "joiner-applications-grid" }) *@
     </div>
 </div>

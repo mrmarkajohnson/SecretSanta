@@ -32,7 +32,7 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             input.addEventListener('focus', function () {
-                if (!emptyInput(input) && !showText) {
+                if (!isEmptyInput(input) && !showText) {
                     eyeSymbol.classList.remove('collapse');
                     if (noEyeSymbol) {
                         noEyeSymbol.classList.add('collapse');
@@ -41,7 +41,7 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             function toggleEyeSymbol() {
-                if (emptyInput(input)) {
+                if (isEmptyInput(input)) {
                     if (!showText) {
                         eyeSymbol.classList.add('collapse');
                     } else if (noEyeSymbol) {

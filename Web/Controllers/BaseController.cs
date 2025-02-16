@@ -5,7 +5,6 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
-using Global.Abstractions.Areas.Partners;
 using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
@@ -199,5 +198,10 @@ public class BaseController : Controller
     private string GetFullUrl(HttpRequest request, string action, string controller, string area)
     {
         return Url.Action(request, action, controller, area);
+    }
+
+    protected bool AjaxRequest()
+    {
+        return HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
     }
 }

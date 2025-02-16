@@ -22,7 +22,7 @@ function handleSuccessFromUrl(currentUrl) {
         let encodedSuccessMessage = '';
         let remainingUntilNext = remainingUrl.substring(0, remainingUrl.indexOf('&'));
 
-        if (isEmptyString(remainingUntilNext)) {
+        if (isEmptyValue(remainingUntilNext)) {
             encodedSuccessMessage = remainingUrl;
         } else {
             encodedSuccessMessage = remainingUntilNext;
@@ -33,8 +33,12 @@ function handleSuccessFromUrl(currentUrl) {
         try {
             let successMessage = decodeURIComponent(encodedSuccessMessage);
             showSuccessMessage(successMessage);
-        } catch {}  // not worth failing over for
-    } catch {} // ditto
+        } catch {
+            console.log('Showing success message failed'); // not worth failing over for
+        } 
+    } catch {
+        console.log('Success message handling failed'); // ditto
+    }
 }
 
 function removeSuccessMessageFromUrl(message, alreadyEncoded) {

@@ -1,7 +1,7 @@
 ﻿@using Global.Abstractions.Global
 @using NonFactors.Mvc.Grid
 
-@model IEnumerable<IVisibleUser>
+@model UserGridVm
 @{
     Func<IVisibleUser, object> actions =
     @<text>
@@ -10,7 +10,7 @@
 }
 
 @(Html
-    .Grid(Model)
+    .Grid(Model.Users)
     .Build(columns =>
     {
         columns.Add(x => x.UserDisplayName).Titled("Name");
@@ -18,11 +18,12 @@
         columns.Add<string>(x => x.Email ?? string.Empty).Titled("E-mail Address");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
-    @* .Pageable(pager =>
+    .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
-    }) *@
+    })
+    .UsingUrl(Url.Action(Model.UserGridAction))
     .Empty("Nobody found")
     .Id("select-user-grid")
     .Filterable()
