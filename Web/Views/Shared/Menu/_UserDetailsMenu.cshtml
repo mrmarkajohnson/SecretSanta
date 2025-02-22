@@ -1,0 +1,30 @@
+﻿@using ViewLayer.Models.Home
+@{
+    string greeting = Model?.CurrentUser == null ? "" : $"\"{Model.CurrentUser.Greeting}!\"";
+}
+
+<ul class="nav-item left-menu-item">
+    <li class="dropdown-hover">                                        
+        <span class="fa fa-circle-user fa-border"></span> 
+        <span class="d-none d-lg-inline">
+            @Model.CurrentUser.Forename @Model.CurrentUser.Surname
+        </span>                                    
+        <ul class="dropdown-menu">
+            <li class="d-block d-lg-none">
+                <div class="dropdown-item"><b>Name:</b> @Model.CurrentUser.Forename @Model.CurrentUser.Surname</div>
+            </li>
+            <li>
+                <div class="dropdown-item"><b>Username:</b> @Model.CurrentUser.UserName</div>
+            </li>
+            <li>
+                <div class="dropdown-item"><b>Greeting:</b> @greeting</div>
+            </li>
+            @if (!string.IsNullOrWhiteSpace(Model.CurrentUser.Email) && Model.CurrentUser.Email != Model.CurrentUser.UserName)
+            {
+                <li>
+                    <div class="dropdown-item"><b>E-mail:</b> @Model.CurrentUser.Email</div>
+                </li>
+            }
+        </ul>
+    </li>
+</ul>    

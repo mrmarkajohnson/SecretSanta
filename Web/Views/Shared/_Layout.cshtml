@@ -56,14 +56,20 @@
                         <a class="navbar-brand" href="#"></a>
                         <a class="nav-link" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">Set Your Security Questions</a>
                     }
-                    else
+                    else if (Model?.CurrentUser != null)
                     {
-                        <div style="vertical-align: middle !important">
-                            <a class="nav-link" asp-area=@string.Empty asp-controller="Home" asp-action="Index" style="min-height: 40px !important; padding-top: 4px !important;"><i class="fa fa-house">&nbsp;</i>Home</a>
+                        <div class="text-start justify-content-start">
+                            <div class="navbar" style="flex-wrap: nowrap !important;">
+                                <a class="nav-link left-menu-item" asp-area=@string.Empty asp-controller="Home" asp-action="Index">
+                                    <i class="fa fa-house">&nbsp;</i>Home
+                                </a>
+
+                                <partial name="Menu/_UserDetailsMenu" />
+                            </div>
                         </div>
 
                         <div class="d-none d-sm-block text-end justify-content-end">
-                            <div class="collapse navbar-collapse text-end justify-content-end" id="navbarContent" style="min-height: 40px !important">
+                            <div class="collapse navbar-collapse text-end justify-content-end" style="min-height: 40px !important; flex-wrap: wrap !important;">
                                 @* In normal mode, show normal drop-downs *@
                                 <partial name="Menu/_LoggedInMenu" model="@normalMenuModel" />
                             </div>

@@ -1,6 +1,5 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
-* Show a user icon with the user's name, UserID, e-mail address if different, and greeting next to the 'Home' icon on the left (when logged in)
 Create menus and rework main page
 Add testing and production configuration
 Add back buttons to relevant pages
@@ -29,10 +28,11 @@ GIFTING GROUPS
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
 Remove users from group
 Tidy up available locations and currencies - add missing countries
-Invite users to group via/using e-mail?
-Close a group?
+Invite users to group via/using e-mail
+Invite users without an e-mail address in the system to join using a unique token on the user, similar to the JoinerToken on groups, used only for that
+Allow admins to set up the whole gifting group etc. and invite users using the methods above
+Close (archive) a group?
 Allow years to continue into January, just in case
-Allow admins to set up the whole gifting group etc.?
 
 RELATIONSHIPS
 * Allow users to 'edit' a relationship in a modal, so they get a bit more help/explanation

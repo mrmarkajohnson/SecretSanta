@@ -7,12 +7,6 @@
         <span class="fa-solid fa-user">&nbsp;</span>Account
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">                
-        @*  <li>
-            <a class="dropdown-item" asp-area=string.Empty asp-controller="Home" asp-action="Index">Home</a>
-        </li> *@
-        @* <li class="nav-item">
-            <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-        </li> *@
         <li>
             <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">Update Your Details</a>
         </li>

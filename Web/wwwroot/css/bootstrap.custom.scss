@@ -115,6 +115,20 @@ button.navbar-toggler:hover {
     text-shadow: $green-gold-text-shadow !important;
 }
 
+.nav-item {
+    color: $white;
+    text-decoration: none !important;
+}
+
+.navbar .left-menu-item {
+    //min-height: 40px !important;
+    margin-right: 10px !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+}
+
 .nav-link {
     color: $white;
     text-decoration: none !important;
@@ -144,6 +158,22 @@ button.navbar-toggler:hover {
 ul.dropdown-menu a.dropdown-item:hover, button.dropdown-item:hover {
     color: $blue;
     text-decoration: underline !important;
+}
+
+.dropdown-hover .dropdown-menu {
+    color: $purple !important;
+    background: $gold-background !important;
+    --fa-border-color: #{$purple};
+}
+
+.dropdown-hover:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* remove the gap so it doesn't close */
+}
+
+.dropdown-hover .dropdown-menu .dropdown-item {
+    color: $purple !important;
+    background: $gold-background !important;
 }
 
 .navbar-togger {
@@ -227,6 +257,20 @@ select.form-control {
     -webkit-appearance: auto;
     -moz-appearance: listbox;
     appearance: auto;
+}
+
+.fa.fa-circle-user {
+    color: $purple !important;
+    background: $gold-background !important;
+    font-size: 15px !important;
+}
+
+.fa.fa-circle-user.fa-border {
+    --fa-border-color: #{$gold};
+    --fa-border-radius: 50% !important;
+    --fa-border-padding: 0 !important;
+    --fa-border-width: 2px !important;
+    --fa-border-style: solid !important;
 }
 
 // region info/question circles for tooltips
