@@ -1,4 +1,5 @@
 ﻿@using ViewLayer.Models.Home
+@using static Global.Settings.GlobalSettings
 
 @inject SignInManager<IdentityUser> _signInManager
 @inject UserManager<IdentityUser> _userManager
@@ -8,7 +9,7 @@
     ViewData["Title"] = "Home Page";
     bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
 
-    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? string.Empty : " back") 
+    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? string.Empty : " back")
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? " to Secret Santa" : string.Empty) // avoid making the string too long
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? string.Empty : $", {Model.CurrentUser.Forename}")
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? "!" : $". {Model.CurrentUser.Greeting}!");
@@ -31,90 +32,136 @@
         }
         else
         {
-            <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">
-                    Update Your Details
-                </a>
-            </p>
-            <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
-                    Update Your Security Questions
-                </a>
-            </p>
-            <p>
-                <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword">
-                    Change Your Password
-                </a>
-            </p>
+            <div class="d-flex justify-content-center" style="flex-wrap: wrap !important">
+                <div class="@StandardCardWidth">
+                    <div class="card ">
+                        <div class="card-header">
+                            <span class="fa-solid fa-user fa-border float-start"></span>Your Account
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Manage your login and account details</h5>
+                            @* <p class="card-text">Manage your login and account details</p> *@
+                            <p>
+                                <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">
+                                    Update Your Details
+                                </a>
+                            </p>
+                            <p>
+                                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
+                                    Update Your Security Questions
+                                </a>
+                            </p>
+                            <p>
+                                <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword">
+                                    Change Your Password
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-            <p>
-                <a asp-area="Messages" asp-controller="Home" asp-action="Index">
-                    Read Your Messages
-                </a>
-            </p>
+                <div class="@StandardCardWidth">
+                    <div class="card ">
+                        <div class="card-header">
+                            <span class="fa-solid fa-heart fa-border float-start"></span>Your Partners
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Avoid Santa selecting your partner</h5>
+                            <p>
+                                <a asp-area="Partners" asp-controller="Manage" asp-action="Index">
+                                    Manage Your Relationships
+                                </a>
+                            </p>
+                            <p>
+                                <a asp-area="Partners" asp-controller="Manage" asp-action="AddRelationship">
+                                    Add a Relationship
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-            <p>
-                <a asp-area="Partners" asp-controller="Manage" asp-action="Index">
-                    Manage Your Relationships
-                </a>
-            </p>
-            <p>
-                <a asp-area="Partners" asp-controller="Manage" asp-action="AddRelationship">
-                    Add a Relationship
-                </a>
-            </p>
+                <div class="@StandardCardWidth">
+                    <div class="card ">
+                        <div class="card-header">
+                            <span class="fa-solid fa-gift fa-border float-start"></span>Your Gifting Groups
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Manage the groups that you're in</h5>
 
-            <p>
-                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
-                    Create a New Gifting Group
-                </a>
-            </p>
-            <p>
-                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
-                    Apply to Join a Gifting Group
-                </a>
-            </p>
-            <p>
-                <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
-                    Participate for @DateTime.Today.Year
-                </a>
-            </p>
+                            <p>
+                                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
+                                    Create a New Gifting Group
+                                </a>
+                            </p>
+                            <p>
+                                <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
+                                    Apply to Join a Gifting Group
+                                </a>
+                            </p>
+                            <p>
+                                <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                                    Participate for @DateTime.Today.Year
+                                </a>
+                            </p>
 
-            @if (Model?.GiftingGroups?.Any() == true)
-            {
-                @if (Model.NewJoinerApplications > 0)
-                {
-                    <p>
-                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
-                            Review Joiner Applications
-                        </a>
-                    </p>
-                }
-                
-                @foreach (var giftingGroup in Model.GiftingGroups.ToList())
-                {
-                    if (giftingGroup.GroupAdmin)
-                    {
+                            @if (Model?.GiftingGroups?.Any() == true)
+                            {
+                                @if (Model.NewJoinerApplications > 0)
+                                {
+                                    <p>
+                                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
+                                            Review Joiner Applications
+                                        </a>
+                                    </p>
+                                }
+
+                                @foreach (var giftingGroup in Model.GiftingGroups.ToList())
+                                {
+                                    if (giftingGroup.GroupAdmin)
+                                    {
+                                        <p>
+                                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                                                Edit Gifting Group '@giftingGroup.GroupName'
+                                            </a>
+                                        </p>
+                                        <p>
+                                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                                                Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                                            </a>
+                                        </p>
+                                    }
+
+                                    <p>
+                                        <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
+                                        </a>
+                                    </p>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="@StandardCardWidth">
+                <div class="card ">
+                    <div class="card-header">
+                        <span class="fa-solid fa-envelope fa-border float-start"></span>Your Messages
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Read and reply to your messages</h5>
                         <p>
-                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId = "@giftingGroup.GiftingGroupId">
-                                Edit Gifting Group '@giftingGroup.GroupName'
+                            <a asp-area="Messages" asp-controller="Home" asp-action="Index">
+                                Read Your Messages
                             </a>
                         </p>
-                        <p>
-                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                                Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
-                            </a>
-                        </p>
-                    }
+                    </div>
+                </div>
+            </div>
 
-                    <p>
-                        <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
-                        </a>
-                    </p>
-                }
-            }
-    }
+            
+        }
     </div>
 }
 else

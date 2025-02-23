@@ -1,9 +1,8 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
-Create menus and rework main page
+Rework main page
 Add testing and production configuration
 Add back buttons to relevant pages
-Use IIS?
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 Add gender/pronouns ('What do you prefer to be known as? Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!')
