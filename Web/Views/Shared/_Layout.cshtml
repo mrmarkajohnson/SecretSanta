@@ -30,7 +30,7 @@
     <script>
         FontAwesomeConfig = { autoReplaceSvg: false }
     </script>
-    
+
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet" href="~/lib/toastr/toastr.css" /> @* This is after Bootstrap to preserve the original styling *@
@@ -61,12 +61,14 @@
                         <div class="text-start justify-content-start">
                             <div class="navbar" style="flex-wrap: nowrap !important;">
                                 <a class="nav-link left-menu-item" asp-area=@string.Empty asp-controller="Home" asp-action="Index">
-                                    <i class="fa fa-house">&nbsp;</i>Home
+                                    <i class="fa-solid fa-house" style="color: #884433">&nbsp;</i>Home
                                 </a>
 
                                 <partial name="Menu/_UserDetailsMenu" model="@Model" />
                             </div>
                         </div>
+
+                        <text>&nbsp;</text>
 
                         <div class="d-none d-sm-block text-end justify-content-end">
                             <div class="collapse navbar-collapse text-end justify-content-end" style="min-height: 40px !important; flex-wrap: wrap !important;">

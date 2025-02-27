@@ -18,7 +18,7 @@ $primary-shadow-2: #45797d;
 $red-glow: #ff000099; 
 $gold-glow: #ffd70020;
 $gold-glow-solid: #fffade;
-$gold-light: #ffffee;
+$gold-light: #ffffee80;
 $green-gold-glow: #efffcc20;
 $green-gold-glow-solid: #fdfff8;
 $grey-blue-glow: #9999ff10;
@@ -278,6 +278,7 @@ select.form-control {
 .fa-solid.fa-border {    
     min-width: 26px;
     min-height: 26px;
+    background-color: #ffffff40;
     --fa-border-radius: 20% !important;
     --fa-border-padding: 4px !important;
     --fa-border-width: 1px !important;
