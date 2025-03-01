@@ -1,4 +1,5 @@
-﻿@using ViewLayer.Models.Home
+﻿@using Global.Abstractions.Areas.GiftingGroup
+@using ViewLayer.Models.Home
 @using static Global.Settings.GlobalSettings
 
 @inject SignInManager<IdentityUser> _signInManager
@@ -13,6 +14,9 @@
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? " to Secret Santa" : string.Empty) // avoid making the string too long
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? string.Empty : $", {Model.CurrentUser.Forename}")
         + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? "!" : $". {Model.CurrentUser.Greeting}!");
+
+    var giftingGroups = Model?.GiftingGroups ?? new List<IUserGiftingGroup>();
+    bool separateGroupBoxes = giftingGroups.Count > 2 || giftingGroups.Any(x => x.GroupAdmin);
 }
 
 <partial name="_SuccessMessage" />
@@ -32,7 +36,7 @@
         }
         else
         {
-            <div class="d-flex justify-content-center" style="flex-wrap: wrap !important">
+            <div class="d-flex justify-content-left" style="flex-wrap: wrap !important">
                 <div class="@StandardCardWidth">
                     <div class="card ">
                         <div class="card-header">
@@ -105,9 +109,9 @@
                                 </a>
                             </p>
 
-                            @if (Model?.GiftingGroups?.Any() == true)
+                            @if (giftingGroups.Any())
                             {
-                                @if (Model.NewJoinerApplications > 0)
+                                @if (Model?.NewJoinerApplications > 0)
                                 {
                                     <p>
                                         <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
@@ -116,51 +120,60 @@
                                     </p>
                                 }
 
-                                @foreach (var giftingGroup in Model.GiftingGroups.ToList())
+                                if (!separateGroupBoxes)
                                 {
-                                    if (giftingGroup.GroupAdmin)
+                                    @foreach (var giftingGroup in giftingGroups)
                                     {
-                                        <p>
-                                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                                                Edit Gifting Group '@giftingGroup.GroupName'
-                                            </a>
-                                        </p>
-                                        <p>
-                                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                                                Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
-                                            </a>
-                                        </p>
+                                        <partial name="_GroupPanelContent" model="@giftingGroup" />
                                     }
-
-                                    <p>
-                                        <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
-                                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
-                                        </a>
-                                    </p>
                                 }
                             }
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="@StandardCardWidth">
-                <div class="card ">
-                    <div class="card-header">
-                        <span class="fa-solid fa-envelope fa-border float-start" style="color: #eebb55"></span>Your Messages
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Read and reply to your messages</h5>
-                        <p>
-                            <a asp-area="Messages" asp-controller="Home" asp-action="Index">
-                                Read Your Messages
-                            </a>
-                        </p>
+                <div class="@StandardCardWidth">
+                    <div class="card ">
+                        <div class="card-header">
+                            <span class="fa-solid fa-envelope fa-border float-start" style="color: #eebb55"></span>Your Messages
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Read and reply to your messages</h5>
+                            <p>
+                                <a asp-area="Messages" asp-controller="Home" asp-action="Index">
+                                    Read Your Messages
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            
+                @if (separateGroupBoxes)
+                {
+                    int groupCounter = 0;
+
+                    @foreach (var giftingGroup in giftingGroups)
+                    {
+                        groupCounter++;
+                        string icon = (groupCounter % 4) switch { 1 => "fa-candy-cane", 2 => "fa-gifts", 3 => "fa-holly-berry", _ => "fa-sleigh" };
+                        string iconColour = (groupCounter % 2) switch { 1 => "#ff0000", _ => "#ffffff" };
+                        string cardTitle = giftingGroup.GroupAdmin ? $"Manage group '{@giftingGroup.GroupName}'" : $"Participate in group '{@giftingGroup.GroupName}'";
+
+                        <div class="@StandardCardWidth">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <span class="fa-solid @icon fa-border float-start" style="color: @iconColour"></span>Group '@giftingGroup.GroupName'
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@cardTitle</h5>
+
+                                    <partial name="_GroupPanelContent" model="@giftingGroup" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         }
     </div>
 }
