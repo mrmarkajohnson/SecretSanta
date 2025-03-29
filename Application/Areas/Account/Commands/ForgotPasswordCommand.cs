@@ -27,7 +27,7 @@ public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem :
             }
             else
             {
-                string hashedGreeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, user.Id);
+                string hashedGreeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, user.GlobalUserId);
                 if (user.Greeting != hashedGreeting)
                 {
                     SetDetailsNotRecognisedError();

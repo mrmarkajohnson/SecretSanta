@@ -41,7 +41,7 @@ internal static class UserEncryptionHelper
         if (hashableUser is IIdentityUser identityUser)
         {
             greeting = identityUser.IdentificationHashed 
-                ? EncryptionHelper.Decrypt(identityUser.Greeting, false, hashableUser.Id) 
+                ? EncryptionHelper.Decrypt(identityUser.Greeting, false, hashableUser.GlobalUserId) 
                 : identityUser.Greeting;
         }
 

@@ -8,6 +8,7 @@ public class ParticipateMappingProfile : Profile
 {
 	public ParticipateMappingProfile()
 	{
-		CreateMap<IUserGiftingGroupYear, UserGiftingGroupYearVm>();
+        CreateMap<IManageUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
+        CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
 	}
 }

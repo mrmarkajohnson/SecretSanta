@@ -4,7 +4,7 @@ namespace Application.Shared.Identity;
 
 public abstract class BaseUser : IHashableUserId
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string GlobalUserId { get; set; } = Guid.NewGuid().ToString();
 
     [Display(Name = "Username")]    
     public virtual string? UserName { get; set; }

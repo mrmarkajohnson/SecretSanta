@@ -12,6 +12,6 @@ public class GiftingGroupMappingProfile : Profile
         CreateMap<IGiftingGroup, EditGiftingGroupVm>();
         CreateMap<IReviewApplication, ReviewJoinerApplicationVm>();
         CreateMap<IGiftingGroupYear, SetupGiftingGroupYearVm>();
-        CreateMap<IUserGiftingGroupYear, UserGiftingGroupYearVm>();
+        CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
     }
 }

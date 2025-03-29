@@ -2,6 +2,6 @@
 
 public interface IHashableUserId : IHashableUserIdBase
 {
-    string Id { get; set; }
+    string GlobalUserId { get; }
     bool IdentificationHashed { get; set; }
 }

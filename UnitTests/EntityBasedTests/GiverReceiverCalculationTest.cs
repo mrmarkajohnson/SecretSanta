@@ -366,7 +366,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
                 {
                     Id = ++groupUserId,
                     YearId = yearId,
-                    Year = giftingYear1,
+                    GiftingGroupYear = giftingYear1,
                     SantaUserId = userLink.SantaUserId,
                     SantaUser = userLink.SantaUser,
                     Included = true

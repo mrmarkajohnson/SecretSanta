@@ -20,7 +20,7 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
             Item.PossiblePartners = await Send(new GetPossiblePartnersQuery());
         }
 
-        IVisibleUser? selectedPartner = Item.PossiblePartners.FirstOrDefault(x => x.Id == Item.UserId.ToString());
+        IVisibleUser? selectedPartner = Item.PossiblePartners.FirstOrDefault(x => x.GlobalUserId == Item.UserId.ToString());
 
         if (selectedPartner == null)
         {

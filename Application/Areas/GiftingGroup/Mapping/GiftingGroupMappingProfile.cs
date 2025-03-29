@@ -29,6 +29,9 @@ public class GiftingGroupMappingProfile : Profile
                     ?? src.GiftingGroup.CurrencySymbolOverride));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
+        CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYear>();
+        CreateMap<IUserGiftingGroupYear, IManageUserGiftingGroupYear>().As<ManageUserGiftingGroupYear>();
+
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroup>()
             .ForMember(dest => dest.GiftingGroupId, opt => opt.MapFrom(src => src.GiftingGroupId))
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))

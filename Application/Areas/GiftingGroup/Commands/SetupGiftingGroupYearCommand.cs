@@ -178,7 +178,7 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             throw new AccessDeniedException();
         }
 
-        string headerText = $"Your Secret Santa recipientfor group '{dbGiver.Year.GiftingGroup.Name}' has been " + cancelled switch
+        string headerText = $"Your Secret Santa recipientfor group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' has been " + cancelled switch
         {
             true => "CANCELLED!",
             null => "CHANGED!",
@@ -187,11 +187,11 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
 
         string messageText = cancelled switch
         {
-            true => $"All recipients for group '{dbGiver.Year.GiftingGroup.Name}' this year have been cancelled and reset. " +
+            true => $"All recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "Look out for future messages telling you who your new recipient will be. " +
                 "If you've already purchased a present, please contact a group administrator.",
             null => $"This year, you are NOW giving to {dbGiver.GivingToUser.GlobalUser.FullName().ToUpper()}. "
-                + $"All previous recipients for group '{dbGiver.Year.GiftingGroup.Name}' this year have been cancelled and reset. " +
+                + $"All previous recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "If you've already purchased a present, please contact a group administrator.",
             false => $"This year, you are giving to {dbGiver.GivingToUser.GlobalUser.FullName().ToUpper()}."
         };
@@ -205,6 +205,6 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             ShowAsFromSanta = true
         };
 
-        SendMessage(message, _dbCurrentUser.SantaUser, dbGiver.SantaUser, dbGiver.Year);
+        SendMessage(message, _dbCurrentUser.SantaUser, dbGiver.SantaUser, dbGiver.GiftingGroupYear);
     }
 }

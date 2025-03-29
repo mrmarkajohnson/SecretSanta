@@ -87,7 +87,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
             {
                 YearId = dbGiftingGroupYear.Year,
-                Year = dbGiftingGroupYear,
+                GiftingGroupYear = dbGiftingGroupYear,
                 SantaUserId = dbApplication.SantaUserId,
                 SantaUser = dbApplication.SantaUser,
                 Included = true

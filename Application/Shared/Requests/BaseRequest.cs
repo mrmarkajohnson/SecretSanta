@@ -175,7 +175,7 @@ public abstract class BaseRequest<TResult>
 
     protected Global_User? GetGlobalUser(IIdentityUser identityUser, params Expression<Func<Global_User, object?>>[] includes)
     {
-        return GetGlobalUser(identityUser.Id, includes);
+        return GetGlobalUser(identityUser.GlobalUserId, includes);
     }
 
     protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object?>>[] includes)
@@ -197,7 +197,7 @@ public abstract class BaseRequest<TResult>
     {
         if (identityUser != null)
         {
-            var dbUser = await userManager.FindByIdAsync(identityUser.Id); // always get the user again, to avoid double tracking errors
+            var dbUser = await userManager.FindByIdAsync(identityUser.GlobalUserId); // always get the user again, to avoid double tracking errors
             if (dbUser != null)
             {
                 await userManager.AccessFailedAsync(dbUser);

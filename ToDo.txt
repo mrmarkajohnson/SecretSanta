@@ -1,6 +1,6 @@
 GENERAL
+* Rename IDs to keys with the table name
 * Handle index pages etc. in bundles/routing
-Rework main page
 Add testing and production configuration
 Add back buttons to relevant pages
 Add more auditing and make audit trails visible
@@ -22,7 +22,6 @@ Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
 * Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
-* Allow users to say who they bought for last year (if not set)
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
 Remove users from group

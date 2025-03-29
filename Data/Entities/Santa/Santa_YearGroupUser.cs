@@ -12,7 +12,7 @@ public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupU
     public int Id { get; set; }
 
     public int YearId { get; set; }
-    public virtual required Santa_GiftingGroupYear Year { get; set; }
+    public virtual required Santa_GiftingGroupYear GiftingGroupYear { get; set; }
 
     public int SantaUserId { get; set; }
     public virtual required Santa_User SantaUser { get; set; }

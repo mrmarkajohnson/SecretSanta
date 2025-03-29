@@ -19,7 +19,7 @@ internal static class EncryptionHelper
 
     public static string OneWayEncrypt(string? value, IIdentityUser identityUser)
     {
-        return OneWayEncrypt(value, identityUser.Id);
+        return OneWayEncrypt(value, identityUser.GlobalUserId);
     }
 
     public static string OneWayEncrypt(string? value, string saltKey)

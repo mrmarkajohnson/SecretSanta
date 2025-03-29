@@ -53,13 +53,27 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [NotAudited]
     public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
 
-    [NotMapped, NotAudited]
-    public bool IdentificationHashed { get; set; } = true;
-
     [Audit(NoDetails = true)]
     public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
 
     public virtual ICollection<Global_User_Audit> AuditTrail { get; set; }
+
+    #region For the IGlobalUser interface
+
+    [NotMapped, NotAudited]
+    public bool IdentificationHashed // can't use explicit implemention as it doesn't map correctly, and it must have a setter
+    {
+        get => true;
+        set 
+        {
+            throw new NotImplementedException("The entity cannot be unhashed."); // just in case!
+        }
+    }
+
+    [NotMapped, NotAudited]
+    public string GlobalUserId => Id; // ditto
+
+    #endregion For the IGlobalUser interface
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
     {

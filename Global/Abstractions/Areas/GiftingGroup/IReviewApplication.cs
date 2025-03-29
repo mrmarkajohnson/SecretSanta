@@ -9,11 +9,7 @@ public interface IReviewApplication : IHashableUserId, IUserNamesBase
     string GroupName { get; set; }
 
     string ApplicantId { get; set; }
-    string IHashableUserId.Id
-    {
-        get => ApplicantId;
-        set => ApplicantId = value;
-    }
+    string IHashableUserId.GlobalUserId => ApplicantId;
 
     string ApplicantName { get; set; }
 

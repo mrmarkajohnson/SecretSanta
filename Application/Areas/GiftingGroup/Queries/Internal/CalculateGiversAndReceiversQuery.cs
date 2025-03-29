@@ -34,7 +34,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         List <Santa_YearGroupUser> _activeCombinationsInOtherGroups = DbContext.Santa_YearGroupUsers
             .Where(x => x.GivingToUserId != null)
             .Where(x => x.YearId == _dbGiftingGroupYear.Id)
-            .Where(x => x.Year.GiftingGroupId != _dbGiftingGroupYear.GiftingGroupId)
+            .Where(x => x.GiftingGroupYear.GiftingGroupId != _dbGiftingGroupYear.GiftingGroupId)
             .Where(x => participatingMemberIds.Contains(x.SantaUserId))
             .Where(x => x.GivingToUserId != null && participatingMemberIds.Contains(x.GivingToUserId.Value))
             .ToList();

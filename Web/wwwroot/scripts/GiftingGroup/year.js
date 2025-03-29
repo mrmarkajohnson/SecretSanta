@@ -88,7 +88,7 @@ function initIncludedRadios() {
     function resetIncludedRadios() {
         includedRadios.forEach(function(x) {
             try {
-                x.checked = x.getAttribute('data-original-value');
+                x.checked = isTrueValue(x.getAttribute('data-original-value'));
             } catch {
                 x.checked = !x.checked;
             }

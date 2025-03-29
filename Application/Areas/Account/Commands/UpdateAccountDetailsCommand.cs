@@ -15,7 +15,7 @@ public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> whe
         EnsureSignedIn();
 
         string? userId = GetCurrentUserId();
-        if (userId != null && userId == Item.Id)
+        if (userId != null && userId == Item.GlobalUserId)
         {
             Global_User? dbCurrentUser = GetGlobalUser(userId);
 

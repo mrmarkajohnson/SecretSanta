@@ -32,7 +32,7 @@ internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, ne
         if (result is HashedUserIdWithGreeting greetingResult)
         {
             greetingResult.GreetingHash = IdentityUser.IdentificationHashed ? IdentityUser.Greeting
-                : EncryptionHelper.TwoWayEncrypt(IdentityUser.Greeting, false, IdentityUser.Id);
+                : EncryptionHelper.TwoWayEncrypt(IdentityUser.Greeting, false, IdentityUser.GlobalUserId);
         }
 
         return result;

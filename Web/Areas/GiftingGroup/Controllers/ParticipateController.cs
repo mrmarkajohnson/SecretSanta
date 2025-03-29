@@ -1,6 +1,7 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 using ViewLayer.Models.Participate;
 
 namespace Web.Areas.GiftingGroup.Controllers;
@@ -31,15 +32,22 @@ public class ParticipateController : BaseController
     [HttpGet]
     public async Task<IActionResult> Year(int groupId)
     {
-        var year = await Send(new GetUserGiftingGroupYearQuery(groupId));
-        var model = Mapper.Map<UserGiftingGroupYearVm>(year);
-        return View(model);
+        return await EditYearParticipation(groupId);
+    }
+
+    private async Task<IActionResult> EditYearParticipation(int groupId)
+    {
+        var year = await Send(new ManageUserGiftingGroupYearQuery(groupId));
+        var model = Mapper.Map<ManageUserGiftingGroupYearVm>(year);
+        model.IncludePreviousYears = model.PreviousYearsRequired > 0 && model.OtherMembersSelect.Count > 0;
+        return View("Year", model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> ParticipateInYear(UserGiftingGroupYearVm model)
+    public async Task<IActionResult> Year(ManageUserGiftingGroupYearVm model)
     {
-        var commandResult = await Send(new ParticipateInYearCommand<UserGiftingGroupYearVm>(model), new UserGiftingGroupYearVmValidator());
+        bool fromRadioButtons = model.SubmitIncludedChangeImmediately;
+        var commandResult = await Send(new ParticipateInYearCommand<ManageUserGiftingGroupYearVm>(model), new UserGiftingGroupYearVmValidator());
 
         if (commandResult.Success)
         {
@@ -50,9 +58,13 @@ public class ParticipateController : BaseController
             {
                 return RedirectWithMessage(model.ReturnUrl, message);
             }
-            else
+            else if (fromRadioButtons)
             {
                 return Ok(message);
+            }
+            else
+            {
+                return await EditYearParticipation(model.GiftingGroupId);
             }
         }
         else

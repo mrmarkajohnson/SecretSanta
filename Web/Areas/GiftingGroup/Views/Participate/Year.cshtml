@@ -3,13 +3,17 @@
 @using ViewLayer.Models.Participate
 @using Web.Helpers
 
-@model UserGiftingGroupYearVm
+@model ManageUserGiftingGroupYearVm
 @{
     ViewData["Title"] = $"'{Model.GiftingGroupName}' for {Model.Year}";
     string includedExplanation = Model.Recipient != null ? GiftingGroupNames.NoOptOutWithRecipient : "Will you join in this year?";
     string limitExplanation = $"The suggested limit for members to spend on each other this year, in {Model.CurrencyCode}";
     string recipientExplanation = "The person who you will be giving to this year";
     bool radiosReadonly = !Model.CanChangeIncluded;
+    string lastYearExplanation = $"If you were involved in {Model.Year - 1}, and can remember who you gave to, please tell Santa";
+    string previousYearExplanation = $"If you were involved in {Model.Year - 2}, and can remember who you gave to, please tell Santa";
+    
+    string includedRadioClass = Model.SubmitIncludedChangeImmediately ? "included-radio" : ""; // the class is used by JavaScript to submit the change
 }
 
 <h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year</h1>
@@ -28,6 +32,8 @@
                 <input type="hidden" asp-for="CurrencyCode">
                 <input type="hidden" asp-for="CurrencySymbol">
                 <input type="hidden" asp-for="Year">
+                <input type="hidden" asp-for="PreviousYearsRequired">
+                <input type="hidden" asp-for="IncludePreviousYears">
 
                 @if (Model.Recipient != null)
                 {
@@ -53,14 +59,14 @@
                             <label asp-for="Included" class="control-label"></label>
                             <div data-url="@Url.Action(Context, "ParticipateInYear", "Participate", "GiftingGroup")" class="control-label fw-normal">
                                 <span class="text-secondary">No</span> 
-                                <input type="radio" asp-for="Included" value="@false" class="included-radio" readonly=@radiosReadonly />
+                                <input type="radio" asp-for="Included" value="@false" class="@includedRadioClass" readonly=@radiosReadonly />
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
 
                                 <span class="text-primary">Yes</span> 
-                                <input type="radio" asp-for="Included" value="@true" class="included-radio" readonly=@radiosReadonly />
+                                <input type="radio" asp-for="Included" value="@true" class="@includedRadioClass" readonly=@radiosReadonly />
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
@@ -72,6 +78,38 @@
                                 <span asp-validation-for="Included" class="text-danger"></span>
                             </div>
                         </div>
+
+                        @if (Model.IncludePreviousYears)
+                        {
+                            <div class="mb-3">
+                                <label asp-for="LastYearRecipientId" class="control-label"></label>
+                                <div class="input-group input-info">
+                                    <select asp-for="LastYearRecipientId" asp-items="Model.OtherMembersSelect" class="form-control culture-info-select" aria-required="false">
+                                        <option value="@null">Don't remember, or not listed</option>
+                                    </select>
+                                    <partial name="_InputQuestion" model="@lastYearExplanation" />
+                                </div>
+                                <div>
+                                    <span asp-validation-for="LastYearRecipientId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            @if (Model.PreviousYearsRequired > 1)
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="PreviousYearRecipientId" class="control-label"></label>
+                                    <div class="input-group input-info">
+                                        <select asp-for="PreviousYearRecipientId" asp-items="Model.OtherMembersSelect" class="form-control culture-info-select" aria-required="false">
+                                            <option value="@null">Don't remember, or not listed</option>
+                                        </select>
+                                        <partial name="_InputQuestion" model="@previousYearExplanation" />
+                                    </div>
+                                    <div>
+                                        <span asp-validation-for="PreviousYearRecipientId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                        }
 
                         <div class="mb-3">
                             <label asp-for="Limit" class="control-label"></label>
@@ -98,9 +136,17 @@
                                 <partial name="_InlineQuestion" model="@recipientExplanation" />
                             </div>
                         </div>
-                    
+
                     </div>
                 </div>
+
+                @if (!Model.SubmitIncludedChangeImmediately)
+                {
+                    <br />
+                    <div class="col-md-12">
+                        <partial name="_SubmitButton" />
+                    </div>
+                }
 
             </div>
         </div>

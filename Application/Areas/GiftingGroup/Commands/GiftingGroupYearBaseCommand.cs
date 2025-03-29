@@ -44,7 +44,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
                 dbYearUser = new Santa_YearGroupUser
                 {
                     YearId = dbGiftingGroupYear.Id,
-                    Year = dbGiftingGroupYear,
+                    GiftingGroupYear = dbGiftingGroupYear,
                     SantaUserId = dbSantaUser.Id,
                     SantaUser = dbSantaUser,
                     Included = included
