@@ -11,15 +11,14 @@
     string recipientExplanation = "The person who you will be giving to this year";
     bool radiosReadonly = !Model.CanChangeIncluded;
     string lastYearExplanation = $"If you were involved in {Model.Year - 1}, and can remember who you gave to, please tell Santa";
-    string previousYearExplanation = $"If you were involved in {Model.Year - 2}, and can remember who you gave to, please tell Santa";
-    
+    string previousYearExplanation = $"If you were involved in {Model.Year - 2}, and can remember who you gave to, please tell Santa";    
     string includedRadioClass = Model.SubmitIncludedChangeImmediately ? "included-radio" : ""; // the class is used by JavaScript to submit the change
 }
 
 <h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" method="post">
+    <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@Model.GiftingGroupId" method="post">
 
         <partial name="_FormHiddenInputs" />
 
@@ -57,7 +56,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Included" class="control-label"></label>
-                            <div data-url="@Url.Action(Context, "ParticipateInYear", "Participate", "GiftingGroup")" class="control-label fw-normal">
+                            <div data-url="@Url.Action(Context, "Year", "Participate", "GiftingGroup")" class="control-label fw-normal">
                                 <span class="text-secondary">No</span> 
                                 <input type="radio" asp-for="Included" value="@false" class="@includedRadioClass" readonly=@radiosReadonly />
                                 &nbsp;
