@@ -7,7 +7,7 @@
 @{
     Func<IReadMessage, object> actions =
     @<text>
-        <a class="modal-link" data-url="@Url.Action(Context.Request, "ViewMessage", "Home", "Messages", new { id = item.Id })"
+        <a class="modal-link" data-url="@Url.Action(Context.Request, "ViewMessage", "Home", "Messages", new { messageRecipientKey = item.MessageRecipientKey })"
            data-toggle="tooltip" title="View Message">
             <i class="fa fa-eye"></i>
         </a>

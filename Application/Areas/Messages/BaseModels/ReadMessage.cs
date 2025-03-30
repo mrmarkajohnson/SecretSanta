@@ -5,8 +5,8 @@ namespace Application.Areas.Messages.BaseModels;
 
 internal class ReadMessage : MessageBase, IReadMessage
 {
-    public int Id { get; set; }
-    public int MessageId { get; set; }
+    public int MessageRecipientKey { get; set; }
+    public int MessageKey { get; set; }
     public DateTime Sent { get; set; }
 
     public IUserNamesBase? Sender { get; set; } = new UserNamesBase();

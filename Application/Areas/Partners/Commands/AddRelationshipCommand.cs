@@ -20,7 +20,7 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
             Item.PossiblePartners = await Send(new GetPossiblePartnersQuery());
         }
 
-        IVisibleUser? selectedPartner = Item.PossiblePartners.FirstOrDefault(x => x.GlobalUserId == Item.UserId.ToString());
+        IVisibleUser? selectedPartner = Item.PossiblePartners.FirstOrDefault(x => x.GlobalUserId == Item.GlobalUserId.ToString());
 
         if (selectedPartner == null)
         {
@@ -34,7 +34,7 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
             throw new AccessDeniedException();
         }
 
-        var dbSelectedUser = GetGlobalUser(Item.UserId.ToString(), g => g.SantaUser);
+        var dbSelectedUser = GetGlobalUser(Item.GlobalUserId.ToString(), g => g.SantaUser);
         if (dbSelectedUser == null || dbSelectedUser.SantaUser == null)
         {
             AddGeneralValidationError("This person could not be selected as a valid partner.");

@@ -2,7 +2,7 @@
 
 public interface IGiftingGroupYearBase
 {
-    int GiftingGroupId { get; set; }
+    int GiftingGroupKey { get; set; }
     int Year { get; set; }
 
     decimal? Limit { get; set; }

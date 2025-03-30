@@ -8,6 +8,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities.Shared;
 
+/// <summary>
+/// Allows expansion using the same database and users
+/// </summary>
 [Table("Global_User")]
 public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions, 
     IAuditableEntity<Global_User_Audit, Global_User_AuditChange>

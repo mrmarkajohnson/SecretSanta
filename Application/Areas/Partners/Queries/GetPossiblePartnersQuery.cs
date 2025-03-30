@@ -14,18 +14,18 @@ public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
             .Select(x => x.GiftingGroup.Name)
             .ToList();
 
-        var visibleUsers =dbCurrentSantaUser.GiftingGroupLinks
+        var visibleUsers = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .SelectMany(x => x.GiftingGroup.UserLinks)
             .Where(y => y.DateArchived == null && y.DateDeleted == null)
-            .Where(y => y.SantaUser != null && y.SantaUserId != dbCurrentSantaUser.Id)
+            .Where(y => y.SantaUser != null && y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
             .Select(y => y.SantaUser)
             .Where(z => z.SuggestedRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
-                .Any(r => r.ConfirmingSantaUserId == dbCurrentSantaUser.Id && r.RelationshipEnded == null) == false)
+                .Any(r => r.ConfirmingSantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Where(z => z.ConfirmingRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
-                .Any(r => r.SuggestedBySantaUserId == dbCurrentSantaUser.Id && r.RelationshipEnded == null) == false)
+                .Any(r => r.SuggestedBySantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)
             .AsQueryable()

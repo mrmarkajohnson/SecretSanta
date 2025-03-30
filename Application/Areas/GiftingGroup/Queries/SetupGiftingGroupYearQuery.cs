@@ -7,30 +7,30 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
 {
-    private readonly int _groupId;
+    private readonly int _giftingGroupKey;
     private readonly int _year;
 
-    public SetupGiftingGroupYearQuery(int groupId, int? year = null)
+    public SetupGiftingGroupYearQuery(int giftingGroupKey, int? year = null)
     {
-        _groupId = groupId;
+        _giftingGroupKey = giftingGroupKey;
         _year = year ?? DateTime.Today.Year;
     }
 
     protected async override Task<IGiftingGroupYear> Handle()
     {
-        if (_groupId == 0)
+        if (_giftingGroupKey == 0)
         {
             throw new NotFoundException("Gifting Group");
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_groupId, true);
-        Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGroup.Years.FirstOrDefault(x => x.Year == _year);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
+        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.Year == _year);
 
         GiftingGroupYear giftingGroupYear = new();
         DateTime firstDayOfNextYear = new DateTime(_year + 1, 1, 1);
 
-        var validGroupMembers = dbGroup.UserLinks
+        var validGroupMembers = dbGiftingGroup.UserLinks
                 .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));
 
         if (dbGiftingGroupYear != null)
@@ -38,7 +38,7 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
             Mapper.Map(dbGiftingGroupYear, giftingGroupYear);
 
             var missingGroupMembers = validGroupMembers
-                .Where(x => giftingGroupYear.GroupMembers.Any(y => y.SantaUserId == x.SantaUserId) == false)
+                .Where(x => giftingGroupYear.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false)
                 .Select(x => Mapper.Map(x, new YearGroupUserBase()))
                 .ToList();
 
@@ -50,7 +50,7 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
         }
         else
         {
-            Mapper.Map(dbGroup, giftingGroupYear);
+            Mapper.Map(dbGiftingGroup, giftingGroupYear);
 
             giftingGroupYear.Year = _year;
 
@@ -61,12 +61,12 @@ public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYea
 
         if (string.IsNullOrEmpty(giftingGroupYear.CurrencyCode))
         {
-            giftingGroupYear.CurrencyCode = CultureInfoExtensions.GetDefultCurrencyCode(dbGroup.CultureInfo);
+            giftingGroupYear.CurrencyCode = CultureInfoExtensions.GetDefultCurrencyCode(dbGiftingGroup.CultureInfo);
         }
 
         if (string.IsNullOrEmpty(giftingGroupYear.CurrencySymbol))
         {
-            giftingGroupYear.CurrencySymbol = CultureInfoExtensions.GetDefultCurrencySymbol(dbGroup.CultureInfo);
+            giftingGroupYear.CurrencySymbol = CultureInfoExtensions.GetDefultCurrencySymbol(dbGiftingGroup.CultureInfo);
         }
 
         giftingGroupYear.GroupMembers = giftingGroupYear.GroupMembers

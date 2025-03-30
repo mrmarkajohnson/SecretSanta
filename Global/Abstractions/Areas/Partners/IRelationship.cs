@@ -5,7 +5,7 @@ namespace Global.Abstractions.Areas.Partners;
 
 public interface IRelationship
 {
-    int? PartnerLinkId { get; }
+    int? PartnerLinkKey { get; }
 
     /// <summary>
     /// Did the current user suggest the relationship (true), or did/must they confirm it (false)?

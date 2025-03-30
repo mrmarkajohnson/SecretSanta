@@ -4,5 +4,5 @@ namespace Global.Abstractions.Areas.Account;
 
 public interface IBasicSantaUser : IUserNamesBase
 {
-    int SantaUserId { get; set; }
+    int SantaUserKey { get; set; }
 }

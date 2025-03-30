@@ -8,7 +8,7 @@ namespace Data.Abstractions;
 /// </summary>
 internal interface IAuditEntity : IAuditBase, IEntity
 {
-    Global_User? User { get; set; }
+    Global_User? GlobalUser { get; set; }
 }
 
 /// <summary>

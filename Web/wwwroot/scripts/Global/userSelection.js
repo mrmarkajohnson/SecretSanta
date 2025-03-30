@@ -29,7 +29,7 @@
 
     async function selectUser() {
         let selectedUserId = radio.getAttribute('data-user-id');
-        url.searchParams.set('userId', selectedUserId);
+        url.searchParams.set('globalUserId', selectedUserId);
 
         let response = await fetch(url.href,
             {

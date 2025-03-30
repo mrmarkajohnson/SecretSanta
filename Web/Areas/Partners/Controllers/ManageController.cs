@@ -25,10 +25,10 @@ public class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkId, Guid userId, RelationshipStatus newStatus)
+    public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkKey, Guid globalUserId, RelationshipStatus newStatus)
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
-        var model = new ChangeRelationshipStatusVm(partnerLinkId, userId, newStatus, manageRelationshipsLink);
+        var model = new ChangeRelationshipStatusVm(partnerLinkKey, globalUserId, newStatus, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
@@ -54,13 +54,13 @@ public class ManageController : BaseController
         return View(model);
     }
 
-    private async Task<AddRelationshipVm> GetAddRelationshipModel(Guid? userId = null)
+    private async Task<AddRelationshipVm> GetAddRelationshipModel(Guid? globalUserId = null)
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
 
         var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));
-        model.UserId = userId ?? Guid.Empty;
+        model.GlobalUserId = globalUserId ?? Guid.Empty;
 
         return model;
     }
@@ -75,9 +75,9 @@ public class ManageController : BaseController
     // TODO: Allow deleting relationships if they haven't been confirmed yet
 
     [HttpPost]
-    public async Task<IActionResult> AddRelationship(Guid userId)
+    public async Task<IActionResult> AddRelationship(Guid globalUserId)
     {
-        var model = await GetAddRelationshipModel(userId);
+        var model = await GetAddRelationshipModel(globalUserId);
         var result = await Send(new AddRelationshipCommand(model), null);
 
         if (result.Success)

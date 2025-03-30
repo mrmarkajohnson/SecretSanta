@@ -2,7 +2,7 @@
 
 public interface IJoinGiftingGroup : IGiftingGroupBase
 {
-    int? GiftingGroupId { get; set; }
+    int? GiftingGroupKey { get; set; }
     string? Message { get; set; }
 
     bool Blocked { get; set; }

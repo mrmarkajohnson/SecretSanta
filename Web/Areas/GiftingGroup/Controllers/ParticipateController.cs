@@ -30,14 +30,14 @@ public class ParticipateController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Year(int groupId)
+    public async Task<IActionResult> Year(int giftingGroupKey)
     {
-        return await EditYearParticipation(groupId);
+        return await EditYearParticipation(giftingGroupKey);
     }
 
-    private async Task<IActionResult> EditYearParticipation(int groupId)
+    private async Task<IActionResult> EditYearParticipation(int giftingGroupKey)
     {
-        var year = await Send(new ManageUserGiftingGroupYearQuery(groupId));
+        var year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey));
         var model = Mapper.Map<ManageUserGiftingGroupYearVm>(year);
         model.IncludePreviousYears = model.PreviousYearsRequired > 0 && model.OtherMembersSelect.Count > 0;
         return View("Year", model);
@@ -64,7 +64,7 @@ public class ParticipateController : BaseController
             }
             else
             {
-                return await EditYearParticipation(model.GiftingGroupId);
+                return await EditYearParticipation(model.GiftingGroupKey);
             }
         }
         else

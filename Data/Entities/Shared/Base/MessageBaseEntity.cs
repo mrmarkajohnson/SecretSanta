@@ -2,12 +2,15 @@
 
 namespace Data.Entities.Shared.Base;
 
+/// <summary>
+/// Allows expansion using the same database and users; each message key will be unique
+/// </summary>
 public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessageEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int MessageKey { get; set; }
 
-    public int SenderId { get; set; }
+    public int SenderKey { get; set; }
 
     public MessageRecipientType RecipientTypes { get; set; }
 

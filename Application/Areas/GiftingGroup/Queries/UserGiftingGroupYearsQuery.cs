@@ -31,7 +31,7 @@ public class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupY
         IEnumerable<Santa_YearGroupUser> dbYearGroupUsers = dbActiveLinks
             .SelectMany(x => x.GiftingGroup.Years
                 .Where(x => x.Year == DateTime.Today.Year)
-                .SelectMany(y => y.Users.Where(u => u.SantaUserId == dbSantaUser.Id)));
+                .SelectMany(y => y.Users.Where(u => u.SantaUserKey == dbSantaUser.SantaUserKey)));
 
         return dbYearGroupUsers
             .Select(x => (x.ToUserGiftingGroupYear(Mapper)))
@@ -43,7 +43,7 @@ public class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupY
     {
         return dbActiveLinks
             .Where(x => x.GiftingGroup.Years.Where(x => x.Year == DateTime.Today.Year)
-                .Any(y => y.Users.Any(u => u.SantaUserId == dbSantaUser.Id)) == false)
+                .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);
     }

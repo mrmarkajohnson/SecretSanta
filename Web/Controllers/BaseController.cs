@@ -9,6 +9,7 @@ using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
+using System.Diagnostics.CodeAnalysis;
 using ViewLayer.Models.Home;
 using Web.Helpers;
 
@@ -68,7 +69,7 @@ public class BaseController : Controller
         }
         
         string addQuery = url.Contains("?") ? "&" : "?";
-        return LocalRedirect($"{url}{addQuery}successMessage={successMessage}");
+        return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
     }
 
     protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)
@@ -156,7 +157,7 @@ public class BaseController : Controller
         if (model is ICheckLockout checkLockout && checkLockout.LockedOut)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return LocalRedirect(Url.Action("LockedOut", "Home", new { Area = "Account" }) ?? string.Empty);
+            return RedirectToLocalUrl(Url.Action("LockedOut", "Home", new { Area = "Account" }) ?? string.Empty);
         }
         else
         {
@@ -167,7 +168,15 @@ public class BaseController : Controller
     protected async Task<IActionResult> RedirectToLogin(HttpRequest request)
     {
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
-        return LocalRedirect(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }) ?? string.Empty);
+        return RedirectToLocalUrl(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }) ?? string.Empty);
+    }
+
+    /// <summary>
+    /// Avoid annoying null reference errors
+    /// </summary>
+    protected LocalRedirectResult RedirectToLocalUrl(string? localUrl)
+    {
+        return LocalRedirect(localUrl ?? "");
     }
 
     protected void EnsureSignedIn()

@@ -2,6 +2,6 @@
 
 public interface IMessageReply : IEntity
 {
-    int OriginalMessageId { get; set; }
-    int ReplyMessageId { get; set; }
+    int OriginalMessageKey { get; set; }
+    int ReplyMessageKey { get; set; }
 }

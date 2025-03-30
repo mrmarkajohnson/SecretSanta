@@ -9,18 +9,18 @@ public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupU
     }
 
     [Key]
-    public int Id { get; set; }
+    public int YearGroupUserKey { get; set; }
 
-    public int YearId { get; set; }
+    public int GiftingGroupYearKey { get; set; }
     public virtual required Santa_GiftingGroupYear GiftingGroupYear { get; set; }
 
-    public int SantaUserId { get; set; }
+    public int SantaUserKey { get; set; }
     public virtual required Santa_User SantaUser { get; set; }
 
     public bool? Included { get; set; }
 
-    public int? GivingToUserId { get; set; }
-    public virtual Santa_User? GivingToUser { get; set; }
+    public int? RecipientSantaUserKey { get; set; }
+    public virtual Santa_User? RecipientSantaUser { get; set; }
 
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
     public virtual ICollection<Santa_YearGroupUser_Audit> AuditTrail { get; set; }

@@ -34,14 +34,14 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditGiftingGroup(int groupId)
+    public async Task<IActionResult> EditGiftingGroup(int giftingGroupKey)
     {
         var model = new EditGiftingGroupVm
         {
             SubmitButtonText = "Save Changes"
         };
 
-        var groupDetails = await Send(new EditGiftingGroupQuery(groupId));
+        var groupDetails = await Send(new EditGiftingGroupQuery(giftingGroupKey));
 
         if (groupDetails != null)
         {
@@ -61,7 +61,7 @@ public class ManageController : BaseController
     {
         ModelState.Clear();
 
-        string saved = model.Id > 0 ? "Updated" : "Created";
+        string saved = model.GiftingGroupKey > 0 ? "Updated" : "Created";
 
         var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
         
@@ -70,7 +70,7 @@ public class ManageController : BaseController
             return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
         }
 
-        model.SubmitButtonText = model.Id > 0 ? "Save Changes" : "Create" ;
+        model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create" ;
         return ShowEditGiftingGroup(model);
     }
 
@@ -126,8 +126,8 @@ public class ManageController : BaseController
         var applications = await Send(new GetJoinerRequestsQuery());
 
         if (applications.Count() == 1)
-            return LocalRedirect(Url.Action(nameof(ReviewJoinerApplication),
-                new { applicationId = applications.First().ApplicationId, singleApplication = true }));
+            return RedirectToLocalUrl(Url.Action(nameof(ReviewJoinerApplication),
+                new { groupApplicationKey = applications.First().GroupApplicationKey, singleApplication = true }));
 
         var model = new JoinerApplicationsVm
         {
@@ -145,9 +145,9 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewJoinerApplication(int applicationId, bool singleApplication = true)
+    public async Task<IActionResult> ReviewJoinerApplication(int groupApplicationKey, bool singleApplication = true)
     {
-        IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(applicationId));
+        IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(groupApplicationKey));
         
         var model = new ReviewJoinerApplicationVm();
         Mapper.Map(application, model);
@@ -181,9 +181,9 @@ public class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> SetupGiftingGroupYear(int groupId)
+    public async Task<IActionResult> SetupGiftingGroupYear(int giftingGroupKey)
     {
-        IGiftingGroupYear giftingGroupYear = await Send(new SetupGiftingGroupYearQuery(groupId));
+        IGiftingGroupYear giftingGroupYear = await Send(new SetupGiftingGroupYearQuery(giftingGroupKey));
         var model = Mapper.Map<SetupGiftingGroupYearVm>(giftingGroupYear);
 
         if (model.RecalculationRequired)
@@ -195,7 +195,7 @@ public class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model, int groupId) // groupId is not used, but preserves the URL
+    public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model, int giftingGroupKey) // giftingGroupKey is not used, but preserves the URL
     {
         var commandResult = await Send(new SetupGiftingGroupYearCommand<SetupGiftingGroupYearVm>(model), new SetupGiftingGroupYearVmValidator());
 

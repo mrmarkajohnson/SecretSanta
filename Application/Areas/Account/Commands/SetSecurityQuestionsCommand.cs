@@ -12,10 +12,10 @@ public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where T
     {
         EnsureSignedIn();
 
-        string? userId = GetCurrentUserId();
-        if (userId != null)
+        string? globalUserId = GetCurrentUserId();
+        if (globalUserId != null)
         {
-            Global_User? dbCurrentUser = GetGlobalUser(userId);
+            Global_User? dbCurrentUser = GetGlobalUser(globalUserId);
 
             if (dbCurrentUser != null)
             {

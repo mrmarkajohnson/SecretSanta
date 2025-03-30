@@ -50,7 +50,7 @@
                         <tr>
                             <td>
                                 <span class="hidden">
-                                    <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkId" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkKey" />
                                     <partial name="_UserHiddenInputs" for="PossibleRelationships[i].Partner" />                                    
                                     <input type="hidden" asp-for="PossibleRelationships[i].SuggestedByCurrentUser" />
                                     <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
@@ -70,7 +70,7 @@
                                 else
                                 {
                                     <select asp-for="PossibleRelationships[i].Status" class="form-control relationship-status-select"
-                                        asp-items="@relationship.AvailableStatuses" data-link-id="@relationship.PartnerLinkId"
+                                        asp-items="@relationship.AvailableStatuses" data-link-id="@relationship.PartnerLinkKey"
                                         data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName" ></select>
                                 }
                             </td>

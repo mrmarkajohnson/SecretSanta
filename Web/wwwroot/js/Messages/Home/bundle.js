@@ -10,11 +10,11 @@ async function messageModalClosed(e) {
             return true;
 
         let closeUrl = modal.getAttribute('data-close-url');
-        let id = modal.getAttribute('data-id');
+        let messageRecipientKey = modal.getAttribute('data-message-recipient-key');
 
-        if (!isEmptyValue(closeUrl) && !isEmptyValue(id)) {
+        if (!isEmptyValue(closeUrl) && !isEmptyValue(messageRecipientKey)) {
             let url = new URL(closeUrl);
-            url.searchParams.set('id', id);
+            url.searchParams.set('messageRecipientKey', messageRecipientKey);
 
             let response = await fetch(url.href,
                 {

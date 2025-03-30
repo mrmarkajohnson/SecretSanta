@@ -8,7 +8,7 @@
     Func<IReviewApplication, object> actions = 
     @<text>
         <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="GiftingGroup" data-toggle="tooltip" title="Review Application"
-            asp-route-applicationId="@item.ApplicationId" asp-route-singleApplication="@singleApplication">
+                asp-route-groupApplicationKey="@item.GroupApplicationKey" asp-route-singleApplication="@singleApplication">
             <i class="fa fa-pencil"></i>
         </a>
     </text> ;

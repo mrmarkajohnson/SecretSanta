@@ -18,7 +18,7 @@ public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(y => y.ResponseByUserId == null)
+            .Where(y => y.ResponseBySantaUserKey == null)
             .AsQueryable();
 
         var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();        

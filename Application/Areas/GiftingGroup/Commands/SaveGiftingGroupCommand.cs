@@ -17,11 +17,11 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        if (Item.Id > 0)
+        if (Item.GiftingGroupKey > 0)
         {
             Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
-                .FirstOrDefault(x => x.GiftingGroupId == Item.Id);
+                .FirstOrDefault(x => x.GiftingGroupKey == Item.GiftingGroupKey);
 
             if (dbGiftingGroupLink != null)
             {
@@ -50,7 +50,7 @@ public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
             dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
             {
                 GroupAdmin = true,
-                SantaUserId = dbCurrentSantaUser.Id,
+                SantaUserKey = dbCurrentSantaUser.SantaUserKey,
                 SantaUser = dbCurrentSantaUser,
                 GiftingGroup = dbGiftingGroup
             });

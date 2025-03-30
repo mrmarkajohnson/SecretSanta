@@ -2,7 +2,6 @@
 using Application.Shared.BaseModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -17,12 +16,12 @@ internal static class GiftingGroupManualMappings
 
         return new UserGiftingGroupYear // AutoMapper just can't handle the Recipient with a ProjectTo as it may be null
         {
-            GiftingGroupId = dbGiftingGroupYear.GiftingGroupId,
+            GiftingGroupKey = dbGiftingGroupYear.GiftingGroupKey,
             GiftingGroupName = dbGiftingGroupYear.GiftingGroup.Name,
-            GroupAdmin = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserId == u.SantaUserId).GroupAdmin,
+            GroupAdmin = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin,
             Included = dbYearGroupUser.Included ?? false,
-            Recipient = dbYearGroupUser.GivingToUserId > 0 
-                ?  (mapper.Map<UserNamesBase>(dbYearGroupUser.GivingToUser).UnHash()) 
+            Recipient = dbYearGroupUser.RecipientSantaUserKey > 0 
+                ?  (mapper.Map<UserNamesBase>(dbYearGroupUser.RecipientSantaUser).UnHash()) 
                 : null,
             Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),
@@ -46,30 +45,30 @@ internal static class GiftingGroupManualMappings
         manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.Year);
 
         manageYear.OtherGroupMembers = dbGiftingGroup.UserLinks
-            .Where(x => x.SantaUserId != dbSantaUser.Id)
+            .Where(x => x.SantaUserKey != dbSantaUser.SantaUserKey)
             .Select(x => x.SantaUser)
             .AsQueryable().ProjectTo<IUserNamesBase>(mapper.ConfigurationProvider).ToList();
 
-        manageYear.LastYearRecipientId = dbGiftingGroup.Recipient(dbSantaUser.Id, manageYear.Year - 1)?.GlobalUserId;
-        manageYear.PreviousYearRecipientId = dbGiftingGroup.Recipient(dbSantaUser.Id, manageYear.Year - 2)?.GlobalUserId;
+        manageYear.LastRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 1)?.GlobalUserId;
+        manageYear.PreviousRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 2)?.GlobalUserId;
     }
 
     public static int PreviousYearsRequired(this Santa_User dbSantaUser, Santa_GiftingGroup dbGiftingGroup, int year)
     {
         if (dbSantaUser.GiftingGroupYears
-            .Any(x => x.GiftingGroupYear.GiftingGroupId == dbGiftingGroup.Id && x.GiftingGroupYear.Year < year))
+            .Any(x => x.GiftingGroupYear.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey && x.GiftingGroupYear.Year < year))
         {
             return 0;
         }
 
         int maxYears = Math.Max(Math.Min(year - dbGiftingGroup.FirstYear, 2), 0);
 
-        if (maxYears == 2 && dbGiftingGroup.Recipient(dbSantaUser.Id, year - 2) != null)
+        if (maxYears == 2 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, year - 2) != null)
         {
             maxYears = 1;
         }
 
-        if (maxYears == 1 && dbGiftingGroup.Recipient(dbSantaUser.Id, year - 1) != null)
+        if (maxYears == 1 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, year - 1) != null)
         {
             maxYears = 0;
         }

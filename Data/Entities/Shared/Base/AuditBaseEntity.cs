@@ -5,10 +5,10 @@ namespace Data.Entities.Shared.Base;
 public abstract class AuditBaseEntity : BaseEntity, IAuditBase
 {
     [Key]
-    public int Id { get; set; }
+    public int AuditKey { get; set; }
 
-    public string? UserId { get; set; }
-    public virtual Global_User? User { get; set; }
+    public string? GlobalUserId { get; set; }
+    public virtual Global_User? GlobalUser { get; set; }
 
     public GlobalSettings.AuditAction Action { get; set; }
 }

@@ -7,11 +7,11 @@ namespace Application.Areas.Messages.Queries;
 
 public class ViewMessageQuery : BaseQuery<IReadMessage>
 {
-    public int Id { get; }
+    public int MessageRecipientKey { get; }
 
-    public ViewMessageQuery(int id)
+    public ViewMessageQuery(int messageRecipientKey)
     {
-        Id = id;
+        MessageRecipientKey = messageRecipientKey;
     }
 
     protected override Task<IReadMessage> Handle()
@@ -19,7 +19,7 @@ public class ViewMessageQuery : BaseQuery<IReadMessage>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
         var message = dbCurrentSantaUser.ReceivedMessages            
-            .Where(x => x.Id == Id)
+            .Where(x => x.MessageRecipientKey == MessageRecipientKey)
             .AsQueryable()
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
             .FirstOrDefault();

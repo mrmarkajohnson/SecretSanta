@@ -4,6 +4,6 @@ namespace Data.Abstractions;
 
 public interface IMessageEntity : IArchivableEntity, IMessageBase
 {
-    int Id { get; set; }
-    int SenderId { get; set; }
+    int MessageKey { get; set; }
+    int SenderKey { get; set; }
 }

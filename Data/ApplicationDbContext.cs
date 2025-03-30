@@ -72,7 +72,7 @@ public class ApplicationDbContext : IdentityDbContext
         auditableEntity.AddAuditEntry(new Dummy_AuditEntry
         {
             Action = action,
-            UserId = CurrentUserId ?? null
+            GlobalUserId = CurrentUserId ?? null
         }, changes);
     }
 

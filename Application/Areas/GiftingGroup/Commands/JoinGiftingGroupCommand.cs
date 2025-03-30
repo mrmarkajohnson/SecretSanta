@@ -46,7 +46,7 @@ public class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : I
 
         if (Validation.IsValid)
         {
-            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.Id == Item.GiftingGroupId).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.GiftingGroupKey == Item.GiftingGroupKey).FirstOrDefault();
 
             if (dbGiftingGroup == null) // just in case
             {

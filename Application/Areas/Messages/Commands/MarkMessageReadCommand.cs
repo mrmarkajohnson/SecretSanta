@@ -4,7 +4,7 @@ namespace Application.Areas.Messages.Commands;
 
 public class MarkMessageReadCommand : BaseCommand<int>
 {
-    public MarkMessageReadCommand(int id) : base(id)
+    public MarkMessageReadCommand(int messageRecipientKey) : base(messageRecipientKey)
     {
     }
 
@@ -13,7 +13,7 @@ public class MarkMessageReadCommand : BaseCommand<int>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
         var message = dbCurrentSantaUser.ReceivedMessages
-            .Where(x => x.Id == Item).FirstOrDefault();
+            .Where(x => x.MessageRecipientKey == Item).FirstOrDefault();
 
         if (message != null && !message.Read)
         {

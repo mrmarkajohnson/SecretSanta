@@ -11,12 +11,12 @@ public class MessageMappingProfile : Profile
 	{
         CreateMap<Santa_MessageRecipient, ReadMessage>()
             .IncludeMembers(src => src.Message)
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.MessageRecipientKey, opt => opt.MapFrom(src => src.MessageRecipientKey))
             .ForMember(dest => dest.Read, opt => opt.MapFrom(src => src.Read));
         CreateMap<Santa_MessageRecipient, IReadMessage>().As<ReadMessage>();
 
         CreateMap<Santa_Message, ReadMessage>()
-            .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.MessageKey, opt => opt.MapFrom(src => src.MessageKey))
             .ForMember(dest => dest.Sent, opt => opt.MapFrom(src => src.DateCreated))
             .ForMember(dest => dest.Sender, opt =>
             {

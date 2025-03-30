@@ -16,13 +16,13 @@
 <h1>Set Up '@Model.GiftingGroupName' for @Model.Year</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetUpGiftingGroupYear" asp-route-groupId="@Model.GiftingGroupId" method="post">
+    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetUpGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
         <partial name="_FormHiddenInputs" />
 
         <div class="row d-flex align-items-center justify-content-center text-center">
 
             <div class="collapse">
-                <input type="hidden" asp-for="GiftingGroupId">
+                <input type="hidden" asp-for="GiftingGroupKey">
                 <input type="hidden" asp-for="GiftingGroupName">
                 <input type="hidden" asp-for="CurrencyCode">
                 <input type="hidden" asp-for="CurrencySymbol">

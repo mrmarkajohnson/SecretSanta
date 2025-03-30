@@ -3,12 +3,12 @@
 public class Santa_PartnerLink : DeletableBaseEntity, IDeletableEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int PartnerLinkKey { get; set; }
 
     /// <summary>
     /// The user who first suggests the relationship
     /// </summary>
-    public int SuggestedBySantaUserId { get; set; }
+    public int SuggestedBySantaUserKey { get; set; }
     public virtual required Santa_User SuggestedBySantaUser { get; set; } 
 
     public bool Confirmed { get; set; }
@@ -16,7 +16,7 @@ public class Santa_PartnerLink : DeletableBaseEntity, IDeletableEntity
     /// <summary>
     /// The user who confirms (or is yet to confirm) the relationship
     /// </summary>
-    public int ConfirmingSantaUserId { get; set; }
+    public int ConfirmingSantaUserKey { get; set; }
     public virtual required Santa_User ConfirmingSantaUser { get; set; } 
 
     public DateTime? RelationshipEnded { get; set; }

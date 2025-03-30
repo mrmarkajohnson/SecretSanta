@@ -7,7 +7,7 @@ public class Santa_GiftingGroupYear_Audit : AuditBaseEntity, IAuditEntity<Santa_
         Changes = new HashSet<Santa_GiftingGroupYear_AuditChange>();
     }
 
-    public int ParentId { get; set; }
+    public int ParentKey { get; set; }
     public virtual Santa_GiftingGroupYear Parent { get; set; }
 
     public virtual ICollection<Santa_GiftingGroupYear_AuditChange> Changes { get; set; }

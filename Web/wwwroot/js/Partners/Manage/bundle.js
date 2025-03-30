@@ -65,11 +65,11 @@ async function relationshipStatusChanged(select, url, title, message) {
     });
 
     async function statusChanged() {
-        let partnerLinkId = select.getAttribute('data-link-id');
-        let userId = select.getAttribute('data-user-id');
+        let partnerLinkKey = select.getAttribute('data-link-id');
+        let globalUserId = select.getAttribute('data-user-id');
 
-        url.searchParams.set('partnerLinkId', partnerLinkId);
-        url.searchParams.set('userId', userId);
+        url.searchParams.set('partnerLinkKey', partnerLinkKey);
+        url.searchParams.set('globalUserId', globalUserId);
         url.searchParams.set('newStatus', select.value);
 
         let response = await fetch(url.href,

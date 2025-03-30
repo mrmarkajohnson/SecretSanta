@@ -9,31 +9,31 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
     {
     }
 
-    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGroup)
+    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup)
     {
         Santa_GiftingGroupYear? dbGiftingGroupYear;
 
         dbGiftingGroupYear = new Santa_GiftingGroupYear
         {
-            GiftingGroup = dbGroup,
+            GiftingGroup = dbGiftingGroup,
             Year = Item.Year,
-            CurrencyCode = dbGroup.GetCurrencyCode(),
-            CurrencySymbol = dbGroup.GetCurrencySymbol()
+            CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
+            CurrencySymbol = dbGiftingGroup.GetCurrencySymbol()
         };
 
-        dbGroup.Years.Add(dbGiftingGroupYear);
+        dbGiftingGroup.Years.Add(dbGiftingGroupYear);
         DbContext.ChangeTracker.DetectChanges();
         return dbGiftingGroupYear;
     }
 
     protected void AddOrUpdateUserGroupYear(Santa_GiftingGroupYear dbGiftingGroupYear, bool? included,
-        int santaUserId, string name, Santa_User? dbSantaUser = null)
+        int santaUserKey, string name, Santa_User? dbSantaUser = null)
     {
-        Santa_YearGroupUser? dbYearUser = dbGiftingGroupYear.Users.FirstOrDefault(x => x.SantaUserId == santaUserId);
+        Santa_YearGroupUser? dbYearUser = dbGiftingGroupYear.Users.FirstOrDefault(x => x.SantaUserKey == santaUserKey);
 
         if (dbYearUser == null)
         {
-            dbSantaUser ??= DbContext.Santa_Users.FirstOrDefault(x => x.Id == santaUserId);
+            dbSantaUser ??= DbContext.Santa_Users.FirstOrDefault(x => x.SantaUserKey == santaUserKey);
 
             if (dbSantaUser == null)
             {
@@ -43,9 +43,9 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
             {
                 dbYearUser = new Santa_YearGroupUser
                 {
-                    YearId = dbGiftingGroupYear.Id,
+                    GiftingGroupYearKey = dbGiftingGroupYear.GiftingGroupYearKey,
                     GiftingGroupYear = dbGiftingGroupYear,
-                    SantaUserId = dbSantaUser.Id,
+                    SantaUserKey = dbSantaUser.SantaUserKey,
                     SantaUser = dbSantaUser,
                     Included = included
                 };

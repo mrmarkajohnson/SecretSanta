@@ -2,7 +2,7 @@
 
 public interface IUserGiftingGroup
 {
-    int GiftingGroupId { get; }
+    int GiftingGroupKey { get; }
     string GroupName { get; }
     bool GroupAdmin { get; }
     int NewApplications { get; }

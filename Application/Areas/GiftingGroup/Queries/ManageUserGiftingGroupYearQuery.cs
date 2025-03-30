@@ -11,12 +11,12 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroupYear>
 {
-    public int GroupId { get; }
+    public int GiftingGroupKey { get; }
     public int Year { get; }
 
-    public ManageUserGiftingGroupYearQuery(int groupId, int? year = null)
+    public ManageUserGiftingGroupYearQuery(int giftingGroupKey, int? year = null)
     {
-        GroupId = groupId;
+        GiftingGroupKey = giftingGroupKey;
         Year = year ?? DateTime.Today.Year;
     }
 
@@ -34,18 +34,18 @@ public class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroup
                 .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-            .FirstOrDefault(x => x.GiftingGroupId == GroupId);
+            .FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey);
 
         if (dbGiftingGroupLink == null)
             throw new NotFoundException("Gifting Group");
 
-        Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
+        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
-        Santa_GiftingGroupYear? dbYear = dbGroup.Years
+        Santa_GiftingGroupYear? dbYear = dbGiftingGroup.Years
             .Where(x => x.Year == Year)
             .FirstOrDefault();
 
-        Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserId == dbSantaUser.Id);
+        Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbSantaUser.SantaUserKey);
 
         ManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
 
@@ -53,16 +53,16 @@ public class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroup
         {
             manageYear = new ManageUserGiftingGroupYear
             {
-                GiftingGroupId = dbGiftingGroupLink.GiftingGroupId,
-                GiftingGroupName = dbGroup.Name,
+                GiftingGroupKey = dbGiftingGroupLink.GiftingGroupKey,
+                GiftingGroupName = dbGiftingGroup.Name,
                 GroupAdmin = dbGiftingGroupLink.GroupAdmin,
                 Limit = dbYear?.Limit,
-                CurrencyCode = dbYear?.CurrencyCode ?? dbGroup.GetCurrencyCode(),
-                CurrencySymbol = dbYear?.CurrencySymbol ?? dbGroup.GetCurrencySymbol(),
+                CurrencyCode = dbYear?.CurrencyCode ?? dbGiftingGroup.GetCurrencyCode(),
+                CurrencySymbol = dbYear?.CurrencySymbol ?? dbGiftingGroup.GetCurrencySymbol(),
                 Year = Year
             };
 
-            GiftingGroupManualMappings.SetPreviousYearDetails(manageYear, dbSantaUser, dbGroup, Mapper);
+            GiftingGroupManualMappings.SetPreviousYearDetails(manageYear, dbSantaUser, dbGiftingGroup, Mapper);
         }
 
         return manageYear;

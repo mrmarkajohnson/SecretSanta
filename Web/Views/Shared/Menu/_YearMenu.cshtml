@@ -40,12 +40,12 @@
                 @if (giftingGroup.GroupAdmin)
                 {
                     <li>
-                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                             Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@giftingGroup.GiftingGroupId">
+                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                             View '@giftingGroup.GroupName' for @DateTime.Today.Year
                         </a>
                     </li>

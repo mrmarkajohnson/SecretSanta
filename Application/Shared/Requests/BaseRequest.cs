@@ -124,10 +124,10 @@ public abstract class BaseRequest<TResult>
 
         EnsureSignedIn();
 
-        string? userId = GetCurrentUserId();
-        if (userId != null)
+        string? globalUserId = GetCurrentUserId();
+        if (globalUserId != null)
         {
-            dbSantaUser = GetSantalUser(userId, includes);
+            dbSantaUser = GetSantalUser(globalUserId, includes);
         }
 
         if (dbSantaUser == null)
@@ -138,18 +138,18 @@ public abstract class BaseRequest<TResult>
         return dbSantaUser;
     }
 
-    protected Santa_User? GetSantalUser(string userId, params Expression<Func<Santa_User, object?>>[] includes)
+    protected Santa_User? GetSantalUser(string globalUserId, params Expression<Func<Santa_User, object?>>[] includes)
     {
         if (includes != null && includes.Any())
         {
             var query = DbContext.Santa_Users;
             return includes
                 .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
-                .FirstOrDefault(x => x.GlobalUserId == userId);
+                .FirstOrDefault(x => x.GlobalUserId == globalUserId);
         }
         else
         {
-            return DbContext.Santa_Users.FirstOrDefault(x => x.GlobalUserId == userId);
+            return DbContext.Santa_Users.FirstOrDefault(x => x.GlobalUserId == globalUserId);
         }
     }
 
@@ -159,10 +159,10 @@ public abstract class BaseRequest<TResult>
 
         EnsureSignedIn();
 
-        string? userId = GetCurrentUserId();
-        if (userId != null)
+        string? globalUserId = GetCurrentUserId();
+        if (globalUserId != null)
         {
-            dbCurrentUser = GetGlobalUser(userId, includes);
+            dbCurrentUser = GetGlobalUser(globalUserId, includes);
         }
 
         if (dbCurrentUser == null)
@@ -178,18 +178,18 @@ public abstract class BaseRequest<TResult>
         return GetGlobalUser(identityUser.GlobalUserId, includes);
     }
 
-    protected Global_User? GetGlobalUser(string userId, params Expression<Func<Global_User, object?>>[] includes)
+    protected Global_User? GetGlobalUser(string globalUserId, params Expression<Func<Global_User, object?>>[] includes)
     {
         if (includes != null && includes.Any())
         {
             var query = DbContext.Global_Users;
             return includes
                 .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
-                .FirstOrDefault(x => x.Id == userId);
+                .FirstOrDefault(x => x.Id == globalUserId);
         }
         else
         {
-            return DbContext.Global_Users.FirstOrDefault(x => x.Id == userId);
+            return DbContext.Global_Users.FirstOrDefault(x => x.Id == globalUserId);
         }
     }
 
@@ -197,11 +197,11 @@ public abstract class BaseRequest<TResult>
     {
         if (identityUser != null)
         {
-            var dbUser = await userManager.FindByIdAsync(identityUser.GlobalUserId); // always get the user again, to avoid double tracking errors
-            if (dbUser != null)
+            var dbGlobalUser = await userManager.FindByIdAsync(identityUser.GlobalUserId); // always get the user again, to avoid double tracking errors
+            if (dbGlobalUser != null)
             {
-                await userManager.AccessFailedAsync(dbUser);
-                return dbUser.LockoutEnd != null && dbUser.LockoutEnd > DateTime.Now;
+                await userManager.AccessFailedAsync(dbGlobalUser);
+                return dbGlobalUser.LockoutEnd != null && dbGlobalUser.LockoutEnd > DateTime.Now;
             }
         }
 

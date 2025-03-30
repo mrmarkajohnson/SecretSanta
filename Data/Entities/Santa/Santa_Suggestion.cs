@@ -3,14 +3,24 @@
 public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int SuggestionKey { get; set; }
 
-    public int SuggesterId { get; set; } // The person who makes the suggestion
-    public virtual required Santa_YearGroupUser Suggester { get; set; }
+    /// <summary>
+    /// Identifies the group member who makes the suggestion
+    /// </summary>
+    public int YearGroupUserKey { get; set; }
+
+    /// <summary>
+    /// Identifies the group member who makes the suggestion
+    /// </summary>
+    public virtual required Santa_YearGroupUser YearGroupUser { get; set; }
 
     public bool MainSuggestion { get; set; }
 
     public required string SuggestionText { get; set; }
 
-    public required string OtherNotes { get; set; } // E.g. things to avoid
+    /// <summary>
+    /// E.g. things to avoid
+    /// </summary>
+    public required string OtherNotes { get; set; }
 }

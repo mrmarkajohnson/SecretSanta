@@ -5,7 +5,7 @@
 /// </summary>
 public interface IAuditChangeEntity : IAuditBaseChange
 {
-    int AuditId { get; set; }
+    int AuditKey { get; set; }
 }
 
 internal interface IAuditChangeEntity<TAuditEntity> : IAuditChangeEntity where TAuditEntity : IAuditEntity

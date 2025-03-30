@@ -27,7 +27,7 @@ internal static class AuditableEntityExtensions
         {
             Parent = parent,
             Action = auditTrail.Action,
-            UserId = auditTrail.UserId,
+            GlobalUserId = auditTrail.GlobalUserId,
             Changes = new List<TChangeEntity>()
         };
 

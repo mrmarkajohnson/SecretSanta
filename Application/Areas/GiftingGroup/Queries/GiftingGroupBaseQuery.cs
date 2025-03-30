@@ -5,13 +5,13 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public abstract class GiftingGroupBaseQuery<TItem> : BaseQuery<TItem>
 {
-    protected async Task<Santa_GiftingGroupUser> GetGiftingGroupUserLink(int groupId, bool adminOnly)
+    protected async Task<Santa_GiftingGroupUser> GetGiftingGroupUserLink(int giftingGroupKey, bool adminOnly)
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
-            .FirstOrDefault(x => x.GiftingGroupId == groupId);
+            .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey);
 
         if (dbGiftingGroupLink != null)
         {

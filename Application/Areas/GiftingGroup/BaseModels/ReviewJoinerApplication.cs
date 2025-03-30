@@ -6,9 +6,9 @@ namespace Application.Areas.GiftingGroup.BaseModels;
 
 public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
 {
-    public int ApplicationId { get; set; }
+    public int GroupApplicationKey { get; set; }
 
-    public string ApplicantId { get; set; } = string.Empty;
+    public string ApplicantUserId { get; set; } = string.Empty;
 
     [Display(Name = "Group Name")]
     public string GroupName { get; set; } = string.Empty;

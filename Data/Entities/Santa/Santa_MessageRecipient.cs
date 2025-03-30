@@ -1,17 +1,15 @@
-﻿using Data.Entities.Shared.Base;
-
-namespace Data.Entities.Santa;
+﻿namespace Data.Entities.Santa;
 
 public class Santa_MessageRecipient : ArchivableBaseEntity, IArchivableEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int MessageRecipientKey { get; set; }
 
-    public int MessageId { get; set; }
+    public int MessageKey { get; set; }
     public virtual required Santa_Message Message { get; set; }
 
-    public int RecipientId { get; set; }
-    public virtual required Santa_User Recipient { get; set; }
+    public int RecipientSantaUserKey { get; set; }
+    public virtual required Santa_User RecipientSantaUser { get; set; }
 
     public bool Read { get; set; }
 }

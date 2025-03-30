@@ -5,7 +5,6 @@ using Global.Names;
 using Global.Settings;
 using Global.Validation;
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace Data.Entities.Santa;
 
@@ -21,7 +20,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     }
 
     [Key]
-    public int Id { get; set; }
+    public int GiftingGroupKey { get; set; }
 
     [Required, MaxLength(GiftingGroupVal.Name.MaxLength)]
     public string Name { get; set; } = string.Empty;
@@ -57,10 +56,10 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
         this.AddNewAuditEntry<Santa_GiftingGroup, Santa_GiftingGroup_Audit, Santa_GiftingGroup_AuditChange>(auditTrail, changes);
     }
 
-    public Santa_User? Recipient(int santaUserId, int year)
+    public Santa_User? Recipient(int santaUserKey, int year)
     {
         return Years.Where(x => x.Year == year)
-            .SelectMany(y => y.Users.Where(u => u.SantaUserId == santaUserId && u.GivingToUserId > 0))
+            .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
             .FirstOrDefault()?
             .SantaUser;
     }

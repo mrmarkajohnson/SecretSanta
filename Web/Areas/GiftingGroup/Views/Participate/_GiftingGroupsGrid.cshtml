@@ -7,13 +7,13 @@
     Func<IUserGiftingGroupYear, object> actions =
     @<text>
         <a asp-action="Year" asp-controller="Participate" asp-area="GiftingGroup" data-toggle="tooltip" title="View details and participate"
-           asp-route-groupId="@item.GiftingGroupId">
+           asp-route-giftingGroupKey="@item.GiftingGroupKey">
             <i class="fa fa-eye"></i>
         </a>
 
         @if (item.GroupAdmin)
         {
-        <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-groupId="@item.GiftingGroupId"
+        <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
                 data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year">
                     <i class="fa fa-pencil"></i>
             </a>

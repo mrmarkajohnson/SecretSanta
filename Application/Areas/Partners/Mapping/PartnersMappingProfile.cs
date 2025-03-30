@@ -10,7 +10,7 @@ public class PartnersMappingProfile : Profile
     public PartnersMappingProfile()
     {
         CreateMap<Santa_PartnerLink, SuggestedRelationship>()
-            .ForMember(dest => dest.PartnerLinkId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.PartnerLinkKey, opt => opt.MapFrom(src => src.PartnerLinkKey))
             .ForMember(dest => dest.Partner, opt => opt.MapFrom(src => src.ConfirmingSantaUser.GlobalUser))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
                 src.SuggestedByIgnoreOld ? RelationshipStatus.IgnoreOld // show as ignored even if the other person hasn't confirmed
@@ -21,7 +21,7 @@ public class PartnersMappingProfile : Profile
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
 
         CreateMap<Santa_PartnerLink, ConfirmingRelationship>()
-            .ForMember(dest => dest.PartnerLinkId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.PartnerLinkKey, opt => opt.MapFrom(src => src.PartnerLinkKey))
             .ForMember(dest => dest.Partner, opt => opt.MapFrom(src => src.SuggestedBySantaUser.GlobalUser))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
                 src.ConfirmedByIgnoreOld ? RelationshipStatus.IgnoreOld // show as ignored even if the other person hasn't confirmed

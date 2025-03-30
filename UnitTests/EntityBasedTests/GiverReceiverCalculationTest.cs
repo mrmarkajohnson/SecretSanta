@@ -37,7 +37,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
                 foreach (GiverAndReceiverCombination combi in yearResult)
                 {
-                    participatingMembers.First(x => x.SantaUserId == combi.GiverId).GivingToUserId = combi.RecipientId;
+                    participatingMembers.First(x => x.SantaUserKey == combi.GiverSantaUserKey).RecipientSantaUserKey = combi.RecipientSantaUserKey;
                 }
 
                 context.ChangeTracker.DetectChanges();
@@ -65,28 +65,28 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
     private static void EnsureEveryoneHasARecipient(List<Santa_YearGroupUser> participatingMembers)
     {
-        Assert.True(participatingMembers.All(x => x.GivingToUserId != null));
+        Assert.True(participatingMembers.All(x => x.RecipientSantaUserKey != null));
     }
 
     private static void EnsureNobodyGivingToThemself(List<Santa_YearGroupUser> participatingMembers)
     {
-        Assert.DoesNotContain(participatingMembers, x => x.GivingToUserId == x.SantaUserId);
+        Assert.DoesNotContain(participatingMembers, x => x.RecipientSantaUserKey == x.SantaUserKey);
     }
 
     private static void EnsureNoDuplication(List<Santa_YearGroupUser> participatingMembers)
     {
-        Assert.DoesNotContain(participatingMembers.GroupBy(x => x.GivingToUserId), y => y.Count() > 1);
+        Assert.DoesNotContain(participatingMembers.GroupBy(x => x.RecipientSantaUserKey), y => y.Count() > 1);
     }
 
     private static void EnsureNobodyIsGivingToAPartner(List<Santa_YearGroupUser> participatingMembers)
     {
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.SuggestedRelationships
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
-            .Any(y => y.ConfirmingSantaUserId == x.GivingToUserId));
+            .Any(y => y.ConfirmingSantaUserKey == x.RecipientSantaUserKey));
 
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmingRelationships
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
-            .Any(y => y.SuggestedBySantaUserId == x.GivingToUserId));
+            .Any(y => y.SuggestedBySantaUserKey == x.RecipientSantaUserKey));
     }
 
     private static void TestPreviousYearDuplicates(List<Santa_YearGroupUser> participatingMembers, Santa_GiftingGroupYear dbYear, int actualPreviousYears)
@@ -95,8 +95,8 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         Assert.DoesNotContain(participatingMembers, x => dbPreviousYears
             .Any(y => y.Users
-                .Where(z => z.SantaUserId == x.SantaUserId)
-                .Any(z => z.GivingToUserId == x.GivingToUserId)));
+                .Where(z => z.SantaUserKey == x.SantaUserKey)
+                .Any(z => z.RecipientSantaUserKey == x.RecipientSantaUserKey)));
     }
 
     private static async Task SeedContext(TestDbContext context)
@@ -113,7 +113,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser1 = user1.SantaUser = new Santa_User
         {
-            Id = 1,
+            SantaUserKey = 1,
             GlobalUserId = user1.Id,
             GlobalUser = user1
         };
@@ -130,7 +130,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser2 = user2.SantaUser = new Santa_User
         {
-            Id = 2,
+            SantaUserKey = 2,
             GlobalUserId = user2.Id,
             GlobalUser = user2
         };
@@ -147,7 +147,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser3 = user3.SantaUser = new Santa_User
         {
-            Id = 3,
+            SantaUserKey = 3,
             GlobalUserId = user3.Id,
             GlobalUser = user3
         };
@@ -164,7 +164,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser4 = user4.SantaUser = new Santa_User
         {
-            Id = 4,
+            SantaUserKey = 4,
             GlobalUserId = user4.Id,
             GlobalUser = user4
         };
@@ -181,7 +181,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser5 = user5.SantaUser = new Santa_User
         {
-            Id = 5,
+            SantaUserKey = 5,
             GlobalUserId = user5.Id,
             GlobalUser = user5
         };
@@ -198,7 +198,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var santaUser6 = user6.SantaUser = new Santa_User
         {
-            Id = 6,
+            SantaUserKey = 6,
             GlobalUserId = user6.Id,
             GlobalUser = user6
         };
@@ -211,10 +211,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var relationship1 = new Santa_PartnerLink
         {
-            Id = 1,
-            SuggestedBySantaUserId = 1,
+            PartnerLinkKey = 1,
+            SuggestedBySantaUserKey = 1,
             SuggestedBySantaUser = santaUser1,
-            ConfirmingSantaUserId = 2,
+            ConfirmingSantaUserKey = 2,
             ConfirmingSantaUser = santaUser2,
             Confirmed = true
         };
@@ -224,10 +224,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var relationship2 = new Santa_PartnerLink
         {
-            Id = 2,
-            SuggestedBySantaUserId = 3,
+            PartnerLinkKey = 2,
+            SuggestedBySantaUserKey = 3,
             SuggestedBySantaUser = santaUser3,
-            ConfirmingSantaUserId = 4,
+            ConfirmingSantaUserKey = 4,
             ConfirmingSantaUser = santaUser4,
             Confirmed = true,
             RelationshipEnded = DateTime.Today.AddYears(-1) // ended but still counts
@@ -238,10 +238,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var relationship3 = new Santa_PartnerLink
         {
-            Id = 3,
-            SuggestedBySantaUserId = 5,
+            PartnerLinkKey = 3,
+            SuggestedBySantaUserKey = 5,
             SuggestedBySantaUser = santaUser5,
-            ConfirmingSantaUserId = 6,
+            ConfirmingSantaUserKey = 6,
             ConfirmingSantaUser = santaUser6,
             Confirmed = true,
             RelationshipEnded = DateTime.Today.AddYears(-1),
@@ -258,7 +258,7 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var giftingGroup1 = new Santa_GiftingGroup
         {
-            Id = 1,
+            GiftingGroupKey = 1,
             Name = "GG1",
             Description = "GG1",
             JoinerToken = "123456"
@@ -268,11 +268,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink1 = new Santa_GiftingGroupUser
         {
-            Id = 1,
+            GiftingGroupUserKey = 1,
             GroupAdmin = true,
-            SantaUserId = 1,
+            SantaUserKey = 1,
             SantaUser = santaUser1,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -280,11 +280,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink2 = new Santa_GiftingGroupUser
         {
-            Id = 2,
+            GiftingGroupUserKey = 2,
             GroupAdmin = true,
-            SantaUserId = 2,
+            SantaUserKey = 2,
             SantaUser = santaUser2,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -292,11 +292,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink3 = new Santa_GiftingGroupUser
         {
-            Id = 3,
+            GiftingGroupUserKey = 3,
             GroupAdmin = true,
-            SantaUserId = 3,
+            SantaUserKey = 3,
             SantaUser = santaUser3,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -304,11 +304,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink4 = new Santa_GiftingGroupUser
         {
-            Id = 4,
+            GiftingGroupUserKey = 4,
             GroupAdmin = true,
-            SantaUserId = 4,
+            SantaUserKey = 4,
             SantaUser = santaUser4,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -316,11 +316,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink5 = new Santa_GiftingGroupUser
         {
-            Id = 5,
+            GiftingGroupUserKey = 5,
             GroupAdmin = true,
-            SantaUserId = 5,
+            SantaUserKey = 5,
             SantaUser = santaUser5,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -328,11 +328,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         var userLink6 = new Santa_GiftingGroupUser
         {
-            Id = 6,
+            GiftingGroupUserKey = 6,
             GroupAdmin = true,
-            SantaUserId = 6,
+            SantaUserKey = 6,
             SantaUser = santaUser6,
-            GiftingGroupId = 1,
+            GiftingGroupKey = 1,
             GiftingGroup = giftingGroup1
         };
 
@@ -342,8 +342,8 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
 
         #region Group Years
 
-        int yearId = 0;
-        int groupUserId = 0;
+        int groupYearKey = 0;
+        int yearGroupUserKey = 0;
 
         List<int> years = [2022, 2023, 2024];
 
@@ -351,11 +351,13 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
         {
             var giftingYear1 = new Santa_GiftingGroupYear
             {
-                Id = ++yearId,
+                GiftingGroupYearKey = ++groupYearKey,
                 Year = year,
                 Limit = 50,
-                GiftingGroupId = 1,
-                GiftingGroup = giftingGroup1
+                GiftingGroupKey = 1,
+                GiftingGroup = giftingGroup1,
+                CurrencyCode = "GBP",
+                CurrencySymbol = "£"
             };
 
             context.Santa_GiftingGroupYears.Add(giftingYear1);
@@ -364,10 +366,10 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
             {
                 var yearUser = new Santa_YearGroupUser
                 {
-                    Id = ++groupUserId,
-                    YearId = yearId,
+                    YearGroupUserKey = ++yearGroupUserKey,
+                    GiftingGroupYearKey = groupYearKey,
                     GiftingGroupYear = giftingYear1,
-                    SantaUserId = userLink.SantaUserId,
+                    SantaUserKey = userLink.SantaUserKey,
                     SantaUser = userLink.SantaUser,
                     Included = true
                 };

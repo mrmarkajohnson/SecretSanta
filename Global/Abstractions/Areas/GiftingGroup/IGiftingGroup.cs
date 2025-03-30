@@ -2,7 +2,7 @@
 
 public interface IGiftingGroup : IGiftingGroupBase
 {
-    int Id { get; }
+    int GiftingGroupKey { get; }
 
     string CultureInfo { get; }
     string? CurrencyCodeOverride { get; }

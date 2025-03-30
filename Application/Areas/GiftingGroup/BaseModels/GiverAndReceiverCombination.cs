@@ -2,6 +2,6 @@
 
 internal class GiverAndReceiverCombination
 {
-    public int GiverId { get; init; }
-    public int RecipientId { get; init; }
+    public int GiverSantaUserKey { get; init; }
+    public int RecipientSantaUserKey { get; init; }
 }

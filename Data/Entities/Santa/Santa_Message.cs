@@ -10,7 +10,7 @@ public class Santa_Message : MessageBaseEntity, IMessageEntity
 
     public bool ShowAsFromSanta { get; set; }
 
-    public int? GiftingGroupYearId { get; set; }
+    public int? GiftingGroupYearKey { get; set; }
     public virtual Santa_GiftingGroupYear? GiftingGroupYear { get; set; }
 
     public virtual required Santa_User Sender { get; set; }

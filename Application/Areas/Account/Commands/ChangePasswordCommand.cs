@@ -22,10 +22,10 @@ public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> whe
 
         EnsureSignedIn();
 
-        string? userId = GetCurrentUserId();
-        if (userId != null)
+        string? globalUserId = GetCurrentUserId();
+        if (globalUserId != null)
         {
-            Global_User? dbCurrentUser = GetGlobalUser(userId);
+            Global_User? dbCurrentUser = GetGlobalUser(globalUserId);
 
             if (dbCurrentUser != null)
             {

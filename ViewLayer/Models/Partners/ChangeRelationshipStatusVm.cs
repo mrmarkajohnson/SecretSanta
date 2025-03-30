@@ -5,16 +5,16 @@ namespace ViewLayer.Models.Partners;
 
 public class ChangeRelationshipStatusVm : IChangeRelationshipStatus
 {
-    public ChangeRelationshipStatusVm(int partnerLinkId, Guid userId, RelationshipStatus newStatus, string manageRelationshipsLink)
+    public ChangeRelationshipStatusVm(int partnerLinkKey, Guid globalUserId, RelationshipStatus newStatus, string manageRelationshipsLink)
     {
-        PartnerLinkId = partnerLinkId;
-        UserId = userId;
+        PartnerLinkKey = partnerLinkKey;
+        GlobalUserId = globalUserId;
         NewStatus = newStatus;
         ManageRelationshipsLink = manageRelationshipsLink;
     }
 
-    public int PartnerLinkId { get; set; }
-    public Guid UserId { get; set; }
+    public int PartnerLinkKey { get; set; }
+    public Guid GlobalUserId { get; set; }
     public RelationshipStatus NewStatus { get; set; }
     public string ManageRelationshipsLink { get; set; }
 }

@@ -14,7 +14,7 @@ public class AddRelationshipVm : IAddRelationship
     public IQueryable<IVisibleUser> PossiblePartners { get; set; }
     public string ManageRelationshipsLink { get; set; }
     public string UserGridAction { get; }
-    public Guid UserId { get; set; } = Guid.Empty;
+    public Guid GlobalUserId { get; set; } = Guid.Empty;
 
     public UserGridVm UserGridModel => new UserGridVm(PossiblePartners, UserGridAction);    
 }

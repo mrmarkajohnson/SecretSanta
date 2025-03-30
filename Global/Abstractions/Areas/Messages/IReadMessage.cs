@@ -5,11 +5,11 @@ namespace Global.Abstractions.Global.Messages;
 public interface IReadMessage : IMessageBase
 {
     /// <summary>
-    /// Id of the MessageRecipient record
+    /// Key of the MessageRecipient record
     /// </summary>
-    int Id { get; }
+    int MessageRecipientKey { get; }
 
-    int MessageId { get; set; }
+    int MessageKey { get; set; }
     public DateTime Sent { get; set; }
 
     IUserNamesBase? Sender { get; }

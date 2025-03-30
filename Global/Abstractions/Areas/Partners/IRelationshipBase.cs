@@ -2,6 +2,6 @@
 
 public interface IRelationshipBase
 {
-    Guid UserId { get; }
+    Guid GlobalUserId { get; }
     string ManageRelationshipsLink { get; }
 }

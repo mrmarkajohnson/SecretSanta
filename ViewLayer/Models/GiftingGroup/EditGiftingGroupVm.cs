@@ -10,7 +10,7 @@ namespace ViewLayer.Models.GiftingGroup;
 
 public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
 {
-    public bool Exists => Id > 0;
+    public bool Exists => GiftingGroupKey > 0;
 
     [Display(Name = "Currency")]
     public string CurrencyOverride

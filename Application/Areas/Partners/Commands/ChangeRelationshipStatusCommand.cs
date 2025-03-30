@@ -27,12 +27,12 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
 
         var dbPossibleRelationships = _dbCurrentUser.SantaUser.SuggestedRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null
-                && x.ConfirmingSantaUser.GlobalUserId == Item.UserId.ToString())
+                && x.ConfirmingSantaUser.GlobalUserId == Item.GlobalUserId.ToString())
             .Union(_dbCurrentUser.SantaUser.ConfirmingRelationships
                 .Where(x => x.DateArchived == null && x.DateDeleted == null
-                    && x.SuggestedBySantaUser.GlobalUserId == Item.UserId.ToString()));
+                    && x.SuggestedBySantaUser.GlobalUserId == Item.GlobalUserId.ToString()));
 
-        Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.Id == Item.PartnerLinkId);
+        Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);
 
         if (dbRelationship == null)
         {
@@ -40,7 +40,7 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
             return await Result();
         }
 
-        bool currentUserSuggested = dbRelationship.SuggestedBySantaUserId == _dbCurrentUser.SantaUser.Id;
+        bool currentUserSuggested = dbRelationship.SuggestedBySantaUserKey == _dbCurrentUser.SantaUser.SantaUserKey;
         string headerText = "";
         string messageText = "";
 
@@ -134,7 +134,7 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
     private void ArchiveAnyOtherRelationships(IEnumerable<Santa_PartnerLink> dbPossibleRelationships)
     {
         var dbOtherRelationships = dbPossibleRelationships
-                        .Where(x => x.Id != Item.PartnerLinkId)
+                        .Where(x => x.PartnerLinkKey != Item.PartnerLinkKey)
                         .ToList();
 
         foreach (var dbOtherRelationship in dbOtherRelationships)

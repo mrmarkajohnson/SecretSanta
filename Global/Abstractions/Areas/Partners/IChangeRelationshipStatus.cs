@@ -4,6 +4,6 @@ namespace Global.Abstractions.Areas.Partners;
 
 public interface IChangeRelationshipStatus : IRelationshipBase
 {
-    int PartnerLinkId { get; }
+    int PartnerLinkKey { get; }
     RelationshipStatus NewStatus { get; }
 }

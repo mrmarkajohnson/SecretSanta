@@ -13,7 +13,7 @@ public class GiftingGroupMappingProfile : Profile
         CreateMap<Santa_GiftingGroup, IGiftingGroup>().As<CoreGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroupYear>()
-            .ForMember(dest => dest.GiftingGroupId, opt => opt.MapFrom(src => src.GiftingGroupId))
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
             .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.Included, opt => opt.Ignore())
@@ -33,34 +33,34 @@ public class GiftingGroupMappingProfile : Profile
         CreateMap<IUserGiftingGroupYear, IManageUserGiftingGroupYear>().As<ManageUserGiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroup>()
-            .ForMember(dest => dest.GiftingGroupId, opt => opt.MapFrom(src => src.GiftingGroupId))
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src => 
-                src.GroupAdmin ? src.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseByUserId == null).Count() : 0));
+                src.GroupAdmin ? src.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroup>().As<UserGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupApplication, ReviewJoinerApplication>()
             .IncludeMembers(src => src.SantaUser.GlobalUser)
-            .ForMember(dest => dest.ApplicationId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.GroupApplicationKey, opt => opt.MapFrom(src => src.GroupApplicationKey))
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
-                .Where(x => x.GiftingGroupId == src.GiftingGroupId && x.Id != src.Id)
+                .Where(x => x.GiftingGroupKey == src.GiftingGroupKey && x.GroupApplicationKey != src.GroupApplicationKey)
                 .Count()))
             .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.Year == DateTime.Today.Year)
-                ? src.GiftingGroup.Years.First(x => x.Year == DateTime.Today.Year).Users.Any(x => x.GivingToUserId != null)
+                ? src.GiftingGroup.Years.First(x => x.Year == DateTime.Today.Year).Users.Any(x => x.RecipientSantaUserKey != null)
                 : false))
             .ForMember(dest => dest.Accepted, opt => opt.MapFrom(src => src.Accepted))
             .ForMember(dest => dest.RejectionMessage, opt => opt.MapFrom(src => src.RejectionMessage))
             .ForMember(dest => dest.Blocked, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
-                .Where(x => x.GiftingGroupId == src.GiftingGroupId)
+                .Where(x => x.GiftingGroupKey == src.GiftingGroupKey)
                 .Any(x => x.Blocked)))
             .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true));
         CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Global_User, ReviewJoinerApplication>()
             .IncludeBase<Global_User, UserNamesBase>()
-            .ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id));
+            .ForMember(dest => dest.ApplicantUserId, opt => opt.MapFrom(src => src.Id));
         CreateMap<Global_User, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()
@@ -69,13 +69,13 @@ public class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCode))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbol))
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users))
-            .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)))
-            .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.GivingToUserId != null)
-                && src.Users.Any(x => x.Included == true && x.GivingToUserId == null)));
+            .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)))
+            .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)
+                && src.Users.Any(x => x.Included == true && x.RecipientSantaUserKey == null)));
         CreateMap<Santa_GiftingGroupYear, IGiftingGroupYear>().As<GiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroup, GiftingGroupYear>()
-            .ForMember(dest => dest.GiftingGroupId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
             .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCodeOverride))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbolOverride));
@@ -92,7 +92,7 @@ public class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_User, YearGroupUserBase>()
             .IncludeMembers(src => src.GlobalUser)
-            .ForMember(dest => dest.SantaUserId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey))
             .ForMember(dest => dest.Included, opt => opt.Ignore());
         CreateMap<Santa_User, IYearGroupUserBase>().As<YearGroupUserBase>();
 

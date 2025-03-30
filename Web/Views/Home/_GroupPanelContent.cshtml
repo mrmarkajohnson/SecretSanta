@@ -5,19 +5,19 @@
 @if (Model.GroupAdmin)
 {
     <p>
-        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-groupId="@Model.GiftingGroupId">
+        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
             Edit Gifting Group '@Model.GroupName'
         </a>
     </p>
     <p>
-        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-groupId="@Model.GiftingGroupId">
+        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
             Set Up Group '@Model.GroupName' for @DateTime.Today.Year
         </a>
     </p>
 }
 
 <p>
-    <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-groupId="@Model.GiftingGroupId">
+    <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
         View '@Model.GroupName' for @DateTime.Today.Year
     </a>
 </p>

@@ -13,10 +13,10 @@ public class ManageUserGiftingGroupYear : UserGiftingGroupYear, IManageUserGifti
     public int PreviousYearsRequired { get; set; }
 
     [Display(Name = "Who did you give to last year?")]
-    public string? LastYearRecipientId { get; set; }
+    public string? LastRecipientUserId { get; set; }
 
     [Display(Name = "Who did you give to the year before?")]
-    public string? PreviousYearRecipientId { get; set; }
+    public string? PreviousRecipientUserId { get; set; }
 
     public IList<IUserNamesBase> OtherGroupMembers { get; set; }
 }

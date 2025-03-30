@@ -6,11 +6,11 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 {
-    private int _applicationId;
+    private int _groupApplicationKey;
 
-    public ReviewJoinerApplicationQuery(int applicationId)
+    public ReviewJoinerApplicationQuery(int groupApplicationKey)
     {
-        _applicationId = applicationId;
+        _groupApplicationKey = groupApplicationKey;
     }
 
     protected override Task<IReviewApplication> Handle()
@@ -21,16 +21,16 @@ public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .FirstOrDefault(x => x.Id == _applicationId);
+            .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
         if (dbApplication == null)
         {
-            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == _applicationId);
+            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
-                    .Where(x => x.GiftingGroupId == dbApplication.GiftingGroupId && x.GroupAdmin)
+                    .Where(x => x.GiftingGroupKey == dbApplication.GiftingGroupKey && x.GroupAdmin)
                     .ToList();
 
                 if (!dbLinks?.Any() == true)

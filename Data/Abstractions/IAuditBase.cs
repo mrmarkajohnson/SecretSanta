@@ -4,7 +4,7 @@ namespace Data.Abstractions;
 
 public interface IAuditBase
 {
-    int Id { get; set; }
-    string? UserId { get; set; }
+    int AuditKey { get; set; }
+    string? GlobalUserId { get; set; }
     AuditAction Action { get; set; }    
 }

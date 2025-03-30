@@ -11,7 +11,7 @@ public class CoreGiftingGroup : IGiftingGroup
     {
     }
 
-    public int Id { get; set; }
+    public int GiftingGroupKey { get; set; }
 
     [Required, StringLength(GiftingGroupVal.Name.MaxLength, MinimumLength = GiftingGroupVal.Name.MinLength)]
     [Display(Name = "Group Name")]

@@ -16,15 +16,9 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
     {
     }
 
-    public class CombinationNumber
-    {
-        public int GiverId { get; init; }
-        public int PossibleCombinationCount { get; set; }
-    }
-
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        if (Item.GiftingGroupId == 0)
+        if (Item.GiftingGroupKey == 0)
         {
             throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
         }
@@ -44,18 +38,18 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             throw new AccessDeniedException();
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupId, true));
-        Santa_GiftingGroup dbGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGroup.Years.FirstOrDefault(x => x.Year == Item.Year);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupKey, true));
+        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.Year == Item.Year);
 
         if (dbGiftingGroupYear == null)
         {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGroup);
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
         }
 
         foreach (IYearGroupUserBase member in Item.GroupMembers)
         {
-            AddOrUpdateUserGroupYear(dbGiftingGroupYear, member.Included, member.SantaUserId, member.UserDisplayName); // must be done before the next stage
+            AddOrUpdateUserGroupYear(dbGiftingGroupYear, member.Included, member.SantaUserKey, member.UserDisplayName); // must be done before the next stage
         }
 
         if (!Validation.IsValid)
@@ -65,12 +59,12 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
         {
             var participatingMembers = dbGiftingGroupYear.ParticipatingMembers();
 
-            if (participatingMembers.Any(x => x.GivingToUserId != null))
+            if (participatingMembers.Any(x => x.RecipientSantaUserKey != null))
             {
-                if (participatingMembers.Any(x => x.GivingToUserId == null))
+                if (participatingMembers.Any(x => x.RecipientSantaUserKey == null))
                     AddGeneralValidationError("Some participating group members have already been assigned a recipient," +
                         " but others haven't. Please recalculate or cancel recipients.");
-                else if (dbGiftingGroupYear.Users.Any(x => !x.Included == true && x.GivingToUserId != null))
+                else if (dbGiftingGroupYear.Users.Any(x => !x.Included == true && x.RecipientSantaUserKey != null))
                     AddGeneralValidationError("Some non-participating group members have already been assigned a " +
                         "recipient. Please recalculate or cancel recipients.");
 
@@ -81,8 +75,8 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
         else if (Item.CalculationOption == YearCalculationOption.Calculate)
         {
             var missingGroupMembers = dbGiftingGroupYear.ValidGroupMembers()
-                .Where(x => dbGroup.UserLinks.Any(y => y.SantaUserId == x.SantaUserId) == false
-                    || Item.GroupMembers.Any(y => y.SantaUserId == x.SantaUserId) == false);
+                .Where(x => dbGiftingGroup.UserLinks.Any(y => y.SantaUserKey == x.SantaUserKey) == false
+                    || Item.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false);
 
             if (missingGroupMembers.Any())
             {
@@ -94,7 +88,7 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
                 AddGeneralValidationError("New members have been added to the group. Please try again.");
             }
             else if (dbGiftingGroupYear.Users
-                .Where(x => dbGiftingGroupYear.ValidGroupMembers().Any(y => y.SantaUserId == x.SantaUserId))
+                .Where(x => dbGiftingGroupYear.ValidGroupMembers().Any(y => y.SantaUserKey == x.SantaUserKey))
                 .Any(x => x.Included == null))
             {
                 AddGeneralValidationError("Not all members have been set as participating or not.");
@@ -103,7 +97,7 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             {
                 try
                 {
-                    await CalculateGiversAndReceivers(dbGroup, dbGiftingGroupYear);
+                    await CalculateGiversAndReceivers(dbGiftingGroup, dbGiftingGroupYear);
                 }
                 catch (Exception exp)
                 {
@@ -114,13 +108,13 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
         }
         else if (Item.CalculationOption == YearCalculationOption.Cancel)
         {
-            foreach (var dbUser in dbGiftingGroupYear.Users)
+            foreach (var dbYearGroupUser in dbGiftingGroupYear.Users)
             {
-                if (dbUser.GivingToUserId != null)
-                    SendRecipientMessage(dbUser, true);
+                if (dbYearGroupUser.RecipientSantaUserKey != null)
+                    SendRecipientMessage(dbYearGroupUser, true);
 
-                dbUser.GivingToUserId = null;
-                dbUser.GivingToUser = null;
+                dbYearGroupUser.RecipientSantaUserKey = null;
+                dbYearGroupUser.RecipientSantaUser = null;
             }
         }
 
@@ -128,8 +122,8 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             return await Result();
 
         dbGiftingGroupYear.Limit = Item.Limit;
-        dbGiftingGroupYear.CurrencyCode = Item.CurrencyCode ?? dbGroup.GetCurrencyCode();
-        dbGiftingGroupYear.CurrencySymbol = Item.CurrencySymbol ?? dbGroup.GetCurrencySymbol();
+        dbGiftingGroupYear.CurrencyCode = Item.CurrencyCode ?? dbGiftingGroup.GetCurrencyCode();
+        dbGiftingGroupYear.CurrencySymbol = Item.CurrencySymbol ?? dbGiftingGroup.GetCurrencySymbol();
 
         return await SaveAndReturnSuccess();
     }
@@ -146,14 +140,14 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
 
             foreach (GiverAndReceiverCombination combi in actualCombinations)
             {
-                Santa_YearGroupUser dbGiver = participatingMembers.First(x => x.SantaUserId == combi.GiverId);
-                int? existingRecipientId = dbGiver.GivingToUserId;
+                Santa_YearGroupUser dbGiver = participatingMembers.First(x => x.SantaUserKey == combi.GiverSantaUserKey);
+                int? existingRecipientSantaUserKey = dbGiver.RecipientSantaUserKey;
 
-                dbGiver.GivingToUserId = combi.RecipientId;
+                dbGiver.RecipientSantaUserKey = combi.RecipientSantaUserKey;
                 DbContext.ChangeTracker.DetectChanges();
 
-                if (combi.RecipientId != existingRecipientId)
-                    SendRecipientMessage(dbGiver, existingRecipientId == null ? false : null);
+                if (combi.RecipientSantaUserKey != existingRecipientSantaUserKey)
+                    SendRecipientMessage(dbGiver, existingRecipientSantaUserKey == null ? false : null);
             }
 
             DbContext.ChangeTracker.DetectChanges();
@@ -190,10 +184,10 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             true => $"All recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "Look out for future messages telling you who your new recipient will be. " +
                 "If you've already purchased a present, please contact a group administrator.",
-            null => $"This year, you are NOW giving to {dbGiver.GivingToUser.GlobalUser.FullName().ToUpper()}. "
+            null => $"This year, you are NOW giving to {dbGiver.RecipientSantaUser.GlobalUser.FullName().ToUpper()}. "
                 + $"All previous recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "If you've already purchased a present, please contact a group administrator.",
-            false => $"This year, you are giving to {dbGiver.GivingToUser.GlobalUser.FullName().ToUpper()}."
+            false => $"This year, you are giving to {dbGiver.RecipientSantaUser.GlobalUser.FullName().ToUpper()}."
         };
 
         var message = new SendSantaMessage

@@ -5,7 +5,7 @@ namespace Application.Areas.GiftingGroup.BaseModels;
 
 public class GiftingGroupYearBase : IGiftingGroupYearBase
 {
-    public int GiftingGroupId { get; set; }
+    public int GiftingGroupKey { get; set; }
     public string GiftingGroupName { get; set; } = string.Empty;
 
     [Display(Name = "Spending Limit")]

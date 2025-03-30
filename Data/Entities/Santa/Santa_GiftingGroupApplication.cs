@@ -5,16 +5,16 @@ namespace Data.Entities.Santa;
 public class Santa_GiftingGroupApplication : DeletableBaseEntity, IDeletableEntity
 {
     [Key]
-    public int Id { get; set; }
+    public int GroupApplicationKey { get; set; }
 
-    public int SantaUserId { get; set; }
+    public int SantaUserKey { get; set; }
     public virtual required Santa_User SantaUser { get; set; }
 
-    public int GiftingGroupId { get; set; }
+    public int GiftingGroupKey { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
-    public int? ResponseByUserId { get; set; }
-    public virtual Santa_User? ResponseByUser { get; set; }
+    public int? ResponseBySantaUserKey { get; set; }
+    public virtual Santa_User? ResponseBySantaUser { get; set; }
 
     [MaxLength(GiftingGroupVal.JoinerMessage.MaxLength)]
     public string? Message { get; set; }

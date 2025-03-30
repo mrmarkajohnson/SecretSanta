@@ -14,7 +14,7 @@ public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem
         Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-                .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupId == Item.GiftingGroupId && x.GiftingGroup.DateDeleted == null);
+                .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupKey == Item.GiftingGroupKey && x.GiftingGroup.DateDeleted == null);
 
         if (dbGiftingGroupLink == null)
             throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
@@ -29,17 +29,17 @@ public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem
             dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
         }
 
-        AddOrUpdateUserGroupYear(dbGiftingGroupYear, Item.Included, dbSantaUser.Id, dbSantaUser.GlobalUser.FullName(), dbSantaUser);
+        AddOrUpdateUserGroupYear(dbGiftingGroupYear, Item.Included, dbSantaUser.SantaUserKey, dbSantaUser.GlobalUser.FullName(), dbSantaUser);
 
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastYearRecipientId, Item.Year - 1);
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousYearRecipientId, Item.Year - 2);
+        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.Year - 1);
+        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.Year - 2);
 
         return await SaveAndReturnSuccess();
     }
 
     private void SetPreviousYearRecipient(Santa_User dbSantaUser, Santa_GiftingGroup dbGiftingGroup, string? recipientId, int oldYear)
     {
-        if (string.IsNullOrWhiteSpace(recipientId) || dbGiftingGroup.Recipient(dbSantaUser.Id, oldYear) != null)
+        if (string.IsNullOrWhiteSpace(recipientId) || dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, oldYear) != null)
             return; // TODO: Return a validation failure
 
         var dbMatchedGroupUser = dbGiftingGroup.UserLinks.FirstOrDefault(x => x.SantaUser.GlobalUserId == recipientId);
@@ -55,22 +55,22 @@ public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem
                 Year = oldYear,
                 CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
                 CurrencySymbol = dbGiftingGroup.GetCurrencySymbol(),
-                GiftingGroupId = dbGiftingGroup.Id,
+                GiftingGroupKey = dbGiftingGroup.GiftingGroupKey,
                 GiftingGroup = dbGiftingGroup
             };
 
             DbContext.ChangeTracker.DetectChanges();
         }
 
-        var dbOldYearUser = dbOldYear.Users.FirstOrDefault(x => x.SantaUserId == dbSantaUser.Id);
+        var dbOldYearUser = dbOldYear.Users.FirstOrDefault(x => x.SantaUserKey == dbSantaUser.SantaUserKey);
 
         if (dbOldYearUser == null)
         {
             dbOldYearUser = new Santa_YearGroupUser
             {
-                YearId = dbOldYear.Id,
+                GiftingGroupYearKey = dbOldYear.GiftingGroupYearKey,
                 GiftingGroupYear = dbOldYear,
-                SantaUserId = dbSantaUser.Id,
+                SantaUserKey = dbSantaUser.SantaUserKey,
                 SantaUser = dbSantaUser
             };
 
@@ -78,7 +78,7 @@ public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem
         }
 
         dbOldYearUser.Included = true;
-        dbOldYearUser.GivingToUserId = dbMatchedGroupUser.SantaUserId;
-        dbOldYearUser.GivingToUser = dbMatchedGroupUser.SantaUser;
+        dbOldYearUser.RecipientSantaUserKey = dbMatchedGroupUser.SantaUserKey;
+        dbOldYearUser.RecipientSantaUser = dbMatchedGroupUser.SantaUser;
     }
 }

@@ -30,11 +30,12 @@ public class HomeController : BaseController
         return PartialView("_MessagesGrid", messages);
     }
 
-    public async Task<IActionResult> ViewMessage(int id)
+    [HttpGet]
+    public async Task<IActionResult> ViewMessage(int messageRecipientKey)
     {
         try
         {
-            IReadMessage message = await Send(new ViewMessageQuery(id));
+            IReadMessage message = await Send(new ViewMessageQuery(messageRecipientKey));
             return PartialView("_ViewMessageModal", message);
         }
         catch (NotFoundException ex)
@@ -44,11 +45,11 @@ public class HomeController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> MarkMessageRead(int id)
+    public async Task<IActionResult> MarkMessageRead(int messageRecipientKey)
     {
         try
         {
-            await Send(new MarkMessageReadCommand(id), null);
+            await Send(new MarkMessageReadCommand(messageRecipientKey), null);
         }
         catch
         {

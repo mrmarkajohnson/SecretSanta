@@ -1,5 +1,4 @@
 GENERAL
-* Rename IDs to keys with the table name
 * Handle index pages etc. in bundles/routing
 Add testing and production configuration
 Add back buttons to relevant pages

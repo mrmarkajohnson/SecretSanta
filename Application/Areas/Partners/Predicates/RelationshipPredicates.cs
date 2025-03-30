@@ -12,7 +12,7 @@ public static class RelationshipPredicates
                 .Where(x => x.GiftingGroup.DateArchived == null && x.GiftingGroup.DateDeleted == null)
                 .Where(x => src.SuggestedBySantaUser.GiftingGroupLinks
                     .Where(y => y.DateArchived == null && y.DateDeleted == null)
-                    .Any(y => y.GiftingGroupId == x.GiftingGroupId))
+                    .Any(y => y.GiftingGroupKey == x.GiftingGroupKey))
                 .Select(x => x.GiftingGroup.Name);
     }
 }

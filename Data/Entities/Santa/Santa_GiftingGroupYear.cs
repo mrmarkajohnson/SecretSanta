@@ -14,7 +14,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     }
 
     [Key]
-    public int Id { get; set; }
+    public int GiftingGroupYearKey { get; set; }
 
     [Required, Length(4, 4)]
     public int Year { get; set; }
@@ -22,10 +22,10 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     [Precision(10, 2)]
     public decimal? Limit { get; set; }
 
-    public string CurrencyCode { get; set; }
-    public string CurrencySymbol { get; set; }
+    public required string CurrencyCode { get; set; }
+    public required string CurrencySymbol { get; set; }
 
-    public int GiftingGroupId { get; set; }
+    public int GiftingGroupKey { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
     public virtual ICollection<Santa_YearGroupUser> Users { get; set; }
@@ -42,7 +42,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
 
     public List<Santa_YearGroupUser> ParticipatingMembers() => Users
         .Where(x => x.Included == true)
-        .Where(x => ValidGroupMembers().Any(y => y.SantaUserId == x.SantaUserId))
+        .Where(x => ValidGroupMembers().Any(y => y.SantaUserKey == x.SantaUserKey))
         .ToList();
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)

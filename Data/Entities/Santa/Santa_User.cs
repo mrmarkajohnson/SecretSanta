@@ -18,7 +18,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
     }
 
     [Key]
-    public int Id { get; set; }
+    public int SantaUserKey { get; set; }
 
     public required string GlobalUserId { get; set; }
     public virtual required Global_User GlobalUser { get; set; }

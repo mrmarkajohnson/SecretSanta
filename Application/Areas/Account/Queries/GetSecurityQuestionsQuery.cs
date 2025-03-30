@@ -24,10 +24,10 @@ public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 
         if (ClaimsUser != null && SignInManager.IsSignedIn(ClaimsUser)) // first constructor
         {
-            string? userId = GetCurrentUserId();
-            if (userId != null)
+            string? globalUserId = GetCurrentUserId();
+            if (globalUserId != null)
             {
-                dbCurrentUser = GetGlobalUser(userId);
+                dbCurrentUser = GetGlobalUser(globalUserId);
             }
         }
 

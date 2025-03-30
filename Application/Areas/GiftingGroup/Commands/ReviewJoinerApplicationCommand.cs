@@ -18,16 +18,16 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .FirstOrDefault(x => x.Id == Item.ApplicationId);
+            .FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
         if (dbApplication == null)
         {
-            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.Id == Item.ApplicationId);
+            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
             if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
-                    .Where(x => x.GiftingGroupId == dbApplication.GiftingGroupId && x.GroupAdmin)
+                    .Where(x => x.GiftingGroupKey == dbApplication.GiftingGroupKey && x.GroupAdmin)
                     .ToList();
 
                 if (!dbLinks.Any() == true)
@@ -44,7 +44,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
             dbApplication.Accepted = Item.Accepted;
             dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
-            dbApplication.ResponseByUserId = dbCurrentSantaUser.Id;
+            dbApplication.ResponseBySantaUserKey = dbCurrentSantaUser.SantaUserKey;
 
             if (Item.Accepted)
             {
@@ -63,9 +63,9 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
         dbApplication.GiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
         {
             GiftingGroup = dbApplication.GiftingGroup,
-            GiftingGroupId = dbApplication.GiftingGroupId,
+            GiftingGroupKey = dbApplication.GiftingGroupKey,
             SantaUser = dbApplication.SantaUser,
-            SantaUserId = dbApplication.SantaUserId,
+            SantaUserKey = dbApplication.SantaUserKey,
         });
     }
 
@@ -78,7 +78,7 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
         {
             if (dbGiftingGroupYear != null)
             {
-                alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.GivingToUserId != null);
+                alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.RecipientSantaUserKey != null);
             }
         }
 
@@ -86,9 +86,9 @@ public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TI
         {
             dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
             {
-                YearId = dbGiftingGroupYear.Year,
+                GiftingGroupYearKey = dbGiftingGroupYear.Year,
                 GiftingGroupYear = dbGiftingGroupYear,
-                SantaUserId = dbApplication.SantaUserId,
+                SantaUserKey = dbApplication.SantaUserKey,
                 SantaUser = dbApplication.SantaUser,
                 Included = true
             });

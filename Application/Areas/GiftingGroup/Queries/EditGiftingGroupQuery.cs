@@ -5,21 +5,21 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
 {
-    private readonly int _groupId;
+    private readonly int _giftingGroupKey;
 
-    public EditGiftingGroupQuery(int groupId)
+    public EditGiftingGroupQuery(int giftingGroupKey)
     {
-        _groupId = groupId;
+        _giftingGroupKey = giftingGroupKey;
     }
 
     protected async override Task<IGiftingGroup> Handle()
     {
-        if (_groupId == 0)
+        if (_giftingGroupKey == 0)
         {
             return new CoreGiftingGroup();
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_groupId, true);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
         return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
     }
 
