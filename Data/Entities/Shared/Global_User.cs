@@ -83,11 +83,14 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
         this.AddNewAuditEntry<Global_User, Global_User_Audit, Global_User_AuditChange>(auditTrail, changes);
     }
 
-    public string FullName()
+    [NotMapped, NotAudited]
+    string IUserAllNames.UserDisplayName => FullName(false);
+
+    public string FullName(bool includeMiddleNames = true)
     {
         string fullName = Forename.Trim() + " ";
 
-        if (!string.IsNullOrWhiteSpace(MiddleNames))
+        if (includeMiddleNames && !string.IsNullOrWhiteSpace(MiddleNames))
         {
             fullName += MiddleNames.Trim() + " ";
         }

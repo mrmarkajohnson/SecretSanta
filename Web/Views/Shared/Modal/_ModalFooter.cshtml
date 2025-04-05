@@ -1,0 +1,14 @@
+﻿@using ViewLayer.Abstractions
+
+@model IModalVm
+
+<div class="modal-footer">
+    <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close this dialog">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+    </div>
+
+    @if (Model.ShowSaveButton)
+    {
+        <button type="button" class="btn btn-primary">Save changes</button>
+    }
+</div>

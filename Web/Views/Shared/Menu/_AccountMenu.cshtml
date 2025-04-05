@@ -1,7 +1,4 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-@if (SignInManager.IsSignedIn(User))
+﻿@if (SignInManager.IsSignedIn(User))
 {    
     <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <span class="fa-solid fa-user" style="color: #444444">&nbsp;</span>Account
@@ -22,6 +19,5 @@
             </form>
             @* <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty, successMessage = "Logged Out Successfully" })">Log Out</a> *@
         </li>
-
     </ul>
 }

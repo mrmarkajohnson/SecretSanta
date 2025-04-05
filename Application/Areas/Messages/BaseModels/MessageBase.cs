@@ -3,7 +3,7 @@ using Global.Settings;
 
 namespace Application.Areas.Messages.BaseModels;
 
-internal class MessageBase : IMessageBase
+public class MessageBase : IMessageBase
 {
     public required MessageSettings.MessageRecipientType RecipientTypes { get; set; }
     public required string HeaderText { get; set; }

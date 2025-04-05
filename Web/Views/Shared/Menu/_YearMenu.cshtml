@@ -1,8 +1,4 @@
-﻿@using ViewLayer.Models.Home
-
-@inject SignInManager<IdentityUser> SignInManager
-
-@model MainMenuVm
+﻿@model MainMenuVm
 
 @if (SignInManager.IsSignedIn(User))
 {

@@ -3,7 +3,7 @@ using Global.Abstractions.Global.Messages;
 
 namespace Application.Areas.Messages.BaseModels;
 
-internal class ReadMessage : MessageBase, IReadMessage
+public class ReadMessage : MessageBase, IReadMessage
 {
     public int MessageRecipientKey { get; set; }
     public int MessageKey { get; set; }

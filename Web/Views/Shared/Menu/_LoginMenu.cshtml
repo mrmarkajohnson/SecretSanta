@@ -1,7 +1,4 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-<ul class="navbar-nav ms-auto">    
+﻿<ul class="navbar-nav ms-auto">    
     @if (!SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">

@@ -3,6 +3,7 @@ using Application.Areas.Messages.Queries;
 using Global.Abstractions.Global.Messages;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using ViewLayer.Models.Messages;
 
 namespace Web.Areas.Messages.Controllers;
 
@@ -36,7 +37,8 @@ public class HomeController : BaseController
         try
         {
             IReadMessage message = await Send(new ViewMessageQuery(messageRecipientKey));
-            return PartialView("_ViewMessageModal", message);
+            var model = Mapper.Map<ReadMessageVm>(message);
+            return PartialView("_ViewMessageModal", model);
         }
         catch (NotFoundException ex)
         {

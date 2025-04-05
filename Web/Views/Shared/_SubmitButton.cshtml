@@ -1,6 +1,4 @@
-﻿@using Global.Abstractions.Global
-
-@model IForm
+﻿@model IForm
 @{
     var defaultModel = new BaseFormVm();
     string text = string.IsNullOrEmpty(Model?.SubmitButtonText) ? defaultModel.SubmitButtonText : Model.SubmitButtonText;
