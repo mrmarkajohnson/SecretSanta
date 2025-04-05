@@ -87,8 +87,13 @@ app.MapControllerRoute(
     defaults: new { area = string.Empty });
 
 app.MapControllerRoute(
-    name: "empty",
+    name: "slash",
     pattern: "/",
+    defaults: new { area = string.Empty, controller = "Home", action = "index" });
+
+app.MapControllerRoute(
+    name: "empty",
+    pattern: "",
     defaults: new { area = string.Empty, controller = "Home", action = "index" });
 
 app.MapControllerRoute(
