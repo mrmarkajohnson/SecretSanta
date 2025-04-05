@@ -1,5 +1,6 @@
 ﻿using Application.Shared.BaseModels;
 using Global.Abstractions.Global.Messages;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Messages.BaseModels;
 
@@ -11,6 +12,8 @@ public class ReadMessage : MessageBase, IReadMessage
 
     public IUserNamesBase? Sender { get; set; } = new UserNamesBase();
     public bool ShowAsFromSanta { get; set; }
+
+    [Display(Name = "From")]
     public string SenderName => (ShowAsFromSanta || Sender == null) ? "Santa" : Sender.UserDisplayName;
 
     public bool Read { get; set; }

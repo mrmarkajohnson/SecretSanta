@@ -172,7 +172,7 @@ public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<T
             throw new AccessDeniedException();
         }
 
-        string headerText = $"Your Secret Santa recipientfor group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' has been " + cancelled switch
+        string headerText = $"Your Secret Santa recipient for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' has been " + cancelled switch
         {
             true => "CANCELLED!",
             null => "CHANGED!",
