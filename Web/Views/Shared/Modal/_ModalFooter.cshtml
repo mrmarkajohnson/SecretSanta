@@ -3,12 +3,20 @@
 @model IModalVm
 
 <div class="modal-footer">
-    <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close this dialog">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-    </div>
 
     @if (Model.ShowSaveButton)
     {
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Save your changes and close">
+            <button type="button" class="btn btn-default">Save</button>
+        </div>
+        <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close this dialog">
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    }
+    else
+    {
+        <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close this dialog">
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+        </div>
     }
 </div>

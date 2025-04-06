@@ -66,7 +66,7 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
                 IgnoreOldRelationship(dbRelationship, currentUserSuggested, ref headerText, ref messageText);
 
                 break;
-            case RelationshipStatus.NotRelationship:
+            case RelationshipStatus.IgnoreNonRelationship:
                 dbRelationship.DateDeleted = DateTime.Now;
                 headerText = "Your suggested relationship was not confirmed";
                 messageText = $"{_dbCurrentUser.FullName()} denied that they're in a relationship with you. " +

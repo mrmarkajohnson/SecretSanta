@@ -1,4 +1,5 @@
 GENERAL
+* Hash any GUIDs that are sent for user IDs when not the user themself, e.g. for relationships
 * Handle index pages etc. in bundles/routing
 Add testing and production configuration
 Add back buttons to relevant pages
@@ -33,7 +34,7 @@ Allow years to continue into January, just in case
 
 RELATIONSHIPS
 * Allow users to 'edit' a relationship in a modal, so they get a bit more help/explanation
-Allow deleting relationships if they haven't been confirmed yet
+* Allow deleting relationships if they haven't been confirmed yet
 
 GIFTS
 Allow users to view more details of the person they are giving to, e.g. from the 'Show' (recipient) link in the year list, and a link from the year page

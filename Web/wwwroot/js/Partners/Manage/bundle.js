@@ -1,10 +1,12 @@
 window.addEventListener('load', function () {
-    initStatusSelect();
+    initStatusSelects();
+    initEditLinks();
+    initDeleteLinks();
 });
 
-function initStatusSelect() {
+function initStatusSelects() {
     let statusSelects = document.querySelectorAll('select.relationship-status-select');
-    let selectUrl = document.querySelector('div.relationships-table').getAttribute('data-url');
+    let selectUrl = document.querySelector('div.relationships-table').getAttribute('data-change-url');
     let url = new URL(selectUrl);
 
     statusSelects.forEach(function (x) {
@@ -13,7 +15,7 @@ function initStatusSelect() {
         if (!x.getAttribute('data-initialised')) {
             x.setAttribute('data-initialised', true);
 
-            x.addEventListener('click', function (e) {
+            x.addEventListener('change', function (e) {
                 let originalValue = x.getAttribute('data-original-value');
 
                 if (x.value != originalValue) {
@@ -36,8 +38,48 @@ function initStatusSelect() {
     });
 }
 
-async function relationshipStatusChanged(select, url, title, message) {
-    let originalValue = select.getAttribute('data-original-value');
+function initEditLinks() {
+    let editLinks = document.querySelectorAll('a.edit-relationship-link');
+    let editUrl = document.querySelector('div.relationships-table').getAttribute('data-edit-url');
+    let url = new URL(editUrl);
+
+    editLinks.forEach(function (x) {
+        if (!x.getAttribute('data-initialised')) {
+            x.setAttribute('data-initialised', true);
+
+            x.addEventListener('click', function (e) {
+                
+            });
+        }
+    });
+}
+
+function initDeleteLinks() {
+    let deleteLinks = document.querySelectorAll('a.delete-relationship-link');
+    let deleteUrl = document.querySelector('div.relationships-table').getAttribute('data-delete-url');
+    let url = new URL(deleteUrl);
+
+    deleteLinks.forEach(function (x) {
+        if (!x.getAttribute('data-initialised')) {
+            x.setAttribute('data-initialised', true);
+            x.setAttribute('data-original-value', 'null'); // avoid breaking the relationshipStatusChanged method
+
+            x.addEventListener('click', function (e) {
+                let name = x.getAttribute('data-name');
+                let headerText = 'Delete relationship';
+                let messageText = 'Are you sure you want to delete your proposed relationship with ' + name + '?';
+
+                relationshipStatusChanged(e.currentTarget,
+                    url,
+                    headerText,
+                    messageText);
+            });
+        }
+    });
+}
+
+async function relationshipStatusChanged(control, url, title, message) {
+    let originalValue = control.getAttribute('data-original-value');
 
     bootbox.confirm({
         title: title,
@@ -59,18 +101,18 @@ async function relationshipStatusChanged(select, url, title, message) {
                 statusChanged();
             }
             else {
-                select.value = originalValue;
+                control.value = originalValue;
             }
         }
     });
 
     async function statusChanged() {
-        let partnerLinkKey = select.getAttribute('data-link-id');
-        let globalUserId = select.getAttribute('data-user-id');
+        let partnerLinkKey = control.getAttribute('data-link-id');
+        let globalUserId = control.getAttribute('data-user-id');
 
         url.searchParams.set('partnerLinkKey', partnerLinkKey);
         url.searchParams.set('globalUserId', globalUserId);
-        url.searchParams.set('newStatus', select.value);
+        url.searchParams.set('newStatus', control.value);
 
         let response = await fetch(url.href,
             {
@@ -86,10 +128,10 @@ async function relationshipStatusChanged(select, url, title, message) {
             window.location.href = response.url;
         }
         else if (response.ok) {
-            select.setAttribute('data-original-value', select.value);
+            control.setAttribute('data-original-value', control.value);
             reloadGrid();
         } else {
-            select.value = originalValue;
+            control.value = originalValue;
         }
 
         if (!response.redirected && responseText != null && responseText != '') {

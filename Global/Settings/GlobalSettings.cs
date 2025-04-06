@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Global.Settings;
 
@@ -16,6 +17,14 @@ public static class GlobalSettings
         Delete = 2,
         Archive = 3,
         View = 4
+    }
+
+    public enum YesNoNotSure
+    {
+        No = 1,
+        Yes = 2,
+        [Display(Name = "Not Sure Yet")]
+        NotSure = 3
     }
 
     public const string StandardGroupWidth = "col-lg-6 col-md-8 col-sm-10 col-12";

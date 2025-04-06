@@ -9,7 +9,7 @@
 
         @if (item.GroupAdmin)
         {
-        <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
+            <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
                 data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year">
                     <i class="fa fa-pencil"></i>
             </a>

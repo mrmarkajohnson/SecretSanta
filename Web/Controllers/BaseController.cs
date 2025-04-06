@@ -9,7 +9,6 @@ using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
-using System.Diagnostics.CodeAnalysis;
 using ViewLayer.Models.Home;
 using Web.Helpers;
 
@@ -148,7 +147,11 @@ public class BaseController : Controller
     protected ObjectResult FirstValidationError<T>(ICommandResult<T> result)
     {
         string message = result?.Validation?.Errors?.Count > 0 ? result.Validation.Errors[0].ErrorMessage : "An error occurred.";
+        return ErrorMessageResult(message);
+    }
 
+    protected ObjectResult ErrorMessageResult(string message)
+    {
         return StatusCode(StatusCodes.Status422UnprocessableEntity, message);
     }
 

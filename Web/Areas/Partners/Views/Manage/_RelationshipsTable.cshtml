@@ -5,7 +5,10 @@
 }
 
 <div class="mvc-grid mvc-grid-excel-mode" data-name=@string.Empty data-filter-mode="Excel" data-url=@string.Empty>
-    <div class="mvc-grid-table relationships-table" data-url="@Url.Action("ChangeRelationshipStatus", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())">
+    <div class="mvc-grid-table relationships-table" 
+        data-change-url="@Url.Action("ChangeRelationshipStatus", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())"        
+        data-delete-url="@Url.Action("DeleteRelationship", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())">
+
         <table>
             <thead>
                 <tr class="mvc-grid-headers">
@@ -25,6 +28,9 @@
                                 <i class="fa fa-circle-question fa-border"></i>
                             </span>
                         </span>
+                    </th>
+                    <th>
+
                     </th>
                 </tr>
             </thead>
@@ -48,7 +54,7 @@
                             <td>
                                 <span class="hidden">
                                     <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkKey" />
-                                    <partial name="_UserHiddenInputs" for="PossibleRelationships[i].Partner" />                                    
+                                    <partial name="_UserHiddenInputs" for="PossibleRelationships[i].Partner" />                              
                                     <input type="hidden" asp-for="PossibleRelationships[i].SuggestedByCurrentUser" />
                                     <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
                                 </span>
@@ -68,7 +74,27 @@
                                 {
                                     <select asp-for="PossibleRelationships[i].Status" class="form-control relationship-status-select"
                                         asp-items="@relationship.AvailableStatuses" data-link-id="@relationship.PartnerLinkKey"
-                                        data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName" ></select>
+                                        data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"></select>
+                                }
+                            </td>
+                            <td>
+                                @if (relationship.AvailableStatuses.Count > 1)
+                                {
+                                    <a class="edit-relationship-link modal-link"
+                                        data-url="@Url.Action("EditRelationship", "Manage", 
+                                            new { Area = "Partners", PartnerLinkKey = @relationship.PartnerLinkKey, globalUserId = @relationship.Partner.GlobalUserId }, 
+                                                Context.Request.Scheme, Context.Request.Host.ToString())"
+                                            data-toggle="tooltip" title="Edit this relationship">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                }
+
+                                @if (relationship.Status == RelationshipStatus.ToConfirm)
+                                {
+                                    <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"
+                                            data-toggle="tooltip" title="Delete this relationship">
+                                        <i class="fa fa-cross"></i>
+                                    </a>
                                 }
                             </td>
                         </tr>

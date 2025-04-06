@@ -1,6 +1,7 @@
 ﻿using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
 using Global.Abstractions.Areas.Partners;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Partners;
 using ViewLayer.Models.Shared;
@@ -33,7 +34,7 @@ public class ManageController : BaseController
 
         if (result.Success)
         {
-            if (model.NewStatus == RelationshipStatus.NotRelationship)
+            if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
                 return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
 
             return Ok("Relationship updated successfully");
@@ -87,6 +88,62 @@ public class ManageController : BaseController
         else
         {
             return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditRelationship(int partnerLinkKey, Guid globalUserId)
+    {
+        IRelationships relationships = await Send(new GetRelationshipsQuery());
+        var relationship = relationships.PossibleRelationships
+            .FirstOrDefault(x => x.PartnerLinkKey == partnerLinkKey && x.Partner.GlobalUserId == globalUserId.ToString());
+
+        if (relationship == null)
+            return ErrorMessageResult("Relationship not found.");
+
+        var model = Mapper.Map<ManageRelationshipVm>(relationship);
+        return PartialView("_ManageRelationshipModal", model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditRelationship(ManageRelationshipVm model)
+    {
+        ModelState.Clear();
+
+        bool isValid = ValidateItem(model, new ManageRelationshipVmValidator());
+
+        if (isValid)
+        {
+            string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+            var changeModel = new ChangeRelationshipStatusVm(model.PartnerLinkKey ?? 0, new Guid(model.Partner.GlobalUserId), model.Status, manageRelationshipsLink);
+            var result = await Send(new ChangeRelationshipStatusCommand(changeModel), null);
+
+            if (result.Success)
+            {
+                return Ok("Relationship updated successfully");
+            }
+        }
+
+        return PartialView("_ManageRelationshipModal", model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, Guid globalUserId)
+    {
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+        var model = new ChangeRelationshipStatusVm(partnerLinkKey, globalUserId, RelationshipStatus.EndedBeforeConfirmation, manageRelationshipsLink);
+        var result = await Send(new ChangeRelationshipStatusCommand(model), null);
+
+        if (result.Success)
+        {
+            if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
+                return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
+
+            return Ok("Relationship deleted successfully");
+        }
+        else
+        {
+            return FirstValidationError(result);
         }
     }
 }
