@@ -76,9 +76,11 @@ public class ManageController : BaseController
     // TODO: Allow deleting relationships if they haven't been confirmed yet
 
     [HttpPost]
-    public async Task<IActionResult> AddRelationship(Guid globalUserId)
+    public async Task<IActionResult> AddRelationship(Guid globalUserId, bool active)
     {
         var model = await GetAddRelationshipModel(globalUserId);
+        model.IsActive = active;
+
         var result = await Send(new AddRelationshipCommand(model), null);
 
         if (result.Success)

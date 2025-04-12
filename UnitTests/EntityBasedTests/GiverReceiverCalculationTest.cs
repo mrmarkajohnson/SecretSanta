@@ -81,11 +81,11 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
     private static void EnsureNobodyIsGivingToAPartner(List<Santa_YearGroupUser> participatingMembers)
     {
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.SuggestedRelationships
-            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
+            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmingUserIgnore))
             .Any(y => y.ConfirmingSantaUserKey == x.RecipientSantaUserKey));
 
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmingRelationships
-            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmedByIgnoreOld))
+            .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmingUserIgnore))
             .Any(y => y.SuggestedBySantaUserKey == x.RecipientSantaUserKey));
     }
 
@@ -216,7 +216,8 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
             SuggestedBySantaUser = santaUser1,
             ConfirmingSantaUserKey = 2,
             ConfirmingSantaUser = santaUser2,
-            Confirmed = true
+            Confirmed = true,
+            ExchangeGifts = false
         };
 
         santaUser1.SuggestedRelationships.Add(relationship1);
@@ -230,7 +231,8 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
             ConfirmingSantaUserKey = 4,
             ConfirmingSantaUser = santaUser4,
             Confirmed = true,
-            RelationshipEnded = DateTime.Today.AddYears(-1) // ended but still counts
+            RelationshipEnded = DateTime.Today.AddYears(-1), // ended but still counts
+            ExchangeGifts = false
         };
 
         santaUser3.SuggestedRelationships.Add(relationship2);
@@ -246,7 +248,8 @@ public class GiverReceiverCalculationTest : EntityBasedTestBase
             Confirmed = true,
             RelationshipEnded = DateTime.Today.AddYears(-1),
             SuggestedByIgnoreOld = true,
-            ConfirmedByIgnoreOld = true // ended and doesn't count any more
+            ConfirmingUserIgnore = true, // ended and doesn't count any more
+            ExchangeGifts = true
         };
 
         santaUser5.SuggestedRelationships.Add(relationship3);

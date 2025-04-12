@@ -15,9 +15,8 @@
         </li>
         <li>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty, successMessage = "Logged Out Successfully" })">
-                <button type="submit" class="dropdown-item">Logout</button>
+                <button type="submit" class="dropdown-item">Log Out</button>
             </form>
-            @* <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty, successMessage = "Logged Out Successfully" })">Log Out</a> *@
         </li>
     </ul>
 }

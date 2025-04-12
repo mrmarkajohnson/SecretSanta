@@ -14,6 +14,10 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
     }
 
     private Global_User? _dbCurrentUser;
+    private List<Santa_PartnerLink> _dbPossibleRelationships = new();
+    private bool _currentUserSuggested;
+    private string _headerText = "";
+    private string _messageText = "";
 
     protected async override Task<ICommandResult<IChangeRelationshipStatus>> HandlePostValidation()
     {
@@ -25,14 +29,15 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
             throw new AccessDeniedException();
         }
 
-        var dbPossibleRelationships = _dbCurrentUser.SantaUser.SuggestedRelationships
+        _dbPossibleRelationships = _dbCurrentUser.SantaUser.SuggestedRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null
                 && x.ConfirmingSantaUser.GlobalUserId == Item.GlobalUserId.ToString())
             .Union(_dbCurrentUser.SantaUser.ConfirmingRelationships
                 .Where(x => x.DateArchived == null && x.DateDeleted == null
-                    && x.SuggestedBySantaUser.GlobalUserId == Item.GlobalUserId.ToString()));
+                    && x.SuggestedBySantaUser.GlobalUserId == Item.GlobalUserId.ToString()))
+            .ToList();
 
-        Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);
+        Santa_PartnerLink? dbRelationship = _dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);
 
         if (dbRelationship == null)
         {
@@ -40,127 +45,231 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
             return await Result();
         }
 
-        bool currentUserSuggested = dbRelationship.SuggestedBySantaUserKey == _dbCurrentUser.SantaUser.SantaUserKey;
-        string headerText = "";
-        string messageText = "";
+        _currentUserSuggested = dbRelationship.SuggestedBySantaUserKey == _dbCurrentUser.SantaUser.SantaUserKey;
 
-        switch (Item.NewStatus)
+        HandleStatusChange(dbRelationship);
+
+        if (!string.IsNullOrWhiteSpace(_messageText))
         {
-            case RelationshipStatus.ToBeConfirmed:
-            case RelationshipStatus.ToConfirm:
-                AddGeneralValidationError("Invalid new status.");
-                return await Result();
-            case RelationshipStatus.Active:
-                ConfirmRelationship(dbPossibleRelationships, dbRelationship, ref headerText, ref messageText);
-                break;
-            case RelationshipStatus.Ended:
-                dbRelationship.RelationshipEnded ??= DateTime.Now;
-                headerText = "Sorry to hear your relationship has ended";
-                messageText = $"Santa is sorry to hear that {_dbCurrentUser.FullName()} said that they're no " +
-                    $"longer in a relationship with you. He hopes that you're both OK.";
-                break;
-            case RelationshipStatus.EndedBeforeConfirmation:
-                dbRelationship.RelationshipEnded ??= DateTime.Now;
-                break;
-            case RelationshipStatus.IgnoreOld:
-                IgnoreOldRelationship(dbRelationship, currentUserSuggested, ref headerText, ref messageText);
-
-                break;
-            case RelationshipStatus.IgnoreNonRelationship:
-                dbRelationship.DateDeleted = DateTime.Now;
-                headerText = "Your suggested relationship was not confirmed";
-                messageText = $"{_dbCurrentUser.FullName()} denied that they're in a relationship with you. " +
-                    $"Sorry if there was a misunderstanding.";
-                break;
-            default: throw new NotImplementedException();
-        }
-
-        if (!string.IsNullOrWhiteSpace(messageText))
-        {
-            SendUpdateMessage(dbRelationship, currentUserSuggested, headerText, messageText);
+            SendUpdateMessage(dbRelationship);
         }
 
         return await SaveAndReturnSuccess();
     }
 
-    private void ConfirmRelationship(IEnumerable<Santa_PartnerLink> dbPossibleRelationships, Santa_PartnerLink dbRelationship,
-        ref string headerText, ref string messageText)
+    private void HandleStatusChange(Santa_PartnerLink dbRelationship)
     {
-        dbRelationship.Confirmed = true;
-        headerText = "Your relationship is confirmed";
-        messageText = $"{_dbCurrentUser?.FullName()} confirmed that they're in a relationship with you. " +
-            $"Congratulations!";
-        ArchiveAnyOtherRelationships(dbPossibleRelationships);
+        dbRelationship.ExchangeGifts = false; // as a starting position
+
+        switch (Item.NewStatus)
+        {
+            case RelationshipStatus.ToBeConfirmed:
+            case RelationshipStatus.ToConfirm:
+                AddInvalidStatusError();
+                break;
+            case RelationshipStatus.Active:
+                ConfirmRelationship(dbRelationship);
+                break;
+            case RelationshipStatus.Ended:
+                EndConfirmedRelationship(dbRelationship);
+                break;
+            case RelationshipStatus.EndedBeforeConfirmation:
+                EndBeforeConfirmation(dbRelationship);
+                break;
+            case RelationshipStatus.IgnoreOld:
+                IgnoreOldRelationship(dbRelationship);
+                break;
+            case RelationshipStatus.IgnoreNonRelationship:
+                IgnoreNonRelationship(dbRelationship);
+                break;
+            case RelationshipStatus.Avoid:
+                AvoidRelationship(dbRelationship);
+                break;
+            default: throw new NotImplementedException();
+        }
     }
 
-    private void IgnoreOldRelationship(Santa_PartnerLink dbRelationship, bool currentUserSuggested,
-        ref string headerText, ref string messageText)
+    private void ConfirmRelationship(Santa_PartnerLink dbRelationship)
     {
-        dbRelationship.RelationshipEnded ??= DateTime.Now; // just in case                
+        if (dbRelationship.RelationshipEnded != null) // just in case
+        {
+            AddGeneralValidationError("You cannot reactivate an old relationship, as your partner needs to confirm that you are now in a relationship again. " +
+                "Please mark this one as ended, then create another.");
+            return;
+        }
 
-        if (currentUserSuggested)
+        if (_currentUserSuggested && dbRelationship.Confirmed != true)
+        {
+            AddInvalidStatusError();
+            return;
+        }
+
+        dbRelationship.Confirmed = true;
+        ArchiveAnyOtherRelationships();
+
+        _headerText = "Your relationship is confirmed";
+        _messageText = $"{_dbCurrentUser?.FullName()} confirmed that they're in a relationship with you. " +
+            $"Congratulations!";
+    }
+
+    private void EndConfirmedRelationship(Santa_PartnerLink dbRelationship)
+    {
+        if (_currentUserSuggested && dbRelationship.Confirmed != true)
+        {
+            AddInvalidStatusError();
+            return;
+        }
+
+        if (dbRelationship.RelationshipEnded == null)
+        {
+            _headerText = "Sorry to hear your relationship has ended";
+            _messageText = $"Santa is sorry to hear that {_dbCurrentUser?.FullName()} said that they're no " +
+                $"longer in a relationship with you. Santa hopes that you're both OK.";
+        }
+
+        if (_currentUserSuggested) // may have changed their mind about exchanging gifts 
+        {
+            dbRelationship.SuggestedByIgnoreOld = false;
+        }
+        else
+        {
+            dbRelationship.Confirmed = true;
+            dbRelationship.ConfirmingUserIgnore = false;
+        }
+
+        dbRelationship.ExchangeGifts = false; // just in case
+        dbRelationship.RelationshipEnded ??= DateTime.Now;
+    }
+
+    private void EndBeforeConfirmation(Santa_PartnerLink dbRelationship)
+    {
+        if (!_currentUserSuggested)
+        {
+            AddInvalidStatusError();
+            return;
+        }
+
+        dbRelationship.ExchangeGifts = false; // just in case
+        dbRelationship.RelationshipEnded ??= DateTime.Now;
+    }
+
+    private void IgnoreOldRelationship(Santa_PartnerLink dbRelationship)
+    {
+        if (_currentUserSuggested)
         {
             dbRelationship.SuggestedByIgnoreOld = true;
         }
         else
         {
-            dbRelationship.ConfirmedByIgnoreOld = true;
+            dbRelationship.Confirmed = true;
+            dbRelationship.ConfirmingUserIgnore = true;
         }
 
         bool confirmedOld = dbRelationship.SuggestedByIgnoreOld
-            && (!dbRelationship.Confirmed || dbRelationship.ConfirmedByIgnoreOld);
+            && (dbRelationship.Confirmed == true || dbRelationship.ConfirmingUserIgnore);
 
         if (confirmedOld)
         {
-            dbRelationship.DateArchived ??= DateTime.Now;
-
-            if (dbRelationship.Confirmed)
+            if (dbRelationship.Confirmed == true)
             {
-                headerText = "Your old relationship will be ignored";
-                messageText = $"{_dbCurrentUser?.FullName()} confirmed that they're happy to ignore " +
+                _headerText = "Your old relationship will be ignored";
+                _messageText = $"{_dbCurrentUser?.FullName()} confirmed that they're happy to ignore " +
                     $"their old relationship with you, so you can now exchange presents again.";
             }
+
+            dbRelationship.DateArchived ??= DateTime.Now;
+            dbRelationship.ExchangeGifts = true;
         }
-        else
+        else if (dbRelationship.Confirmed == true && dbRelationship.RelationshipEnded != null) // otherwise, other messages will handle this
         {
-            headerText = "Can your old relationship be ignored?";
-            messageText = $"{_dbCurrentUser?.FullName()} said that they're happy to ignore their old " +
+            _headerText = "Can your old relationship be ignored?";
+            _messageText = $"{_dbCurrentUser?.FullName()} said that they're happy to ignore their old " +
                 $"relationship with you, so you could exchange presents again. If you're happy to " +
-                $"ignore it too, please go to <a href='{Item.ManageRelationshipsLink}'>'Manage Your Relationships'</a> " +
+                $"ignore it too, please go to <a href=\"{Item.ManageRelationshipsLink}\">'Manage Your Relationships'</a> " +
                 $"to confirm.";
         }
+
+        dbRelationship.RelationshipEnded ??= DateTime.Now;
     }
 
-    private void ArchiveAnyOtherRelationships(IEnumerable<Santa_PartnerLink> dbPossibleRelationships)
+    private void IgnoreNonRelationship(Santa_PartnerLink dbRelationship)
     {
-        var dbOtherRelationships = dbPossibleRelationships
-                        .Where(x => x.PartnerLinkKey != Item.PartnerLinkKey)
-                        .ToList();
+        if (_currentUserSuggested)
+        {
+            AddInvalidStatusError();
+            return;
+        }
+
+        dbRelationship.Confirmed = false;
+        dbRelationship.ConfirmingUserIgnore = true;
+
+        if (dbRelationship.RelationshipEnded == null || dbRelationship.SuggestedByIgnoreOld) // otherwise wait for the person who added the relationship to ignore it
+        {
+            dbRelationship.DateDeleted = DateTime.Now;
+            dbRelationship.ExchangeGifts = true;
+
+            if (dbRelationship.RelationshipEnded == null)
+            {
+                _headerText = "Your suggested relationship was not confirmed";
+                _messageText = $"{_dbCurrentUser?.FullName()} denied that they're in a relationship with you. " +
+                    $"Sorry if there was a misunderstanding.";
+            }
+        }
+
+        ArchiveAnyOtherRelationships(); // just in case
+    }
+
+    private void AvoidRelationship(Santa_PartnerLink dbRelationship)
+    {
+        if (_currentUserSuggested || dbRelationship.Confirmed == true || dbRelationship.RelationshipEnded != null)
+        {
+            AddInvalidStatusError();
+            return;
+        }
+
+        _headerText = "Your suggested relationship was not confirmed";
+        _messageText = $"{_dbCurrentUser?.FullName()} denied that they're in a relationship with you. " +
+            $"Sorry if there was a misunderstanding.";
+
+        dbRelationship.DateDeleted = dbRelationship.DateArchived = null; // don't ignore this relationship
+        dbRelationship.ConfirmingUserIgnore = false; // just in case
+        dbRelationship.Confirmed = false;
+    }
+
+    private void ArchiveAnyOtherRelationships()
+    {
+        var dbOtherRelationships = _dbPossibleRelationships
+            .Where(x => x.PartnerLinkKey != Item.PartnerLinkKey)
+            .ToList();
 
         foreach (var dbOtherRelationship in dbOtherRelationships)
         {
             dbOtherRelationship.RelationshipEnded ??= DateTime.Now; // just in case
-            dbOtherRelationship.ConfirmedByIgnoreOld = true;
+            dbOtherRelationship.ConfirmingUserIgnore = true;
             dbOtherRelationship.SuggestedByIgnoreOld = true;
             dbOtherRelationship.DateArchived = DateTime.Now;
         }
     }
 
-    private void SendUpdateMessage(Santa_PartnerLink dbRelationship, bool currentUserSuggested,
-        string headerText, string messageText)
+    private void AddInvalidStatusError()
+    {
+        AddGeneralValidationError("Invalid new status.");
+    }
+
+    private void SendUpdateMessage(Santa_PartnerLink dbRelationship)
     {
         if (_dbCurrentUser?.SantaUser == null) // for the compiler
         {
             throw new AccessDeniedException();
         }
 
-        var dbPartner = currentUserSuggested ? dbRelationship.ConfirmingSantaUser : dbRelationship.SuggestedBySantaUser;
+        var dbPartner = _currentUserSuggested ? dbRelationship.ConfirmingSantaUser : dbRelationship.SuggestedBySantaUser;
 
         var message = new SendSantaMessage
         {
             RecipientTypes = MessageRecipientType.PotentialPartner,
-            HeaderText = headerText,
-            MessageText = messageText,
+            HeaderText = _headerText,
+            MessageText = _messageText,
             Important = false,
             ShowAsFromSanta = true
         };

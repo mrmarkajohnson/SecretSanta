@@ -14,9 +14,10 @@ public class PartnersMappingProfile : Profile
             .ForMember(dest => dest.Partner, opt => opt.MapFrom(src => src.ConfirmingSantaUser.GlobalUser))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
                 src.SuggestedByIgnoreOld ? RelationshipStatus.IgnoreOld // show as ignored even if the other person hasn't confirmed
-                : src.RelationshipEnded != null ? (src.Confirmed ? RelationshipStatus.Ended : RelationshipStatus.EndedBeforeConfirmation)
-                : src.Confirmed ? RelationshipStatus.Active
-                : RelationshipStatus.ToBeConfirmed))
+                : src.RelationshipEnded != null ? (src.Confirmed == true ? RelationshipStatus.Ended : RelationshipStatus.EndedBeforeConfirmation)
+                : src.Confirmed == true ? RelationshipStatus.Active
+                : src.Confirmed == null ? RelationshipStatus.ToBeConfirmed
+                : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
 
@@ -24,10 +25,11 @@ public class PartnersMappingProfile : Profile
             .ForMember(dest => dest.PartnerLinkKey, opt => opt.MapFrom(src => src.PartnerLinkKey))
             .ForMember(dest => dest.Partner, opt => opt.MapFrom(src => src.SuggestedBySantaUser.GlobalUser))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
-                src.ConfirmedByIgnoreOld ? RelationshipStatus.IgnoreOld // show as ignored even if the other person hasn't confirmed
-                : src.RelationshipEnded != null ? (src.Confirmed ? RelationshipStatus.Ended : RelationshipStatus.EndedBeforeConfirmation)
-                : src.Confirmed ? RelationshipStatus.Active
-                : RelationshipStatus.ToConfirm))
+                src.ConfirmingUserIgnore ? RelationshipStatus.IgnoreOld // show as ignored even if the other person hasn't confirmed
+                : src.RelationshipEnded != null ? (src.Confirmed == true ? RelationshipStatus.Ended : RelationshipStatus.EndedBeforeConfirmation)
+                : src.Confirmed == true ? RelationshipStatus.Active
+                : src.Confirmed == null ? RelationshipStatus.ToConfirm
+                : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
 

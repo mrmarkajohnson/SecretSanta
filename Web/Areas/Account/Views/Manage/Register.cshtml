@@ -37,10 +37,10 @@
 
             <div class="@StandardGroupWidth d-flex flex-wrap justify-content-between text-center">
                 <div>
-                    <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl">Already have an account?</a>
+                    <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Log In">Already have an account?</a>
                 </div>
                 <div>
-                    <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl">Forgot your password?</a>
+                    <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Reset Your Password">Forgot your password?</a>
                 </div>
             </div>
 

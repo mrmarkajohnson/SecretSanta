@@ -44,16 +44,18 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
         dbCurrentUser.SantaUser.SuggestedRelationships.Add(new Santa_PartnerLink
         {
             SuggestedBySantaUser = dbCurrentUser.SantaUser,
-            ConfirmingSantaUser = dbSelectedUser.SantaUser
+            ConfirmingSantaUser = dbSelectedUser.SantaUser,
+            RelationshipEnded = Item.IsActive ? null : DateTime.Now
         });
 
-        string messageText = $"{dbCurrentUser.FullName()} says they are in a relationship with you. Is it true? Please go to " +
-                $"<a href='{Item.ManageRelationshipsLink}'>'Manage Your Relationships'</a> to confirm.";
+        string areOrWere = Item.IsActive ? "are" : "were once";
+        string messageText = $"{dbCurrentUser.FullName()} says they {areOrWere} in a relationship with you. Is it true? Please go to " +
+                $"<a href=\"{Item.ManageRelationshipsLink}\">'Manage Your Relationships'</a> to confirm.";
 
         var message = new SendSantaMessage
         {
             RecipientTypes = MessageRecipientType.PotentialPartner,
-            HeaderText = "Are you in a relationship?",
+            HeaderText = (Item.IsActive ? "Are" : "Were") + " you in a relationship?",
             MessageText = messageText,
             Important = true,
             ShowAsFromSanta = true

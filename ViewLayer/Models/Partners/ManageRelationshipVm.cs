@@ -62,7 +62,10 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
         }
     }
 
-    public string ModalTitle => OriginalStatus == RelationshipStatus.ToConfirm ? "Confirm Relationship" : "Manage Relationship";
+    public string ModalTitle => (OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.EndedBeforeConfirmation ? "Confirm" : "Manage") 
+        + (OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.Active ? "" : " Old") 
+        + " Relationship";
+
     public bool ShowSaveButton => true;
 
     private void UpdateStatus()
@@ -72,16 +75,16 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
             YesNoNotSure.No => _everInARelationship switch
             {
                 YesNoNotSure.No => OriginalStatus == RelationshipStatus.ToBeConfirmed
-                    ? RelationshipStatus.EndedBeforeConfirmation
+                    ? RelationshipStatus.IgnoreNonRelationship
                     : (_exchangeGifts == YesNoNotSure.Yes ? RelationshipStatus.IgnoreNonRelationship : RelationshipStatus.Avoid),
                 YesNoNotSure.Yes => OriginalStatus == RelationshipStatus.ToBeConfirmed
-                    ? RelationshipStatus.ToBeConfirmed
+                    ? OriginalStatus // still need the other person to confirm
                     : (_exchangeGifts == YesNoNotSure.Yes ? RelationshipStatus.IgnoreOld : RelationshipStatus.Ended),
                 _ => OriginalStatus
             },
             YesNoNotSure.Yes => OriginalStatus == RelationshipStatus.ToBeConfirmed
-                    ? RelationshipStatus.ToBeConfirmed
-                    : RelationshipStatus.Active,
+                ? OriginalStatus // still need the other person to confirm
+                : RelationshipStatus.Active,
             _ => OriginalStatus
         };
     }

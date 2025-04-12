@@ -22,7 +22,7 @@
         {
             <p>
                 Santa has one final task for you before he can accept your wish list. Please set some
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
+                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" data-toggle="tooltip" title="Set Your Security Questions">
                     security questions
                 </a> in case you forget your password and need to reset it.
             </p>
@@ -44,7 +44,10 @@ else
             or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
         </p>
         <p>
-            If you have an account but have forgotten your password, you can <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword">reset it here.</a>
+            If you have an account but have forgotten your password, you can
+            <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" data-toggle="tooltip" title="Reset Your Password">
+                reset it here.
+            </a>
         </p>
     </div>
 }

@@ -33,8 +33,10 @@ Close (archive) a group?
 Allow years to continue into January, just in case
 
 RELATIONSHIPS
-* Allow users to 'edit' a relationship in a modal, so they get a bit more help/explanation
-* Allow deleting relationships if they haven't been confirmed yet
+* Finish and test relationship modal, e.g. JavaScript for when the options are selected
+* Finish/test deleting relationships if they haven't been confirmed yet
+Archive or update messages when relationship statuses change
+Add a visibility status to say if the group admins can see the relationship
 
 GIFTS
 Allow users to view more details of the person they are giving to, e.g. from the 'Show' (recipient) link in the year list, and a link from the year page
@@ -49,4 +51,4 @@ Add other messages e.g.
 - message group admin
 - report bug/issue
 - report abuve
-
+Link messages to the thing they relate to, so they can be updated or archived when things change

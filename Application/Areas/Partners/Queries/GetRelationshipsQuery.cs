@@ -24,7 +24,7 @@ public class GetRelationshipsQuery : BaseQuery<IRelationships>
             .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider);
 
         IEnumerable<IRelationship> confirmingRelationships = dbCurrentUser.SantaUser.ConfirmingRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Confirmed != false)
             .AsQueryable()
             .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider);
 

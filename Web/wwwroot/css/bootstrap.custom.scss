@@ -1,5 +1,7 @@
 $primary: #009900;
+$yes: #009900;
 $secondary: #f90000;
+$no: #f90000;
 $white: white;
 $black: black;
 $gold: #ffd700;
@@ -15,7 +17,8 @@ $primary-shadow-2: #45797d;
 
 @import "../lib/bootstrap/scss/bootstrap.scss";
 
-$red-glow: #ff000099; 
+$green-glow: #00990099;
+$red-glow: #ff000099;
 $gold-glow: #ffd70020;
 $gold-glow-solid: #fffade;
 $gold-light: #ffffee80;
@@ -85,6 +88,38 @@ h5 {
 
 .btn-primary:hover .btn-text {
     text-decoration: underline !important;
+}
+
+.btn-success, .btn.btn-success {
+    background: $yes;
+    border: 1px solid $purple-400 !important;
+    border-bottom: 1px solid $purple !important;
+    box-shadow: $purple-box-shadow;
+    color: $white;
+    opacity: 1;
+    font-weight: 500;
+}
+
+btn-success:hover, .btn.btn-success:hover {
+    border: 1px solid $purple !important;
+    background: $green-glow;
+    color: $purple !important;
+}
+
+.btn-no, .btn.btn-no {
+    background: $no;
+    border: 1px solid $purple-400 !important;
+    border-bottom: 1px solid $purple !important;
+    box-shadow: $purple-box-shadow;
+    color: $white;
+    opacity: 1;
+    font-weight: 500;
+}
+
+btn-no:hover, .btn.btn-no:hover {
+    border: 1px solid $purple !important;
+    background: $red-glow;
+    color: $purple !important;
 }
 
 .btn-default { /*Overridden below for modals*/

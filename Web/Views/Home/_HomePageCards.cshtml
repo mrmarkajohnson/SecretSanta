@@ -30,6 +30,11 @@
                         Change Your Password
                     </a>
                 </p>
+                <p>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty, successMessage = "Logged Out Successfully" })">
+                        <button type="submit" class="dropdown-item">Log Out</button>
+                    </form>
+                </p>
             </div>
         </div>
     </div>
@@ -40,7 +45,7 @@
                 <span class="fa-solid fa-heart fa-border float-start" style="color: #ff3333"></span>Your Partners
             </div>
             <div class="card-body">
-                <h5 class="card-title">Avoid Santa selecting your partner</h5>
+                <h5 class="card-title">Avoid Santa selecting your partner to receive a gift</h5>
                 <p>
                     <a asp-area="Partners" asp-controller="Manage" asp-action="Index">
                         Manage Your Relationships

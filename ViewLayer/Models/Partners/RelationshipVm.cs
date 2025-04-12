@@ -24,7 +24,7 @@ public class RelationshipVm : RelationshipBase, IRelationship
         return Status switch
         {
             RelationshipStatus.ToBeConfirmed => [RelationshipStatus.ToBeConfirmed, RelationshipStatus.EndedBeforeConfirmation],
-            RelationshipStatus.ToConfirm => [RelationshipStatus.ToConfirm, RelationshipStatus.Active, RelationshipStatus.Ended, RelationshipStatus.IgnoreNonRelationship],
+            RelationshipStatus.ToConfirm => [RelationshipStatus.ToConfirm, RelationshipStatus.Active, RelationshipStatus.Ended, RelationshipStatus.IgnoreNonRelationship, RelationshipStatus.Avoid],
             RelationshipStatus.Active => [RelationshipStatus.Active, RelationshipStatus.Ended, RelationshipStatus.IgnoreOld],
             RelationshipStatus.Ended => [RelationshipStatus.Ended, RelationshipStatus.IgnoreOld],
             RelationshipStatus.EndedBeforeConfirmation => [RelationshipStatus.EndedBeforeConfirmation, RelationshipStatus.IgnoreOld],
