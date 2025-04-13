@@ -26,7 +26,6 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
         set
         {
             _inARelationshipNow = value;
-            UpdateStatus();
         }
     }
 
@@ -42,7 +41,6 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
         set
         {
             _everInARelationship = value;
-            UpdateStatus();
         }
     }
 
@@ -58,35 +56,44 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
         set
         {
             _exchangeGifts = value;
-            UpdateStatus();
         }
     }
 
-    public string ModalTitle => (OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.EndedBeforeConfirmation ? "Confirm" : "Manage") 
-        + (OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.Active ? "" : " Old") 
+    public string ModalTitle => (!SuggestedByCurrentUser && AlreadyConfirmed == null ? "Confirm" : "Manage") 
+        + (OriginalStatus < RelationshipStatus.Active ? " Suggested" : OriginalStatus == RelationshipStatus.Active ? "" : " Old")
         + " Relationship";
 
     public bool ShowSaveButton => true;
+    public string? SuccessMessage { get; set; }
 
-    private void UpdateStatus()
+    public void UpdateStatus()
     {
         Status = _inARelationshipNow switch
         {
             YesNoNotSure.No => _everInARelationship switch
             {
-                YesNoNotSure.No => OriginalStatus == RelationshipStatus.ToBeConfirmed
-                    ? RelationshipStatus.IgnoreNonRelationship
-                    : (_exchangeGifts == YesNoNotSure.Yes ? RelationshipStatus.IgnoreNonRelationship : RelationshipStatus.Avoid),
-                YesNoNotSure.Yes => OriginalStatus == RelationshipStatus.ToBeConfirmed
-                    ? OriginalStatus // still need the other person to confirm
-                    : (_exchangeGifts == YesNoNotSure.Yes ? RelationshipStatus.IgnoreOld : RelationshipStatus.Ended),
+                YesNoNotSure.No => ConfirmationRequiredByOtherPerson()
+                    ? RelationshipStatus.IgnoreNonRelationship // essentially cancel the relationship; the suggestor has changed their mind (and 'Avoid' isn't appropriate)
+                    : (_exchangeGifts == YesNoNotSure.Yes
+                        ? RelationshipStatus.IgnoreNonRelationship :
+                        RelationshipStatus.Avoid),
+                YesNoNotSure.Yes => _exchangeGifts == YesNoNotSure.Yes
+                    ? RelationshipStatus.IgnoreOld
+                    : (ConfirmationRequiredByOtherPerson()
+                        ? RelationshipStatus.EndedBeforeConfirmation // still need the other person to confirm
+                        : RelationshipStatus.Ended),
                 _ => OriginalStatus
             },
-            YesNoNotSure.Yes => OriginalStatus == RelationshipStatus.ToBeConfirmed
+            YesNoNotSure.Yes => ConfirmationRequiredByOtherPerson()
                 ? OriginalStatus // still need the other person to confirm
                 : RelationshipStatus.Active,
             _ => OriginalStatus
         };
+    }
+
+    private bool ConfirmationRequiredByOtherPerson()
+    {
+        return OriginalStatus == RelationshipStatus.ToBeConfirmed || (SuggestedByCurrentUser && AlreadyConfirmed == null);
     }
 }
 

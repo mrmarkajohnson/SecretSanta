@@ -8,6 +8,7 @@ public abstract class RelationshipBase : IRelationship
 {
     public int? PartnerLinkKey { get; set; }
     public virtual bool SuggestedByCurrentUser { get; set; }
+    public bool? AlreadyConfirmed { get; set; }
 
     public UserNamesBase Partner { get; set; } = new();
     IUserNamesBase IRelationship.Partner => Partner;

@@ -2,10 +2,11 @@
 using Global.Abstractions.Areas.Account;
 using Global.Settings;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
+public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IFormVm
 {
     public string? SecurityQuestion1 { get; set; }
     public string? SecurityHint1 { get; set; }

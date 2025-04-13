@@ -151,6 +151,7 @@ public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipSt
 
         dbRelationship.ExchangeGifts = false; // just in case
         dbRelationship.RelationshipEnded ??= DateTime.Now;
+        dbRelationship.SuggestedByIgnoreOld = false;
     }
 
     private void IgnoreOldRelationship(Santa_PartnerLink dbRelationship)

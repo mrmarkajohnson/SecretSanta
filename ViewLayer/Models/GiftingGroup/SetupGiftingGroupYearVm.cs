@@ -1,10 +1,11 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using Global.Abstractions.Areas.GiftingGroup;
+using ViewLayer.Abstractions;
 using static Global.Settings.GiftingGroupSettings;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYear, IForm
+public class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYear, IFormVm
 {
     public bool Calculate
     {

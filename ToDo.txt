@@ -5,7 +5,7 @@ Add testing and production configuration
 Add back buttons to relevant pages
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
-Add gender/pronouns ('What do you prefer to be known as? Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!')
+* Add gender/pronouns ('What do you prefer to be known as? Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!')
 Add middle names to UserDisplayName only when the list has more than one with the same name
 Add preferred forename
 
@@ -33,10 +33,11 @@ Close (archive) a group?
 Allow years to continue into January, just in case
 
 RELATIONSHIPS
-* Finish and test relationship modal, e.g. JavaScript for when the options are selected
+* Finish and test relationship modal, e.g. JavaScript for when the options are selected, and direct VM validation
 * Finish/test deleting relationships if they haven't been confirmed yet
 Archive or update messages when relationship statuses change
 Add a visibility status to say if the group admins can see the relationship
+Put adding a relationship from the main relationships page into a modal?
 
 GIFTS
 Allow users to view more details of the person they are giving to, e.g. from the 'Show' (recipient) link in the year list, and a link from the year page

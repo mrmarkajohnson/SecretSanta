@@ -2,14 +2,18 @@
 
 @model IModalVm
 
-<div class="modal-footer">
+<partial name="_SuccessMessage" />
 
+<div class="modal-footer">
     @if (Model.ShowSaveButton)
     {
         <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Save your changes and close">
-            <button type="button" class="btn btn-default">Save</button>
+            <button type="button" class="btn btn-save-close-modal">
+                <i class="fa fa-save"></i>
+                Save
+            </button>
         </div>
-        <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close this dialog">
+        <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close without saving">
             <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
         </div>
     }

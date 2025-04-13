@@ -56,6 +56,7 @@
                                     <input type="hidden" asp-for="PossibleRelationships[i].PartnerLinkKey" />
                                     <partial name="_UserHiddenInputs" for="PossibleRelationships[i].Partner" />                              
                                     <input type="hidden" asp-for="PossibleRelationships[i].SuggestedByCurrentUser" />
+                                    <input type="hidden" asp-for="PossibleRelationships[i].AlreadyConfirmed" />
                                     <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
                                 </span>
                                 @relationship.Partner.UserDisplayName
@@ -77,24 +78,20 @@
                                         data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"></select>
                                 }
                             </td>
-                            <td>
+                            <td class="nowrap">
                                 @if (relationship.AvailableStatuses.Count > 1)
                                 {
                                     <a class="edit-relationship-link modal-link"
                                         data-url="@Url.Action("EditRelationship", "Manage", 
                                             new { Area = "Partners", PartnerLinkKey = @relationship.PartnerLinkKey, globalUserId = @relationship.Partner.GlobalUserId }, 
                                                 Context.Request.Scheme, Context.Request.Host.ToString())"
-                                            data-toggle="tooltip" title="Edit this relationship">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
+                                            data-toggle="tooltip" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
                                 }
 
-                                @if (relationship.Status == RelationshipStatus.ToConfirm)
+                                @if (relationship.Status == RelationshipStatus.ToBeConfirmed)
                                 {
                                     <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"
-                                            data-toggle="tooltip" title="Delete this relationship">
-                                        <i class="fa fa-cross"></i>
-                                    </a>
+                                            data-toggle="tooltip" title="Delete this relationship"><i class="fa fa-xmark"></i></a>
                                 }
                             </td>
                         </tr>

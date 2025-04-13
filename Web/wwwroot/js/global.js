@@ -54,6 +54,69 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
         dataListInput.setAttribute('placeholder', defaultPlaceholder);
     }
 }
+function showErrorMessage(message) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": 1000,
+        "hideDuration": 1000,
+        "timeOut": 2000,
+        "extendedTimeOut": 100,
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    toastr["error"](message);
+}
+async function submitFormViaFetch(form, url) {
+    if (isEmptyValue(url)) {
+        url = form.getAttribute('action');
+    }
+
+    let data = new FormData(form);
+
+    let response = await fetch(url,
+        {
+            method: "POST",
+            body: data,
+            redirect: 'follow'
+        });
+
+    let responseClone = response.clone(); // this allows us to use response.text() on the return result; it can only be called once
+
+    if (response.status > 400) {
+        showErrorMessage('Unknown error, please contact an administrator');
+    }
+    else if (response.redirected) {
+        window.location.href = response.url;
+    }
+    else {
+        let responseText = await getResponseText(response);
+
+        if (isHtml(responseText)) {
+            if (responseText.includes('<form')) {
+                let parser = new DOMParser();
+                let responseHtml = parser.parseFromString(responseText, "text/html");
+                let responseForm = responseHtml.querySelector('form');
+                form.innerHTML = responseForm.innerHTML;
+            }
+            else {
+                form.innerHTML = responseText;
+            }
+        }
+    }
+
+    document.dispatchEvent(new Event('ajaxComplete'));
+    return responseClone;
+}
+
 document.addEventListener('reloadstart', function (e) {
     //console.log('grid: ', e.detail.grid);
     let gridId = e.detail.grid.element.id;
@@ -118,7 +181,7 @@ async function showModal(modalLink) {
         showModalResponse(responseText);
         document.dispatchEvent(new Event('ajaxComplete'));
     } else {
-        toastr.error(responseText);
+        showErrorMessage(responseText);
     }
 }
 
@@ -138,6 +201,14 @@ function showModalResponse(responseText) {
     let modalObject = new bootstrap.Modal(modal);
 
     modalContainer.addEventListener('hidden.bs.modal', modalClosed);
+    document.dispatchEvent(new CustomEvent('modalOpening', { detail: { modal: modal } }));
+
+    let saveButton = modal.querySelector('.btn-save-close-modal');
+    if (!!saveButton) {
+        saveButton.addEventListener('click', function () {
+            saveModalForm(modal, modalObject);
+        });
+    }
 
     modalObject.show();
 }
@@ -154,6 +225,37 @@ function modalClosed(e) {
         document.querySelectorAll('.modal-backdrop').forEach(function (x) {
             x.remove();
         });
+    }
+}
+
+async function saveModalForm(modal, modalObject) {
+    let form = modal.querySelector('form');
+    let response = await submitFormViaFetch(form);
+    let responseText = await getResponseText(response);
+
+    if (response.ok) {
+        if (isHtml(responseText)) {
+            let successMessage = getSuccessMessage();
+
+            if (!isEmptyValue(successMessage)) {
+                handleSuccessfulSave(successMessage);
+            }
+        }
+        else {
+            if (!isEmptyValue(responseText)) {
+                handleSuccessfulSave(responseText);
+            }
+
+            modalObject.hide();
+        }
+    } else if (!isEmptyValue(responseText) && !isHtml(responseText)) {
+        showErrorMessage(responseText);
+    }
+
+    function handleSuccessfulSave(message) {
+        showSuccessMessage(message);
+        modalObject.hide();
+        document.dispatchEvent(new CustomEvent('modalSaved', { detail: { modal: modal } }));
     }
 }
 
@@ -188,18 +290,23 @@ function initPopper() {
 let successMessageUrlStart = 'successMessage=';
 
 function initSuccessMessage() {
-    let successMessageInput = document.getElementById('redirectSuccessMessage');
+    let successMessage = getSuccessMessage();
 
-    if (notEmptyInput(successMessageInput)) {
-        let successMessage = successMessageInput.value;
+    if (!isEmptyValue(successMessage)) {
         removeSuccessMessageFromUrl(successMessage, false);
         showSuccessMessage(successMessage);
     } else {
         let currentUrl = window.location.href;
         if (currentUrl.includes(successMessageUrlStart)) {
             handleSuccessFromUrl(currentUrl);
-        } 
+        }
     }
+}
+
+function getSuccessMessage() {
+    let successMessageInput = document.getElementById('successMessage');
+    let successMessage = notEmptyInput(successMessageInput) ? successMessageInput.value : '';
+    return successMessage;
 }
 
 function handleSuccessFromUrl(currentUrl) {
@@ -222,7 +329,7 @@ function handleSuccessFromUrl(currentUrl) {
             showSuccessMessage(successMessage);
         } catch {
             console.log('Showing success message failed'); // not worth failing over for
-        } 
+        }
     } catch {
         console.log('Success message handling failed'); // ditto
     }
@@ -338,9 +445,9 @@ async function selectUser(radio, url) {
     }
     else if (responseText != null && responseText != '') {
         if (response.ok) {
-            toastr.success(responseText);
+            showSuccessMessage(responseText);
         } else {
-            toastr.error(responseText);
+            showErrorMessage(responseText);
         }
     }
 }

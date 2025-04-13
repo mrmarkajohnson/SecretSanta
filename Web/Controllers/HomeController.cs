@@ -1,4 +1,4 @@
-﻿using SecretSanta.ViewLayer.Models;
+﻿using ViewLayer.Models.Shared;
 using System.Diagnostics;
 
 namespace SecretSanta.Controllers;

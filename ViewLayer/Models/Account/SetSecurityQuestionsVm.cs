@@ -1,10 +1,11 @@
 ﻿using Application.Shared.Identity;
 using Global.Abstractions.Areas.Account;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class SetSecurityQuestionsVm : SecurityQuestions, IForm, ISetSecurityQuestions
+public class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSecurityQuestions
 {
     public required List<string> Greetings { get; set; }
     

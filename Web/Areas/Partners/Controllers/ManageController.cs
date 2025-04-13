@@ -111,6 +111,7 @@ public class ManageController : BaseController
     public async Task<IActionResult> EditRelationship(ManageRelationshipVm model)
     {
         ModelState.Clear();
+        model.UpdateStatus();
 
         bool isValid = ValidateItem(model, new ManageRelationshipVmValidator());
 

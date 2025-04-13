@@ -48,3 +48,27 @@ function isTrueInput(input) {
         return false;
     }
 }
+
+/**
+ * Checks whether the text is an HTML object, e.g. for a fetch response
+ */
+function isHtml(text) {
+    if (isEmptyValue(text))
+        return false;
+
+    return (text.includes('<form') || text.includes('<div') || text.includes('<input') || text.includes('<span'));
+}
+
+/**
+ * Gets the text from a fetch response if available, or returns an empty string
+ */
+async function getResponseText(response) {
+    let responseText = '';
+
+    try {
+        responseText = await response.text();
+    }
+    catch { }
+
+    return responseText;
+}

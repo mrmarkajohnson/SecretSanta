@@ -301,10 +301,27 @@ a:hover {
     padding: 6px;
 }
 
+.modal.santa-modal .modal-footer .btn.btn-save-close-modal {
+    background: none !important;
+    font-size: 20px;
+    border: 0.5px inset $white !important;
+    box-shadow: none !important;
+    color: $gold-background !important;
+    opacity: 1;
+    font-weight: 600 !important;
+}
+
+.modal.santa-modal .modal-footer .btn.btn-save-close-modal:hover {
+    color: $purple !important;
+    border: 1px solid $purple !important;
+    background: $gold-background !important;
+    box-shadow: $purple-box-shadow !important;
+}
+
 .modal.santa-modal .modal-footer .btn.btn-default {
     background: none !important;
     font-size: 20px;
-    border: none !important;
+    border: 0.1px inset $white !important;
     box-shadow: none !important;
     color: $gold-glow-solid !important;
     opacity: 1;
@@ -320,7 +337,10 @@ a:hover {
 
 .modal.santa-modal .modal-header .btn-close-override {
     color: $gold-glow-solid;
+    border: 0.1px inset $white !important;
     font-size: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .modal.santa-modal .modal-header .btn-close-override:hover {

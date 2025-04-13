@@ -1,4 +1,4 @@
-namespace SecretSanta.ViewLayer.Models;
+namespace ViewLayer.Models.Shared;
 
 public class ErrorViewModel
 {

@@ -74,12 +74,12 @@ function initIncludedRadios() {
             }
 
             if (response.ok) {
-                toastr.success(responseText);
+                showSuccessMessage(responseText);
                 includedRadios.forEach(function (x) {
                     x.setAttribute('data-original-value', x.checked);
                 });
             } else {
-                toastr.error(responseText);                
+                showErrorMessage(responseText);                
                 resetIncludedRadios();
             }
         }

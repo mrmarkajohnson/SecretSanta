@@ -2,10 +2,11 @@
 using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class ReviewJoinerApplicationVm : ReviewJoinerApplication, IForm, IReviewApplication
+public class ReviewJoinerApplicationVm : ReviewJoinerApplication, IFormVm, IReviewApplication
 {
     private bool? _accepted;
 

@@ -12,6 +12,11 @@ public interface IRelationship
     /// </summary>
     bool SuggestedByCurrentUser { get; }
 
+    /// <summary>
+    /// Null means awaiting confirmation, false means never in a relationship
+    /// </summary>
+    bool? AlreadyConfirmed { get; set; }
+
     IUserNamesBase Partner { get; }
 
     IList<string> SharedGroupNames { get; }

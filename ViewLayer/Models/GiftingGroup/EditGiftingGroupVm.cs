@@ -4,11 +4,12 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.System;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 using static Global.Settings.GlobalSettings;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IForm
+public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
 {
     public bool Exists => GiftingGroupKey > 0;
 

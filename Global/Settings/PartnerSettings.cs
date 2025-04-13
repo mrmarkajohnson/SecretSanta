@@ -12,11 +12,11 @@ public static class PartnerSettings
         ToConfirm,
         [Display(Name = "We're currently in a relationship")]
         Active,
-        [Display(Name = "We were in a relationship; I'd still rather not exchange gifts")]
+        [Display(Name = "We broke up, and I don't want to exchange gifts")]
         Ended,
         [Display(Name = "The relationship has already ended")]
         EndedBeforeConfirmation,
-        [Display(Name = "We were together, but I'm happy to exchange gifts")]
+        [Display(Name = "We broke up, but I'm happy to exchange gifts")]
         IgnoreOld,
         [Display(Name = "We've never been together, and I'm happy to exchange gifts")]
         IgnoreNonRelationship,

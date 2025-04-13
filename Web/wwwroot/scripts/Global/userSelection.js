@@ -17,9 +17,9 @@
     }
     else if (responseText != null && responseText != '') {
         if (response.ok) {
-            toastr.success(responseText);
+            showSuccessMessage(responseText);
         } else {
-            toastr.error(responseText);
+            showErrorMessage(responseText);
         }
     }
 }

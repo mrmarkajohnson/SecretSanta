@@ -3,10 +3,11 @@ using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Names;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Participate;
 
-public class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, IManageUserGiftingGroupYear, IForm
+public class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, IManageUserGiftingGroupYear, IFormVm
 {
     public bool CanChangeIncluded => Recipient == null; // TODO: Prevent changes to 'included' if after the year cutoff
 

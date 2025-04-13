@@ -20,6 +20,7 @@ public class PartnersMappingProfile : Profile
                 : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
+        //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => true)); // set automatically on the class
 
         CreateMap<Santa_PartnerLink, ConfirmingRelationship>()
             .ForMember(dest => dest.PartnerLinkKey, opt => opt.MapFrom(src => src.PartnerLinkKey))
@@ -32,6 +33,7 @@ public class PartnersMappingProfile : Profile
                 : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
+            //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => false)); // set automatically on the class
 
     }
 }

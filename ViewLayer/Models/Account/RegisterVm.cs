@@ -2,10 +2,11 @@
 using Global.Abstractions.Areas.Account;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class RegisterVm : SantaUser, IRegisterSantaUser, IForm
+public class RegisterVm : SantaUser, IRegisterSantaUser, IFormVm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

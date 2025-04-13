@@ -8,4 +8,5 @@ public class ReadMessageVm : ReadMessage, IReadMessage, IModalVm
 {
     public string ModalTitle => HeaderText;
     public bool ShowSaveButton => false;
+    public string? SuccessMessage { get; set; }
 }

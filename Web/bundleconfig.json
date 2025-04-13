@@ -107,7 +107,8 @@
   {
     "outputFileName": "wwwroot/js/Partners/Manage/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Partners/manageRelationships.js"
+      "wwwroot/scripts/Partners/manageRelationships.js",
+      "wwwroot/scripts/Partners/editRelationship.js"
     ],
     "minify": {
       "enabled": true,
@@ -118,7 +119,8 @@
   {
     "outputFileName": "wwwroot/js/Partners/Manage/Index/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Partners/manageRelationships.js"
+      "wwwroot/scripts/Partners/manageRelationships.js",
+      "wwwroot/scripts/Partners/editRelationship.js"
     ],
     "minify": {
       "enabled": true,

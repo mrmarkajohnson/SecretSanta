@@ -1,10 +1,11 @@
 ﻿using Application.Areas.Account.BaseModels;
 using Global.Abstractions.Areas.Account;
 using System.ComponentModel.DataAnnotations;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IForm
+public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IFormVm
 {
    [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]

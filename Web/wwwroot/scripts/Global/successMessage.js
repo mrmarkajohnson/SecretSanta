@@ -1,18 +1,23 @@
 ﻿let successMessageUrlStart = 'successMessage=';
 
 function initSuccessMessage() {
-    let successMessageInput = document.getElementById('redirectSuccessMessage');
+    let successMessage = getSuccessMessage();
 
-    if (notEmptyInput(successMessageInput)) {
-        let successMessage = successMessageInput.value;
+    if (!isEmptyValue(successMessage)) {
         removeSuccessMessageFromUrl(successMessage, false);
         showSuccessMessage(successMessage);
     } else {
         let currentUrl = window.location.href;
         if (currentUrl.includes(successMessageUrlStart)) {
             handleSuccessFromUrl(currentUrl);
-        } 
+        }
     }
+}
+
+function getSuccessMessage() {
+    let successMessageInput = document.getElementById('successMessage');
+    let successMessage = notEmptyInput(successMessageInput) ? successMessageInput.value : '';
+    return successMessage;
 }
 
 function handleSuccessFromUrl(currentUrl) {
@@ -35,7 +40,7 @@ function handleSuccessFromUrl(currentUrl) {
             showSuccessMessage(successMessage);
         } catch {
             console.log('Showing success message failed'); // not worth failing over for
-        } 
+        }
     } catch {
         console.log('Success message handling failed'); // ditto
     }

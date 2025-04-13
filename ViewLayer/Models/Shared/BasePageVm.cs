@@ -1,6 +1,8 @@
-﻿namespace ViewLayer.Models.Shared;
+﻿using ViewLayer.Abstractions;
 
-public abstract class BasePageVm : IPage
+namespace ViewLayer.Models.Shared;
+
+public abstract class BasePageVm : IPageVm
 {
     public string? SuccessMessage { get; set; }
 }

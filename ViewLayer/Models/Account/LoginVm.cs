@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Global.Abstractions.Areas.Account;
+using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class LoginVm : BaseFormVm, ILogin, IForm
+public class LoginVm : BaseFormVm, ILogin, IFormVm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

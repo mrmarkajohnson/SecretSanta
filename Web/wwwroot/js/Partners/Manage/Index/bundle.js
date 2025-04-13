@@ -1,6 +1,5 @@
 window.addEventListener('load', function () {
     initStatusSelects();
-    initEditLinks();
     initDeleteLinks();
 });
 
@@ -33,22 +32,6 @@ function initStatusSelects() {
                         headerText,
                         messageText);
                 }
-            });
-        }
-    });
-}
-
-function initEditLinks() {
-    let editLinks = document.querySelectorAll('a.edit-relationship-link');
-    let editUrl = document.querySelector('div.relationships-table').getAttribute('data-edit-url');
-    let url = new URL(editUrl);
-
-    editLinks.forEach(function (x) {
-        if (!x.getAttribute('data-initialised')) {
-            x.setAttribute('data-initialised', true);
-
-            x.addEventListener('click', function (e) {
-                
             });
         }
     });
@@ -136,10 +119,30 @@ async function relationshipStatusChanged(control, url, title, message) {
 
         if (!response.redirected && responseText != null && responseText != '') {
             if (response.ok) {
-                toastr.success(responseText);
+                showSuccessMessage(responseText);
             } else {
-                toastr.error(responseText);
+                showErrorMessage(responseText);
             }
         }
+    }
+}
+document.addEventListener('modalOpening', function (e) {
+    relationshipModalOpening(e);
+})
+
+document.addEventListener('modalSaved', function (e) {
+    relationshipModalSaved(e);
+})
+async function relationshipModalOpening(e) {
+    let modal = e.detail.modal;
+    if (modal.id == 'manageRelationshipModal') {
+        // TODO: Complete this to show or hide the sections dynamically
+    }
+}
+
+async function relationshipModalSaved(e) {
+    let modal = e.detail.modal;
+    if (modal.id == 'manageRelationshipModal') {
+        reloadGrid();
     }
 }

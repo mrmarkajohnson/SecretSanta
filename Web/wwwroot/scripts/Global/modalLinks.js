@@ -30,7 +30,7 @@ async function showModal(modalLink) {
         showModalResponse(responseText);
         document.dispatchEvent(new Event('ajaxComplete'));
     } else {
-        toastr.error(responseText);
+        showErrorMessage(responseText);
     }
 }
 
@@ -50,6 +50,14 @@ function showModalResponse(responseText) {
     let modalObject = new bootstrap.Modal(modal);
 
     modalContainer.addEventListener('hidden.bs.modal', modalClosed);
+    document.dispatchEvent(new CustomEvent('modalOpening', { detail: { modal: modal } }));
+
+    let saveButton = modal.querySelector('.btn-save-close-modal');
+    if (!!saveButton) {
+        saveButton.addEventListener('click', function () {
+            saveModalForm(modal, modalObject);
+        });
+    }
 
     modalObject.show();
 }
@@ -66,5 +74,36 @@ function modalClosed(e) {
         document.querySelectorAll('.modal-backdrop').forEach(function (x) {
             x.remove();
         });
+    }
+}
+
+async function saveModalForm(modal, modalObject) {
+    let form = modal.querySelector('form');
+    let response = await submitFormViaFetch(form);
+    let responseText = await getResponseText(response);
+
+    if (response.ok) {
+        if (isHtml(responseText)) {
+            let successMessage = getSuccessMessage();
+
+            if (!isEmptyValue(successMessage)) {
+                handleSuccessfulSave(successMessage);
+            }
+        }
+        else {
+            if (!isEmptyValue(responseText)) {
+                handleSuccessfulSave(responseText);
+            }
+
+            modalObject.hide();
+        }
+    } else if (!isEmptyValue(responseText) && !isHtml(responseText)) {
+        showErrorMessage(responseText);
+    }
+
+    function handleSuccessfulSave(message) {
+        showSuccessMessage(message);
+        modalObject.hide();
+        document.dispatchEvent(new CustomEvent('modalSaved', { detail: { modal: modal } }));
     }
 }

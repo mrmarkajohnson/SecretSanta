@@ -19,16 +19,7 @@ function initJoinGiftingGroup() {
     async function getGroupDetails() {
         if (notEmptyInput(groupNameInput) && notEmptyInput(joinerTokenInput)) {
             let url = form.getAttribute('data-get-group-details');
-            let data = new FormData(form);
-
-            let response = await fetch(url,
-                {
-                    method: "POST",
-                    body: data
-                });
-
-            form.innerHTML = await response.text();
-            document.dispatchEvent(new Event('ajaxComplete'));
+            await submitFormViaFetch(form, url);
         } else {
             let descriptionSpan = form.querySelector('span.group-description');
             if (descriptionSpan) {

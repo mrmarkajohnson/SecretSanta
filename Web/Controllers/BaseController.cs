@@ -9,6 +9,7 @@ using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
+using ViewLayer.Abstractions;
 using ViewLayer.Models.Home;
 using Web.Helpers;
 
@@ -50,7 +51,7 @@ public class BaseController : Controller
         catch (AccessDeniedException) { }
     }
 
-    public IActionResult RedirectWithMessage(IForm model, string successMessage)
+    public IActionResult RedirectWithMessage(IFormVm model, string successMessage)
     {
         return RedirectWithMessage(model.ReturnUrl ?? Url.Content("~/"), successMessage);
     }

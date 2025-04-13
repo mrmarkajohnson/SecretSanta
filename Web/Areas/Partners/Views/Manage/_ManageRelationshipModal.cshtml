@@ -4,10 +4,10 @@
 @model ManageRelationshipVm
 @{
     string exchangeGiftsExplanation = "If you'll be exchanging gifts separately, or you don't want to exchange them at all, select 'No'.<br/><br/>"
-        + $"If you're still not sure, better talk to {Model.Partner.UserDisplayName}!";
+        + $"If you're still not sure, better talk to {Model.Partner.Forename}!";
 
     bool includeNowOptions = Model.OriginalStatus is RelationshipStatus.ToBeConfirmed or RelationshipStatus.ToConfirm or RelationshipStatus.Active;
-    bool includeEverOptions = Model.OriginalStatus is RelationshipStatus.ToBeConfirmed or RelationshipStatus.ToConfirm or RelationshipStatus.IgnoreNonRelationship or RelationshipStatus.Avoid;
+    bool includeEverOptions = Model.OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.IgnoreNonRelationship or RelationshipStatus.Avoid;
     string exchangeClass = includeNowOptions || includeEverOptions ? "collapse" : "";
 }
 
@@ -16,24 +16,118 @@
         <div class="modal-content">
             <partial name="Modal/_ModalHeader" />
 
-            <div class="modal-body">
-                <div class="row d-flex align-items-center justify-content-center text-center">
+            <form asp-action="EditRelationship">
+                <div class="modal-body">
+                    <div class="row d-flex align-items-center justify-content-center text-center">
 
-                    <div class="collapse">
-                        <input type="hidden" asp-for="PartnerLinkKey" />
-                        <input type="hidden" asp-for="OriginalStatus" />
-                        <partial name="_UserHiddenInputs" for="Partner" />
-                    </div>
+                        <div class="collapse">
+                            <input type="hidden" asp-for="PartnerLinkKey" />
+                            <input type="hidden" asp-for="OriginalStatus" />
+                            <input type="hidden" asp-for="SuggestedByCurrentUser" />
+                            <input type="hidden" asp-for="AlreadyConfirmed" />
 
-                    <div class="col-11">
-                        
-                        @if (includeNowOptions)
-                        {                            
-                            <div class="form-group-ib col-12 mb-3">
-                                <label asp-for="InARelationshipNow" class="control-label">Are you <b>currently</b> in a relationship with @Model.Partner.UserDisplayName <b>now</b>?</label>
+                            <partial name="_UserHiddenInputs" for="Partner" />
+                        </div>
+
+                        <div class="col-11">
+
+                            @if (includeNowOptions)
+                            {
+                                <div class="form-group-ib col-12 mb-3">
+                                    <label asp-for="InARelationshipNow" class="control-label">Are you currently in a relationship with @Model.Partner.UserDisplayName?</label>
+                                    <div class="control-label fw-normal">
+                                        <span class="text-secondary">No</span>
+                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        value="@YesNoNotSure.No" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        <span class="text-primary">Yes</span>
+                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        value="@YesNoNotSure.Yes" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        @if (Model.Status == RelationshipStatus.ToConfirm)
+                                        {
+                                            <span>Not sure</span>
+                                            <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                            value="@YesNoNotSure.NotSure" />
+                                            <text>
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                            </text>
+                                        }
+
+                                        @* <partial name="_InlineQuestion" model="@inRelationshipNowExplanation" /> *@
+                                    </div>
+                                    <div>
+                                        <span asp-validation-for="InARelationshipNow" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" asp-for="InARelationshipNow" />
+                            }
+
+                            @if (includeEverOptions)
+                            {
+                                <div class="form-group-ib col-12 mb-3 collapse">
+                                    <label asp-for="EverInARelationship" class="control-label">Have you <b>ever</b> been in a relationship with @Model.Partner.UserDisplayName?</label>
+                                    <div class="control-label fw-normal">
+                                        <span class="text-secondary">No</span>
+                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                               value="@YesNoNotSure.No" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        <span class="text-primary">Yes</span>
+                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                               value="@YesNoNotSure.Yes" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        @if (Model.Status == RelationshipStatus.ToConfirm)
+                                        {
+                                            <span>Not sure</span>
+                                            <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                                   value="@YesNoNotSure.NotSure" />
+                                            <text>
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                            </text>
+                                        }
+
+                                        @* <partial name="_InlineQuestion" model="@everInRelationshipExplanation" /> *@
+                                    </div>
+                                    <div>
+                                        <span asp-validation-for="EverInARelationship" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" asp-for="EverInARelationship" />
+                            }
+
+                            <div class="form-group-ib col-12 mb-3 @exchangeClass">
+                                <label asp-for="ExchangeGifts" class="control-label">Are you happy to exchange Secret Santa gifts?</label>
                                 <div class="control-label fw-normal">
                                     <span class="text-secondary">No</span>
-                                    <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
                                            value="@YesNoNotSure.No" />
                                     &nbsp;
                                     &nbsp;
@@ -41,7 +135,7 @@
                                     &nbsp;
 
                                     <span class="text-primary">Yes</span>
-                                    <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
                                            value="@YesNoNotSure.Yes" />
                                     &nbsp;
                                     &nbsp;
@@ -51,7 +145,7 @@
                                     @if (Model.Status == RelationshipStatus.ToConfirm)
                                     {
                                         <span>Not sure</span>
-                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
                                                value="@YesNoNotSure.NotSure" />
                                         <text>
                                             &nbsp;
@@ -61,100 +155,22 @@
                                         </text>
                                     }
 
-                                    @* <partial name="_InlineQuestion" model="@inRelationshipNowExplanation" /> *@
+                                    <partial name="_InlineQuestion" model="@exchangeGiftsExplanation" />
                                 </div>
                                 <div>
-                                    <span asp-validation-for="InARelationshipNow" class="text-danger"></span>
+                                    <span asp-validation-for="ExchangeGifts" class="text-danger"></span>
                                 </div>
                             </div>
-                        }
 
-                        @if (includeEverOptions)
-                        {
-                            <div class="form-group-ib col-12 mb-3 collapse">
-                                <label asp-for="EverInARelationship" class="control-label">Have you <b>ever</b> been in a relationship with @Model.Partner.UserDisplayName?</label>
-                                <div class="control-label fw-normal">
-                                    <span class="text-secondary">No</span>
-                                    <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                           value="@YesNoNotSure.No" />
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-                                    <span class="text-primary">Yes</span>
-                                    <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                           value="@YesNoNotSure.Yes" />
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-
-                                    @if (Model.Status == RelationshipStatus.ToConfirm)
-                                    {
-                                        <span class="text-primary">Not sure</span>
-                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                               value="@YesNoNotSure.NotSure" />
-                                        <text>
-                                            &nbsp;
-                                            &nbsp;
-                                            &nbsp;
-                                            &nbsp;
-                                        </text>
-                                    }
-
-                                    @* <partial name="_InlineQuestion" model="@everInRelationshipExplanation" /> *@
-                                </div>
-                                <div>
-                                    <span asp-validation-for="EverInARelationship" class="text-danger"></span>
-                                </div>
-                            </div>
-                        }
-
-                        <div class="form-group-ib col-12 mb-3 @exchangeClass">
-                            <label asp-for="ExchangeGifts" class="control-label">Are you happy to exchange Secret Santa gifts?</label>
-                            <div class="control-label fw-normal">
-                                <span class="text-secondary">No</span>
-                                <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                       value="@YesNoNotSure.No" />
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-
-                                <span class="text-primary">Yes</span>
-                                <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                       value="@YesNoNotSure.Yes" />
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-
-                                @if (Model.Status == RelationshipStatus.ToConfirm)
-                                {
-                                    <span class="text-primary">Not sure</span>
-                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
-                                           value="@YesNoNotSure.NotSure" />
-                                    <text>
-                                        &nbsp;
-                                        &nbsp;
-                                        &nbsp;
-                                        &nbsp;
-                                    </text>
-                                }
-
-                                <partial name="_InlineQuestion" model="@exchangeGiftsExplanation" />
-                            </div>
-                            <div>
-                                <span asp-validation-for="ExchangeGifts" class="text-danger"></span>
-                            </div>
                         </div>
 
                     </div>
                 </div>
-            </div>
 
-            <partial name="Modal/_ModalFooter" />
+                <partial name="Modal/_ModalFooter" />
+            </form>
         </div>
     </div>
 </div>

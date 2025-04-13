@@ -1,4 +1,4 @@
-﻿@model IForm
+﻿@model IFormVm
 @{
     var defaultModel = new BaseFormVm();
     string text = string.IsNullOrEmpty(Model?.SubmitButtonText) ? defaultModel.SubmitButtonText : Model.SubmitButtonText;
