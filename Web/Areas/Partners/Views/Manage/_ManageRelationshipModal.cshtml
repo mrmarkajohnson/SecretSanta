@@ -33,11 +33,11 @@
 
                             @if (includeNowOptions)
                             {
-                                <div class="form-group-ib col-12 mb-3">
+                                <div class="form-group-ib col-12 mb-3 now-options-section">
                                     <label asp-for="InARelationshipNow" class="control-label">Are you currently in a relationship with @Model.Partner.UserDisplayName?</label>
                                     <div class="control-label fw-normal">
                                         <span class="text-secondary">No</span>
-                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input radio-no" autocomplete="off" aria-required="false"
                                         value="@YesNoNotSure.No" />
                                         &nbsp;
                                         &nbsp;
@@ -45,7 +45,7 @@
                                         &nbsp;
 
                                         <span class="text-primary">Yes</span>
-                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="InARelationshipNow" class="form-check-input radio-yes" autocomplete="off" aria-required="false"
                                         value="@YesNoNotSure.Yes" />
                                         &nbsp;
                                         &nbsp;
@@ -55,7 +55,7 @@
                                         @if (Model.Status == RelationshipStatus.ToConfirm)
                                         {
                                             <span>Not sure</span>
-                                            <input type="radio" asp-for="InARelationshipNow" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                            <input type="radio" asp-for="InARelationshipNow" class="form-check-input radio-not-sure" autocomplete="off" aria-required="false"
                                             value="@YesNoNotSure.NotSure" />
                                             <text>
                                                 &nbsp;
@@ -79,11 +79,11 @@
 
                             @if (includeEverOptions)
                             {
-                                <div class="form-group-ib col-12 mb-3 collapse">
+                                <div class="form-group-ib col-12 mb-3 collapse ever-options-section">
                                     <label asp-for="EverInARelationship" class="control-label">Have you <b>ever</b> been in a relationship with @Model.Partner.UserDisplayName?</label>
                                     <div class="control-label fw-normal">
                                         <span class="text-secondary">No</span>
-                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input radio-no" autocomplete="off" aria-required="false"
                                                value="@YesNoNotSure.No" />
                                         &nbsp;
                                         &nbsp;
@@ -91,7 +91,7 @@
                                         &nbsp;
 
                                         <span class="text-primary">Yes</span>
-                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="EverInARelationship" class="form-check-input radio-yes" autocomplete="off" aria-required="false"
                                                value="@YesNoNotSure.Yes" />
                                         &nbsp;
                                         &nbsp;
@@ -101,7 +101,7 @@
                                         @if (Model.Status == RelationshipStatus.ToConfirm)
                                         {
                                             <span>Not sure</span>
-                                            <input type="radio" asp-for="EverInARelationship" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                            <input type="radio" asp-for="EverInARelationship" class="form-check-input radio-not-sure" autocomplete="off" aria-required="false"
                                                    value="@YesNoNotSure.NotSure" />
                                             <text>
                                                 &nbsp;
@@ -123,11 +123,11 @@
                                 <input type="hidden" asp-for="EverInARelationship" />
                             }
 
-                            <div class="form-group-ib col-12 mb-3 @exchangeClass">
+                            <div class="form-group-ib col-12 mb-3 @exchangeClass exchange-options-section">
                                 <label asp-for="ExchangeGifts" class="control-label">Are you happy to exchange Secret Santa gifts?</label>
                                 <div class="control-label fw-normal">
                                     <span class="text-secondary">No</span>
-                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input radio-no" autocomplete="off" aria-required="false"
                                            value="@YesNoNotSure.No" />
                                     &nbsp;
                                     &nbsp;
@@ -135,7 +135,7 @@
                                     &nbsp;
 
                                     <span class="text-primary">Yes</span>
-                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                    <input type="radio" asp-for="ExchangeGifts" class="form-check-input radio-yes" autocomplete="off" aria-required="false"
                                            value="@YesNoNotSure.Yes" />
                                     &nbsp;
                                     &nbsp;
@@ -145,7 +145,7 @@
                                     @if (Model.Status == RelationshipStatus.ToConfirm)
                                     {
                                         <span>Not sure</span>
-                                        <input type="radio" asp-for="ExchangeGifts" class="form-check-input accepted-option" autocomplete="off" aria-required="false"
+                                        <input type="radio" asp-for="ExchangeGifts" class="form-check-input radio-not-sure" autocomplete="off" aria-required="false"
                                                value="@YesNoNotSure.NotSure" />
                                         <text>
                                             &nbsp;

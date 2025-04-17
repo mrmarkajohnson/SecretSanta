@@ -163,3 +163,7 @@ input::-ms-reveal, input::-ms-clear {
 .nowrap {
     white-space: nowrap !important;
 }
+
+.collapse {
+    display: none !important;
+}

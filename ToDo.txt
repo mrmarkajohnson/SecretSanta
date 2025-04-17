@@ -52,4 +52,5 @@ Add other messages e.g.
 - message group admin
 - report bug/issue
 - report abuve
-Link messages to the thing they relate to, so they can be updated or archived when things change
+Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates
+Show if a message has changed, or it's no longer relevant
