@@ -1,0 +1,9 @@
+﻿@model string
+
+@if (!string.IsNullOrWhiteSpace(Model))
+{
+    <div class="d-inline float-end" style="padding-right: 12px" 
+            data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="@Model">
+        <i class="fa fa-circle-question fa-border"></i>
+    </div>
+}

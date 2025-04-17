@@ -50,7 +50,7 @@ else
                                 <label asp-for="Greeting" class="control-label required"></label>
                                 <label class="fw-normal greeting-text">@Model.Greeting</label>
                                 <a href="#" class="btn btn-sm btn-primary change-greeting" onClick="changeGreeting()"><i class="fa fa-dice"></i> &nbsp; <span class="btn-text">Change</span></a>
-                                <partial name="_InlineQuestion" model="@greetingExplanation" />
+                                <partial name="_FormInlineQuestion" model="@greetingExplanation" />
                             </label>
                             <div>
                                 <span asp-validation-for="Greeting" class="text-danger mt-3"></span>

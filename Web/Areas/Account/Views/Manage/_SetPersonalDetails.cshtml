@@ -36,7 +36,7 @@
         <div class="mb-3">
             <label asp-for="Gender" class="control-label"></label>
             <div class="control-label fw-normal">
-                <span>Other (They/Them)</span>
+                <span>Other (They)</span>
                 <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
                        value="@Gender.Other" />
                 &nbsp;
@@ -44,7 +44,7 @@
                 &nbsp;
                 &nbsp;
 
-                <span>Female (She/Her)</span>
+                <span>Female (She)</span>
                 <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
                        value="@Gender.Female" />
                 &nbsp;
@@ -52,7 +52,7 @@
                 &nbsp;
                 &nbsp;
 
-                <span>Male (He/Him)</span>
+                <span>Male (He)</span>
                 <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
                        value="@Gender.Male" />
                 &nbsp;
@@ -60,7 +60,7 @@
                 &nbsp;
                 &nbsp;
 
-                <partial name="_InlineQuestion" model="@genderExplanation" />
+                <partial name="_FormInlineQuestion" model="@genderExplanation" />
             </div>
         </div>
     </div>
