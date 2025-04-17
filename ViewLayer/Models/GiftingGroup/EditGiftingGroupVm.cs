@@ -83,7 +83,7 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
     }
 }
 
-public class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
+public sealed class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingGroupVm>
 {
     public EditGiftingGroupVmValidator()
     {

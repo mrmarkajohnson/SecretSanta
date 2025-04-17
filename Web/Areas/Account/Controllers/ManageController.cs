@@ -9,7 +9,7 @@ using ViewLayer.Models.Account;
 namespace Web.Areas.Account.Controllers;
 
 [Area("Account")]
-public class ManageController : BaseController
+public sealed class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 

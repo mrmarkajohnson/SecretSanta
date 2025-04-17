@@ -4,7 +4,7 @@ using ViewLayer.Models.Messages;
 
 namespace ViewLayer.Mapping;
 
-public class MessageMappingProfile : Profile
+public sealed class MessageMappingProfile : Profile
 {
 	public MessageMappingProfile()
 	{

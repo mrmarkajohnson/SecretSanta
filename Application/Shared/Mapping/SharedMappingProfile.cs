@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Application.Areas.Shared.Mapping;
 
-public class SharedMappingProfile : Profile
+public sealed class SharedMappingProfile : Profile
 {
     public SharedMappingProfile()
     {

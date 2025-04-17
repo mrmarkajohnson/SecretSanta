@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Areas.Account.Commands;
 
-public class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IUpdateSantaUser
+public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IUpdateSantaUser
 {
     public UpdateAccountDetailsCommand(TItem item, IUserStore<IdentityUser> userStore) : base(item, userStore)
     {

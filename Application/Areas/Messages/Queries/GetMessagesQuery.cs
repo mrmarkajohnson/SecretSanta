@@ -4,7 +4,7 @@ using Global.Abstractions.Global.Messages;
 
 namespace Application.Areas.Messages.Queries;
 
-public class GetMessagesQuery : BaseQuery<IQueryable<IReadMessage>>
+public sealed class GetMessagesQuery : BaseQuery<IQueryable<IReadMessage>>
 {
     protected override Task<IQueryable<IReadMessage>> Handle()
     {

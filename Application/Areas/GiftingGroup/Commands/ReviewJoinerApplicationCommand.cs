@@ -4,7 +4,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TItem : IReviewApplication
+public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TItem : IReviewApplication
 {
     public ReviewJoinerApplicationCommand(TItem item) : base(item)
     {

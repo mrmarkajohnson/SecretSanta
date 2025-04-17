@@ -1,6 +1,6 @@
 ﻿namespace ViewLayer.Models.Home;
 
-public class MainMenuVm
+public sealed class MainMenuVm
 {
     public HomeVm HomeModel { get; set; } = new();
     public bool Small { get; set; }

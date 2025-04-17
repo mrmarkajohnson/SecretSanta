@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Account.Commands;
 
-public class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IChangePassword
+public sealed class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IChangePassword
 {
     public ChangePasswordCommand(TItem item) : base(item)
     {

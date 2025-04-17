@@ -4,7 +4,7 @@ using ViewLayer.Models.Account;
 
 namespace ViewLayer.Mapping;
 
-public class AccountMappingProfile : Profile
+public sealed class AccountMappingProfile : Profile
 {
     public AccountMappingProfile()
     {

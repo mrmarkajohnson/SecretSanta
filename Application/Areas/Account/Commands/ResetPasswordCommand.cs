@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Account.Commands;
 
-public class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IResetPassword
+public sealed class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TItem> where TItem : IResetPassword
 {
     private readonly ISantaUser _user;
 

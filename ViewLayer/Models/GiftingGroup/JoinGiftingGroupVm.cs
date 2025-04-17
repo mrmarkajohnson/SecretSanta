@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
+public sealed class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
 {
     public int? GiftingGroupKey { get; set; }
 
@@ -30,7 +30,7 @@ public class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
     public override string SubmitButtonText { get; set; } = "Join";
     public override string SubmitButtonIcon { get; set; } = "fa-handshake";
 
-    public class JoinGiftingGroupVmValidator : AbstractValidator<JoinGiftingGroupVm>
+    public sealed class JoinGiftingGroupVmValidator : AbstractValidator<JoinGiftingGroupVm>
     {
         public JoinGiftingGroupVmValidator()
         {

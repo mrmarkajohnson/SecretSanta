@@ -5,7 +5,7 @@ using System.Runtime.ExceptionServices;
 
 namespace Web.GlobalErrorHandling;
 
-public class GlobalRequestProcessor
+public sealed class GlobalRequestProcessor
 {
     private readonly RequestDelegate _next;
 

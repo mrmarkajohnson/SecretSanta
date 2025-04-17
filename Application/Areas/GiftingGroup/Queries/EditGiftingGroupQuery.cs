@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
+public sealed class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
 {
     private readonly int _giftingGroupKey;
 

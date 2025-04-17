@@ -4,7 +4,7 @@ using ViewLayer.Models.Partners;
 
 namespace ViewLayer.Mapping;
 
-public class PartnersMappingProfile : Profile
+public sealed class PartnersMappingProfile : Profile
 {
 	public PartnersMappingProfile()
 	{

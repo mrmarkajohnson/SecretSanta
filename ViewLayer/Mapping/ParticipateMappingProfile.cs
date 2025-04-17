@@ -4,7 +4,7 @@ using ViewLayer.Models.Participate;
 
 namespace ViewLayer.Mapping;
 
-public class ParticipateMappingProfile : Profile
+public sealed class ParticipateMappingProfile : Profile
 {
 	public ParticipateMappingProfile()
 	{

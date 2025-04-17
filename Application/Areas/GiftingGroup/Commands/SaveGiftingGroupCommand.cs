@@ -5,7 +5,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : IGiftingGroup
+public sealed class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : IGiftingGroup
 {
     public SaveGiftingGroupCommand(TItem item) : base(item)
     {

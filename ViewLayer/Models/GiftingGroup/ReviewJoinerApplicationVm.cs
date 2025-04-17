@@ -6,7 +6,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class ReviewJoinerApplicationVm : ReviewJoinerApplication, IFormVm, IReviewApplication
+public sealed class ReviewJoinerApplicationVm : ReviewJoinerApplication, IFormVm, IReviewApplication
 {
     private bool? _accepted;
 
@@ -36,7 +36,7 @@ public class ReviewJoinerApplicationVm : ReviewJoinerApplication, IFormVm, IRevi
     public string? SuccessMessage { get; set; }
 }
 
-public class ReviewJoinerApplicationVmValidator : AbstractValidator<ReviewJoinerApplicationVm>
+public sealed class ReviewJoinerApplicationVmValidator : AbstractValidator<ReviewJoinerApplicationVm>
 {
     public ReviewJoinerApplicationVmValidator()
     {

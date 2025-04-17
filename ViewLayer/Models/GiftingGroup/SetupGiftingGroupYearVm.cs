@@ -5,7 +5,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace ViewLayer.Models.GiftingGroup;
 
-public class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYear, IFormVm
+public sealed class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYear, IFormVm
 {
     public bool Calculate
     {
@@ -29,6 +29,6 @@ public class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYear, IFor
     public string? SuccessMessage { get; set; }
 }
 
-public class SetupGiftingGroupYearVmValidator : GiftingGroupYearValidator<SetupGiftingGroupYearVm>
+public sealed class SetupGiftingGroupYearVmValidator : GiftingGroupYearValidator<SetupGiftingGroupYearVm>
 {
 }

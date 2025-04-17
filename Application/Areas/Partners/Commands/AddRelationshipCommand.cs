@@ -7,7 +7,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Partners.Commands;
 
-public class AddRelationshipCommand : BaseCommand<IAddRelationship>
+public sealed class AddRelationshipCommand : BaseCommand<IAddRelationship>
 {
     public AddRelationshipCommand(IAddRelationship item) : base(item)
     {

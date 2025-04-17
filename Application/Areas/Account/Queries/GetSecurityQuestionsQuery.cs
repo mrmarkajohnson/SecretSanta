@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.Account;
 
 namespace Application.Areas.Account.Queries;
 
-public class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
+public sealed class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 {
     private readonly string? _hashedUserName;
 

@@ -5,7 +5,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Account.Queries;
 
-public class GetCurrentUserQuery : BaseQuery<ISantaUser>
+public sealed class GetCurrentUserQuery : BaseQuery<ISantaUser>
 {
     private bool _unHashResults;
 

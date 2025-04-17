@@ -3,7 +3,7 @@ using Xunit;
 
 namespace UnitTests.ExtensionTests;
 
-public class TestStringExtensions
+public sealed class TestStringExtensions
 {
     [Fact]
     public void TestListDisplay()

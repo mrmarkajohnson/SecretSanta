@@ -7,7 +7,7 @@ using static Global.Settings.PartnerSettings;
 
 namespace Application.Areas.Partners.Commands.Internal;
 
-public class RelationshipStatusCommand : BaseCommand<IChangeRelationshipStatus>
+public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipStatus>
 {
     public RelationshipStatusCommand(IChangeRelationshipStatus item, Global_User dbCurrentUser,
         List<Santa_PartnerLink> dbPossibleRelationships, Santa_PartnerLink dbRelationship)

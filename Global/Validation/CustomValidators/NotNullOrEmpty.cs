@@ -7,7 +7,7 @@ namespace Global.Validation.CustomValidators;
 /// <summary>
 /// Needed for nullable numeric types, but can also be used for strings
 /// </summary>
-public class NotNullOrEmptyValidator<T, TProperty> : PropertyValidator<T, TProperty>, INotNullValidator, INotEmptyValidator
+public sealed class NotNullOrEmptyValidator<T, TProperty> : PropertyValidator<T, TProperty>, INotNullValidator, INotEmptyValidator
 {
     public override string Name => "NotNullOrEmptyValidator";
 

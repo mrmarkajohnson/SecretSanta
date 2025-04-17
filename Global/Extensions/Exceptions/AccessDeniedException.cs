@@ -1,5 +1,5 @@
 ﻿namespace Global.Extensions.Exceptions;
 
-public class AccessDeniedException : Exception
+public sealed class AccessDeniedException : Exception
 {
 }

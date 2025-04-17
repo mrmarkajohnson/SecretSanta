@@ -5,7 +5,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Messages.Queries;
 
-public class ViewMessageQuery : BaseQuery<IReadMessage>
+public sealed class ViewMessageQuery : BaseQuery<IReadMessage>
 {
     public int MessageRecipientKey { get; }
 

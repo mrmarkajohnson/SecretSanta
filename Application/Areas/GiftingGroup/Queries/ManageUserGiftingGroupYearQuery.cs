@@ -9,7 +9,7 @@ using Global.Settings;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroupYear>
+public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroupYear>
 {
     public int GiftingGroupKey { get; }
     public int Year { get; }

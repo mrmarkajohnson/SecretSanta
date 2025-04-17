@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.Account;
 
 namespace Application.Areas.Account.Queries;
 
-public class GetUserQuery : BaseQuery<ISantaUser?>
+public sealed class GetUserQuery : BaseQuery<ISantaUser?>
 {
     private readonly string _userNameOrEmail;
     private readonly bool _userNamehashed;

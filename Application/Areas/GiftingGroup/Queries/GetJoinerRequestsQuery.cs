@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
+public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplication>>
 {
     public GetJoinerRequestsQuery()
     {

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace UnitTests.ValidationTests;
 
-public class TestNotNullOrEmpty
+public sealed class TestNotNullOrEmpty
 {
     public TestNotNullOrEmpty()
     {
@@ -19,7 +19,7 @@ public class TestNotNullOrEmpty
         Assert.False(result.IsValid); // TODO: Make this more accurate
     }
 
-    public class TestClass
+    public sealed class TestClass
     {
         public int IntVal { get; set; }
         public int? NullIntVal { get; set; }
@@ -30,7 +30,7 @@ public class TestNotNullOrEmpty
         // TODO: Add decimals, dates etc.
     }
 
-    public class TestValidator : AbstractValidator<TestClass>
+    public sealed class TestValidator : AbstractValidator<TestClass>
     {
         public TestValidator()
         {

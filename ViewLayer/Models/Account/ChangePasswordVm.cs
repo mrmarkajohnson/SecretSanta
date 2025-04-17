@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ViewLayer.Models.Account;
 
-public class ChangePasswordVm : SetPasswordBaseVm, IChangePassword
+public sealed class ChangePasswordVm : SetPasswordBaseVm, IChangePassword
 {
     [Required]
     [Display(Name = "Current Password"), DataType(DataType.Password)]
@@ -17,7 +17,7 @@ public class ChangePasswordVm : SetPasswordBaseVm, IChangePassword
     public override string Password { get; set; } = string.Empty;
 }
 
-public class ChangePasswordVmValidator : SetPasswordValidator<ChangePasswordVm>
+public sealed class ChangePasswordVmValidator : SetPasswordValidator<ChangePasswordVm>
 {
     public ChangePasswordVmValidator()
     {

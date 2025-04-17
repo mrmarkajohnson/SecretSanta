@@ -3,7 +3,7 @@ using Global.Helpers;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetUniqueJoinerTokenQuery : BaseQuery<string>
+public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
 {
     private readonly string? _existingToken;
 

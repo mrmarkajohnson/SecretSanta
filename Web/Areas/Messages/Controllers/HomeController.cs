@@ -9,7 +9,7 @@ namespace Web.Areas.Messages.Controllers;
 
 [Area("Messages")]
 [Authorize]
-public class HomeController : BaseController
+public sealed class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {

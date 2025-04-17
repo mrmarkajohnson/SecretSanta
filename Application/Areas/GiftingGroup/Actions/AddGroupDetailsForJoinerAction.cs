@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Actions;
 
-public class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
+public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGroup>
 {
     public IJoinGiftingGroup Item { get; }
 

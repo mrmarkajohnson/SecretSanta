@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Account.Commands;
 
-public class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetSecurityQuestions
+public sealed class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> where TItem : ISetSecurityQuestions
 {
     public SetSecurityQuestionsCommand(TItem item) : base(item)
     {

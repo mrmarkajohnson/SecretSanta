@@ -6,7 +6,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IFormVm
+public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IFormVm
 {
     public string? SecurityQuestion1 { get; set; }
     public string? SecurityHint1 { get; set; }
@@ -40,7 +40,7 @@ public class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IFormVm
     public bool PasswordResetSuccessfully { get; set; }
 }
 
-public class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>
+public sealed class ForgotPasswordVmValidator : AbstractValidator<ForgotPasswordVm>
 {
     public ForgotPasswordVmValidator()
     {

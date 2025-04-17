@@ -5,7 +5,7 @@ using ViewLayer.Models.Participate;
 
 namespace ViewLayer.Mapping;
 
-public class GiftingGroupMappingProfile : Profile
+public sealed class GiftingGroupMappingProfile : Profile
 {
     public GiftingGroupMappingProfile()
     {

@@ -5,7 +5,7 @@ using Global.Extensions.System;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
+public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
 {
     private readonly int _giftingGroupKey;
     private readonly int _year;

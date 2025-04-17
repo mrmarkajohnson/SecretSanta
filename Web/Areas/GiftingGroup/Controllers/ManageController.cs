@@ -10,7 +10,7 @@ namespace Web.Areas.GiftingGroup.Controllers;
 
 [Area("GiftingGroup")]
 [Authorize]
-public class ManageController : BaseController
+public sealed class ManageController : BaseController
 {
     public ManageController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {

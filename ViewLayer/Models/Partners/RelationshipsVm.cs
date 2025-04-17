@@ -2,7 +2,7 @@
 
 namespace ViewLayer.Models.Partners;
 
-public class RelationshipsVm : BasePageVm, IRelationships
+public sealed class RelationshipsVm : BasePageVm, IRelationships
 {
     public RelationshipsVm(List<RelationshipVm> possibleRelationships)
     {

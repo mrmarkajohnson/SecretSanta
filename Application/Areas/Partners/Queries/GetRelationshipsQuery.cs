@@ -6,7 +6,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Partners.Queries;
 
-public class GetRelationshipsQuery : BaseQuery<IRelationships>
+public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
 {
     protected override Task<IRelationships> Handle()
     {

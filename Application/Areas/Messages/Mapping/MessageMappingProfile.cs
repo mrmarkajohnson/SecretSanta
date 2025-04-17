@@ -5,7 +5,7 @@ using Global.Abstractions.Global.Messages;
 
 namespace Application.Areas.Messages.Mapping;
 
-public class MessageMappingProfile : Profile
+public sealed class MessageMappingProfile : Profile
 {
 	public MessageMappingProfile()
 	{

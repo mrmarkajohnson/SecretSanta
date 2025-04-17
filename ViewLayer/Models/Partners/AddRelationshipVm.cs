@@ -2,7 +2,7 @@
 
 namespace ViewLayer.Models.Partners;
 
-public class AddRelationshipVm : IAddRelationship
+public sealed class AddRelationshipVm : IAddRelationship
 {
     public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string manageRelationshipsLink, string userGridAction)
     {

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace UnitTests.EntityBasedTests;
 
-public class GiverReceiverCalculationTest : EntityBasedTestBase
+public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
 {
     [Fact]
     public async Task TestGiverReceiverCalculation()

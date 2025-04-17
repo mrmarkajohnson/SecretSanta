@@ -5,7 +5,7 @@ using static Global.Settings.PartnerSettings;
 
 namespace Application.Areas.Partners.Mapping;
 
-public class PartnersMappingProfile : Profile
+public sealed class PartnersMappingProfile : Profile
 {
     public PartnersMappingProfile()
     {

@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 
 namespace Application.Areas.Partners.Queries;
 
-public class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
+public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
     protected override Task<IQueryable<IVisibleUser>> Handle()
     {

@@ -4,7 +4,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class LoginVm : BaseFormVm, ILogin, IFormVm
+public sealed class LoginVm : BaseFormVm, ILogin, IFormVm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

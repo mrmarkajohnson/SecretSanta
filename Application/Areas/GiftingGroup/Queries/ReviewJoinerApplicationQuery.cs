@@ -4,7 +4,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
+public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 {
     private int _groupApplicationKey;
 

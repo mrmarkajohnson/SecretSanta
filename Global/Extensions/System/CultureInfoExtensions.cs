@@ -53,7 +53,7 @@ public static class CultureInfoExtensions
     }
 }
 
-public class LocationSelectable
+public sealed class LocationSelectable
 {
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;

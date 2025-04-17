@@ -5,7 +5,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSecurityQuestions
+public sealed class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSecurityQuestions
 {
     public required List<string> Greetings { get; set; }
     
@@ -22,6 +22,6 @@ public class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSecurityQu
     public string SubmitButtonIcon { get; set; } = "fa-save";
 }
 
-public class SetSecurityQuestionsVmValidator : SetSecurityQuestionsValidator<SetSecurityQuestionsVm>
+public sealed class SetSecurityQuestionsVmValidator : SetSecurityQuestionsValidator<SetSecurityQuestionsVm>
 {
 }

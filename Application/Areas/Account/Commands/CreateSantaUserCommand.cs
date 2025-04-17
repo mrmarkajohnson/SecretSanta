@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Areas.Account.Commands;
 
-public class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IRegisterSantaUser
+public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> where TItem : IRegisterSantaUser
 {
     public CreateSantaUserCommand(TItem item, IUserStore<IdentityUser> userStore) : base(item, userStore)
     {

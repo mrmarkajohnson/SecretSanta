@@ -2,7 +2,7 @@
 
 namespace Global.Extensions.System;
 
-public class StandardSelectable : SelectListItem
+public sealed class StandardSelectable : SelectListItem
 {
     public StandardSelectable(int key, string displayText)
     {

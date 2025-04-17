@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGroup>>
+public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGroup>>
 {
     public GetUserGiftingGroupsQuery()
     {

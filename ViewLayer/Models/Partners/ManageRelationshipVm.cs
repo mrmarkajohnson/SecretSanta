@@ -6,7 +6,7 @@ using static Global.Settings.PartnerSettings;
 
 namespace ViewLayer.Models.Partners;
 
-public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
+public sealed class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
 {
     private YesNoNotSure? _inARelationshipNow;
     private YesNoNotSure? _everInARelationship;
@@ -97,7 +97,7 @@ public class ManageRelationshipVm : RelationshipVm, IRelationship, IModalVm
     }
 }
 
-public class ManageRelationshipVmValidator : AbstractValidator<ManageRelationshipVm>
+public sealed class ManageRelationshipVmValidator : AbstractValidator<ManageRelationshipVm>
 {
     public ManageRelationshipVmValidator()
     {

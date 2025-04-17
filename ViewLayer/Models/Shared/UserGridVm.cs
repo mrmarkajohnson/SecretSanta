@@ -1,6 +1,6 @@
 ﻿namespace ViewLayer.Models.Shared;
 
-public class UserGridVm
+public sealed class UserGridVm
 {
     public UserGridVm(IQueryable<IVisibleUser> users, string userGridAction)
     {

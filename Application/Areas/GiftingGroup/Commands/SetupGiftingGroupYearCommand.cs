@@ -8,7 +8,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IGiftingGroupYear
+public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IGiftingGroupYear
 {
     private Global_User? _dbCurrentUser;
 

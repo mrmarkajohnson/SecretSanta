@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Areas.Account.Queries;
 
-public class LoginQuery : BaseQuery<SignInResult>
+public sealed class LoginQuery : BaseQuery<SignInResult>
 {
     private readonly ILogin _item;
 

@@ -3,7 +3,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IManageUserGiftingGroupYear
+public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IManageUserGiftingGroupYear
 {
     public ParticipateInYearCommand(TItem item) : base(item)
     {

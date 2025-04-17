@@ -5,7 +5,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IFormVm
+public sealed class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IFormVm
 {
    [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
@@ -19,6 +19,6 @@ public class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IFormVm
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
 }
 
-public class UpdateDetailsVmValidator : SantaUserValidator<UpdateDetailsVm>
+public sealed class UpdateDetailsVmValidator : SantaUserValidator<UpdateDetailsVm>
 {
 }

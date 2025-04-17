@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Messages.Commands;
 
-public class MarkMessageReadCommand : BaseCommand<int>
+public sealed class MarkMessageReadCommand : BaseCommand<int>
 {
     public MarkMessageReadCommand(int messageRecipientKey) : base(messageRecipientKey)
     {

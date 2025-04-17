@@ -7,7 +7,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Participate;
 
-public class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, IManageUserGiftingGroupYear, IFormVm
+public sealed class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, IManageUserGiftingGroupYear, IFormVm
 {
     public bool CanChangeIncluded => Recipient == null; // TODO: Prevent changes to 'included' if after the year cutoff
 
@@ -24,7 +24,7 @@ public class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, IManageU
     public string? SuccessMessage { get; set; }
 }
 
-public class UserGiftingGroupYearVmValidator : AbstractValidator<ManageUserGiftingGroupYearVm>
+public sealed class UserGiftingGroupYearVmValidator : AbstractValidator<ManageUserGiftingGroupYearVm>
 {
     public UserGiftingGroupYearVmValidator()
     {

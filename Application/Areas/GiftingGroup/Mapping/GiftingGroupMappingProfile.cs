@@ -5,7 +5,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
-public class GiftingGroupMappingProfile : Profile
+public sealed class GiftingGroupMappingProfile : Profile
 {
     public GiftingGroupMappingProfile()
     {

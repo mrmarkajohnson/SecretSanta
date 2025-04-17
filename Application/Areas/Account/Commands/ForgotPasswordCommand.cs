@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.Account;
 
 namespace Application.Areas.Account.Commands;
 
-public class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem : IForgotPassword
+public sealed class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where TItem : IForgotPassword
 {
     public ForgotPasswordCommand(TItem item) : base(item)
     {

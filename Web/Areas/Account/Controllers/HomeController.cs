@@ -9,7 +9,7 @@ using ViewLayer.Models.Account;
 namespace Web.Areas.Account.Controllers;
 
 [Area("Account")]
-public class HomeController : BaseController
+public sealed class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {

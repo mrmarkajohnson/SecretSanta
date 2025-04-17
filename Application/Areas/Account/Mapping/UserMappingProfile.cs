@@ -4,7 +4,7 @@ using AutoMapper;
 
 namespace Application.Areas.Account.Mapping;
 
-public class UserMappingProfile : Profile
+public sealed class UserMappingProfile : Profile
 {
     public UserMappingProfile()
     {

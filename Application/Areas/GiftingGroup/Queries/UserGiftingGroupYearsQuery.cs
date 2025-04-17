@@ -5,7 +5,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupYear>>
+public sealed class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupYear>>
 {
     protected override Task<IQueryable<IUserGiftingGroupYear>> Handle()
     {

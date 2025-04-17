@@ -5,7 +5,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Partners.Commands;
 
-public class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipStatus>
+public sealed class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelationshipStatus>
 {
     public ChangeRelationshipStatusCommand(IChangeRelationshipStatus item) : base(item)
     {

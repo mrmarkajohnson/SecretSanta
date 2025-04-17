@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace ViewLayer.Models.Home;
 
-public class HomeVm : BasePageVm
+public sealed class HomeVm : BasePageVm
 {
     public HomeVm()
     {

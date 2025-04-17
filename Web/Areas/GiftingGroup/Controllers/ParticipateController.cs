@@ -8,7 +8,7 @@ namespace Web.Areas.GiftingGroup.Controllers;
 
 [Area("GiftingGroup")]
 [Authorize]
-public class ParticipateController : BaseController
+public sealed class ParticipateController : BaseController
 {
     public ParticipateController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
     {

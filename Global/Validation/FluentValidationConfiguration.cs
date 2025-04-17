@@ -36,7 +36,7 @@ public static class FluentValidationConfiguration
         ValidatorOptions.Global.MessageFormatterFactory = () => new CustomMessageFormatter();        
     }
 
-    public class CustomMessageFormatter : MessageFormatter
+    public sealed class CustomMessageFormatter : MessageFormatter
     {
         public override string BuildMessage(string messageTemplate)
         {
@@ -46,7 +46,7 @@ public static class FluentValidationConfiguration
         }
     }
 
-    public class CustomLanguageManager : LanguageManager
+    public sealed class CustomLanguageManager : LanguageManager
     {
         string[] englishCodes = ["en", "en-GB", "en-US"]; // , "en-AE", "en-BZ", "en-CA", "en-IE", "en-JM", "en-NZ", "en-ZA", "en-TT" ];
 

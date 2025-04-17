@@ -1,5 +1,5 @@
 ﻿namespace Global.Extensions.Exceptions;
 
-public class NotSignedInException : Exception
+public sealed class NotSignedInException : Exception
 {
 }

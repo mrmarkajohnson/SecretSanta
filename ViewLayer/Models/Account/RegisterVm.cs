@@ -6,7 +6,7 @@ using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Account;
 
-public class RegisterVm : SantaUser, IRegisterSantaUser, IFormVm
+public sealed class RegisterVm : SantaUser, IRegisterSantaUser, IFormVm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -23,6 +23,6 @@ public class RegisterVm : SantaUser, IRegisterSantaUser, IFormVm
     public string SubmitButtonIcon { get; set; } = "fa-id-card";
 }
 
-public class RegisterVmValidator : RegisterSantaUserValidator<RegisterVm>
+public sealed class RegisterVmValidator : RegisterSantaUserValidator<RegisterVm>
 {
 }

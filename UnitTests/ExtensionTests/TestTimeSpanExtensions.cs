@@ -3,7 +3,7 @@ using Xunit;
 
 namespace UnitTests.ExtensionTests;
 
-public class TestTimeSpanExtensions
+public sealed class TestTimeSpanExtensions
 {
     [Fact]
     public void TestTimeSpanDescription()

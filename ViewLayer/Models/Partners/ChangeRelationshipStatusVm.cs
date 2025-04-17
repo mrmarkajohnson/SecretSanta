@@ -3,7 +3,7 @@ using static Global.Settings.PartnerSettings;
 
 namespace ViewLayer.Models.Partners;
 
-public class ChangeRelationshipStatusVm : IChangeRelationshipStatus
+public sealed class ChangeRelationshipStatusVm : IChangeRelationshipStatus
 {
     public ChangeRelationshipStatusVm(int partnerLinkKey, Guid globalUserId, RelationshipStatus newStatus, string manageRelationshipsLink)
     {
