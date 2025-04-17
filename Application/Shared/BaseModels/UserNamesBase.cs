@@ -1,4 +1,5 @@
 ﻿using Application.Shared.Identity;
+using static Global.Settings.GlobalSettings;
 
 namespace Application.Shared.BaseModels;
 
@@ -12,6 +13,7 @@ public class UserNamesBase : BaseUser, IUserNamesBase
     public string Forename { get; set; } = string.Empty;
     public string? MiddleNames { get; set; }
     public string Surname { get; set; } = string.Empty;
+    public Gender Gender { get; set; }
 
     public string UserDisplayName
     {

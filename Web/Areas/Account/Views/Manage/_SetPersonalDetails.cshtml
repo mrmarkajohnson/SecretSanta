@@ -1,6 +1,7 @@
 ﻿@model SantaUser
 @{
     string middleNamesExplanation = "This is optional, but may be helpful if someone else has a similar first name and surname";
+    string genderExplanation = "What do you prefer to be known as?<br/><br/>Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!";
 }
 
 <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
@@ -29,6 +30,37 @@
             <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="true" placeholder="Enter your surname here" />
             <div>
                 <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Gender" class="control-label"></label>
+            <div class="control-label fw-normal">
+                <span>Other (They/Them)</span>
+                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
+                       value="@Gender.Other" />
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+                <span>Female (She/Her)</span>
+                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
+                       value="@Gender.Female" />
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+                <span>Male (He/Him)</span>
+                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
+                       value="@Gender.Male" />
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+                <partial name="_InlineQuestion" model="@genderExplanation" />
             </div>
         </div>
     </div>

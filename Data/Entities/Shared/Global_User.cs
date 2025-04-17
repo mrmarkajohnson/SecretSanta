@@ -5,6 +5,7 @@ using Global.Abstractions.Global;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Global.Settings.GlobalSettings;
 
 namespace Data.Entities.Shared;
 
@@ -30,6 +31,8 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     [Required, MaxLength(UserVal.Surname.MaxLength)]
     public required string Surname { get; set; }
+
+    public Gender Gender { get; set; }
 
     public virtual Santa_User? SantaUser { get; set; }
 

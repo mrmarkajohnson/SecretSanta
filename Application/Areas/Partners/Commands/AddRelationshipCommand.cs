@@ -49,7 +49,8 @@ public class AddRelationshipCommand : BaseCommand<IAddRelationship>
         });
 
         string areOrWere = Item.IsActive ? "are" : "were once";
-        string messageText = $"{dbCurrentUser.FullName()} says they {areOrWere} in a relationship with you. Is it true? Please go to " +
+        string they = dbCurrentUser.Gender.Direct();
+        string messageText = $"{dbCurrentUser.FullName()} says {they} {areOrWere} in a relationship with you. Is it true? Please go to " +
                 $"<a href=\"{Item.ManageRelationshipsLink}\">'Manage Your Relationships'</a> to confirm.";
 
         var message = new SendSantaMessage

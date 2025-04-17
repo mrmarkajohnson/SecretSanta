@@ -1,5 +1,6 @@
 ﻿using Global.Validation;
 using System.ComponentModel.DataAnnotations;
+using static Global.Settings.GlobalSettings;
 
 namespace Application.Shared.Identity;
 
@@ -18,6 +19,9 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
 
     [Display(Name = "Surname"), StringLength(UserVal.Surname.MaxLength, MinimumLength = UserVal.Surname.MinLength)]
     public string Surname { get; set; } = string.Empty;
+
+    [Display(Name = "Preferred Gender")]
+    public Gender Gender { get; set; }
 
     public bool SecurityQuestionsSet { get; set; }
 

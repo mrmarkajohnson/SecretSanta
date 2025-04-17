@@ -7,7 +7,7 @@
     string rejectionMessageExplanation = $"If not allowing {Model.ApplicantName} to join, please explain why."
         + " Required if rejecting the application withou blocking future applications.";
     string blockExplanation = $"{Model.ApplicantName} has already tried to join this group at least twice, and been rejected both times."
-        + " Block them from sending any future applications?";
+        + $" Block {Model.Gender.Indirect()} from sending any future applications?";
 }
 
 <h1>Review Joiner Application</h1>
@@ -30,7 +30,7 @@
 
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <p>
-                    @Model.ApplicantName has asked to join group '@Model.GroupName'. Can they join?
+                    @Model.ApplicantName has asked to join group '@Model.GroupName'. Can @Model.Gender.Direct() join?
                 </p>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -105,7 +105,7 @@
                                 else
                                 {
                                     <div class="alert alert-info">
-                                        <text>@Model.Forename will be added to the current year automatically. You can remove them by editing the group's settings for @DateTime.Today.Year.</text>
+                                        <text>@Model.Forename will be added to the current year automatically. You can remove @Model.Gender.Indirect() by editing the group's settings for @DateTime.Today.Year.</text>
                                     </div>
                                 }
                             </div>

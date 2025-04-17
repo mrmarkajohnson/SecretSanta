@@ -10,6 +10,13 @@ public static class GlobalSettings
         .Where(x => !x.Name.StartsWith("en-0") && !x.Name.StartsWith("en-1"))
         .ToList();
 
+    public enum Gender
+    {
+        Other = 0,
+        Female = 1,
+        Male = 2
+    }
+
     public enum AuditAction
     {
         Create = 0,
