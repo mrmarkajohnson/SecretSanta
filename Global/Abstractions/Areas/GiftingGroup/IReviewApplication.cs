@@ -2,14 +2,11 @@
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
-public interface IReviewApplication : IHashableUserId, IUserNamesBase
+public interface IReviewApplication : IHashableUser, IUserNamesBase
 {
     int GroupApplicationKey { get; set; }
 
     string GroupName { get; set; }
-
-    string ApplicantUserId { get; set; }
-    string IHashableUserId.GlobalUserId => ApplicantUserId;
 
     string ApplicantName { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Application.Areas.Account.BaseModels;
 
-public sealed class UnHashedUserIdWithGreeting : UnHashedUserId
+public sealed class UnHashedUserWithGreeting : UnHashedUserBase
 {
     public required string Greeting { get; set; }
 }

@@ -4,7 +4,7 @@ using Global.Validation;
 
 namespace Global.Abstractions.Areas.Account;
 
-public interface IIdentityUser : IHashableUserId
+public interface IIdentityUser : IHashableUser
 {
     string Greeting { get; set; }
 }

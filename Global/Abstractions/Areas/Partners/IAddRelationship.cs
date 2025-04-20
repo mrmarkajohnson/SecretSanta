@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Areas.Partners;
 
-public interface IAddRelationship : IRelationshipBase
+public interface IAddRelationship : IChangeRelationshipBase
 {
     bool IsActive { get; }
 

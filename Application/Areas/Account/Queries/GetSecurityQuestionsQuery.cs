@@ -42,10 +42,10 @@ public sealed class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             {
                 SecurityQuestion1 = dbCurrentUser.SecurityQuestion1,
                 SecurityAnswer1 = dbCurrentUser.SecurityAnswer1,
-                SecurityHint1 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint1, false),
+                SecurityHint1 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint1),
                 SecurityQuestion2 = dbCurrentUser.SecurityQuestion2,
                 SecurityAnswer2 = dbCurrentUser.SecurityAnswer2,
-                SecurityHint2 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint2, false),
+                SecurityHint2 = EncryptionHelper.Decrypt(dbCurrentUser.SecurityHint2),
                 Greeting = EncryptionHelper.Decrypt(dbCurrentUser.Greeting, false, dbCurrentUser.Id)
             };
         }

@@ -1,5 +1,4 @@
 GENERAL
-* Hash any GUIDs that are sent for user IDs when not the user themself, e.g. for relationships
 * Handle index pages etc. in bundles/routing
 Add testing and production configuration
 Add back buttons to relevant pages

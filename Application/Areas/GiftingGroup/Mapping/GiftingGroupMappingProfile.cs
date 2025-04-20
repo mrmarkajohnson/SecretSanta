@@ -59,8 +59,7 @@ public sealed class GiftingGroupMappingProfile : Profile
         CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Global_User, ReviewJoinerApplication>()
-            .IncludeBase<Global_User, UserNamesBase>()
-            .ForMember(dest => dest.ApplicantUserId, opt => opt.MapFrom(src => src.Id));
+            .IncludeBase<Global_User, UserNamesBase>();
         CreateMap<Global_User, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()

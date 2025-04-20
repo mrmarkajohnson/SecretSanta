@@ -1,5 +1,7 @@
-﻿namespace Global.Abstractions.Global;
+﻿using Global.Abstractions.Shared;
 
-public interface IUserNamesBase : IUserAllNames, IHashableUserId
-{    
+namespace Global.Abstractions.Global;
+
+public interface IUserNamesBase : IUserAllNames, IHashableUser, IHasHashedUserId
+{
 }

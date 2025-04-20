@@ -8,8 +8,6 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
 {
     public int GroupApplicationKey { get; set; }
 
-    public string ApplicantUserId { get; set; } = string.Empty;
-
     [Display(Name = "Group Name")]
     public string GroupName { get; set; } = string.Empty;
 

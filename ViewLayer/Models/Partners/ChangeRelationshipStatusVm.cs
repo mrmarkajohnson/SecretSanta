@@ -1,20 +1,18 @@
-﻿using Global.Abstractions.Areas.Partners;
+﻿using Application.Areas.Partners.BaseModels;
+using Global.Abstractions.Areas.Partners;
 using static Global.Settings.PartnerSettings;
 
 namespace ViewLayer.Models.Partners;
 
-public sealed class ChangeRelationshipStatusVm : IChangeRelationshipStatus
+public sealed class ChangeRelationshipStatusVm : ChangeRelationshipBase, IChangeRelationshipStatus
 {
-    public ChangeRelationshipStatusVm(int partnerLinkKey, Guid globalUserId, RelationshipStatus newStatus, string manageRelationshipsLink)
+    public ChangeRelationshipStatusVm(int partnerLinkKey, string hashedUserId, RelationshipStatus newStatus, string manageRelationshipsLink)
+        : base(hashedUserId, manageRelationshipsLink)
     {
         PartnerLinkKey = partnerLinkKey;
-        GlobalUserId = globalUserId;
         NewStatus = newStatus;
-        ManageRelationshipsLink = manageRelationshipsLink;
     }
 
     public int PartnerLinkKey { get; set; }
-    public Guid GlobalUserId { get; set; }
     public RelationshipStatus NewStatus { get; set; }
-    public string ManageRelationshipsLink { get; set; }
 }

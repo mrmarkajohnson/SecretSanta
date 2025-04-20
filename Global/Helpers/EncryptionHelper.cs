@@ -1,4 +1,5 @@
 ﻿using Global.Abstractions.Areas.Account;
+using Global.Settings.Settings;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Application.Shared.Helpers;
 
-internal static class EncryptionHelper
+public static class EncryptionHelper
 {
     private const int _bitLength = 256;
     private const int _saltKeySize = 64;
@@ -43,7 +44,7 @@ internal static class EncryptionHelper
         }
     }
 
-    public static string TwoWayEncrypt(string? value, bool alphanumericOnly, string? saltKey = null)
+    public static string TwoWayEncrypt(string? value, bool alphanumericOnly = false, string? saltKey = null)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -86,7 +87,7 @@ internal static class EncryptionHelper
         }
     }
 
-    public static string Decrypt(string? _hashedString, bool alphanumericOnly, string? saltKey = null)
+    public static string Decrypt(string? _hashedString, bool alphanumericOnly = false, string? saltKey = null)
     {
         if (string.IsNullOrEmpty(_hashedString))
         {
@@ -97,7 +98,7 @@ internal static class EncryptionHelper
             try
             {
                 byte[] buffer = alphanumericOnly ? Convert.FromHexString(_hashedString)
-                : Convert.FromBase64String(_hashedString);
+                    : Convert.FromBase64String(_hashedString);
 
                 using (Aes aes = Aes.Create())
                 {

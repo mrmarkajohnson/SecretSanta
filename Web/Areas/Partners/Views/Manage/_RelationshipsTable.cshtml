@@ -75,7 +75,7 @@
                                 {
                                     <select asp-for="PossibleRelationships[i].Status" class="form-control relationship-status-select"
                                         asp-items="@relationship.AvailableStatuses" data-link-id="@relationship.PartnerLinkKey"
-                                        data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"></select>
+                                        data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"></select>
                                 }
                             </td>
                             <td class="nowrap">
@@ -83,14 +83,14 @@
                                 {
                                     <a class="edit-relationship-link modal-link"
                                         data-url="@Url.Action("EditRelationship", "Manage", 
-                                            new { Area = "Partners", PartnerLinkKey = @relationship.PartnerLinkKey, globalUserId = @relationship.Partner.GlobalUserId }, 
+                                                    new { Area = "Partners", PartnerLinkKey = @relationship.PartnerLinkKey, hashedUserId = @relationship.Partner.HashedUserId },
                                                 Context.Request.Scheme, Context.Request.Host.ToString())"
                                             data-toggle="tooltip" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
                                 }
 
                                 @if (relationship.Status == RelationshipStatus.ToBeConfirmed)
                                 {
-                                    <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-user-id="@relationship.Partner.GlobalUserId" data-name="@relationship.Partner.UserDisplayName"
+                                    <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"
                                             data-toggle="tooltip" title="Delete this relationship"><i class="fa fa-xmark"></i></a>
                                 }
                             </td>

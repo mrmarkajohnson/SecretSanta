@@ -91,10 +91,10 @@ async function relationshipStatusChanged(control, url, title, message) {
 
     async function statusChanged() {
         let partnerLinkKey = control.getAttribute('data-link-id');
-        let globalUserId = control.getAttribute('data-user-id');
+        let hashedUserId = control.getAttribute('data-hashed-user-id');
 
         url.searchParams.set('partnerLinkKey', partnerLinkKey);
-        url.searchParams.set('globalUserId', globalUserId);
+        url.searchParams.set('hashedUserId', hashedUserId);
         url.searchParams.set('newStatus', control.value);
 
         let response = await fetch(url.href,

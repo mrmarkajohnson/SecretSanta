@@ -34,10 +34,10 @@ public sealed class SetSecurityQuestionsCommand<TItem> : UserBaseCommand<TItem> 
 
                 dbCurrentUser.SecurityQuestion1 = Item.SecurityQuestion1;
                 dbCurrentUser.SecurityAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? string.Empty, dbCurrentUser);
-                dbCurrentUser.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1, false);
+                dbCurrentUser.SecurityHint1 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint1);
                 dbCurrentUser.SecurityQuestion2 = Item.SecurityQuestion2;
                 dbCurrentUser.SecurityAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? string.Empty, dbCurrentUser);
-                dbCurrentUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2, false);
+                dbCurrentUser.SecurityHint2 = EncryptionHelper.TwoWayEncrypt(Item.SecurityHint2);
                 dbCurrentUser.Greeting = EncryptionHelper.TwoWayEncrypt(Item.Greeting, false, dbCurrentUser.Id);
 
                 return await SaveAndReturnSuccess();

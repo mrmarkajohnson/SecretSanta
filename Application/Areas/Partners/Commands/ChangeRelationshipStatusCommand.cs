@@ -21,12 +21,14 @@ public sealed class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelatio
             throw new AccessDeniedException();
         }
 
+        string? itemUserId = Item.GetStringUserId();
+
         List<Santa_PartnerLink> dbPossibleRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null
-                && x.ConfirmingSantaUser.GlobalUserId == Item.GlobalUserId.ToString())
+                && x.ConfirmingSantaUser.GlobalUserId == itemUserId)
             .Union(dbCurrentUser.SantaUser.ConfirmingRelationships
                 .Where(x => x.DateArchived == null && x.DateDeleted == null
-                    && x.SuggestedBySantaUser.GlobalUserId == Item.GlobalUserId.ToString()))
+                    && x.SuggestedBySantaUser.GlobalUserId == itemUserId))
             .ToList();
 
         Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);

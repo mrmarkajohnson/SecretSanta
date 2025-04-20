@@ -1,20 +1,19 @@
-﻿using Global.Abstractions.Areas.Partners;
+﻿using Application.Areas.Partners.BaseModels;
+using Global.Abstractions.Areas.Partners;
 
 namespace ViewLayer.Models.Partners;
 
-public sealed class AddRelationshipVm : IAddRelationship
+public sealed class AddRelationshipVm : ChangeRelationshipBase, IAddRelationship
 {
-    public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string manageRelationshipsLink, string userGridAction)
+    public AddRelationshipVm(IQueryable<IVisibleUser> possiblePartners, string hashedUserId, string manageRelationshipsLink, string userGridAction)
+        : base(hashedUserId, manageRelationshipsLink)
     {
         PossiblePartners = possiblePartners;
-        ManageRelationshipsLink = manageRelationshipsLink;
         UserGridAction = userGridAction;
     }
 
     public IQueryable<IVisibleUser> PossiblePartners { get; set; }
-    public string ManageRelationshipsLink { get; set; }
     public string UserGridAction { get; }
-    public Guid GlobalUserId { get; set; } = Guid.Empty;
     public bool IsActive { get; set; }
 
     public UserGridVm UserGridModel => new UserGridVm(PossiblePartners, UserGridAction);    

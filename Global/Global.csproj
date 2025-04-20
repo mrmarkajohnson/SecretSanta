@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>aspnet-SecretSanta-c377646c-1d24-4497-8d57-0abf018d0cb5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

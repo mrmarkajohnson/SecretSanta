@@ -427,8 +427,8 @@ function clearThinkingElements(thinkingSection, submitButton) {
 }
 
 async function selectUser(radio, url) {
-    let selectedUserId = radio.getAttribute('data-user-id');
-    url.searchParams.set('globalUserId', selectedUserId);
+    let hashedUserId = radio.getAttribute('data-hashed-user-id');
+    url.searchParams.set('hashedUserId', hashedUserId);
 
     let response = await fetch(url.href,
     {

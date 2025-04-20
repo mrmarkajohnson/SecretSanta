@@ -1,5 +1,7 @@
-﻿using Application.Areas.Partners.Commands;
+﻿using Application.Areas.Account.BaseModels;
+using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
+using Application.Shared.Helpers;
 using Global.Abstractions.Areas.Partners;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -26,10 +28,10 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkKey, Guid globalUserId, RelationshipStatus newStatus)
+    public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkKey, string hashedUserId, RelationshipStatus newStatus)
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
-        var model = new ChangeRelationshipStatusVm(partnerLinkKey, globalUserId, newStatus, manageRelationshipsLink);
+        var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, newStatus, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
@@ -55,14 +57,12 @@ public sealed class ManageController : BaseController
         return View(model);
     }
 
-    private async Task<AddRelationshipVm> GetAddRelationshipModel(Guid? globalUserId = null)
+    private async Task<AddRelationshipVm> GetAddRelationshipModel(string hashedUserId = "")
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
 
-        var model = new AddRelationshipVm(possiblePartners, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));
-        model.GlobalUserId = globalUserId ?? Guid.Empty;
-
+        var model = new AddRelationshipVm(possiblePartners, hashedUserId, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));        
         return model;
     }
 
@@ -76,9 +76,9 @@ public sealed class ManageController : BaseController
     // TODO: Allow deleting relationships if they haven't been confirmed yet
 
     [HttpPost]
-    public async Task<IActionResult> AddRelationship(Guid globalUserId, bool active)
+    public async Task<IActionResult> AddRelationship(string hashedUserId, bool active)
     {
-        var model = await GetAddRelationshipModel(globalUserId);
+        var model = await GetAddRelationshipModel(hashedUserId);
         model.IsActive = active;
 
         var result = await Send(new AddRelationshipCommand(model), null);
@@ -94,11 +94,14 @@ public sealed class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditRelationship(int partnerLinkKey, Guid globalUserId)
+    public async Task<IActionResult> EditRelationship(int partnerLinkKey, string hashedUserId)
     {
         IRelationships relationships = await Send(new GetRelationshipsQuery());
+
+        Guid partnerUserId = Guid.Parse(EncryptionHelper.Decrypt(hashedUserId));
+
         var relationship = relationships.PossibleRelationships
-            .FirstOrDefault(x => x.PartnerLinkKey == partnerLinkKey && x.Partner.GlobalUserId == globalUserId.ToString());
+            .FirstOrDefault(x => x.PartnerLinkKey == partnerLinkKey && x.Partner.GlobalUserId == partnerUserId.ToString());
 
         if (relationship == null)
             return ErrorMessageResult("Relationship not found.");
@@ -118,7 +121,7 @@ public sealed class ManageController : BaseController
         if (isValid)
         {
             string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
-            var changeModel = new ChangeRelationshipStatusVm(model.PartnerLinkKey ?? 0, new Guid(model.Partner.GlobalUserId), model.Status, manageRelationshipsLink);
+            var changeModel = new ChangeRelationshipStatusVm(model.PartnerLinkKey ?? 0, model.Partner.HashedUserId, model.Status, manageRelationshipsLink);
             var result = await Send(new ChangeRelationshipStatusCommand(changeModel), null);
 
             if (result.Success)
@@ -131,10 +134,10 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, Guid globalUserId)
+    public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, string hashedUserId)
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
-        var model = new ChangeRelationshipStatusVm(partnerLinkKey, globalUserId, RelationshipStatus.EndedBeforeConfirmation, manageRelationshipsLink);
+        var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, RelationshipStatus.EndedBeforeConfirmation, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)

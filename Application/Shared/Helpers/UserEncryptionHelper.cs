@@ -6,11 +6,11 @@ namespace Application.Shared.Helpers;
 
 internal static class UserEncryptionHelper
 {
-    public static TItem UnHash<TItem>(this TItem hashableUser) where TItem : IHashableUserId
+    public static TItem UnHash<TItem>(this TItem hashableUser) where TItem : IHashableUser
     {
         if (hashableUser.IdentificationHashed)
         {
-            UnHashedUserIdWithGreeting unHashedId = hashableUser.GetUnhashedDetails();
+            UnHashedUserWithGreeting unHashedId = hashableUser.GetUnhashedDetails();
 
             hashableUser.UserName = unHashedId.UserName;
             hashableUser.Email = unHashedId.Email;
@@ -26,15 +26,19 @@ internal static class UserEncryptionHelper
         return hashableUser; // allows this to be used in selects etc.
     }
 
-    public static UnHashedUserIdWithGreeting GetUnhashedDetails(this IHashableUserId hashableUser)
+    public static UnHashedUserWithGreeting GetUnhashedDetails(this IHashableUser hashableUser)
     {
-        string? email = string.IsNullOrWhiteSpace(hashableUser.Email) ? null
-                    : hashableUser.IdentificationHashed ? EncryptionHelper.Decrypt(hashableUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
-                    : hashableUser.Email;
+        string? email = string.IsNullOrWhiteSpace(hashableUser.Email) 
+            ? null
+            : hashableUser.IdentificationHashed 
+                ? EncryptionHelper.Decrypt(hashableUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
+                : hashableUser.Email;
 
-        string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName) ? email
-            : hashableUser.IdentificationHashed ? EncryptionHelper.Decrypt(hashableUser.UserName, true)
-            : hashableUser.UserName;
+        string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName) 
+            ? email
+            : hashableUser.IdentificationHashed 
+                ? EncryptionHelper.Decrypt(hashableUser.UserName, true)
+                : hashableUser.UserName;
 
         string? greeting = null;
 
@@ -45,7 +49,7 @@ internal static class UserEncryptionHelper
                 : identityUser.Greeting;
         }
 
-        return new UnHashedUserIdWithGreeting
+        return new UnHashedUserWithGreeting
         {
             Email = email,
             UserName = userName ?? string.Empty,
