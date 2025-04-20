@@ -88,7 +88,8 @@
                                             data-toggle="tooltip" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
                                 }
 
-                                @if (relationship.Status == RelationshipStatus.ToBeConfirmed)
+                                @if (relationship.Status == RelationshipStatus.ToBeConfirmed 
+                                    || (relationship.SuggestedByCurrentUser && relationship.AlreadyConfirmed == null))
                                 {
                                     <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"
                                             data-toggle="tooltip" title="Delete this relationship"><i class="fa fa-xmark"></i></a>

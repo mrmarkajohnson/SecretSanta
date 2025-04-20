@@ -19,7 +19,8 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
         }
 
         IEnumerable<IRelationship> suggestedRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null
+                && (x.SuggestedByIgnoreOld == false || x.Confirmed == true)) // exclude unconfirmed ignored relationships
             .AsQueryable()
             .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider);
 

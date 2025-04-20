@@ -31,15 +31,14 @@ Close (archive) a group?
 Allow years to continue into January, just in case
 
 RELATIONSHIPS
-* Test relationship modal and retest normal drop-down
-* Test deleting relationships if they haven't been confirmed yet
+* End-to-end relationship test
 Archive or update messages when relationship statuses change
 Add a visibility status to say if the group admins can see the relationship
 Put adding a relationship from the main relationships page into a modal?
 
 GIFTS
 Allow users to view more details of the person they are giving to, e.g. from the 'Show' (recipient) link in the year list, and a link from the year page
-Add suggestions
+*Add suggestions
 Add user postal and e-mail address functionality for sending and receiving gifts (optional, and must be enabled by admins)
 Allow users to choose one other person they don't want to exchange gifts with
 

@@ -137,7 +137,7 @@ public sealed class ManageController : BaseController
     public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, string hashedUserId)
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
-        var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, RelationshipStatus.EndedBeforeConfirmation, manageRelationshipsLink);
+        var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, RelationshipStatus.IgnoreOld, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
