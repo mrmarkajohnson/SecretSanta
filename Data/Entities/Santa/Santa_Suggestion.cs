@@ -1,21 +1,23 @@
-﻿namespace Data.Entities.Santa;
+﻿using Global.Abstractions.Areas.Suggestions;
 
-public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity
+namespace Data.Entities.Santa;
+
+public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity, ISuggestionBase,
+    IAuditableEntity<Santa_Suggestion_Audit, Santa_Suggestion_AuditChange>
 {
+    public Santa_Suggestion()
+    {
+        YearGroupUserLinks = new HashSet<Santa_SuggestionLink>();
+        AuditTrail = new HashSet<Santa_Suggestion_Audit>();
+    }
+
     [Key]
     public int SuggestionKey { get; set; }
 
-    /// <summary>
-    /// Identifies the group member who makes the suggestion
-    /// </summary>
-    public int YearGroupUserKey { get; set; }
+    public int SantaUserKey { get; set; }
+    public virtual required Santa_User SantaUser { get; set; }
 
-    /// <summary>
-    /// Identifies the group member who makes the suggestion
-    /// </summary>
-    public virtual required Santa_YearGroupUser YearGroupUser { get; set; }
-
-    public bool MainSuggestion { get; set; }
+    public int Priority { get; set; }
 
     public required string SuggestionText { get; set; }
 
@@ -23,4 +25,12 @@ public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity
     /// E.g. things to avoid
     /// </summary>
     public required string OtherNotes { get; set; }
+
+    public virtual ICollection<Santa_SuggestionLink> YearGroupUserLinks { get; set; }
+    public virtual ICollection<Santa_Suggestion_Audit> AuditTrail { get; set; }
+
+    public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
+    {
+        this.AddNewAuditEntry<Santa_Suggestion, Santa_Suggestion_Audit, Santa_Suggestion_AuditChange>(auditTrail, changes);
+    }
 }

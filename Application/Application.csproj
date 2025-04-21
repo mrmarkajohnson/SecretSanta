@@ -20,4 +20,9 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Suggestions\Commands\" />
+    <Folder Include="Areas\Suggestions\Queries\" />
+  </ItemGroup>
+
 </Project>

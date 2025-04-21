@@ -4,7 +4,7 @@ public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupU
 {
     public Santa_YearGroupUser()
     {
-        Suggestions = new HashSet<Santa_Suggestion>();
+        Suggestions = new HashSet<Santa_SuggestionLink>();
         AuditTrail = new HashSet<Santa_YearGroupUser_Audit>();
     }
 
@@ -22,7 +22,7 @@ public class Santa_YearGroupUser : BaseEntity, IAuditableEntity<Santa_YearGroupU
     public int? RecipientSantaUserKey { get; set; }
     public virtual Santa_User? RecipientSantaUser { get; set; }
 
-    public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
+    public virtual ICollection<Santa_SuggestionLink> Suggestions { get; set; }
     public virtual ICollection<Santa_YearGroupUser_Audit> AuditTrail { get; set; }
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)

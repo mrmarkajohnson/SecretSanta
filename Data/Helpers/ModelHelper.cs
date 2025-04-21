@@ -157,11 +157,45 @@ internal static class ModelHelper
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_Suggestion>()
+            .HasOne(e => e.SantaUser)
+            .WithMany(e => e.Suggestions)
+            .HasForeignKey(e => e.SantaUserKey)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Suggestion>()
+            .HasMany(e => e.AuditTrail)
+            .WithOne(e => e.Parent)
+            .HasForeignKey(e => e.ParentKey);
+
+        modelBuilder.Entity<Santa_Suggestion_Audit>()
+            .HasMany(e => e.Changes)
+            .WithOne(e => e.Audit)
+            .HasForeignKey(e => e.AuditKey);
+
+        modelBuilder.Entity<Santa_SuggestionLink>()
+            .HasOne(e => e.Suggestion)
+            .WithMany(e => e.YearGroupUserLinks)
+            .HasForeignKey(e => e.SuggestionKey)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_SuggestionLink>()
             .HasOne(e => e.YearGroupUser)
             .WithMany(e => e.Suggestions)
             .HasForeignKey(e => e.YearGroupUserKey)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_SuggestionLink>()
+            .HasMany(e => e.AuditTrail)
+            .WithOne(e => e.Parent)
+            .HasForeignKey(e => e.ParentKey);
+
+        modelBuilder.Entity<Santa_SuggestionLink_Audit>()
+            .HasMany(e => e.Changes)
+            .WithOne(e => e.Audit)
+            .HasForeignKey(e => e.AuditKey);
 
         modelBuilder.Entity<Santa_YearGroupUser>()
             .HasOne(e => e.GiftingGroupYear)

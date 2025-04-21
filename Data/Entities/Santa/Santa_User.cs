@@ -15,6 +15,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
         GiftingGroupApplicationResponses = new HashSet<Santa_GiftingGroupApplication>();
         SentMessages = new HashSet<Santa_Message>();
         ReceivedMessages = new HashSet<Santa_MessageRecipient>();
+        Suggestions = new HashSet<Santa_Suggestion>();
     }
 
     [Key]
@@ -41,4 +42,5 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
 
     public virtual ICollection<Santa_Message> SentMessages { get; set; }
     public virtual ICollection<Santa_MessageRecipient> ReceivedMessages { get; set; }
+    public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
 }
