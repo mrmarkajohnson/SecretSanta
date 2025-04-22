@@ -10,7 +10,7 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
     {
     }
 
-    protected async override Task<IQueryable<IReviewApplication>> Handle()
+    protected override Task<IQueryable<IReviewApplication>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
@@ -24,6 +24,6 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
         var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();        
         applications.ForEach(x => x.UnHash());
 
-        return applications.AsQueryable();
+        return Task.FromResult(applications.AsQueryable());
     }
 }

@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Application.Shared.Identity;
 
-namespace Application.Shared.Identity;
-
-public abstract class BaseUser : IHashableUser, IHasHashedUserId
+public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHashedUserId
 {
     private string? _globalUserId;
     private string? _hashedUserId;
@@ -26,12 +24,6 @@ public abstract class BaseUser : IHashableUser, IHasHashedUserId
             }
         }
     }
-
-    [Display(Name = "Username")]    
-    public virtual string? UserName { get; set; }
-
-    [Display(Name = "E-mail Address")]
-    public virtual string? Email { get; set; }
 
     public bool IdentificationHashed { get; set; }
 

@@ -10,24 +10,19 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
 {
     protected override Task<IRelationships> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser,
-            g => g.SantaUser.SuggestedRelationships, g => g.SantaUser.ConfirmingRelationships);
+        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GlobalUser,
+            g => g.SuggestedRelationships, g => g.ConfirmingRelationships);
 
-        if (dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
-
-        IEnumerable<IRelationship> suggestedRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
+        IEnumerable<IRelationship> suggestedRelationships = dbSantaUser.SuggestedRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null
                 && (x.SuggestedByIgnoreOld == false || x.Confirmed == true)) // exclude unconfirmed ignored relationships
             .AsQueryable()
-            .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider);
+            .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() });
 
-        IEnumerable<IRelationship> confirmingRelationships = dbCurrentUser.SantaUser.ConfirmingRelationships
+        IEnumerable<IRelationship> confirmingRelationships = dbSantaUser.ConfirmingRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Confirmed != false)
             .AsQueryable()
-            .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider);
+            .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() });
 
         IRelationships relationships = new Relationships
         {

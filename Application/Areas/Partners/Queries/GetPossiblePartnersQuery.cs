@@ -9,11 +9,6 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var groupNames = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
-            .Select(x => x.GiftingGroup.Name)
-            .ToList();
-
         var visibleUsers = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .SelectMany(x => x.GiftingGroup.UserLinks)
@@ -29,7 +24,8 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)
             .AsQueryable()
-            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, new { GroupNames = groupNames })
+            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
+                new { GroupNames = dbCurrentSantaUser.GroupNames(), UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
             .ToList();
 
         visibleUsers.ForEach(x => x.UnHash());

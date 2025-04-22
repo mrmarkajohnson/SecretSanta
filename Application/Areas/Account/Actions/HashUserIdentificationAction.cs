@@ -18,7 +18,7 @@ internal class HashUserIdentificationAction : BaseAction<IIdentityUser>
     {
         if (!_identityUser.IdentificationHashed)
         {
-            HashedUserIdWithGreeting hashedId = await Send(new GetHashedIdWithGreetingQuery(_identityUser));
+            HashedUserWithGreeting hashedId = await Send(new GetHashedIdWithGreetingQuery(_identityUser));
 
             _identityUser.UserName = hashedId.UserNameHash;
             _identityUser.Email = hashedId.EmailHash;

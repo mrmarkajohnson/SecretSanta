@@ -21,6 +21,7 @@ public sealed class GetCurrentUserQuery : BaseQuery<ISantaUser>
         if (dbCurrentUser.SantaUser != null)
         {
             ISantaUser santaUser = Mapper.Map<SantaUser>(dbCurrentUser);
+            santaUser.ShowEmail = true;
 
             if (_unHashResults)
             {

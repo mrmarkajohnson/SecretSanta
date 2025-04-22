@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.Account;
 
 namespace Application.Areas.Account.Queries;
 
-internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, new()
+internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUser, new()
 {
     protected IIdentityUser IdentityUser { get; set; }
 
@@ -29,7 +29,7 @@ internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUserId, ne
             UserNameHash = userNameHash ?? string.Empty,
         });
 
-        if (result is HashedUserIdWithGreeting greetingResult)
+        if (result is HashedUserWithGreeting greetingResult)
         {
             greetingResult.GreetingHash = IdentityUser.IdentificationHashed ? IdentityUser.Greeting
                 : EncryptionHelper.TwoWayEncrypt(IdentityUser.Greeting, false, IdentityUser.GlobalUserId);

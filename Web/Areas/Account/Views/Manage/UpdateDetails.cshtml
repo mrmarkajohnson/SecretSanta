@@ -1,4 +1,5 @@
-﻿@model UpdateDetailsVm
+﻿@using Global.Names
+@model UpdateDetailsVm
 @{
     ViewData["Title"] = "Update Account";
 }
@@ -18,9 +19,8 @@
             <div class="mb-5">
                 <h2>Please check your details, and update them if necessary</h2>
 
-                <p class="mt-2 mb-4">
-                    For security and privacy, e-mail addresses and user names are scrambled in the database.
-                </p>
+                <p class="mt-2">@StandardPhrases.DetailsScrambled.</p>
+                <p class="mb-4">@StandardPhrases.EmailVisibility.</p>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 

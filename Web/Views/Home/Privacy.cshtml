@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Global.Names
+@{
     ViewData["Title"] = "Privacy And Security";
 }
 <h1>@ViewData["Title"]</h1>
@@ -8,13 +9,14 @@
 <br />
 <p>He's added a lot of privacy and security controls so that even Administrators won't know your details.</p>
 <div class="d-flex justify-content-center">
-    <p>
+    <li>
         <ul class="bulleted">
             <li>Passwords are protected using the latest security features, and one-way encryption</li>
             <li>Security answers are uniquely<small>*</small> one-way encrypted,k so they can never be decrypted</li>
             <li>Greetings are uniquely<small>*</small> encrypted</li>
             <li>Even hints for security answers are scrambled</li>
-            <li>Usernames and e-mail addresses are scrambled, so that e-mail addresses can't be misused</li>
+            <li>@StandardPhrases.DetailsScrambled</li>
+            <li>@StandardPhrases.EmailVisibility</li>
             <li>The only cookie this site uses is the one that keeps you logged in when you're using it</li>
         </ul>
     </p>

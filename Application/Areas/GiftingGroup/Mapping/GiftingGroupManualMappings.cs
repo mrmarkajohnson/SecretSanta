@@ -2,6 +2,7 @@
 using Application.Shared.BaseModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -39,7 +40,7 @@ internal static class GiftingGroupManualMappings
         return manageYear;
     }
 
-    public static void SetPreviousYearDetails(ManageUserGiftingGroupYear manageYear, Santa_User dbSantaUser, 
+    public static void SetPreviousYearDetails(IManageUserGiftingGroupYear manageYear, Santa_User dbSantaUser, 
         Santa_GiftingGroup dbGiftingGroup, IMapper mapper)
     {
         manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.Year);
@@ -47,7 +48,9 @@ internal static class GiftingGroupManualMappings
         manageYear.OtherGroupMembers = dbGiftingGroup.UserLinks
             .Where(x => x.SantaUserKey != dbSantaUser.SantaUserKey)
             .Select(x => x.SantaUser)
-            .AsQueryable().ProjectTo<IUserNamesBase>(mapper.ConfigurationProvider).ToList();
+            .AsQueryable()
+            .ProjectTo<IUserNamesBase>(mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() })
+            .ToList();
 
         manageYear.LastRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 1)?.GlobalUserId;
         manageYear.PreviousRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 2)?.GlobalUserId;

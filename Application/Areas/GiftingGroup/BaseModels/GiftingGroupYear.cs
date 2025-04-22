@@ -6,9 +6,6 @@ namespace Application.Areas.GiftingGroup.BaseModels;
 
 public class GiftingGroupYear : GiftingGroupYearBase, IGiftingGroupYear
 {
-    [Required]
-    public int Year { get; set; }
-
     public bool Calculated { get; set; }
     public bool RecalculationRequired { get; set; }
     public string? PreviousYearsWarning { get; set; }

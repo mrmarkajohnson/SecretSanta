@@ -2,6 +2,7 @@
 using Data.Entities.Santa;
 using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Global;
+using Global.Abstractions.Shared;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -78,6 +79,13 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     [NotMapped, NotAudited]
     public string GlobalUserId => Id; // ditto
+
+    [NotMapped, NotAudited]
+    bool IHasEmail.ShowEmail
+    {
+        get => false;
+        set { }
+    }
 
     #endregion For the IGlobalUser interface
 

@@ -1,4 +1,5 @@
-﻿@model RegisterVm
+﻿@using Global.Names
+@model RegisterVm
 @{
     ViewData["Title"] = "Register";
 }
@@ -14,9 +15,8 @@
             <div class="mb-5">
                 <h2>Please create an account</h2>
 
-                <p class="mt-2 mb-4">
-                    For security and privacy, e-mail addresses and user names are scrambled in the database.
-                </p>
+                <p class="mt-2">@StandardPhrases.DetailsScrambled.</p>
+                <p class="mb-4">@StandardPhrases.EmailVisibility.</p>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 

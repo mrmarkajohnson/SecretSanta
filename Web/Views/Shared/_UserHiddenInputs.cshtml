@@ -5,7 +5,13 @@
     <input type="hidden" asp-for="Forename" />
     <input type="hidden" asp-for="MiddleNames" />
     <input type="hidden" asp-for="Surname" />
-    <input type="hidden" asp-for="Email" />
+    <input type="hidden" asp-for="ShowEmail" />
+
+    @if (Model.ShowEmail)
+    {
+        <input type="hidden" asp-for="Email" />
+    }
+
     <input type="hidden" asp-for="UserName" />
     <input type="hidden" asp-for="UserDisplayName" />
 </div>

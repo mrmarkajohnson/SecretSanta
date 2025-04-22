@@ -12,7 +12,7 @@
     {
         columns.Add(x => x.UserDisplayName).Titled("Name");
         columns.Add(x => x.UserName).Titled("UserName");
-        columns.Add<string>(x => x.Email ?? string.Empty).Titled("E-mail Address");
+        columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled("E-mail Address");
         columns.Add().RenderedAs(actions).Encoded(false);
     })
     .Pageable(pager =>

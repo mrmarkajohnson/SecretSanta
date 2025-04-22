@@ -3,7 +3,7 @@ using Application.Shared.Identity;
 
 namespace Application.Areas.Account.Queries;
 
-internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
+internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUser>
 {
     public GetHashedIdQuery(string userNameOrEmail, bool hashed) : base(new CoreIdentityUser())
     {
@@ -12,9 +12,9 @@ internal class GetHashedIdQuery : GetHashedIdBaseQuery<HashedUserId>
         IdentityUser.IdentificationHashed = hashed;
     }
 
-    protected async override Task<HashedUserId> Handle()
+    protected async override Task<HashedUser> Handle()
     {
-        HashedUserId result = await base.Handle();
+        HashedUser result = await base.Handle();
         return result;
     }
 }

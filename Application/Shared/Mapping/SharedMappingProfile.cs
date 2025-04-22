@@ -7,7 +7,7 @@ public sealed class SharedMappingProfile : Profile
 {
     public SharedMappingProfile()
     {
-        List<string> GroupNames = new();
+        IList<string> GroupNames = new List<string>();
 
         CreateMap<Global_User, VisibleUser>()
             .IncludeBase<Global_User, UserNamesBase>()

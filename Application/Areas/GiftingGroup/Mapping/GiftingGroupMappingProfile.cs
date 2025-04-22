@@ -55,11 +55,13 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.Blocked, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupKey == src.GiftingGroupKey)
                 .Any(x => x.Blocked)))
-            .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true));
+            .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true))
+            .ForMember(dest => dest.ShowEmail, opt => opt.MapFrom(src => true));
         CreateMap<Santa_GiftingGroupApplication, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Global_User, ReviewJoinerApplication>()
-            .IncludeBase<Global_User, UserNamesBase>();
+            .IncludeBase<Global_User, UserNamesBase>()
+            .ForMember(dest => dest.ShowEmail, opt => opt.MapFrom(src => true));
         CreateMap<Global_User, IReviewApplication>().As<ReviewJoinerApplication>();
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()

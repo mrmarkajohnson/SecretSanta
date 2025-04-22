@@ -25,7 +25,7 @@ public sealed class GetUserQuery : BaseQuery<ISantaUser?>
 
         if (!string.IsNullOrWhiteSpace(_userNameOrEmail) && !string.IsNullOrWhiteSpace(_foreName))
         {
-            HashedUserId hashedId = await Send(new GetHashedIdQuery(_userNameOrEmail, _userNamehashed));
+            HashedUser hashedId = await Send(new GetHashedIdQuery(_userNameOrEmail, _userNamehashed));
 
             bool isEmail = EmailHelper.IsEmail(_userNameOrEmail);
 

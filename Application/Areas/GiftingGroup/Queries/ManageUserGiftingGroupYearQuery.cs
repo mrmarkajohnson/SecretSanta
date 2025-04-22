@@ -20,7 +20,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
         Year = year ?? DateTime.Today.Year;
     }
 
-    protected async override Task<IManageUserGiftingGroupYear> Handle()
+    protected override Task<IManageUserGiftingGroupYear> Handle()
     {
         Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
         IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
@@ -47,7 +47,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
 
         Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbSantaUser.SantaUserKey);
 
-        ManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
+        IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
 
         if (manageYear == null) // not created yet
         {
@@ -65,6 +65,6 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
             GiftingGroupManualMappings.SetPreviousYearDetails(manageYear, dbSantaUser, dbGiftingGroup, Mapper);
         }
 
-        return manageYear;
+        return Task.FromResult(manageYear);
     }
 }

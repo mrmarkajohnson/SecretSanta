@@ -43,4 +43,22 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
     public virtual ICollection<Santa_Message> SentMessages { get; set; }
     public virtual ICollection<Santa_MessageRecipient> ReceivedMessages { get; set; }
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
+
+    public IList<string> GroupNames() => GiftingGroupLinks
+        .Where(x => x.DateArchived == null && x.DateDeleted == null)
+        .Select(x => x.GiftingGroup.Name)
+        .ToList();
+
+    public IList<int> UserKeysForVisibleEmail() => SuggestedRelationships
+        .Where(x => x.Confirmed == true && x.RelationshipEnded == null && x.DateDeleted == null && x.DateArchived == null)
+        .Select(y => y.ConfirmingSantaUserKey)
+        .Union(ConfirmingRelationships
+            .Where(x => x.RelationshipEnded == null && x.DateDeleted == null && x.DateArchived == null)
+            .Select(y => y.SuggestedBySantaUserKey))
+        .Union(GiftingGroupLinks
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.GroupAdmin)
+            .SelectMany(y => y.GiftingGroup.UserLinks)
+            .Select(z => z.SantaUserKey))
+        .ToList();
 }
