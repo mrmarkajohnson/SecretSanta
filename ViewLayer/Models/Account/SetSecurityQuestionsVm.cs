@@ -8,7 +8,7 @@ namespace ViewLayer.Models.Account;
 public sealed class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSecurityQuestions
 {
     public required List<string> Greetings { get; set; }
-    
+
     [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
     public string CurrentPassword { get; set; } = string.Empty;

@@ -9,5 +9,5 @@ public interface IManageUserGiftingGroupYear : IUserGiftingGroupYear
     string? LastRecipientUserId { get; set; }
     string? PreviousRecipientUserId { get; set; }
 
-    IList<IUserNamesBase> OtherGroupMembers { get; set; }    
+    IList<IUserNamesBase> OtherGroupMembers { get; set; }
 }

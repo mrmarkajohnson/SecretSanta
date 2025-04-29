@@ -1,8 +1,5 @@
-﻿using FluentValidation.Internal;
-using Global.Validation;
+﻿using Global.Validation;
 using Global.Validation.CustomValidators;
-using System.Linq.Expressions;
-using System.Xml.Linq;
 
 namespace FluentValidation;
 
@@ -19,7 +16,7 @@ public static class ValidationExtensions
             .WithMessage(ConvertMessageForFluentValidation(ValidationMessages.RequiredError));
     }
 
-    public static IRuleBuilderOptions<T, TProperty> IsInDropDownList<T, TProperty, TEnumerable>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, TEnumerable> list, bool allowEmpty) 
+    public static IRuleBuilderOptions<T, TProperty> IsInDropDownList<T, TProperty, TEnumerable>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, TEnumerable> list, bool allowEmpty)
         where TEnumerable : IEnumerable<TProperty>
     {
         return ruleBuilder
@@ -33,7 +30,7 @@ public static class ValidationExtensions
         if (property == null || Equals(property, default(TProperty)))
             return true;
 
-        if (property is string xString) 
+        if (property is string xString)
             return string.IsNullOrWhiteSpace(xString);
 
         return false;

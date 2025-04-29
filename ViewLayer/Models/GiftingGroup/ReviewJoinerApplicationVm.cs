@@ -13,7 +13,7 @@ public sealed class ReviewJoinerApplicationVm : ReviewJoinerApplication, IFormVm
     /// <summary>
     /// Nullable version of 'Accepted' to ensure the user must choose
     /// </summary>
-    [Display(Name="Allow to Join")]
+    [Display(Name = "Allow to Join")]
     public bool? AcceptedOption
     {
         get

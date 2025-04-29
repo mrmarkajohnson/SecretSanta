@@ -34,6 +34,6 @@ public class HomeController : BaseController
     //[HttpPost]
     //public async Task<IActionResult> SaveSuggestion(ManageSuggestionVm model)
     //{
-        
+
     //}
 }

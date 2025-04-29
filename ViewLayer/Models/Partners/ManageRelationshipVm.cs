@@ -59,7 +59,7 @@ public sealed class ManageRelationshipVm : RelationshipVm, IRelationship, IModal
         }
     }
 
-    public string ModalTitle => (!SuggestedByCurrentUser && AlreadyConfirmed == null ? "Confirm" : "Manage") 
+    public string ModalTitle => (!SuggestedByCurrentUser && AlreadyConfirmed == null ? "Confirm" : "Manage")
         + (OriginalStatus < RelationshipStatus.Active ? " Suggested" : OriginalStatus == RelationshipStatus.Active ? "" : " Old")
         + " Relationship";
 

@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Global.Abstractions.Areas.Account;
-using Global.Validation;
+﻿using Global.Abstractions.Areas.Account;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
 

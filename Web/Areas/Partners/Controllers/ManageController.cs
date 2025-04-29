@@ -1,9 +1,7 @@
-﻿using Application.Areas.Account.BaseModels;
-using Application.Areas.Partners.Commands;
+﻿using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
 using Application.Shared.Helpers;
 using Global.Abstractions.Areas.Partners;
-using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Partners;
 using ViewLayer.Models.Shared;
@@ -62,7 +60,7 @@ public sealed class ManageController : BaseController
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
 
-        var model = new AddRelationshipVm(possiblePartners, hashedUserId, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));        
+        var model = new AddRelationshipVm(possiblePartners, hashedUserId, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));
         return model;
     }
 

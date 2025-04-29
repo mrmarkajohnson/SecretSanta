@@ -5,7 +5,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public sealed class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftingGroupYear>>
+public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGiftingGroupYear>>
 {
     protected override Task<IQueryable<IUserGiftingGroupYear>> Handle()
     {
@@ -37,7 +37,7 @@ public sealed class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftin
             .Select(x => (x.ToUserGiftingGroupYear(Mapper)))
             .AsQueryable();
     }
-    
+
 
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberNotSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {

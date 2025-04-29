@@ -13,7 +13,7 @@ public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
 
     [Required, Display(Name = "Answer 1")]
     public string? SecurityAnswer1 { get; set; }
-    
+
     public string? SecurityQuestion2 { get; set; }
     public string? SecurityHint2 { get; set; }
 
@@ -46,7 +46,7 @@ public sealed class ForgotPasswordVmValidator : AbstractValidator<ForgotPassword
     {
         RuleFor(x => x.EmailOrUserName).NotNullOrEmpty().When(x => x.ShowBasicDetails);
         RuleFor(x => x.Forename).NotNullOrEmpty().When(x => x.ShowBasicDetails);
-        
+
         RuleFor(x => x.Greeting).IsInDropDownList(x => Greetings.Messages, false).When(x => x.ShowBasicDetails);
 
         RuleFor(x => x.SecurityAnswer1).NotNull().NotEmpty().When(x => x.ShowSecurityQuestions);
@@ -55,6 +55,6 @@ public sealed class ForgotPasswordVmValidator : AbstractValidator<ForgotPassword
         When(x => x.ResetPassword, () =>
         {
             Include(new SetPasswordValidator<ForgotPasswordVm>());
-        });        
+        });
     }
 }

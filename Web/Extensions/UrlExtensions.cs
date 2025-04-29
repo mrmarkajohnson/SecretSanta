@@ -10,7 +10,7 @@ public static class UrlExtensions
         return urlHelper.Action(context.Request, action, controller, area, values);
     }
 
-    public static string Action(this IUrlHelper urlHelper, HttpRequest request, 
+    public static string Action(this IUrlHelper urlHelper, HttpRequest request,
         string action, string controller, string area, object? values = null)
     {
         object fullValues = new { Area = area };

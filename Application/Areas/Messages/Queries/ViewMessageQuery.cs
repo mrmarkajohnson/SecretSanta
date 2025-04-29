@@ -18,7 +18,7 @@ public sealed class ViewMessageQuery : BaseQuery<IReadMessage>
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
-        var message = dbCurrentSantaUser.ReceivedMessages            
+        var message = dbCurrentSantaUser.ReceivedMessages
             .Where(x => x.MessageRecipientKey == MessageRecipientKey)
             .AsQueryable()
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)

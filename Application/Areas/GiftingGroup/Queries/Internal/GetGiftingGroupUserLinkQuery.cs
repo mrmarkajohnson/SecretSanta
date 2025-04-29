@@ -1,6 +1,4 @@
-﻿using Application.Areas.GiftingGroup.Queries;
-
-namespace Application.Areas.GiftingGroup.Queries.Internal;
+﻿namespace Application.Areas.GiftingGroup.Queries.Internal;
 
 internal class GetGiftingGroupUserLinkQuery : GiftingGroupBaseQuery<Santa_GiftingGroupUser>
 {

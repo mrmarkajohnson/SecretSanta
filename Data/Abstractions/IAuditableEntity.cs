@@ -8,7 +8,7 @@ internal interface IAuditableEntity : IEntity
     void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes);
 }
 
-internal interface IAuditableEntity<TAuditEntity, TChangeEntity> : IAuditableEntity 
+internal interface IAuditableEntity<TAuditEntity, TChangeEntity> : IAuditableEntity
     where TAuditEntity : class, IAuditEntity<TChangeEntity>, new()
     where TChangeEntity : class, IAuditChangeEntity, new()
 {
@@ -17,7 +17,7 @@ internal interface IAuditableEntity<TAuditEntity, TChangeEntity> : IAuditableEnt
 
 internal static class AuditableEntityExtensions
 {
-    public static void AddNewAuditEntry<TParentEntity, TAuditEntity, TChangeEntity>(this TParentEntity parent,        
+    public static void AddNewAuditEntry<TParentEntity, TAuditEntity, TChangeEntity>(this TParentEntity parent,
         IAuditBase auditTrail, IList<IAuditBaseChange> changes)
             where TParentEntity : class, IAuditableEntity<TAuditEntity, TChangeEntity>
             where TAuditEntity : class, IAuditEntity<TParentEntity, TChangeEntity>, new()

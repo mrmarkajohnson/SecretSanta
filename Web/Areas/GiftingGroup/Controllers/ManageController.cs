@@ -64,13 +64,13 @@ public sealed class ManageController : BaseController
         string saved = model.GiftingGroupKey > 0 ? "Updated" : "Created";
 
         var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
-        
+
         if (commandResult.Success)
         {
             return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
         }
 
-        model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create" ;
+        model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create";
         return ShowEditGiftingGroup(model);
     }
 
@@ -89,12 +89,12 @@ public sealed class ManageController : BaseController
     public async Task<IActionResult> GetGroupDetailsForJoiner(JoinGiftingGroupVm model) // TODO: Call this
     {
         ModelState.Clear();
-        
+
         bool found = await Send(new AddGroupDetailsForJoinerAction(model));
 
         if (model.Blocked)
         {
-            ModelState.AddModelError(string.Empty, "You are blocked from applying to join this group. Please stop sending applications.");            
+            ModelState.AddModelError(string.Empty, "You are blocked from applying to join this group. Please stop sending applications.");
         }
 
         model.GetGroupDetailsAction = nameof(GetGroupDetailsForJoiner);
@@ -148,7 +148,7 @@ public sealed class ManageController : BaseController
     public async Task<IActionResult> ReviewJoinerApplication(int groupApplicationKey, bool singleApplication = true)
     {
         IReviewApplication application = await Send(new ReviewJoinerApplicationQuery(groupApplicationKey));
-        
+
         var model = new ReviewJoinerApplicationVm();
         Mapper.Map(application, model);
 
@@ -172,7 +172,7 @@ public sealed class ManageController : BaseController
             {
                 model.ReturnUrl = string.Empty;
             }
-            
+
             string processed = model.Accepted ? "Accepted" : "Rejected";
             return RedirectWithMessage(model, $"Application {processed} Successfully");
         }

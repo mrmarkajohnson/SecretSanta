@@ -124,7 +124,7 @@ internal static class ModelHelper
 
         modelBuilder.Entity<Santa_Message>()
             .HasOne(e => e.Sender)
-            .WithMany(e => e.SentMessages) 
+            .WithMany(e => e.SentMessages)
             .HasForeignKey(e => e.SenderKey)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);

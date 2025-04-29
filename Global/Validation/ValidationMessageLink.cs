@@ -1,9 +1,9 @@
 ﻿namespace Global.Validation;
 
 internal class ValidationMessageLink
-{ 
-    public ValidationMessageLink(string fluentValidatorName, Type? dataAttribute, string errorMessage, 
-        string? property1 = null, string? property2 = null)         
+{
+    public ValidationMessageLink(string fluentValidatorName, Type? dataAttribute, string errorMessage,
+        string? property1 = null, string? property2 = null)
     {
         FluentValidatorName = fluentValidatorName;
         DataAttribute = dataAttribute;

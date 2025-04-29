@@ -59,7 +59,7 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
     private List<StandardSelectable> GetFirstYearSelection()
     {
         int thisYear = DateTime.Today.Year;
-        
+
         if (FirstYear > 0 && FirstYear <= thisYear - 2)
             return new List<StandardSelectable> { new(FirstYear, FirstYear.ToString()) };
 

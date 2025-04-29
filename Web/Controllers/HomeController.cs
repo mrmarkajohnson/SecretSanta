@@ -1,5 +1,5 @@
-﻿using ViewLayer.Models.Shared;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using ViewLayer.Models.Shared;
 
 namespace SecretSanta.Controllers;
 

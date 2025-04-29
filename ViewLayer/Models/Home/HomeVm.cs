@@ -9,7 +9,7 @@ public sealed class HomeVm : BasePageVm
     {
         GiftingGroups = new List<IUserGiftingGroup>();
     }
-    
+
     public ISantaUser? CurrentUser { get; set; }
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
     public int NewJoinerApplications => GiftingGroups?.Sum(x => x.NewApplications) ?? 0;

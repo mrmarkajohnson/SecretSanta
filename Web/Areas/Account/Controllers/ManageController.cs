@@ -56,7 +56,7 @@ public sealed class ManageController : BaseController
     {
         if (SignInManager.IsSignedIn(User))
         {
-            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());            
+            ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());
             string? currentGreeting = currentSecurityQuestions?.Greeting;
 
             if (string.IsNullOrWhiteSpace(currentGreeting))

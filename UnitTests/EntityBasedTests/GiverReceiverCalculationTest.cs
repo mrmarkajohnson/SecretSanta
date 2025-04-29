@@ -16,7 +16,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
         var context = new TestDbContext();
         await SeedContext(context);
         ServiceProvider serviceProvider = GetServiceProvider(context);
-        
+
         // TODO: Use CreateSantaUserCommand or similar to set up and sign in CurrentUser when needed?
 
         foreach (var dbYear in context.Santa_GiftingGroupYears.ToList())

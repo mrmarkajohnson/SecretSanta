@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Global.Extensions.Exceptions;
-using System;
+﻿using Global.Extensions.Exceptions;
 using System.Runtime.ExceptionServices;
 
 namespace Web.GlobalErrorHandling;

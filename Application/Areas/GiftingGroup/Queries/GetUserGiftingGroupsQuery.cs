@@ -1,7 +1,6 @@
 ﻿using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.GiftingGroup;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -18,7 +17,7 @@ public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGrou
 
         if (dbCurrentUser?.SantaUser != null)
         {
-            ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks;            
+            ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks;
 
             if (dbGroupLinks?.Any() == true)
             {

@@ -33,7 +33,7 @@ public sealed class PartnersMappingProfile : Profile
                 : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
                 opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
-            //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => false)); // set automatically on the class
+        //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => false)); // set automatically on the class
 
     }
 }

@@ -28,15 +28,15 @@ internal static class UserEncryptionHelper
 
     public static UnHashedUserWithGreeting GetUnhashedDetails(this IHashableUser hashableUser)
     {
-        string? email = string.IsNullOrWhiteSpace(hashableUser.Email) 
+        string? email = string.IsNullOrWhiteSpace(hashableUser.Email)
             ? null
-            : hashableUser.IdentificationHashed 
+            : hashableUser.IdentificationHashed
                 ? EncryptionHelper.Decrypt(hashableUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
                 : hashableUser.Email;
 
-        string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName) 
+        string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName)
             ? email
-            : hashableUser.IdentificationHashed 
+            : hashableUser.IdentificationHashed
                 ? EncryptionHelper.Decrypt(hashableUser.UserName, true)
                 : hashableUser.UserName;
 
@@ -44,8 +44,8 @@ internal static class UserEncryptionHelper
 
         if (hashableUser is IIdentityUser identityUser)
         {
-            greeting = identityUser.IdentificationHashed 
-                ? EncryptionHelper.Decrypt(identityUser.Greeting, false, hashableUser.GlobalUserId) 
+            greeting = identityUser.IdentificationHashed
+                ? EncryptionHelper.Decrypt(identityUser.Greeting, false, hashableUser.GlobalUserId)
                 : identityUser.Greeting;
         }
 

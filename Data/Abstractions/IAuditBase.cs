@@ -6,5 +6,5 @@ public interface IAuditBase
 {
     int AuditKey { get; set; }
     string? GlobalUserId { get; set; }
-    AuditAction Action { get; set; }    
+    AuditAction Action { get; set; }
 }

@@ -33,7 +33,7 @@ public static class FluentValidationConfiguration
         };
 
         ValidatorOptions.Global.LanguageManager = new CustomLanguageManager();
-        ValidatorOptions.Global.MessageFormatterFactory = () => new CustomMessageFormatter();        
+        ValidatorOptions.Global.MessageFormatterFactory = () => new CustomMessageFormatter();
     }
 
     public sealed class CustomMessageFormatter : MessageFormatter
@@ -41,7 +41,7 @@ public static class FluentValidationConfiguration
         public override string BuildMessage(string messageTemplate)
         {
             string templateWithoutQuotes = messageTemplate.Replace("'{PropertyName}'", "{PropertyName}");
-            string finalMessage = base.BuildMessage(templateWithoutQuotes);            
+            string finalMessage = base.BuildMessage(templateWithoutQuotes);
             return finalMessage;
         }
     }

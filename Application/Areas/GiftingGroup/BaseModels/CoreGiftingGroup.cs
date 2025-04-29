@@ -1,6 +1,5 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
 using Global.Names;
-using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.GiftingGroup.BaseModels;

@@ -2,7 +2,6 @@
 using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Partners;
-using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Partners.Queries;
 

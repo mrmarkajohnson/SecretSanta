@@ -7,7 +7,7 @@ namespace ViewLayer.Models.Account;
 
 public sealed class UpdateDetailsVm : SantaUser, IUpdateSantaUser, IFormVm
 {
-   [Required]
+    [Required]
     [Display(Name = "Password"), DataType(DataType.Password)]
     public string CurrentPassword { get; set; } = string.Empty;
 

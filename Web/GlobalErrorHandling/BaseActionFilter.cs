@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Web.Controllers;
 
 namespace Web.GlobalErrorHandling;
 

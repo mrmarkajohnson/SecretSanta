@@ -1,5 +1,4 @@
-﻿using Global.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
 
 namespace Application.Shared.Identity;

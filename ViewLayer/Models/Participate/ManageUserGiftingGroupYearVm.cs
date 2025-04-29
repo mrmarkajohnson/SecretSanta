@@ -32,7 +32,7 @@ public sealed class UserGiftingGroupYearVmValidator : AbstractValidator<ManageUs
             .NotEqual(false)
             .When(x => x.Recipient != null)
             .WithMessage(GiftingGroupNames.NoOptOutWithRecipient);
-        
+
         // TODO: Prevent changes to 'included' if after the year cutoff
     }
 }

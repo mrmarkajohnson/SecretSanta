@@ -6,9 +6,9 @@ namespace ViewLayer.Mapping;
 
 public sealed class ParticipateMappingProfile : Profile
 {
-	public ParticipateMappingProfile()
-	{
+    public ParticipateMappingProfile()
+    {
         CreateMap<IManageUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
         CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
-	}
+    }
 }

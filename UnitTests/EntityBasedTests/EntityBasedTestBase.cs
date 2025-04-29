@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting.Internal;
-using SecretSanta.Data;
 using System.Security.Claims;
 using UnitTests.Context;
 

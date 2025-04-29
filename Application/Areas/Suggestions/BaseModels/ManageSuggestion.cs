@@ -10,7 +10,7 @@ public class ManageSuggestion : SuggestionBase, IManageSuggestion
         YearGroupUserLinks = new List<ManageSuggestionLink>();
     }
 
-    [Display(Name="Groups")]
+    [Display(Name = "Groups")]
     public IList<ManageSuggestionLink> YearGroupUserLinks { get; set; }
     IEnumerable<IManageSuggestionLink> IManageSuggestion.YearGroupUserLinks => YearGroupUserLinks;
 }

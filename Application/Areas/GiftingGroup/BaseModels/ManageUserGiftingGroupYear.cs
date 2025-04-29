@@ -9,7 +9,7 @@ public class ManageUserGiftingGroupYear : UserGiftingGroupYear, IManageUserGifti
     {
         OtherGroupMembers = new List<IUserNamesBase>();
     }
-    
+
     public int PreviousYearsRequired { get; set; }
 
     [Display(Name = "Who did you give to last year?")]

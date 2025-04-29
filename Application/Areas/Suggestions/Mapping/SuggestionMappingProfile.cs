@@ -6,8 +6,8 @@ namespace Application.Areas.Suggestions.Mapping;
 
 public class SuggestionMappingProfile : Profile
 {
-	public SuggestionMappingProfile()
-	{
+    public SuggestionMappingProfile()
+    {
         CreateMap<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.SuggestionKey, opt => opt.MapFrom(src => src.SuggestionKey))
             .ForMember(dest => dest.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey))

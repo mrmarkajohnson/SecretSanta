@@ -3,7 +3,6 @@ using Application.Areas.Account.Queries;
 using Global.Extensions.System;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using ViewLayer.Models.Account;
 
 namespace Web.Areas.Account.Controllers;

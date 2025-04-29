@@ -9,7 +9,7 @@ public class Santa_PartnerLink : DeletableBaseEntity, IDeletableEntity
     /// The user who first suggests the relationship
     /// </summary>
     public int SuggestedBySantaUserKey { get; set; }
-    public virtual required Santa_User SuggestedBySantaUser { get; set; } 
+    public virtual required Santa_User SuggestedBySantaUser { get; set; }
 
     /// <summary>
     /// Null means awaiting confirmation, false means never in a relationship
@@ -20,7 +20,7 @@ public class Santa_PartnerLink : DeletableBaseEntity, IDeletableEntity
     /// The user who confirms (or is yet to confirm) the relationship
     /// </summary>
     public int ConfirmingSantaUserKey { get; set; }
-    public virtual required Santa_User ConfirmingSantaUser { get; set; } 
+    public virtual required Santa_User ConfirmingSantaUser { get; set; }
 
     public DateTime? RelationshipEnded { get; set; }
 

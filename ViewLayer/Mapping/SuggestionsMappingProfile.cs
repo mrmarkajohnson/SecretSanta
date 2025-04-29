@@ -6,8 +6,8 @@ namespace ViewLayer.Mapping;
 
 public class SuggestionsMappingProfile : Profile
 {
-	public SuggestionsMappingProfile()
-	{
+    public SuggestionsMappingProfile()
+    {
         CreateMap<IManageSuggestion, ManageSuggestionVm>();
     }
 }

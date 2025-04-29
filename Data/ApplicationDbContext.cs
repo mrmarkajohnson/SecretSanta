@@ -20,10 +20,10 @@ public class ApplicationDbContext : IdentityDbContext
     public ApplicationDbContext() : this(new DbContextOptions<ApplicationDbContext>())
     {
     }
-    
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
-    {            
+    {
     }
 
     public string? CurrentUserId { get; set; }
@@ -62,7 +62,7 @@ public class ApplicationDbContext : IdentityDbContext
         ChangeTracker.DetectChanges();
     }
 
-    private void AddAuditTrail<TAuditableEntity> (EntityEntry modifiedEntry, TAuditableEntity auditableEntity, EntityState state) 
+    private void AddAuditTrail<TAuditableEntity>(EntityEntry modifiedEntry, TAuditableEntity auditableEntity, EntityState state)
         where TAuditableEntity : IAuditableEntity
     {
         var changes = GetChanges(modifiedEntry);
@@ -76,7 +76,7 @@ public class ApplicationDbContext : IdentityDbContext
         }, changes);
     }
 
-    private static AuditAction GetAuditAction<TAuditableEntity>(TAuditableEntity auditableEntity, EntityState state, IList<IAuditBaseChange> changes) 
+    private static AuditAction GetAuditAction<TAuditableEntity>(TAuditableEntity auditableEntity, EntityState state, IList<IAuditBaseChange> changes)
         where TAuditableEntity : IAuditableEntity
     {
         AuditAction action = state switch
@@ -179,4 +179,4 @@ public class ApplicationDbContext : IdentityDbContext
                 .UseSqlServer(connectionString);
         }
     }
-}        
+}

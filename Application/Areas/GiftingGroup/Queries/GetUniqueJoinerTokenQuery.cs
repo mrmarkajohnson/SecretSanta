@@ -1,5 +1,4 @@
 ﻿using Application.Shared.Requests;
-using Global.Helpers;
 
 namespace Application.Areas.GiftingGroup.Queries;
 

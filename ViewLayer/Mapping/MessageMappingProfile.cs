@@ -6,8 +6,8 @@ namespace ViewLayer.Mapping;
 
 public sealed class MessageMappingProfile : Profile
 {
-	public MessageMappingProfile()
-	{
-		CreateMap<IReadMessage, ReadMessageVm>();
-	}
+    public MessageMappingProfile()
+    {
+        CreateMap<IReadMessage, ReadMessageVm>();
+    }
 }

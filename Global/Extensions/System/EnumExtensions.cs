@@ -22,7 +22,7 @@ public static class EnumExtensions
             return displayNameAttribute.Name;
 
         var displayAttribute = enumValue.GetAttribute<DisplayAttribute>();
-        
+
         if (displayAttribute != null && !string.IsNullOrEmpty(displayAttribute.Name))
             return displayAttribute.Name;
 
@@ -32,7 +32,7 @@ public static class EnumExtensions
     public static List<SelectListItem> ToSelectList<TEnum>(this IEnumerable<TEnum> list, TEnum? selected = default)
         where TEnum : Enum
     {
-        return list.Select(x => new SelectListItem(x.DisplayName(), x.ToString(), 
+        return list.Select(x => new SelectListItem(x.DisplayName(), x.ToString(),
             selected != null && selected.Equals(x))).ToList();
     }
 }

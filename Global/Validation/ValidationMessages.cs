@@ -5,7 +5,7 @@ namespace Global.Validation;
 public static class ValidationMessages
 {
     public const string PasswordConfirmationError = "Password and Confirmation Password do not match.";
-    
+
     public const string EmailError = "{0} is not a valid e-mail address.";
     public const string GreaterOrEqualError = "{0} must be at least {1}.";
     public const string GreaterThanError = "'{0}' must be greater than {1}.";

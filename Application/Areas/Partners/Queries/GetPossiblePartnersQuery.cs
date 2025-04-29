@@ -24,7 +24,7 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)
             .AsQueryable()
-            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
+            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider,
                 new { GroupNames = dbCurrentSantaUser.GroupNames(), UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
             .ToList();
 

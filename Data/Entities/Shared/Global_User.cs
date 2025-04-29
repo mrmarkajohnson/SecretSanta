@@ -14,7 +14,7 @@ namespace Data.Entities.Shared;
 /// Allows expansion using the same database and users
 /// </summary>
 [Table("Global_User")]
-public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions, 
+public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions,
     IAuditableEntity<Global_User_Audit, Global_User_AuditChange>
 {
     public Global_User()
@@ -22,7 +22,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
         DateCreated = DateTime.Now;
         AuditTrail = new HashSet<Global_User_Audit>();
     }
-    
+
     [Required, Audit("First Name")]
     [MaxLength(UserVal.Forename.MaxLength)]
     public required string Forename { get; set; }
@@ -71,7 +71,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     public bool IdentificationHashed // can't use explicit implemention as it doesn't map correctly, and it must have a setter
     {
         get => true;
-        set 
+        set
         {
             throw new NotImplementedException("The entity cannot be unhashed."); // just in case!
         }

@@ -2,8 +2,8 @@
 
 internal class NotAuditedAttribute : AuditAttribute
 {
-	public NotAuditedAttribute()
-	{
-		NotAudited = true;
-	}
+    public NotAuditedAttribute()
+    {
+        NotAudited = true;
+    }
 }

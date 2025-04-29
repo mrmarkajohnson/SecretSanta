@@ -16,7 +16,7 @@ public sealed class RegisterVm : SantaUser, IRegisterSantaUser, IFormVm
     [Display(Name = "Confirm Password"), DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = ValidationMessages.PasswordConfirmationError)]
     public string ConfirmPassword { get; set; } = string.Empty;
-    
+
     public string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
     public string SubmitButtonText { get; set; } = "Register";

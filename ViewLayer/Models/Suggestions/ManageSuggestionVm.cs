@@ -13,7 +13,7 @@ public class ManageSuggestionVm : ManageSuggestion, IFormVm
         get => Priority <= 0 || Priority > PriorityLimit ? null : Priority;
         set => Priority = value ?? 0;
     }
-    
+
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";

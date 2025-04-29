@@ -16,5 +16,5 @@ public sealed class AddRelationshipVm : ChangeRelationshipBase, IAddRelationship
     public string UserGridAction { get; }
     public bool IsActive { get; set; }
 
-    public UserGridVm UserGridModel => new UserGridVm(PossiblePartners, UserGridAction);    
+    public UserGridVm UserGridModel => new UserGridVm(PossiblePartners, UserGridAction);
 }

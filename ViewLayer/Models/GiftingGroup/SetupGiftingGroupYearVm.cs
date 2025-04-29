@@ -22,7 +22,7 @@ public sealed class SetupGiftingGroupYearVm : GiftingGroupYear, IGiftingGroupYea
             }
         }
     }
-    
+
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";

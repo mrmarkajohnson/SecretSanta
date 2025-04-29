@@ -21,8 +21,8 @@ internal static class GiftingGroupManualMappings
             GiftingGroupName = dbGiftingGroupYear.GiftingGroup.Name,
             GroupAdmin = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin,
             Included = dbYearGroupUser.Included ?? false,
-            Recipient = dbYearGroupUser.RecipientSantaUserKey > 0 
-                ?  (mapper.Map<UserNamesBase>(dbYearGroupUser.RecipientSantaUser).UnHash()) 
+            Recipient = dbYearGroupUser.RecipientSantaUserKey > 0
+                ? (mapper.Map<UserNamesBase>(dbYearGroupUser.RecipientSantaUser).UnHash())
                 : null,
             Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),
@@ -40,7 +40,7 @@ internal static class GiftingGroupManualMappings
         return manageYear;
     }
 
-    public static void SetPreviousYearDetails(IManageUserGiftingGroupYear manageYear, Santa_User dbSantaUser, 
+    public static void SetPreviousYearDetails(IManageUserGiftingGroupYear manageYear, Santa_User dbSantaUser,
         Santa_GiftingGroup dbGiftingGroup, IMapper mapper)
     {
         manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.CalendarYear);

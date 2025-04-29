@@ -29,7 +29,7 @@ public class RelationshipVm : RelationshipBase, IRelationship
             RelationshipStatus.Ended => [RelationshipStatus.Ended, RelationshipStatus.IgnoreOld],
             RelationshipStatus.EndedBeforeConfirmation => [RelationshipStatus.EndedBeforeConfirmation, RelationshipStatus.IgnoreOld],
             RelationshipStatus.IgnoreOld => [RelationshipStatus.Ended, RelationshipStatus.IgnoreOld],
-            _ => [ Status ]
+            _ => [Status]
         };
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Global.Messages;
 
@@ -7,8 +6,8 @@ namespace Application.Areas.Messages.Mapping;
 
 public sealed class MessageMappingProfile : Profile
 {
-	public MessageMappingProfile()
-	{
+    public MessageMappingProfile()
+    {
         CreateMap<Santa_MessageRecipient, ReadMessage>()
             .IncludeMembers(src => src.Message)
             .ForMember(dest => dest.MessageRecipientKey, opt => opt.MapFrom(src => src.MessageRecipientKey))

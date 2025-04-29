@@ -5,7 +5,6 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
-using Global.Abstractions.Global;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
@@ -62,12 +61,12 @@ public class BaseController : Controller
         {
             url = Url.Content("~/");
         }
-        
+
         if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
         {
             url = url.TrimEnd("Controller") + "/Index";
         }
-        
+
         string addQuery = url.Contains("?") ? "&" : "?";
         return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
     }

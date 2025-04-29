@@ -1,2 +1,2 @@
-﻿global using ViewLayer.Models.Shared;
-global using Global.Abstractions.Global;
+﻿global using Global.Abstractions.Global;
+global using ViewLayer.Models.Shared;

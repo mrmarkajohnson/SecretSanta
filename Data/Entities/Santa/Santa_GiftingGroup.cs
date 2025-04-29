@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftingGroup, 
+public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftingGroup,
     IAuditableEntity<Santa_GiftingGroup_Audit, Santa_GiftingGroup_AuditChange>
 {
     public Santa_GiftingGroup()

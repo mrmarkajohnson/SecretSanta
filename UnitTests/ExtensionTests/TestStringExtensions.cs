@@ -16,7 +16,7 @@ public sealed class TestStringExtensions
         string simpleOr = list.DisplayList(or: true);
         Assert.Equal("apples, oranges, pears or grapes", simpleOr);
 
-        string oxfordAnd = list.DisplayList(oxfordComma : true);
+        string oxfordAnd = list.DisplayList(oxfordComma: true);
         Assert.Equal("apples, oranges, pears, and grapes", oxfordAnd);
 
         string oxfordOr = list.DisplayList(or: true, oxfordComma: true);

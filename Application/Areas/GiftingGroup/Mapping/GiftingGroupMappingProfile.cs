@@ -36,7 +36,7 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
-            .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src => 
+            .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src =>
                 src.GroupAdmin ? src.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroup>().As<UserGiftingGroup>();
 

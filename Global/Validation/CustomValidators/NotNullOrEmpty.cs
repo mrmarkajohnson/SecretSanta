@@ -11,7 +11,7 @@ public sealed class NotNullOrEmptyValidator<T, TProperty> : PropertyValidator<T,
 {
     public override string Name => "NotNullOrEmptyValidator";
 
-    public override bool IsValid(ValidationContext<T> context, TProperty value)            
+    public override bool IsValid(ValidationContext<T> context, TProperty value)
     {
         if (value == null || Equals(value, default(T)))
         {
@@ -21,12 +21,12 @@ public sealed class NotNullOrEmptyValidator<T, TProperty> : PropertyValidator<T,
         Type originalType = typeof(T);
         Type nonNullableType = Nullable.GetUnderlyingType(originalType) ?? originalType;
 
-        if (nonNullableType != originalType) 
+        if (nonNullableType != originalType)
         {
             if (Equals(value, nonNullableType.GetDefault()))
             {
                 return false;
-            }             
+            }
         }
 
         return new NotEmptyValidator<T, TProperty>().IsValid(context, value);

@@ -57,7 +57,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
             giftingGroupYear.GroupMembers = validGroupMembers
                 .Select(x => Mapper.Map(x, new YearGroupUserBase()))
                 .ToList();
-        }        
+        }
 
         if (string.IsNullOrEmpty(giftingGroupYear.CurrencyCode))
         {

@@ -1,7 +1,6 @@
 using AutoMapper;
 using Global.Extensions.Services;
 using Global.Validation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +35,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddTransient<BaseActionFilter>();
 builder.Services.AddRazorPages().AddMvcOptions(options => options.Filters.AddService<BaseActionFilter>());
 
-string[] mapperAssemblyNames = [ "Application", "ViewLayer" ];
+string[] mapperAssemblyNames = ["Application", "ViewLayer"];
 Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => mapperAssemblyNames.Contains(x.GetName().Name)).ToArray();
 var profiles = mapperAssemblies.SelectMany(x => x.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x))).ToArray();
 builder.Services.ConfigureAutoMapperProfiles();

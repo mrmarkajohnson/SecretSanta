@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Application.Areas.GiftingGroup.BaseModels;
 
 public class UserGiftingGroupYear : GiftingGroupYearBase, IUserGiftingGroupYear
-{   
+{
     public bool GroupAdmin { get; set; }
 
     [Display(Name = "Participating")]
