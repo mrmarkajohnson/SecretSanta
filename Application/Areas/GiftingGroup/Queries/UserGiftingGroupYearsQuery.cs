@@ -23,14 +23,14 @@ public sealed class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftin
                 .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks));
         }
 
-        return Task.FromResult(userGroups);
+        return Result(userGroups);
     }
 
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         IEnumerable<Santa_YearGroupUser> dbYearGroupUsers = dbActiveLinks
             .SelectMany(x => x.GiftingGroup.Years
-                .Where(x => x.Year == DateTime.Today.Year)
+                .Where(x => x.CalendarYear == DateTime.Today.Year)
                 .SelectMany(y => y.Users.Where(u => u.SantaUserKey == dbSantaUser.SantaUserKey)));
 
         return dbYearGroupUsers
@@ -42,7 +42,7 @@ public sealed class UserGiftingGroupYearsQuery: BaseQuery<IQueryable<IUserGiftin
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberNotSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         return dbActiveLinks
-            .Where(x => x.GiftingGroup.Years.Where(x => x.Year == DateTime.Today.Year)
+            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear == DateTime.Today.Year)
                 .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);

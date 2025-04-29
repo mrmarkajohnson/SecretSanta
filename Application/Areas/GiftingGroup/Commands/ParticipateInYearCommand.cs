@@ -22,7 +22,7 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         var dbGiftingGroupYear = dbGiftingGroup.Years
-            .FirstOrDefault(y => y.Year == Item.Year);
+            .FirstOrDefault(y => y.CalendarYear == Item.CalendarYear);
 
         if (dbGiftingGroupYear == null)
         {
@@ -31,8 +31,8 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
 
         AddOrUpdateUserGroupYear(dbGiftingGroupYear, Item.Included, dbSantaUser.SantaUserKey, dbSantaUser.GlobalUser.FullName(), dbSantaUser);
 
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.Year - 1);
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.Year - 2);
+        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.CalendarYear - 1);
+        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.CalendarYear - 2);
 
         return await SaveAndReturnSuccess();
     }
@@ -46,13 +46,13 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
         if (dbMatchedGroupUser == null)
             return; // TODO: Return a validation failure
 
-        Santa_GiftingGroupYear? dbOldYear = dbGiftingGroup.Years.FirstOrDefault(x => x.Year == oldYear);
+        Santa_GiftingGroupYear? dbOldYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == oldYear);
 
         if (dbOldYear == null)
         {
             dbOldYear = new Santa_GiftingGroupYear
             {
-                Year = oldYear,
+                CalendarYear = oldYear,
                 CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
                 CurrencySymbol = dbGiftingGroup.GetCurrencySymbol(),
                 GiftingGroupKey = dbGiftingGroup.GiftingGroupKey,

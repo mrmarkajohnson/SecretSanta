@@ -18,14 +18,14 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.Included, opt => opt.Ignore())
             .ForMember(dest => dest.Recipient, opt => opt.Ignore())
-            .ForMember(dest => dest.Year, opt => opt.MapFrom(src => DateTime.Today.Year))
+            .ForMember(dest => dest.CalendarYear, opt => opt.MapFrom(src => DateTime.Today.Year))
             .ForMember(dest => dest.Limit, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.Limit).FirstOrDefault()))
+                .Where(x => x.CalendarYear == DateTime.Today.Year).Select(y => y.Limit).FirstOrDefault()))
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.CurrencyCode).FirstOrDefault()
+                .Where(x => x.CalendarYear == DateTime.Today.Year).Select(y => y.CurrencyCode).FirstOrDefault()
                     ?? src.GiftingGroup.CurrencyCodeOverride))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.Year == DateTime.Today.Year).Select(y => y.CurrencySymbol).FirstOrDefault()
+                .Where(x => x.CalendarYear == DateTime.Today.Year).Select(y => y.CurrencySymbol).FirstOrDefault()
                     ?? src.GiftingGroup.CurrencySymbolOverride));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
@@ -47,8 +47,8 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupKey == src.GiftingGroupKey && x.GroupApplicationKey != src.GroupApplicationKey)
                 .Count()))
-            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.Year == DateTime.Today.Year)
-                ? src.GiftingGroup.Years.First(x => x.Year == DateTime.Today.Year).Users.Any(x => x.RecipientSantaUserKey != null)
+            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.CalendarYear == DateTime.Today.Year)
+                ? src.GiftingGroup.Years.First(x => x.CalendarYear == DateTime.Today.Year).Users.Any(x => x.RecipientSantaUserKey != null)
                 : false))
             .ForMember(dest => dest.Accepted, opt => opt.MapFrom(src => src.Accepted))
             .ForMember(dest => dest.RejectionMessage, opt => opt.MapFrom(src => src.RejectionMessage))

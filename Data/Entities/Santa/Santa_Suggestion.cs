@@ -1,4 +1,5 @@
 ﻿using Global.Abstractions.Areas.Suggestions;
+using Global.Validation;
 
 namespace Data.Entities.Santa;
 
@@ -19,6 +20,7 @@ public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity, ISugges
 
     public int Priority { get; set; }
 
+    [MaxLength(SuggestionVal.Suggestion.MaxLength)]
     public required string SuggestionText { get; set; }
 
     /// <summary>

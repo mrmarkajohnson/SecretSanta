@@ -34,6 +34,6 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
             relationship.Partner.UnHash();
         }
 
-        return Task.FromResult(relationships);
+        return Result(relationships);
     }
 }

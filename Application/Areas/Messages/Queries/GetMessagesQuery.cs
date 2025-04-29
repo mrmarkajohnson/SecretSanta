@@ -14,6 +14,6 @@ public sealed class GetMessagesQuery : BaseQuery<IQueryable<IReadMessage>>
             .AsQueryable()
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider);
 
-        return Task.FromResult(messages);
+        return Result(messages);
     }
 }

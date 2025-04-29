@@ -30,6 +30,6 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
 
         visibleUsers.ForEach(x => x.UnHash());
 
-        return Task.FromResult(visibleUsers.AsQueryable());
+        return Result(visibleUsers.AsQueryable());
     }
 }

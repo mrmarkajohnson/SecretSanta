@@ -18,7 +18,7 @@ public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
 
         if (!string.IsNullOrWhiteSpace(_existingToken) && IsUnique(_existingToken, existingTokens))
         {
-            return Task.FromResult(_existingToken);
+            return Result(_existingToken);
         }
 
         string newToken = string.Empty;
@@ -30,7 +30,7 @@ public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
             isUnique = IsUnique(newToken, existingTokens);
         }
 
-        return Task.FromResult(newToken);
+        return Result(newToken);
     }
 
     private bool IsUnique(string joinerToken, List<string> existingTokens)

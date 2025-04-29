@@ -14,5 +14,5 @@ public class GiftingGroupYearBase : IGiftingGroupYearBase
     public string CurrencyCode { get; set; } = "GBP";
     public string CurrencySymbol { get; set; } = "£";
 
-    public int Year { get; set; }
+    public int CalendarYear { get; set; }
 }

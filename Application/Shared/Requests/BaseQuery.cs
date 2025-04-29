@@ -11,4 +11,9 @@ public abstract class BaseQuery<TItem> : BaseRequest<TItem>
     }
 
     protected abstract Task<TItem> Handle();
+
+    protected Task<TItem> Result(TItem item)
+    {
+        return Task.FromResult(item);
+    }
 }

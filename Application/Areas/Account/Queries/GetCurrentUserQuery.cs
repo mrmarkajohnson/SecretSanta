@@ -28,7 +28,7 @@ public sealed class GetCurrentUserQuery : BaseQuery<ISantaUser>
                 santaUser.UnHash();
             }
 
-            return Task.FromResult(santaUser);
+            return Result(santaUser);
         }
 
         throw new AccessDeniedException();

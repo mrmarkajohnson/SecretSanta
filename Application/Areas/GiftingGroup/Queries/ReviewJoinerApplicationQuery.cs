@@ -44,6 +44,6 @@ public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
 
         var application = Mapper.Map<IReviewApplication>(dbApplication).UnHash();
 
-        return Task.FromResult(application);
+        return Result(application);
     }
 }

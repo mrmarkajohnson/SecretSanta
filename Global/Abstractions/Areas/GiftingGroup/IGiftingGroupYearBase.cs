@@ -1,9 +1,10 @@
-﻿namespace Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Shared;
 
-public interface IGiftingGroupYearBase
+namespace Global.Abstractions.Areas.GiftingGroup;
+
+public interface IGiftingGroupYearBase : IHasCalendarYear
 {
     int GiftingGroupKey { get; set; }
-    int Year { get; set; }
 
     decimal? Limit { get; set; }
     string CurrencyCode { get; set; }

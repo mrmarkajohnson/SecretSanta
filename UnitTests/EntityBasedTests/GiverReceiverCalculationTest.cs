@@ -91,7 +91,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
 
     private static void TestPreviousYearDuplicates(List<Santa_YearGroupUser> participatingMembers, Santa_GiftingGroupYear dbYear, int actualPreviousYears)
     {
-        var dbPreviousYears = dbYear.GiftingGroup.Years.Where(x => x.Year < dbYear.Year && x.Year >= dbYear.Year - actualPreviousYears);
+        var dbPreviousYears = dbYear.GiftingGroup.Years.Where(x => x.CalendarYear < dbYear.CalendarYear && x.CalendarYear >= dbYear.CalendarYear - actualPreviousYears);
 
         Assert.DoesNotContain(participatingMembers, x => dbPreviousYears
             .Any(y => y.Users
@@ -355,7 +355,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             var giftingYear1 = new Santa_GiftingGroupYear
             {
                 GiftingGroupYearKey = ++groupYearKey,
-                Year = year,
+                CalendarYear = year,
                 Limit = 50,
                 GiftingGroupKey = 1,
                 GiftingGroup = giftingGroup1,

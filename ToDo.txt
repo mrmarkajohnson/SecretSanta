@@ -5,7 +5,8 @@ Add back buttons to relevant pages
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 Add middle names to UserDisplayName only when the list has more than one with the same name
-Add preferred forename
+* Add preferred forename
+Log unhandled exceptions from GlobalRequestProcessor into a database table
 
 USERS/SECURITY
 Go straight to security questions after registering, using text from home page

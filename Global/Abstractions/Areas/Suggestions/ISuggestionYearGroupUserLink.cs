@@ -1,9 +1,7 @@
-﻿namespace Global.Abstractions.Areas.Suggestions;
+﻿using Global.Abstractions.Areas.GiftingGroup;
 
-public interface ISuggestionYearGroupUserLink
+namespace Global.Abstractions.Areas.Suggestions;
+
+public interface ISuggestionYearGroupUserLink : ISuggestionLinkBase, IUserGroupYearShared
 {
-    int SuggestionLinkKey { get; }
-    int YearGroupUserKey { get; }
-    int Year { get; }
-    string GiftingGroupName { get; }
 }

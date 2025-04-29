@@ -1,4 +1,5 @@
 ﻿@using Global.Names
+
 @model RegisterVm
 @{
     ViewData["Title"] = "Register";
@@ -15,8 +16,10 @@
             <div class="mb-5">
                 <h2>Please create an account</h2>
 
-                <p class="mt-2">@StandardPhrases.DetailsScrambled.</p>
-                <p class="mb-4">@StandardPhrases.EmailVisibility.</p>
+                <div class="mt-2 mb-4">
+                    <p>@StandardPhrases.DetailsScrambled.</p>
+                    <p>@StandardPhrases.EmailVisibility.</p>
+                </div>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
@@ -47,7 +50,3 @@
         </div>
     </form>
 </section>
-
-@section Scripts {
-    <partial name="_ValidationScripts" />
-}

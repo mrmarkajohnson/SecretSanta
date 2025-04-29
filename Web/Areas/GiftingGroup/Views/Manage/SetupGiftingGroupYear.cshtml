@@ -11,7 +11,7 @@
         : "Calculate the Secret Santa recipient for each participating member";
 }
 
-<h1>Set Up '@Model.GiftingGroupName' for @Model.Year</h1>
+<h1>Set Up '@Model.GiftingGroupName' for @Model.CalendarYear</h1>
 
 <section>
     <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetUpGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
@@ -26,12 +26,12 @@
                 <input type="hidden" asp-for="CurrencySymbol">
                 <input type="hidden" asp-for="Calculated">
                 <input type="hidden" asp-for="RecalculationRequired">
-                <input type="hidden" asp-for="Year">
+                <input type="hidden" asp-for="CalendarYear">
             </div>
 
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                 <p>
-                    Set the spending limit and participating members for the '@Model.GiftingGroupName' group in @Model.Year.
+                    Set the spending limit and participating members for the '@Model.GiftingGroupName' group in @Model.CalendarYear.
                     Once everything is ready, you can trigger to match givers and receivers at random.
                 </p>
 

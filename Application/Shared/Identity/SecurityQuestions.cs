@@ -1,5 +1,4 @@
 ﻿using Global.Abstractions.Areas.Account;
-using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.Identity;
@@ -21,7 +20,7 @@ public class SecurityQuestions : ISecurityQuestions
         ErrorMessage = "Questions must be {2} to {1} characters long.", MinimumLength = UserVal.SecurityQuestions.MinLength)]
     public string? SecurityQuestion2 { get; set; }
 
-    [Required, Display(Name = "Answer 2"), StringLength(UserVal.SecurityHints.MaxLength,
+    [Required, Display(Name = "Answer 2"), StringLength(UserVal.SecurityAnswers.MaxLength,
         ErrorMessage = "Answers must be {2} to {1} characters long.", MinimumLength = UserVal.SecurityAnswers.MinLength)]
     public string? SecurityAnswer2 { get; set; }
 

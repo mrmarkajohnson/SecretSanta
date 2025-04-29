@@ -1,23 +1,20 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Mapping;
 using Application.Shared.Requests;
-using AutoMapper.QueryableExtensions;
-using Data.Migrations;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
-using Global.Settings;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
 public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGiftingGroupYear>
 {
     public int GiftingGroupKey { get; }
-    public int Year { get; }
+    public int CalendarYear { get; }
 
-    public ManageUserGiftingGroupYearQuery(int giftingGroupKey, int? year = null)
+    public ManageUserGiftingGroupYearQuery(int giftingGroupKey, int? calendarYear = null)
     {
         GiftingGroupKey = giftingGroupKey;
-        Year = year ?? DateTime.Today.Year;
+        CalendarYear = calendarYear ?? DateTime.Today.Year;
     }
 
     protected override Task<IManageUserGiftingGroupYear> Handle()
@@ -42,7 +39,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         Santa_GiftingGroupYear? dbYear = dbGiftingGroup.Years
-            .Where(x => x.Year == Year)
+            .Where(x => x.CalendarYear == CalendarYear)
             .FirstOrDefault();
 
         Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbSantaUser.SantaUserKey);
@@ -59,12 +56,12 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
                 Limit = dbYear?.Limit,
                 CurrencyCode = dbYear?.CurrencyCode ?? dbGiftingGroup.GetCurrencyCode(),
                 CurrencySymbol = dbYear?.CurrencySymbol ?? dbGiftingGroup.GetCurrencySymbol(),
-                Year = Year
+                CalendarYear = CalendarYear
             };
 
             GiftingGroupManualMappings.SetPreviousYearDetails(manageYear, dbSantaUser, dbGiftingGroup, Mapper);
         }
 
-        return Task.FromResult(manageYear);
+        return Result(manageYear);
     }
 }

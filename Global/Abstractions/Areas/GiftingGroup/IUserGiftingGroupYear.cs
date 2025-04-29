@@ -2,11 +2,9 @@
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
-public interface IUserGiftingGroupYear : IGiftingGroupYearBase
+public interface IUserGiftingGroupYear : IGiftingGroupYearBase, IUserGroupYearShared
 {
-    string GiftingGroupName { get; }
     bool GroupAdmin { get; }
-    bool Included { get; set; }
     IUserNamesBase? Recipient { get; }
 
     string LimitString { get; }

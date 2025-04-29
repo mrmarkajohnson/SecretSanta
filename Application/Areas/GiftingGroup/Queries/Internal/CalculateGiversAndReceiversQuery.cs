@@ -66,7 +66,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
             lastCombinationCount = _possibleCombinations.Count;
         }
 
-        return Task.FromResult(_actualCombinations);
+        return Result(_actualCombinations);
     }
 
     private void ReducePreviousYearOrIgnoreOtherGroups()
@@ -84,8 +84,8 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private void SetPossibleCombinations(int previousYears) // TODO: Keep a count of previousYearParticipants, and if it doesn't change, stop 
     {
         var previousParticipants = _dbGiftingGroup.Years
-            .Where(x => x.Year < _dbGiftingGroupYear.Year)
-            .Where(x => x.Year >= _dbGiftingGroupYear.Year - previousYears)
+            .Where(x => x.CalendarYear < _dbGiftingGroupYear.CalendarYear)
+            .Where(x => x.CalendarYear >= _dbGiftingGroupYear.CalendarYear - previousYears)
             .SelectMany(y => y.Users)
             .Where(z => z.Included == true)
             .ToList();

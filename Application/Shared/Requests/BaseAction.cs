@@ -27,6 +27,11 @@ public abstract class BaseAction<TItem> : BaseRequest<bool>
         }
     }
 
+    public Task<bool> SuccessActionResult()
+    {
+        return Task.FromResult(SuccessResult);
+    }
+
     public bool FailureResult
     {
         get
@@ -37,4 +42,9 @@ public abstract class BaseAction<TItem> : BaseRequest<bool>
     }
 
     public bool Result => Success;
+
+    public Task<bool> FailureActionResult()
+    {
+        return Task.FromResult(FailureResult);
+    }
 }

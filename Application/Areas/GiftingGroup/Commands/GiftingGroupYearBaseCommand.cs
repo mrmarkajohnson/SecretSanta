@@ -16,7 +16,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         dbGiftingGroupYear = new Santa_GiftingGroupYear
         {
             GiftingGroup = dbGiftingGroup,
-            Year = Item.Year,
+            CalendarYear = Item.CalendarYear,
             CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
             CurrencySymbol = dbGiftingGroup.GetCurrencySymbol()
         };

@@ -17,7 +17,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     public int GiftingGroupYearKey { get; set; }
 
     [Required, Length(4, 4)]
-    public int Year { get; set; }
+    public int CalendarYear { get; set; }
 
     [Precision(10, 2)]
     public decimal? Limit { get; set; }
@@ -34,7 +34,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
 
     public IEnumerable<Santa_GiftingGroupUser> ValidGroupMembers()
     {
-        DateTime firstDayOfNextYear = new DateTime(Year + 1, 1, 1);
+        DateTime firstDayOfNextYear = new DateTime(CalendarYear + 1, 1, 1);
 
         return GiftingGroup.UserLinks
             .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));

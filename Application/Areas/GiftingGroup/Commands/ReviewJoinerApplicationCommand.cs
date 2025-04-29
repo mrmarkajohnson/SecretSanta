@@ -72,7 +72,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> w
     private void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
     {
         bool alreadyCalculated = Item.CurrentYearCalculated;
-        var dbGiftingGroupYear = dbApplication.GiftingGroup.Years.FirstOrDefault(x => x.Year == DateTime.Today.Year);
+        var dbGiftingGroupYear = dbApplication.GiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == DateTime.Today.Year);
 
         if (!alreadyCalculated) // just in case
         {
@@ -86,7 +86,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> w
         {
             dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
             {
-                GiftingGroupYearKey = dbGiftingGroupYear.Year,
+                GiftingGroupYearKey = dbGiftingGroupYear.CalendarYear,
                 GiftingGroupYear = dbGiftingGroupYear,
                 SantaUserKey = dbApplication.SantaUserKey,
                 SantaUser = dbApplication.SantaUser,

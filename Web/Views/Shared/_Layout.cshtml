@@ -125,7 +125,12 @@
                 <div class="pt-4 pb-4 ps-4 pe-4 text-center">
                     @RenderBody()
                 </div>
-        </div>
+            </div>
+
+            @section Scripts {
+                <partial name="_ValidationScripts" />
+            }
+
         </main>
     </div>
 

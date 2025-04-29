@@ -1,6 +1,8 @@
-﻿namespace Data.Entities.Santa;
+﻿using Global.Abstractions.Areas.Suggestions;
 
-public class Santa_SuggestionLink : DeletableBaseEntity,
+namespace Data.Entities.Santa;
+
+public class Santa_SuggestionLink : DeletableBaseEntity, ISuggestionLinkBase,
     IAuditableEntity<Santa_SuggestionLink_Audit, Santa_SuggestionLink_AuditChange>
 {
     public Santa_SuggestionLink()

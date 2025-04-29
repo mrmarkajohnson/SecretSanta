@@ -4,17 +4,17 @@
 
 @model ManageUserGiftingGroupYearVm
 @{
-    ViewData["Title"] = $"'{Model.GiftingGroupName}' for {Model.Year}";
+    ViewData["Title"] = $"'{Model.GiftingGroupName}' for {Model.CalendarYear}";
     string includedExplanation = Model.Recipient != null ? GiftingGroupNames.NoOptOutWithRecipient : "Will you join in this year?";
     string limitExplanation = $"The suggested limit for members to spend on each other this year, in {Model.CurrencyCode}";
     string recipientExplanation = "The person who you will be giving to this year";
     bool radiosReadonly = !Model.CanChangeIncluded;
-    string lastYearExplanation = $"If you were involved in {Model.Year - 1}, and can remember who you gave to, please tell Santa";
-    string previousYearExplanation = $"If you were involved in {Model.Year - 2}, and can remember who you gave to, please tell Santa";    
+    string lastYearExplanation = $"If you were involved in {Model.CalendarYear - 1}, and can remember who you gave to, please tell Santa";
+    string previousYearExplanation = $"If you were involved in {Model.CalendarYear - 2}, and can remember who you gave to, please tell Santa";    
     string includedRadioClass = Model.SubmitIncludedChangeImmediately ? "included-radio" : ""; // the class is used by JavaScript to submit the change
 }
 
-<h1>View and Participate in '@Model.GiftingGroupName' for @Model.Year</h1>
+<h1>View and Participate in '@Model.GiftingGroupName' for @Model.CalendarYear</h1>
 
 <section>
     <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
@@ -29,7 +29,7 @@
                 <input type="hidden" asp-for="Limit">
                 <input type="hidden" asp-for="CurrencyCode">
                 <input type="hidden" asp-for="CurrencySymbol">
-                <input type="hidden" asp-for="Year">
+                <input type="hidden" asp-for="CalendarYear">
                 <input type="hidden" asp-for="PreviousYearsRequired">
                 <input type="hidden" asp-for="IncludePreviousYears">
 
@@ -157,7 +157,7 @@
                     <div>
                         <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
                            asp-route-returnUrl="@Context.Request.GetEncodedUrl()">
-                            Set Up Group '@Model.GiftingGroupName' for @Model.Year
+                            Set Up Group '@Model.GiftingGroupName' for @Model.CalendarYear
                         </a>
                     </div>
                 </div>

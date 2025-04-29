@@ -171,6 +171,9 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GiftingGroupYearKey"));
 
+                    b.Property<int>("CalendarYear")
+                        .HasColumnType("int");
+
                     b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -194,9 +197,6 @@ namespace Data.Migrations
                     b.Property<decimal?>("Limit")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
 
                     b.HasKey("GiftingGroupYearKey");
 
@@ -510,7 +510,8 @@ namespace Data.Migrations
 
                     b.Property<string>("SuggestionText")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("SuggestionKey");
 

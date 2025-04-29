@@ -50,6 +50,6 @@ public sealed class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
             };
         }
 
-        return Task.FromResult(securityQuestions);
+        return Result(securityQuestions);
     }
 }

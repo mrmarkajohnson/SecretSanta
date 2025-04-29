@@ -27,6 +27,6 @@ public sealed class ViewMessageQuery : BaseQuery<IReadMessage>
         if (message == null)
             throw new NotFoundException("Message");
 
-        return Task.FromResult(message);
+        return Result(message);
     }
 }

@@ -30,6 +30,6 @@ public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGrou
             }
         }
 
-        return Task.FromResult(userGroups);
+        return Result(userGroups);
     }
 }

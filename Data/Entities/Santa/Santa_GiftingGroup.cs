@@ -58,7 +58,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 
     public Santa_User? Recipient(int santaUserKey, int year)
     {
-        return Years.Where(x => x.Year == year)
+        return Years.Where(x => x.CalendarYear == year)
             .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
             .FirstOrDefault()?
             .SantaUser;

@@ -23,13 +23,13 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
             throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
         }
 
-        if (Item.Year == 0)
+        if (Item.CalendarYear == 0)
         {
-            Item.Year = DateTime.Today.Year;
+            Item.CalendarYear = DateTime.Today.Year;
         }
-        else if (Item.Year != DateTime.Today.Year)
+        else if (Item.CalendarYear != DateTime.Today.Year)
         {
-            throw new ArgumentException($"You cannot set up year {Item.Year} as it is not the current year."); // TODO: Allow years to continue into January, just in case
+            throw new ArgumentException($"You cannot set up year {Item.CalendarYear} as it is not the current year."); // TODO: Allow years to continue into January, just in case
         }
 
         _dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
@@ -40,7 +40,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupKey, true));
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.Year == Item.Year);
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == Item.CalendarYear);
 
         if (dbGiftingGroupYear == null)
         {
@@ -101,7 +101,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
                 }
                 catch (Exception exp)
                 {
-                    AddGeneralValidationError("Error calculating results for year " + Item.Year.ToString() + ": " + exp.Message);
+                    AddGeneralValidationError("Error calculating results for year " + Item.CalendarYear.ToString() + ": " + exp.Message);
                     return await Result();
                 }
             }
@@ -160,7 +160,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         }
         else
         {
-            AddGeneralValidationError("Error calculating results for year " + Item.Year.ToString()
+            AddGeneralValidationError("Error calculating results for year " + Item.CalendarYear.ToString()
                 + ": " + "no possible combinations available");
         }
     }

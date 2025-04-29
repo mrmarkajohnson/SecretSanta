@@ -27,7 +27,7 @@ internal static class GiftingGroupManualMappings
             Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),
             CurrencySymbol = dbGiftingGroupYear.CurrencySymbol ?? dbGiftingGroupYear.GiftingGroup.GetCurrencySymbol(),
-            Year = dbGiftingGroupYear.Year
+            CalendarYear = dbGiftingGroupYear.CalendarYear
         };
     }
 
@@ -43,7 +43,7 @@ internal static class GiftingGroupManualMappings
     public static void SetPreviousYearDetails(IManageUserGiftingGroupYear manageYear, Santa_User dbSantaUser, 
         Santa_GiftingGroup dbGiftingGroup, IMapper mapper)
     {
-        manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.Year);
+        manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.CalendarYear);
 
         manageYear.OtherGroupMembers = dbGiftingGroup.UserLinks
             .Where(x => x.SantaUserKey != dbSantaUser.SantaUserKey)
@@ -52,14 +52,14 @@ internal static class GiftingGroupManualMappings
             .ProjectTo<IUserNamesBase>(mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() })
             .ToList();
 
-        manageYear.LastRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 1)?.GlobalUserId;
-        manageYear.PreviousRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.Year - 2)?.GlobalUserId;
+        manageYear.LastRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.CalendarYear - 1)?.GlobalUserId;
+        manageYear.PreviousRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.CalendarYear - 2)?.GlobalUserId;
     }
 
     public static int PreviousYearsRequired(this Santa_User dbSantaUser, Santa_GiftingGroup dbGiftingGroup, int year)
     {
         if (dbSantaUser.GiftingGroupYears
-            .Any(x => x.GiftingGroupYear.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey && x.GiftingGroupYear.Year < year))
+            .Any(x => x.GiftingGroupYear.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey && x.GiftingGroupYear.CalendarYear < year))
         {
             return 0;
         }

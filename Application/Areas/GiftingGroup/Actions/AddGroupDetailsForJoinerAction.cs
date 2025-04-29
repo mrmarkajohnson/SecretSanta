@@ -37,7 +37,7 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
 
         if (dbGiftingGroup == null)
         {
-            return Task.FromResult(false);
+            return FailureActionResult();
         }
 
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
@@ -76,6 +76,6 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
             Item.ApplicationPending = true;
         }
 
-        return Task.FromResult(true);
+        return SuccessActionResult();
     }
 }

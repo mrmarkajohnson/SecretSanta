@@ -21,3 +21,9 @@
         View '@Model.GroupName' for @DateTime.Today.Year
     </a>
 </p>
+
+<p>
+    <a asp-area="Suggestions" asp-controller="Home" asp-action="AddSuggestion" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
+        Add a suggestion to '@Model.GroupName'
+    </a>
+</p>

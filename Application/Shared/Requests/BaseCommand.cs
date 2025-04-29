@@ -55,7 +55,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return await Result();
     }
 
-    public async Task<ICommandResult<TItem>> Result()
+    protected async Task<ICommandResult<TItem>> Result()
     {
         var result = new CommandResult<TItem>
         {

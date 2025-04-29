@@ -24,6 +24,6 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
         var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();        
         applications.ForEach(x => x.UnHash());
 
-        return Task.FromResult(applications.AsQueryable());
+        return Result(applications.AsQueryable());
     }
 }

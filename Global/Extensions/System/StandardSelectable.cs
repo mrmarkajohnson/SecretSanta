@@ -10,13 +10,13 @@ public sealed class StandardSelectable : SelectListItem
         DisplayText = displayText;
     }
 
-    int Key 
+    public int Key 
     {
         get => int.Parse(Value);
         set => Value = value.ToString(); 
     }
 
-    string DisplayText 
+    public string DisplayText 
     {
         get => Text;
         set => Text = value;

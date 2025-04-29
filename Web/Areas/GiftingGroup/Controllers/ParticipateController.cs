@@ -1,7 +1,7 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
-using System.Text.RegularExpressions;
 using ViewLayer.Models.Participate;
 
 namespace Web.Areas.GiftingGroup.Controllers;
@@ -37,7 +37,7 @@ public sealed class ParticipateController : BaseController
 
     private async Task<IActionResult> EditYearParticipation(int giftingGroupKey)
     {
-        var year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey));
+        IManageUserGiftingGroupYear year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey));
         var model = Mapper.Map<ManageUserGiftingGroupYearVm>(year);
         model.IncludePreviousYears = model.PreviousYearsRequired > 0 && model.OtherMembersSelect.Count > 0;
         return View("Year", model);
