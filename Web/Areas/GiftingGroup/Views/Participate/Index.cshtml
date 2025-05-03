@@ -17,4 +17,21 @@
         <partial name="_GiftingGroupsGrid" />
         @* @Html.AjaxGrid(Url.Action("GiftingGroupsGrid"), new { id = "gifting-groups-grid" }) *@
     </div>
+
+    <div class="row d-flex align-items-center justify-content-center text-center mt-4">
+
+        <div class="@StandardGroupWidth d-flex flex-wrap justify-content-between text-center">
+            <div>
+                <a asp-area="Suggestions" asp-controller="Home" asp-action="Index">
+                    Manage Suggestions
+                </a>
+            </div>
+            <div>
+                <a asp-area="Suggestions" asp-controller="Home" asp-action="AddSuggestion">
+                    Add A Suggestion
+                </a>
+            </div>
+        </div>
+
+    </div>
 </div>

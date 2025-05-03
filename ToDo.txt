@@ -23,6 +23,7 @@ GIFTING GROUPS
 * Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
+Set other users as admins
 Remove users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail

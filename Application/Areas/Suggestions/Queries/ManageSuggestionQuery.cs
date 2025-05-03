@@ -59,6 +59,8 @@ public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
             AddGroupLink(suggestion, dbGroupUser, false);
         }
 
+        suggestion.YearGroupUserLinks = suggestion.YearGroupUserLinks.OrderBy(x => x.GiftingGroupName).ToList();
+
         return Result(suggestion);
     }
 
