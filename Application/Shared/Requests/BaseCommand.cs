@@ -40,6 +40,10 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     protected abstract Task<ICommandResult<TItem>> HandlePostValidation();
 
+    /// <summary>
+    /// Save changes on the main context, set success and return a success command result
+    /// If using this to save new entities, you may need to update the Item with the new keys before returning
+    /// </summary>
     protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess(bool ignoreValidationResult = false)
     {
         if (Validation.IsValid || ignoreValidationResult)

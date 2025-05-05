@@ -8,6 +8,7 @@ window.addEventListener('load', function () {
     initDataLists()
     initThinking();
     initModalLinks();
+    initDeleteLinks();
 });
 
 $(document).on('ajaxComplete', function () { // this is very difficult without JQuery
@@ -16,9 +17,11 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
     initDataLists()
     initThinking();
     initModalLinks();
+    initDeleteLinks();
 });
 
 document.addEventListener('reloadend', function (e) {
     initPopper();
     initModalLinks();
+    initDeleteLinks();
 });

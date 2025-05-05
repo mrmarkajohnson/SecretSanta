@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Suggestions\Commands\" />
-  </ItemGroup>
-
 </Project>

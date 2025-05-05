@@ -13,4 +13,6 @@ public class ManageSuggestion : SuggestionBase, IManageSuggestion
     [Display(Name = "Groups")]
     public IList<ManageSuggestionLink> YearGroupUserLinks { get; set; }
     IEnumerable<IManageSuggestionLink> IManageSuggestion.YearGroupUserLinks => YearGroupUserLinks;
+
+    public int CalendarYear { get; set; } = DateTime.Today.Year;
 }

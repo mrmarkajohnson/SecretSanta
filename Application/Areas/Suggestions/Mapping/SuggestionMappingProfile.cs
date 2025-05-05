@@ -34,7 +34,8 @@ public class SuggestionMappingProfile : Profile
         CreateMap<Santa_SuggestionLink, ManageSuggestionLink>()
             .IncludeMembers(src => src.YearGroupUser)
             .IncludeBase<Santa_SuggestionLink, SuggestionYearGroupUserLink>()
-            .ForMember(dest => dest.ApplyToGroup, opt => opt.MapFrom(src => src.DateDeleted == null && src.DateArchived == null));
+            .ForMember(dest => dest.ApplyToGroup, opt => opt.MapFrom(src => src.DateDeleted == null && src.DateArchived == null
+                && src.Suggestion.DateDeleted == null));
         CreateMap<Santa_SuggestionLink, IManageSuggestionLink>().As<ManageSuggestionLink>();
 
         CreateMap<Santa_YearGroupUser, SuggestionYearGroupUserLink>()

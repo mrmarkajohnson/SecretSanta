@@ -35,7 +35,8 @@ public static class GlobalSettings
     }
 
     public const string StandardGroupWidth = "col-lg-6 col-md-8 col-sm-10 col-12";
+    public const string ModalGroupWidth = "col-lg-10 col-md-12 col-12";
     public const string StandardFormGroup = $"form-group-ib {StandardGroupWidth} mb-3";
-    public const string StandardFullWidthGridContainer = "ps-4 pe-4 col-12 col-lg-11";
+    public const string StandardFullWidthGridContainer = "ps-4 pe-4 col-12 col-lg-11 mb-2";
     public const string StandardCardWidth = "col-12 col-md-6 col-lg-4";
 }

@@ -1,6 +1,8 @@
-﻿namespace Global.Abstractions.Areas.Suggestions;
+﻿using Global.Abstractions.Shared;
 
-public interface IManageSuggestion : ISuggestionBase
+namespace Global.Abstractions.Areas.Suggestions;
+
+public interface IManageSuggestion : ISuggestionBase, IHasCalendarYear
 {
     IEnumerable<IManageSuggestionLink> YearGroupUserLinks { get; }
 }

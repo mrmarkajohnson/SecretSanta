@@ -1,15 +1,16 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
+Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
-Add middle names to UserDisplayName only when the list has more than one with the same name
+Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name
 * Add preferred forename
 Log unhandled exceptions from GlobalRequestProcessor into a database table
 
 USERS/SECURITY
-Go straight to security questions after registering, using text from home page
+* Go straight to security questions after registering, using text from home page
 Handle 'forgot password' if security questions not yet set
 
 EMAILS
@@ -20,6 +21,7 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
+* Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names
 * Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)

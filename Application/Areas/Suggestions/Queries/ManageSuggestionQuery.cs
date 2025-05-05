@@ -18,15 +18,17 @@ public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
 
     protected override Task<IManageSuggestion> Handle()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.Suggestions);
         var dbGiftingGroupLinks = dbSantaUser.GiftingGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null);
+            .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null);
 
         var suggestion = new ManageSuggestion();
 
         if (_suggestionKey > 0)
         {
-            Santa_Suggestion? dbSuggestion = dbSantaUser.Suggestions.FirstOrDefault(x => x.SuggestionKey == _suggestionKey);
+            Santa_Suggestion? dbSuggestion = dbSantaUser.Suggestions
+                .FirstOrDefault(x => x.SuggestionKey == _suggestionKey); // we can include deleted and archived here, it shouldn't matter
+
             if (dbSuggestion != null)
             {
                 Mapper.Map(dbSuggestion, suggestion);

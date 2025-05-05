@@ -1,0 +1,46 @@
+﻿@using Global.Abstractions.Areas.GiftingGroup
+
+@model MySuggestionsVm
+@{
+    Func<ISuggestion, object> actions =
+    @<text>
+        <a class="modal-link" data-url="@Url.Action(Context, "EditSuggestion", "Home", "Suggestions", new { suggestionKey = item.SuggestionKey })"
+           data-toggle="tooltip" title="Edit Suggestion"><i class="fa fa-pencil"></i></a>
+        <a class="delete-link" data-url="@Url.Action(Context, "DeleteSuggestion", "Home", "Suggestions", new { suggestionKey = item.SuggestionKey })"
+           data-toggle="tooltip" title="Delete Suggestion" 
+           data-confirm-title="Delete Suggestion" 
+           data-confirm-message="Are you sure you want to delete suggestion ""@item.SuggestionText""?"><i class="fa fa-xmark"></i></a>
+    </text>;
+}
+
+@(
+Html
+    .Grid(Model.Suggestions)
+    .Build(columns =>
+    {
+        columns.Add(x => x.SuggestionText).Titled("Suggestion");
+        columns.Add(x => x.OtherNotes).RenderedAs(x => x.NotesTruncated()).Titled("Notes");
+        columns.Add(x => x.Priority).Titled("Priority");
+
+        if (Model.AllGroups.Count > 0)
+        {
+            foreach (IUserGiftingGroup group in Model.AllGroups.OrderBy(x => x.GroupName))
+            {
+                columns.Add(x => x.YearGroupUserLinks.Any(y => y.GiftingGroupName == group.GroupName))                    
+                    .Titled(group.GroupName);
+            }
+
+            columns.Add().RenderedAs(actions).Encoded(false);
+        }
+    })
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    })
+    .UsingUrl(Url.Action("MySuggestionsGrid"))
+    .Empty("No suggestions found")
+    .Id("suggestions-grid")
+    .Filterable()
+    .Sortable()
+)

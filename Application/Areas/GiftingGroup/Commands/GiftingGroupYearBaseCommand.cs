@@ -1,9 +1,9 @@
 ﻿using Application.Shared.Requests;
-using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> where TItem : IGiftingGroupYearBase
+public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> where TItem : IHasCalendarYear
 {
     protected GiftingGroupYearBaseCommand(TItem item) : base(item)
     {
@@ -26,22 +26,54 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         return dbGiftingGroupYear;
     }
 
-    protected void AddOrUpdateUserGroupYear(Santa_GiftingGroupYear dbGiftingGroupYear, bool? included,
+    protected Santa_YearGroupUser AddOrUpdateUserGroupYear(Santa_User dbSantaUser, int giftingGroupKey, 
+        string giftingGroupName, bool included)
+    {
+        var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
+            .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupKey == giftingGroupKey && x.GiftingGroup.DateDeleted == null);
+
+        if (dbGiftingGroupLink == null)
+            throw new NotFoundException($"Gifting Group '{giftingGroupName}'");
+
+        return AddOrUpdateUserGroupYear(dbGiftingGroupLink, included);
+    }
+
+    private Santa_YearGroupUser AddOrUpdateUserGroupYear(Santa_GiftingGroupUser dbGiftingGroupLink, bool included)
+    {
+        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
+
+        var dbGiftingGroupYear = dbGiftingGroup.Years
+            .FirstOrDefault(y => y.CalendarYear == Item.CalendarYear);
+
+        if (dbGiftingGroupYear == null)
+        {
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
+        }
+
+        Santa_User dbSantaUser = dbGiftingGroupLink.SantaUser;
+
+        var dbYearGroupUser = AddOrUpdateUserGroupYear(dbGiftingGroupYear, included, dbSantaUser.SantaUserKey, 
+            dbSantaUser.GlobalUser.FullName(), dbSantaUser);
+
+        return dbYearGroupUser;
+    }
+
+    protected Santa_YearGroupUser AddOrUpdateUserGroupYear(Santa_GiftingGroupYear dbGiftingGroupYear, bool? included,
         int santaUserKey, string name, Santa_User? dbSantaUser = null)
     {
-        Santa_YearGroupUser? dbYearUser = dbGiftingGroupYear.Users.FirstOrDefault(x => x.SantaUserKey == santaUserKey);
+        Santa_YearGroupUser? dbYearGroupUser = dbGiftingGroupYear.Users.FirstOrDefault(x => x.SantaUserKey == santaUserKey);
 
-        if (dbYearUser == null)
+        if (dbYearGroupUser == null)
         {
             dbSantaUser ??= DbContext.Santa_Users.FirstOrDefault(x => x.SantaUserKey == santaUserKey);
 
             if (dbSantaUser == null)
             {
-                AddGeneralValidationError($"User {name} could not be found.");
+                throw new ArgumentException($"User {name} could not be found."); // shouldn't happen
             }
             else
             {
-                dbYearUser = new Santa_YearGroupUser
+                dbYearGroupUser = new Santa_YearGroupUser
                 {
                     GiftingGroupYearKey = dbGiftingGroupYear.GiftingGroupYearKey,
                     GiftingGroupYear = dbGiftingGroupYear,
@@ -50,12 +82,14 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
                     Included = included
                 };
 
-                dbGiftingGroupYear.Users.Add(dbYearUser);
+                dbGiftingGroupYear.Users.Add(dbYearGroupUser);
             }
         }
         else
         {
-            dbYearUser.Included = included;
+            dbYearGroupUser.Included = included;
         }
+
+        return dbYearGroupUser;
     }
 }

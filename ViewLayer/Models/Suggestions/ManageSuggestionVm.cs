@@ -2,11 +2,12 @@
 using FluentValidation;
 using Global.Validation;
 using ViewLayer.Abstractions;
+using static Global.Settings.GlobalSettings;
 using static Global.Settings.SuggestionSettings;
 
 namespace ViewLayer.Models.Suggestions;
 
-public class ManageSuggestionVm : ManageSuggestion, IFormVm
+public class ManageSuggestionVm : ManageSuggestion, IFormVm, IModalVm
 {
     public int? PrioritySetter
     {
@@ -18,6 +19,16 @@ public class ManageSuggestionVm : ManageSuggestion, IFormVm
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";
     public string? SuccessMessage { get; set; }
+
+    public bool Existing => SuggestionKey > 0;
+
+    public string PageTitle => Existing ? "Edit Suggestion" : "Add Suggestion";
+    public string ModalTitle => PageTitle;
+    public string SubTitle => Existing ? "Update your suggestion details" : "Suggest presents for Santa";
+
+    public bool IsModal { get; set; }
+    public bool ShowSaveButton => true;
+    public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 }
 
 public class ManageSuggestionVmValidator : AbstractValidator<ManageSuggestionVm>

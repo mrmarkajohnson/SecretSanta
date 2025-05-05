@@ -3,7 +3,7 @@ using Global.Validation;
 
 namespace Data.Entities.Santa;
 
-public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity, ISuggestionBase,
+public class Santa_Suggestion : DeletableBaseEntity, IDeletableEntity, ISuggestionBase,
     IAuditableEntity<Santa_Suggestion_Audit, Santa_Suggestion_AuditChange>
 {
     public Santa_Suggestion()
@@ -21,12 +21,12 @@ public class Santa_Suggestion : ArchivableBaseEntity, IArchivableEntity, ISugges
     public int Priority { get; set; }
 
     [MaxLength(SuggestionVal.Suggestion.MaxLength)]
-    public required string SuggestionText { get; set; }
+    public string SuggestionText { get; set; } = string.Empty;
 
     /// <summary>
     /// E.g. things to avoid
     /// </summary>
-    public required string OtherNotes { get; set; }
+    public string OtherNotes { get; set; } = string.Empty;
 
     public virtual ICollection<Santa_SuggestionLink> YearGroupUserLinks { get; set; }
     public virtual ICollection<Santa_Suggestion_Audit> AuditTrail { get; set; }

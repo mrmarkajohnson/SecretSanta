@@ -1,5 +1,4 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
-using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
@@ -13,23 +12,8 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
     {
         Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-                .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupKey == Item.GiftingGroupKey && x.GiftingGroup.DateDeleted == null);
-
-        if (dbGiftingGroupLink == null)
-            throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
-
-        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
-
-        var dbGiftingGroupYear = dbGiftingGroup.Years
-            .FirstOrDefault(y => y.CalendarYear == Item.CalendarYear);
-
-        if (dbGiftingGroupYear == null)
-        {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
-        }
-
-        AddOrUpdateUserGroupYear(dbGiftingGroupYear, Item.Included, dbSantaUser.SantaUserKey, dbSantaUser.GlobalUser.FullName(), dbSantaUser);
+        Santa_YearGroupUser dbYearGroupUser = AddOrUpdateUserGroupYear(dbSantaUser, Item.GiftingGroupKey, Item.GiftingGroupName, Item.Included);
+        Santa_GiftingGroup dbGiftingGroup = dbYearGroupUser.GiftingGroupYear.GiftingGroup;
 
         SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.CalendarYear - 1);
         SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.CalendarYear - 2);

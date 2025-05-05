@@ -1,9 +1,9 @@
 ﻿window.addEventListener('load', function () {
-    initStatusSelects();
-    initDeleteLinks();
+    initRelatinoshipStatusSelects();
+    initDeleteRelationshipLinks();
 });
 
-function initStatusSelects() {
+function initRelatinoshipStatusSelects() {
     let statusSelects = document.querySelectorAll('select.relationship-status-select');
     let selectUrl = document.querySelector('div.relationships-table').getAttribute('data-change-url');
     let url = new URL(selectUrl);
@@ -37,7 +37,7 @@ function initStatusSelects() {
     });
 }
 
-function initDeleteLinks() {
+function initDeleteRelationshipLinks() {
     let deleteLinks = document.querySelectorAll('a.delete-relationship-link');
     let deleteUrl = document.querySelector('div.relationships-table').getAttribute('data-delete-url');
     let url = new URL(deleteUrl);

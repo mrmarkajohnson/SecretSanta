@@ -30,9 +30,9 @@ public sealed class ManageController : BaseController
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
         var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, newStatus, manageRelationshipsLink);
-        var result = await Send(new ChangeRelationshipStatusCommand(model), null);
+        var commandResult = await Send(new ChangeRelationshipStatusCommand(model), null);
 
-        if (result.Success)
+        if (commandResult.Success)
         {
             if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
                 return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
@@ -41,7 +41,7 @@ public sealed class ManageController : BaseController
         }
         else
         {
-            return FirstValidationError(result);
+            return FirstValidationError(commandResult);
         }
     }
 

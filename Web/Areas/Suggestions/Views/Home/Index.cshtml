@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MySuggestionsVm
 @{
+    ViewData["Title"] = "Suggestions";
 }
+
+<h1>Suggestions</h1>
+
+<div class="row d-flex align-items-center justify-content-center text-center">
+
+    <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
+        <p>
+            Here you can make and manage suggestions for presents you'd like to receive from Santa.
+        </p>
+    </div>
+
+    <div class="@StandardFullWidthGridContainer">
+        <partial name="_MySuggestionsGrid" />
+    </div>
+
+    <div class="row d-flex align-items-center justify-content-center text-center mt-4">
+        
+        <div class="@StandardGroupWidth">
+            <div>
+                <a asp-area="Suggestions" asp-controller="Home" asp-action="AddSuggestion">
+                    Add A Suggestion
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
