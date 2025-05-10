@@ -128,11 +128,12 @@ async function relationshipStatusChanged(control, url, title, message) {
 }
 document.addEventListener('modalOpening', function (e) {
     relationshipModalOpening(e);
-})
+});
 
 document.addEventListener('modalSaved', function (e) {
     relationshipModalSaved(e);
-})
+});
+
 async function relationshipModalOpening(e) {
     let modal = e.detail.modal;
     if (modal.id == 'manageRelationshipModal') {

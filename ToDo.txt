@@ -1,4 +1,5 @@
 GENERAL
+* Add preferred forename
 * Handle index pages etc. in bundles/routing
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
@@ -6,7 +7,6 @@ Add back buttons to relevant pages
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name
-* Add preferred forename
 Log unhandled exceptions from GlobalRequestProcessor into a database table
 
 USERS/SECURITY
@@ -55,3 +55,6 @@ Add other messages e.g.
 - report abuve
 Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates
 Show if a message has changed, or it's no longer relevant
+
+SUGGESTIONS
+Add support for links etc. in the notes

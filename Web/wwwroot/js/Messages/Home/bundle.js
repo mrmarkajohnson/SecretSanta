@@ -1,6 +1,6 @@
 document.addEventListener('modalClosed', function (e) {
     messageModalClosed(e);
-})
+});
 
 async function messageModalClosed(e) {
     let modal = e.detail.modal;

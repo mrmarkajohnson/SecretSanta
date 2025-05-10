@@ -1,4 +1,5 @@
-﻿using Global.Abstractions.Areas.GiftingGroup;
+﻿using Application.Areas.Suggestions.BaseModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Suggestions;
 
 namespace ViewLayer.Models.Suggestions;

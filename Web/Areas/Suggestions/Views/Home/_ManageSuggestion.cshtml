@@ -81,9 +81,13 @@
                 {
                     <div class="mb-3">
                         <label asp-for="YearGroupUserLinks" class="control-label required"></label>
+                        
                         <div class="d-flex" style="flex-wrap: wrap !important">
                             @for (int i = 0; i < Model.YearGroupUserLinks.Count; i++)
                             {
+                                var link = @Model.YearGroupUserLinks[i];
+                                string labelClass = link.Included ? "" : "text-grey";
+
                                 <div class="collapse">
                                     <input type="hidden" asp-for="YearGroupUserLinks[i].GiftingGroupKey" />
                                     <input type="hidden" asp-for="YearGroupUserLinks[i].CalendarYear" />
@@ -94,9 +98,10 @@
                                 </div>
 
                                 <span class="nowrap">
-                                    <span>@Model.YearGroupUserLinks[i].GiftingGroupName</span>
+                                    <span class="@labelClass">@link.GiftingGroupName</span>
                                     <text>&nbsp;</text>
-                                    <input type="checkbox" asp-for="YearGroupUserLinks[i].ApplyToGroup" />
+                                    <input type="checkbox" class="apply-group-checkbox" asp-for="YearGroupUserLinks[i].ApplyToGroup"
+                                        data-included="@link.Included" data-group="@link.GiftingGroupName" />
 
                                     @if (i < Model.YearGroupUserLinks.Count - 1)
                                     {

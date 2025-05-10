@@ -46,7 +46,7 @@ public class HomeController : BaseController
         var suggestion = await Send(new ManageSuggestionQuery(suggestionKey, null));
         var model = Mapper.Map<ManageSuggestionVm>(suggestion);
         model.IsModal = true;
-        return View("_ManageSuggestionModal", model);
+        return PartialView("_ManageSuggestionModal", model);
     }
 
     [HttpPost]
@@ -76,7 +76,7 @@ public class HomeController : BaseController
         }
         else if (model.IsModal)
         {
-            return View("_ManageSuggestionModal", model);
+            return PartialView("_ManageSuggestionModal", model);
         }
         else
         {

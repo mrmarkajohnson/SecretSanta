@@ -1,4 +1,5 @@
 ﻿@using Global.Abstractions.Areas.GiftingGroup
+@using Microsoft.AspNetCore.Html
 
 @model MySuggestionsVm
 @{
@@ -9,7 +10,13 @@
         <a class="delete-link" data-url="@Url.Action(Context, "DeleteSuggestion", "Home", "Suggestions", new { suggestionKey = item.SuggestionKey })"
            data-toggle="tooltip" title="Delete Suggestion" 
            data-confirm-title="Delete Suggestion" 
-           data-confirm-message="Are you sure you want to delete suggestion ""@item.SuggestionText""?"><i class="fa fa-xmark"></i></a>
+           data-confirm-message="Are you sure you want to delete suggestion '@item.SuggestionText'?"><i class="fa fa-xmark"></i></a>
+    </text>
+    ;
+
+    Func<ISuggestion, object> appliesCheckbox(IUserGiftingGroup group) =>
+    @<text>
+        <readonly-checkbox for="@item.AppliesToGroup(group)" />
     </text>;
 }
 
@@ -26,11 +33,12 @@ Html
         {
             foreach (IUserGiftingGroup group in Model.AllGroups.OrderBy(x => x.GroupName))
             {
-                columns.Add(x => x.YearGroupUserLinks.Any(y => y.GiftingGroupName == group.GroupName))                    
+                columns.Add(x => x.AppliesToGroup(group))
+                    .RenderedAs(appliesCheckbox(group))
                     .Titled(group.GroupName);
             }
 
-            columns.Add().RenderedAs(actions).Encoded(false);
+            columns.Add().RenderedAs(actions).Encoded(false).Css("nowrap");
         }
     })
     .Pageable(pager =>

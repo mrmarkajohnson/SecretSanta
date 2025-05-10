@@ -24,5 +24,5 @@ function changeGreeting() {
     let greetingTextLabels = document.querySelectorAll('label.greeting-text');
     greetingTextLabels.forEach(function (x) {
         x.innerText = newGreeting;
-    })
+    });
 }

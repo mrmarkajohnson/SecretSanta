@@ -1,6 +1,7 @@
 ﻿using Application.Areas.Suggestions.BaseModels;
 using FluentValidation;
 using Global.Validation;
+using System.ComponentModel.DataAnnotations;
 using ViewLayer.Abstractions;
 using static Global.Settings.GlobalSettings;
 using static Global.Settings.SuggestionSettings;
@@ -9,6 +10,7 @@ namespace ViewLayer.Models.Suggestions;
 
 public class ManageSuggestionVm : ManageSuggestion, IFormVm, IModalVm
 {
+    [Display(Name = "Priority")]
     public int? PrioritySetter
     {
         get => Priority <= 0 || Priority > PriorityLimit ? null : Priority;
