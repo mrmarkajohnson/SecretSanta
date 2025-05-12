@@ -1,8 +1,11 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Suggestions.Queries;
 using Global.Abstractions.Areas.GiftingGroup;
+using Global.Abstractions.Areas.Suggestions;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Participate;
+using ViewLayer.Models.Suggestions;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
@@ -40,7 +43,26 @@ public sealed class ParticipateController : BaseController
         IManageUserGiftingGroupYear year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey));
         var model = Mapper.Map<ManageUserGiftingGroupYearVm>(year);
         model.IncludePreviousYears = model.PreviousYearsRequired > 0 && model.OtherMembersSelect.Count > 0;
+
+        if (model.Recipient != null)
+        {
+            model.RecipientSuggestions = await GetRecipientSuggestions(giftingGroupKey, model.Recipient.HashedUserId);
+        }
+
         return View("Year", model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> RecipientSuggestionsGrid(int giftingGroupKey, string hashedUserId)
+    {
+        RecipientSuggestionsVm model = await GetRecipientSuggestions(giftingGroupKey, hashedUserId);
+        return PartialView("_RecipientSuggestionsGrid", model);
+    }
+
+    private async Task<RecipientSuggestionsVm> GetRecipientSuggestions(int giftingGroupKey, string hashedUserId)
+    {
+        var suggestions = await Send(new GetRecipientSuggestionsQuery(giftingGroupKey, hashedUserId));
+        return new RecipientSuggestionsVm(giftingGroupKey, hashedUserId, suggestions);
     }
 
     [HttpPost]
@@ -71,7 +93,5 @@ public sealed class ParticipateController : BaseController
         {
             return FirstValidationError(commandResult);
         }
-
-        //return View("Year", model);
     }
 }

@@ -1,0 +1,24 @@
+﻿@using Global.Abstractions.Areas.Suggestions
+@using Microsoft.AspNetCore.Html
+@using ViewLayer.Models.Suggestions
+
+@model RecipientSuggestionsVm
+@(
+Html
+    .Grid(Model.RecipientSuggestions)
+    .Build(columns =>
+    {
+        columns.Add(x => x.SuggestionText).Titled("Suggestion");
+        columns.Add(x => x.OtherNotes).RenderedAs(x => x.NotesTruncated()).Titled("Notes");
+    })
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    })
+    .UsingUrl(Url.Action("MySuggestionsGrid"))
+    .Empty("No suggestions found")
+    .Id("suggestions-grid")
+    .Filterable()
+    .Sortable()
+)

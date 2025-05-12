@@ -2,6 +2,7 @@
 using Application.Areas.Partners.Queries;
 using Application.Shared.Helpers;
 using Global.Abstractions.Areas.Partners;
+using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Partners;
 using ViewLayer.Models.Shared;
@@ -96,7 +97,7 @@ public sealed class ManageController : BaseController
     {
         IRelationships relationships = await Send(new GetRelationshipsQuery());
 
-        Guid partnerUserId = Guid.Parse(EncryptionHelper.Decrypt(hashedUserId));
+        Guid partnerUserId = UserHelper.GetGlobalUserId(hashedUserId);
 
         var relationship = relationships.PossibleRelationships
             .FirstOrDefault(x => x.PartnerLinkKey == partnerLinkKey && x.Partner.GlobalUserId == partnerUserId.ToString());

@@ -1,9 +1,11 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
+using Global.Abstractions.Areas.Suggestions;
 using Global.Names;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ViewLayer.Abstractions;
+using ViewLayer.Models.Suggestions;
 
 namespace ViewLayer.Models.Participate;
 
@@ -14,6 +16,8 @@ public sealed class ManageUserGiftingGroupYearVm : ManageUserGiftingGroupYear, I
     public IList<SelectListItem> OtherMembersSelect => OtherGroupMembers
         .Select(x => new SelectListItem { Value = x.GlobalUserId, Text = x.UserDisplayName })
         .ToList();
+
+    public RecipientSuggestionsVm RecipientSuggestions { get; set; } = new();
 
     public bool IncludePreviousYears { get; set; }
     public bool SubmitIncludedChangeImmediately => !IncludePreviousYears;

@@ -4,7 +4,7 @@ using Global.Extensions.System;
 
 namespace Application.Shared.Helpers;
 
-internal static class UserEncryptionHelper
+public static class UserEncryptionHelper
 {
     public static TItem UnHash<TItem>(this TItem hashableUser) where TItem : IHashableUser
     {

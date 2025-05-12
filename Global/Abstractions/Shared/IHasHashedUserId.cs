@@ -1,4 +1,4 @@
-﻿using Application.Shared.Helpers;
+﻿using Global.Helpers;
 
 namespace Global.Abstractions.Shared;
 
@@ -13,7 +13,7 @@ public static class HasHashedUserIdExtensions
     {
         try
         {
-            return Guid.Parse(EncryptionHelper.Decrypt(user.HashedUserId));
+            return UserHelper.GetGlobalUserId(user.HashedUserId);
         }
         catch
         {
