@@ -1,5 +1,5 @@
 ﻿using Global.Abstractions.Areas.Account;
-using Global.Abstractions.Global;
+using Global.Abstractions.Shared;
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 

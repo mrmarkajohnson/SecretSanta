@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Global.Extensions.System;
 using static Global.Settings.GiftingGroupSettings;
 
 namespace Global.Abstractions.Areas.GiftingGroup;

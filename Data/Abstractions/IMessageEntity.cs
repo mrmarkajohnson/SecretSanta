@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Global.Messages;
+﻿using Global.Abstractions.Areas.Messages;
 
 namespace Data.Abstractions;
 

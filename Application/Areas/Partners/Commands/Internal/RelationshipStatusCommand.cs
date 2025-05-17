@@ -32,7 +32,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
 
         HandleStatusChange();
 
-        if (!string.IsNullOrWhiteSpace(_messageText))
+        if (_messageText.NotEmpty())
         {
             SendUpdateMessage();
         }
@@ -91,7 +91,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
         ArchiveAnyOtherRelationships();
 
         _headerText = "Your relationship is confirmed";
-        _messageText = $"{_dbCurrentUser.FullName()} confirmed that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
+        _messageText = $"{_dbCurrentUser.DisplayName()} confirmed that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
                 $"Congratulations!";
     }
 
@@ -106,7 +106,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
         if (_dbRelationship.RelationshipEnded == null)
         {
             _headerText = "Sorry to hear your relationship has ended";
-            _messageText = $"Santa is sorry to hear that {_dbCurrentUser.FullName()} said that {_dbCurrentUser.Gender.IsShort()} no " +
+            _messageText = $"Santa is sorry to hear that {_dbCurrentUser.DisplayName()} said that {_dbCurrentUser.Gender.IsShort()} no " +
                 $"longer in a relationship with you. Santa hopes that you're both OK.";
         }
 
@@ -157,7 +157,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
             if (_dbRelationship.Confirmed == true)
             {
                 _headerText = "Your old relationship will be ignored";
-                _messageText = $"{_dbCurrentUser.FullName()} confirmed that {_dbCurrentUser.Gender.IsShort()} happy to ignore " +
+                _messageText = $"{_dbCurrentUser.DisplayName()} confirmed that {_dbCurrentUser.Gender.IsShort()} happy to ignore " +
                         $"{_dbCurrentUser.Gender.Posessive()} old relationship with you, so you can now exchange presents again.";
             }
 
@@ -167,7 +167,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
         else if (_dbRelationship.Confirmed == true && _dbRelationship.RelationshipEnded != null) // otherwise, other messages will handle this
         {
             _headerText = "Can your old relationship be ignored?";
-            _messageText = $"{_dbCurrentUser.FullName()} said that {_dbCurrentUser.Gender.IsShort()} happy to ignore {_dbCurrentUser.Gender.Posessive()} old " +
+            _messageText = $"{_dbCurrentUser.DisplayName()} said that {_dbCurrentUser.Gender.IsShort()} happy to ignore {_dbCurrentUser.Gender.Posessive()} old " +
                     $"relationship with you, so you could exchange presents again. If you're happy to " +
                     $"ignore it too, please go to <a href=\"{Item.ManageRelationshipsLink}\">'Manage Your Relationships'</a> " +
                     $"to confirm.";
@@ -195,7 +195,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
             if (_dbRelationship.RelationshipEnded == null)
             {
                 _headerText = "Your suggested relationship was not confirmed";
-                _messageText = $"{_dbCurrentUser.FullName()} denied that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
+                _messageText = $"{_dbCurrentUser.DisplayName()} denied that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
                     $"Sorry if there was a misunderstanding.";
             }
         }
@@ -212,7 +212,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
         }
 
         _headerText = "Your suggested relationship was not confirmed";
-        _messageText = $"{_dbCurrentUser.FullName()} denied that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
+        _messageText = $"{_dbCurrentUser.DisplayName()} denied that {_dbCurrentUser.Gender.IsShort()} in a relationship with you. " +
             $"Sorry if there was a misunderstanding.";
 
         _dbRelationship.DateDeleted = _dbRelationship.DateArchived = null; // don't ignore this relationship

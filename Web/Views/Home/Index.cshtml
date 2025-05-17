@@ -1,15 +1,20 @@
-﻿@inject SignInManager<IdentityUser> _signInManager
+﻿@using Global.Abstractions.Areas.Account
+
+@inject SignInManager<IdentityUser> _signInManager
 @inject UserManager<IdentityUser> _userManager
 
 @model HomeVm
 @{
     ViewData["Title"] = "Home Page";
-    bool mustSetSecurityQuestions = Model?.CurrentUser?.SecurityQuestionsSet == false;
 
-    string welcomeSignedInUser = "Welcome" + (mustSetSecurityQuestions ? string.Empty : " back")
-        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? " to Secret Santa" : string.Empty) // avoid making the string too long
-        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Forename) ? string.Empty : $", {Model.CurrentUser.Forename}")
-        + (string.IsNullOrWhiteSpace(Model?.CurrentUser?.Greeting) ? "!" : $". {Model.CurrentUser.Greeting}!");    
+    ISantaUser? currentUser = Model?.CurrentUser;
+    bool mustSetSecurityQuestions = currentUser?.SecurityQuestionsSet == false;
+
+    string welcomeSignedInUser = currentUser == null ? "Welcome to Secret Santa"
+        : ("Welcome" + (mustSetSecurityQuestions ? string.Empty : " back")
+        + (string.IsNullOrWhiteSpace(currentUser.Greeting) ? " to Secret Santa" : string.Empty) // avoid making the string too long
+        + $", {currentUser.DisplayFirstName()}"
+        + (string.IsNullOrWhiteSpace(currentUser.Greeting) ? "!" : $". {currentUser.Greeting}!"));
 }
 
 <partial name="_SuccessMessage" />

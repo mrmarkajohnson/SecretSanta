@@ -2,7 +2,7 @@
 using Global.Abstractions.Areas.Account;
 using Global.Validation;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Shared;
 
 public interface IGlobalUser : IIdentityUser, IUserAllNames
 {

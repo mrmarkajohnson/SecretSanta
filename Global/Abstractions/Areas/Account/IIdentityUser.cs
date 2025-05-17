@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Global.Abstractions.Global;
+using Global.Abstractions.Shared;
 using Global.Validation;
 
 namespace Global.Abstractions.Areas.Account;

@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Global;
+﻿using Global.Abstractions.Shared;
 
 namespace Global.Abstractions.Areas.Partners;
 

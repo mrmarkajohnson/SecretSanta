@@ -1,8 +1,8 @@
 ﻿using Data.Attributes;
 using Data.Entities.Santa;
 using Global.Abstractions.Areas.Account;
-using Global.Abstractions.Global;
 using Global.Abstractions.Shared;
+using Global.Names;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,12 +23,17 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
         AuditTrail = new HashSet<Global_User_Audit>();
     }
 
-    [Required, Audit("First Name")]
+    [Required, Audit(UserDisplayNames.Forename)]
     [MaxLength(UserVal.Forename.MaxLength)]
     public required string Forename { get; set; }
 
     [Audit("Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
+
+    [Audit("Preferred Name"), MaxLength(UserVal.PreferredFirstName.MaxLength)]
+    public string? PreferredFirstName { get; set; }
+
+    public bool PreferredIsNickname { get; set; }
 
     [Required, MaxLength(UserVal.Surname.MaxLength)]
     public required string Surname { get; set; }
@@ -58,7 +63,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     public required string Greeting { get; set; }
 
     [NotAudited]
-    public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
+    public bool SecurityQuestionsSet => SecurityAnswer1.NotEmpty() && SecurityAnswer2.NotEmpty();
 
     [Audit(NoDetails = true)]
     public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
@@ -95,19 +100,5 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     }
 
     [NotMapped, NotAudited]
-    string IUserAllNames.UserDisplayName => FullName(false);
-
-    public string FullName(bool includeMiddleNames = true)
-    {
-        string fullName = Forename.Trim() + " ";
-
-        if (includeMiddleNames && !string.IsNullOrWhiteSpace(MiddleNames))
-        {
-            fullName += MiddleNames.Trim() + " ";
-        }
-
-        fullName += Surname;
-
-        return fullName;
-    }
+    string IUserAllNames.UserDisplayName => this.DisplayName(false);
 }

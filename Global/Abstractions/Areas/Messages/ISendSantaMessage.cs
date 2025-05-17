@@ -1,6 +1,4 @@
-﻿using Global.Abstractions.Global.Messages;
-
-namespace Global.Abstractions.Areas.Messages;
+﻿namespace Global.Abstractions.Areas.Messages;
 
 public interface ISendSantaMessage : IMessageBase
 {

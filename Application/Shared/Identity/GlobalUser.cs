@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Global.Names;
+using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
 
 namespace Application.Shared.Identity;
@@ -10,11 +11,16 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
     /// </summary>
     private string? _userDisplayName;
 
-    [Display(Name = "First Name"), StringLength(UserVal.Forename.MaxLength, MinimumLength = UserVal.Forename.MinLength)]
+    [Display(Name = UserDisplayNames.Forename), StringLength(UserVal.Forename.MaxLength, MinimumLength = UserVal.Forename.MinLength)]
     public string Forename { get; set; } = string.Empty;
 
     [Display(Name = "Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
+
+    [Display(Name = "Preferred Name"), MaxLength(UserVal.PreferredFirstName.MaxLength)]
+    public string? PreferredFirstName { get; set; }
+
+    public bool PreferredIsNickname { get; set; }
 
     [Display(Name = "Surname"), StringLength(UserVal.Surname.MaxLength, MinimumLength = UserVal.Surname.MinLength)]
     public string Surname { get; set; } = string.Empty;
@@ -26,7 +32,7 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
 
     public string UserDisplayName
     {
-        get => _userDisplayName ?? Forename + " " + Surname;
+        get => _userDisplayName ?? this.DisplayName(false);
         set => _userDisplayName = value;
     }
 }

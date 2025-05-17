@@ -1,4 +1,6 @@
-﻿namespace ViewLayer.Models.Shared;
+﻿using Global.Abstractions.Shared;
+
+namespace ViewLayer.Models.Shared;
 
 public sealed class UserGridVm
 {

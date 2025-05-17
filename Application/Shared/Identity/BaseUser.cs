@@ -1,4 +1,6 @@
-﻿namespace Application.Shared.Identity;
+﻿using Global.Extensions.System;
+
+namespace Application.Shared.Identity;
 
 public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHashedUserId
 {
@@ -9,7 +11,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_globalUserId))
+            if (string.IsNullOrWhiteSpace(_globalUserId) && _hashedUserId.NotEmpty())
             {
                 _globalUserId = this.GetStringUserId();
             }
@@ -18,7 +20,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
         }
         set
         {
-            if (!string.IsNullOrWhiteSpace(value) && value != Guid.Empty.ToString())
+            if (value.NotEmpty() && value != Guid.Empty.ToString())
             {
                 _globalUserId = value;
             }
@@ -31,16 +33,16 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_hashedUserId))
+            if (string.IsNullOrWhiteSpace(_hashedUserId) && _globalUserId.NotEmpty())
             {
                 _hashedUserId = this.GetHashedUserId();
             }
 
-            return _hashedUserId;
+            return _hashedUserId ?? "";
         }
         set
         {
-            if (!string.IsNullOrWhiteSpace(value))
+            if (value.NotEmpty())
             {
                 _hashedUserId = value;
             }

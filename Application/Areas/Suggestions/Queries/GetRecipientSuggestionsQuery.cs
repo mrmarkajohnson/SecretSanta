@@ -26,7 +26,7 @@ public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase
             .FirstOrDefault(y => y.GiftingGroupKey == GiftingGroupKey)
         ?? throw new NotFoundException("Group");
 
-        Guid userId = UserHelper.GetGlobalUserId(HashedUserId);
+        Guid userId = UserHelper.GetGlobalUserId(HashedUserId) ?? new Guid();
 
         var dbYearGroupUser = dbGroup.Years
             .Where(x => x.CalendarYear == DateTime.Today.Year)

@@ -1,7 +1,6 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
-using Global.Extensions.System;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -71,7 +70,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
 
         giftingGroupYear.GroupMembers = giftingGroupYear.GroupMembers
             .Select(x => x.UnHash())
-            .OrderBy(x => x.Forename).ThenBy(x => x.Surname)
+            .OrderBy(x => x.DisplayFirstName()).ThenBy(x => x.Surname)
             .ToList();
 
         return giftingGroupYear;

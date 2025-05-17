@@ -1,0 +1,21 @@
+﻿@model SantaUser
+
+@if (Model.Forename.NotEmpty() && Model.Surname.NotEmpty())
+{
+    string normalDisplay = Model.DisplayName(false);
+    string longDisplay = Model.DisplayName(true);
+    string fullName = Model.FullName();
+    
+    if (longDisplay != normalDisplay || fullName != normalDisplay)
+    {
+        <div class="mb-3 col-12">
+            <div class="alert alert-info">
+                Your name will normally be shown as "<b>@normalDisplay</b>", and sometimes as "<b>@fullName</b>".
+                @if (longDisplay != normalDisplay && longDisplay != fullName)
+                {
+                    <text>It may occasionally be shown as "<b>@longDisplay</b>"</text>
+                }
+            </div>
+        </div>
+    }
+}

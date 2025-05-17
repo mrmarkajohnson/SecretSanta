@@ -30,7 +30,9 @@
   {
     "outputFileName": "wwwroot/js/Account/Manage/Register/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Account/linkUserNameAndEmail.js"
+      "wwwroot/scripts/Account/linkUserNameAndEmail.js",
+      "wwwroot/scripts/Account/showNameVariations.js",
+      "wwwroot/scripts/Shared/inputsWithCheckbox.js"
     ],
     "minify": {
       "enabled": true,
@@ -41,7 +43,9 @@
   {
     "outputFileName": "wwwroot/js/Account/Manage/UpdateDetails/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Account/linkUserNameAndEmail.js"
+      "wwwroot/scripts/Account/linkUserNameAndEmail.js",
+      "wwwroot/scripts/Account/showNameVariations.js",
+      "wwwroot/scripts/Shared/inputsWithCheckbox.js"
     ],
     "minify": {
       "enabled": true,

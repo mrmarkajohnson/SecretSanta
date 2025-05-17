@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@using Global.Abstractions.Shared
 
 @model ReviewJoinerApplicationVm
 @{
@@ -55,7 +56,7 @@
                         </div>
 
                         <div class="mb-3 d-flex">
-                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                            @if (Model.Email.NotEmpty())
                             {
                                 <div class="form-group-ib col-6">
                                     <label asp-for="Email" class="control-label"></label>
@@ -99,13 +100,13 @@
                                 @if (Model.CurrentYearCalculated)
                                 {
                                     <div class="alert alert-warning">
-                                        <text>@Model.Forename <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
+                                        <text>@Model.DisplayFirstName() <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="alert alert-info">
-                                        <text>@Model.Forename will be added to the current year automatically. You can remove @Model.Gender.Indirect() by editing the group's settings for @DateTime.Today.Year.</text>
+                                        <text>@Model.DisplayFirstName() will be added to the current year automatically. You can remove @Model.Gender.Indirect() by editing the group's settings for @DateTime.Today.Year.</text>
                                     </div>
                                 }
                             </div>

@@ -1,7 +1,6 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
-using Global.Extensions.System;
 using Global.Validation;
 using System.ComponentModel.DataAnnotations;
 using ViewLayer.Abstractions;
@@ -44,7 +43,7 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
         .ToList();
 
     public IList<LocationSelectable> Currencies => Cultures
-        .Where(x => !string.IsNullOrWhiteSpace(x.CurrencyString))
+        .Where(x => x.CurrencyString.NotEmpty())
         .DistinctBy(x => x.CurrencyString)
         .OrderBy(x => x.CurrencyString)
         .ToList();

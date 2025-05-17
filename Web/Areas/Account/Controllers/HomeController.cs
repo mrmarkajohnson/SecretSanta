@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
-using Global.Extensions.System;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using ViewLayer.Models.Account;

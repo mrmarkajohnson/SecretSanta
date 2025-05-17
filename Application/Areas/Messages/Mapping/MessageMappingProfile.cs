@@ -1,6 +1,6 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using AutoMapper;
-using Global.Abstractions.Global.Messages;
+using Global.Abstractions.Areas.Messages;
 
 namespace Application.Areas.Messages.Mapping;
 

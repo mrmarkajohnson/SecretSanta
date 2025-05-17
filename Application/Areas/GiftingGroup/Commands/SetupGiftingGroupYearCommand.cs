@@ -184,10 +184,10 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
             true => $"All recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "Look out for future messages telling you who your new recipient will be. " +
                 "If you've already purchased a present, please contact a group administrator.",
-            null => $"This year, you are NOW giving to {dbGiver.RecipientSantaUser.GlobalUser.FullName().ToUpper()}. "
+            null => $"This year, you are NOW giving to {dbGiver.RecipientSantaUser.GlobalUser.DisplayName().ToUpper()}. "
                 + $"All previous recipients for group '{dbGiver.GiftingGroupYear.GiftingGroup.Name}' this year have been cancelled and reset. " +
                 "If you've already purchased a present, please contact a group administrator.",
-            false => $"This year, you are giving to {dbGiver.RecipientSantaUser.GlobalUser.FullName().ToUpper()}."
+            false => $"This year, you are giving to {dbGiver.RecipientSantaUser.GlobalUser.DisplayName().ToUpper()}."
         };
 
         var message = new SendSantaMessage

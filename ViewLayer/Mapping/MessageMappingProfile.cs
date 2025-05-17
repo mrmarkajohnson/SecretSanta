@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Global.Abstractions.Global.Messages;
+using Global.Abstractions.Areas.Messages;
 using ViewLayer.Models.Messages;
 
 namespace ViewLayer.Mapping;

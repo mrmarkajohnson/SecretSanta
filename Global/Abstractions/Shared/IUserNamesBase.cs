@@ -1,6 +1,4 @@
-﻿using Global.Abstractions.Shared;
-
-namespace Global.Abstractions.Global;
+﻿namespace Global.Abstractions.Shared;
 
 public interface IUserNamesBase : IUserAllNames, IHashableUser, IHasHashedUserId
 {

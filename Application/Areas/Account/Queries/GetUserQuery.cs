@@ -23,7 +23,7 @@ public sealed class GetUserQuery : BaseQuery<ISantaUser?>
     {
         ISantaUser? santaUser = null;
 
-        if (!string.IsNullOrWhiteSpace(_userNameOrEmail) && !string.IsNullOrWhiteSpace(_foreName))
+        if (_userNameOrEmail.NotEmpty() && _foreName.NotEmpty())
         {
             HashedUser hashedId = await Send(new GetHashedIdQuery(_userNameOrEmail, _userNamehashed));
 

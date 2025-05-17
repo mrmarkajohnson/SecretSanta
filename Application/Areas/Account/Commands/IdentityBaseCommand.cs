@@ -29,7 +29,7 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 
     private protected async Task StoreEmailAddress(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
     {
-        if (!string.IsNullOrWhiteSpace(Item.Email))
+        if (Item.Email.NotEmpty())
         {
             try
             {
@@ -56,16 +56,25 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 
     private protected string ReplaceHashedDetails(string message, string? originalUserName, string? originalEmail)
     {
-        if (!string.IsNullOrWhiteSpace(Item.UserName))
+        if (Item.UserName.NotEmpty())
         {
             message = message.Replace(Item.UserName, originalUserName);
         }
 
-        if (!string.IsNullOrWhiteSpace(Item.Email))
+        if (Item.Email.NotEmpty())
         {
             message = message.Replace(Item.Email, originalEmail);
         }
 
         return message;
+    }
+
+    private protected void SetOtherNames(Global_User dbCurrentUser)
+    {
+        string preferredFirstName = Item.PreferredFirstName.NullIfEmpty();
+
+        dbCurrentUser.MiddleNames = Item.MiddleNames.NullIfEmpty();
+        dbCurrentUser.PreferredFirstName = preferredFirstName;
+        dbCurrentUser.PreferredIsNickname = Item.PreferredIsNickname && preferredFirstName != null;
     }
 }

@@ -2,13 +2,15 @@
 
 @model HomeVm
 @{
-    ISantaUser? currentUser = Model?.CurrentUser;
-    string greeting = currentUser == null ? "" : $"\"{currentUser.Greeting}!\"";
-    string name = currentUser?.UserDisplayName ?? "";
+    ISantaUser? currentUser = Model?.CurrentUser;    
 }
 
 @if (currentUser != null)
 {
+    string greeting = $"\"{currentUser.Greeting}!\"";
+    string name = currentUser.UserDisplayName;
+    string fullName = currentUser.FullName();
+
     <ul class="nav-item left-menu-item">
         <li class="dropdown-hover">                                        
             <span class="fa fa-circle-user fa-border"></span> 
@@ -19,13 +21,18 @@
                 <li class="d-block d-lg-none">
                     <div class="dropdown-item"><b>Name:</b> @name</div>
                 </li>
+
+               <li>
+                    <div class="dropdown-item"><b>Full Name:</b> @fullName</div>
+                </li>
+
                 <li>
                     <div class="dropdown-item"><b>Username:</b> @currentUser.UserName</div>
                 </li>
                 <li>
                     <div class="dropdown-item"><b>Greeting:</b> @greeting</div>
                 </li>
-                @if (!string.IsNullOrWhiteSpace(currentUser.Email) && currentUser.Email != currentUser.UserName)
+                @if (currentUser.Email.NotEmpty() && currentUser.Email != currentUser.UserName)
                 {
                     <li>
                         <div class="dropdown-item"><b>E-mail:</b> @currentUser.Email</div>

@@ -1,4 +1,5 @@
-﻿@using Global.Names
+﻿@using Global.Abstractions.Shared
+@using Global.Names
 @using Microsoft.AspNetCore.Http.Extensions
 @using ViewLayer.Models.Participate
 
@@ -144,7 +145,7 @@
                         <div>
                             <h2>Suggestions</h2>
 
-                            <p class="mb-4">@Model.Recipient.Forename has made the following suggestions for gift ideas.</p>
+                            <p class="mb-4">@Model.Recipient.DisplayFirstName() has made the following suggestions for gift ideas.</p>
 
                             <div class="col-md-12 d-flex align-items-center justify-content-center text-center">
                                 <div class="@StandardFullWidthGridContainer">

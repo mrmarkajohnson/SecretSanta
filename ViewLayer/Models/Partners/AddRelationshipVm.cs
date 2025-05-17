@@ -1,5 +1,6 @@
 ﻿using Application.Areas.Partners.BaseModels;
 using Global.Abstractions.Areas.Partners;
+using Global.Abstractions.Shared;
 
 namespace ViewLayer.Models.Partners;
 

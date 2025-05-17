@@ -36,7 +36,7 @@
                 </p>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                @if (!string.IsNullOrWhiteSpace(Model.PreviousYearsWarning))
+                @if (Model.PreviousYearsWarning.NotEmpty())
                 {
                     <div class="text-danger">@Model.PreviousYearsWarning</div>
                 }

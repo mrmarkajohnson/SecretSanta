@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Global.Extensions.System;
 
@@ -62,5 +63,41 @@ public static class StringExtensions
 
             return result;
         }
+    }
+
+    public static string Tidy(this string text)
+    {
+        return text.Trim().Replace("  ", " ").Replace("  ", " ");
+    }
+
+    public static string? Tidy(this string? text, bool emptyStringIfNull)
+    {
+        if (text == null)
+            return emptyStringIfNull ? "" : null;
+
+        return Tidy(text);
+    }
+
+    public static string? NullIfEmpty(this string? text)
+    {
+        return string.IsNullOrWhiteSpace(text) ? null : text.Trim();
+    }
+
+    public static bool NotEmpty([NotNullWhen(true)]this string? text)
+    {
+        return !string.IsNullOrWhiteSpace(text);
+    }
+
+    public static bool ContainsWord(this string? text, string? word)
+    {
+        if (text.NotEmpty() && word.NotEmpty())
+        {
+            text = text.Trim();
+            word = word.Trim();
+            
+            return text == word || text.Contains(word + " ") || text.Contains(" " + word);
+        }
+
+        return false;
     }
 }

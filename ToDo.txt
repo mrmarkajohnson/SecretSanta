@@ -1,12 +1,13 @@
 GENERAL
-* Add preferred forename
+Use Central Package Management
 * Handle index pages etc. in bundles/routing
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
-Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name
+Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name 
+	(or replace it with a boolean to display middle names, and use DisplayName() based on that)
 Log unhandled exceptions from GlobalRequestProcessor into a database table
 
 USERS/SECURITY

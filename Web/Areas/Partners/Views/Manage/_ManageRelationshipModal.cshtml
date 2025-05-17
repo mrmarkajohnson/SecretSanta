@@ -1,10 +1,11 @@
 ﻿@using System.Web
+@using Global.Abstractions.Shared
 @using Web.Extensions
 
 @model ManageRelationshipVm
 @{
     string exchangeGiftsExplanation = "If you'll be exchanging gifts separately, or you don't want to exchange them at all, select 'No'.<br/><br/>"
-        + $"If you're still not sure, better talk to {Model.Partner.Forename}!";
+        + $"If you're still not sure, better talk to {Model.Partner.DisplayFirstName()}!";
 
     bool includeNowOptions = Model.OriginalStatus is RelationshipStatus.ToBeConfirmed or RelationshipStatus.ToConfirm or RelationshipStatus.Active;
     bool includeEverOptions = Model.OriginalStatus is RelationshipStatus.ToConfirm or RelationshipStatus.IgnoreNonRelationship or RelationshipStatus.Avoid;

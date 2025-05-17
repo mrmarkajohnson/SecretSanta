@@ -13,6 +13,11 @@ public static class UserVal
         public const int MaxLength = 120;
     }
 
+    public static class PreferredFirstName
+    {
+        public const int MaxLength = 80;
+    }
+
     public static class Surname
     {
         public const int MinLength = 2;

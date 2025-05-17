@@ -97,7 +97,7 @@ public sealed class ManageController : BaseController
     {
         IRelationships relationships = await Send(new GetRelationshipsQuery());
 
-        Guid partnerUserId = UserHelper.GetGlobalUserId(hashedUserId);
+        Guid partnerUserId = UserHelper.GetGlobalUserId(hashedUserId) ?? new Guid();
 
         var relationship = relationships.PossibleRelationships
             .FirstOrDefault(x => x.PartnerLinkKey == partnerLinkKey && x.Partner.GlobalUserId == partnerUserId.ToString());

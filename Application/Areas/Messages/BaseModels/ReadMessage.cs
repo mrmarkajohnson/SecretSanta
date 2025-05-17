@@ -1,5 +1,5 @@
 ﻿using Application.Shared.BaseModels;
-using Global.Abstractions.Global.Messages;
+using Global.Abstractions.Areas.Messages;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Messages.BaseModels;

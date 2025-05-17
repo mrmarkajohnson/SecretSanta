@@ -1,4 +1,4 @@
-﻿using Global.Abstractions.Global.Messages;
+﻿using Global.Abstractions.Areas.Messages;
 using Global.Settings;
 using System.ComponentModel.DataAnnotations;
 

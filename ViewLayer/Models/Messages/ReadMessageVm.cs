@@ -1,5 +1,5 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Global.Abstractions.Global.Messages;
+using Global.Abstractions.Areas.Messages;
 using ViewLayer.Abstractions;
 
 namespace ViewLayer.Models.Messages;

@@ -62,11 +62,12 @@ public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TIt
 
                     if (Validation.IsValid)
                     {
-                        dbCurrentUser.Forename = Item.Forename;
-                        dbCurrentUser.MiddleNames = Item.MiddleNames;
-                        dbCurrentUser.Surname = Item.Surname;
-                        dbCurrentUser.Email = Item.Email; // just in case
-                        dbCurrentUser.UserName = Item.UserName; // just in case
+                        dbCurrentUser.Forename = Item.Forename.Tidy();                        
+                        dbCurrentUser.Surname = Item.Surname.Tidy();
+                        dbCurrentUser.Email = Item.Email.NullIfEmpty().Tidy(false);
+                        dbCurrentUser.UserName = Item.UserName.NullIfEmpty().Tidy(false);
+
+                        SetOtherNames(dbCurrentUser);
 
                         return await SaveAndReturnSuccess();
                     }

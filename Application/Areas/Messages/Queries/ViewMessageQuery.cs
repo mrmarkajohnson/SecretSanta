@@ -1,6 +1,6 @@
 ﻿using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
-using Global.Abstractions.Global.Messages;
+using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Messages.Queries;

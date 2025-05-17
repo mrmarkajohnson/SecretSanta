@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Global.Abstractions.Shared;
+using System.ComponentModel.DataAnnotations;
 
-namespace Global.Abstractions.Global.Messages;
+namespace Global.Abstractions.Areas.Messages;
 
 public interface IReadMessage : IMessageBase
 {

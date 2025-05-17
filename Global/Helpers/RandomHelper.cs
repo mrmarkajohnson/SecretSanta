@@ -1,6 +1,4 @@
-﻿using Global.Extensions.System;
-
-namespace Global.Helpers;
+﻿namespace Global.Helpers;
 
 public static class RandomHelper
 {

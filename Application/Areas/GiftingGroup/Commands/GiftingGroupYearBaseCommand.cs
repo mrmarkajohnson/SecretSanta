@@ -53,7 +53,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         Santa_User dbSantaUser = dbGiftingGroupLink.SantaUser;
 
         var dbYearGroupUser = AddOrUpdateUserGroupYear(dbGiftingGroupYear, included, dbSantaUser.SantaUserKey, 
-            dbSantaUser.GlobalUser.FullName(), dbSantaUser);
+            dbSantaUser.GlobalUser.DisplayName(), dbSantaUser);
 
         return dbYearGroupUser;
     }

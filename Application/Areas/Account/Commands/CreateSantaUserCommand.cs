@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Account.Actions;
 using Global.Abstractions.Areas.Account;
-using Global.Extensions.System;
 using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,13 +22,14 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
 
         var dbGlobalUser = new Global_User
         {
-            Forename = Item.Forename,
-            MiddleNames = Item.MiddleNames,
-            Surname = Item.Surname,
-            Email = Item.Email,
-            UserName = Item.UserName,
+            Forename = Item.Forename.Trim(),            
+            Surname = Item.Surname.Trim(),
+            Email = Item.Email.NullIfEmpty(),
+            UserName = Item.UserName.NullIfEmpty(),
             Greeting = Item.Greeting
         };
+
+        SetOtherNames(dbGlobalUser);
 
         var dbSantaUser = new Santa_User
         {

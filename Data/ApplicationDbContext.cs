@@ -3,7 +3,6 @@ using Data.DummyImplementations;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
 using Data.Helpers;
-using Global.Extensions.System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

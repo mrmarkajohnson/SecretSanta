@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Global.Abstractions.Global;
+namespace Global.Abstractions.Shared;
 
 public interface ICommandResult<TItem>
 {

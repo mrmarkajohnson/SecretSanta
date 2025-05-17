@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Global.Settings.MessageSettings;
 
-namespace Global.Abstractions.Global.Messages;
+namespace Global.Abstractions.Areas.Messages;
 
 public interface IMessageBase
 {

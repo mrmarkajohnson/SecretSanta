@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Global.Abstractions.Areas.Account;
+using Global.Names;
 using Global.Settings;
 using System.ComponentModel.DataAnnotations;
 using ViewLayer.Abstractions;
@@ -26,7 +27,7 @@ public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     [Display(Name = "E-mail Address or Username")]
     public string EmailOrUserName { get; set; } = string.Empty;
 
-    [Display(Name = "First Name")]
+    [Display(Name = UserDisplayNames.Forename)]
     public string Forename { get; set; } = string.Empty;
 
     public bool ShowBasicDetails { get; set; }
@@ -36,7 +37,7 @@ public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     public override string SubmitButtonText { get; set; } = "Submit";
     public override string SubmitButtonIcon { get; set; } = "fa-paper-plane";
 
-    public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
+    public bool SecurityQuestionsSet => SecurityAnswer1.NotEmpty() && SecurityAnswer2.NotEmpty();
     public bool PasswordResetSuccessfully { get; set; }
 }
 

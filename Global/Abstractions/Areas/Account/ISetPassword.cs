@@ -24,7 +24,7 @@ public class SetPasswordValidator<TItem> : AbstractValidator<TItem> where TItem 
 
         RuleFor(x => x.ConfirmPassword)
             .Equal(x => x.Password)
-            .When(x => !string.IsNullOrWhiteSpace(x.Password))
+            .When(x => x.Password.NotEmpty())
             .WithMessage(ValidationMessages.PasswordConfirmationError);
     }
 }

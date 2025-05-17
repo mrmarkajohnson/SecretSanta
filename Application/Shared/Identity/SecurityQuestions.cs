@@ -30,5 +30,5 @@ public class SecurityQuestions : ISecurityQuestions
     [Display(Name = "Greeting")]
     public required string Greeting { get; set; }
 
-    public bool SecurityQuestionsSet => !string.IsNullOrWhiteSpace(SecurityAnswer1) && !string.IsNullOrWhiteSpace(SecurityAnswer2);
+    public bool SecurityQuestionsSet => SecurityAnswer1.NotEmpty() && SecurityAnswer2.NotEmpty();
 }

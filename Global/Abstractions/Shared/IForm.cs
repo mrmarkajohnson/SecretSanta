@@ -1,4 +1,4 @@
-﻿namespace Global.Abstractions.Global;
+﻿namespace Global.Abstractions.Shared;
 
 public interface IForm
 {

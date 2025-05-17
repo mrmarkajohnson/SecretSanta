@@ -1,6 +1,9 @@
-﻿@model SantaUser
+﻿@using Global.Names
+
+@model SantaUser
 @{
-    string middleNamesExplanation = "This is optional, but may be helpful if someone else has a similar first name and surname";
+    string middleNamesExplanation = "This is optional, but may be helpful if someone else has a similar first name and surname.";
+    string preferredNameExplanation = $"If you don't usually use your actual {UserDisplayNames.Forename}, please tell Santa the name you prefer.";
     string genderExplanation = "What do you prefer to be known as?<br/><br/>Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!";
 }
 
@@ -8,7 +11,7 @@
     <div class="@StandardGroupWidth">
         <div class="mb-3">
             <label asp-for="Forename" class="control-label required"></label>
-            <input asp-for="Forename" class="form-control" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
+            <input asp-for="Forename" class="form-control show-name" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
             <div>
                 <span asp-validation-for="Forename" class="text-danger"></span>
             </div>
@@ -17,7 +20,8 @@
         <div class="mb-3">
             <label asp-for="MiddleNames" class="control-label"></label>
             <div class="input-group input-info">
-                <input asp-for="MiddleNames" class="form-control" autocomplete="middlenames" aria-required="false" placeholder="Enter any middle names here" />
+                <input asp-for="MiddleNames" class="form-control show-name" autocomplete="middlenames" aria-required="false" 
+                    placeholder="Enter any middle names here (optional)" />
                 <partial name="_InputQuestion" model="@middleNamesExplanation" />
             </div>
             <div>
@@ -25,12 +29,42 @@
             </div>
         </div>
 
+        <div class="mb-3 d-flex input-with-checkbox-container">
+            <div class="form-group-ib col-sm-12">
+                <label asp-for="PreferredFirstName" class="control-label"></label>
+                <div class="input-group input-info">
+                    <input asp-for="PreferredFirstName" class="form-control show-name" autocomplete="preferredName" aria-required="false"
+                           placeholder="Enter your preferred first name here (optional)" />
+                    <partial name="_InputQuestion" model="@preferredNameExplanation" />
+                </div>
+                <div>
+                    <span asp-validation-for="PreferredFirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group-ib col-sm-3 col-4" style="display: none !important">
+                &nbsp;
+                <div>
+                    <label class="control-label pt-1 ps-2 d-flex justify-content-end">
+                        &nbsp;
+                        Nickname
+                        &nbsp;
+                        <input asp-for="PreferredIsNickname" type="checkbox" class="form-check-input show-name" />
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <div class="mb-3">
             <label asp-for="Surname" class="control-label required"></label>
-            <input asp-for="Surname" maxlength="250" class="form-control" autocomplete="surname" aria-required="true" placeholder="Enter your surname here" />
+            <input asp-for="Surname" maxlength="250" class="form-control show-name" autocomplete="surname" aria-required="true" 
+                placeholder="Enter your surname here" />
             <div>
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
+        </div>
+
+        <div class="name-variations-container" data-url="@Url.Action(Context, "ShowNameVariations", "Manage", "Account")" >
+            <partial name="_ShowNameVariations" />
         </div>
 
         <div class="mb-3">

@@ -1,7 +1,7 @@
-﻿using Application.Areas.Account.Commands;
+﻿using Application.Areas.Account.BaseModels;
+using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
 using Global.Abstractions.Areas.Account;
-using Global.Extensions.System;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
 using ViewLayer.Models.Account;
@@ -163,6 +163,12 @@ public sealed class ManageController : BaseController
         }
 
         return await RedirectIfLockedOut("UpdateDetails", model);
+    }
+
+    [HttpPost]
+    public IActionResult ShowNameVariations(SantaUser model)
+    {
+        return PartialView("_ShowNameVariations", model);
     }
 
     [HttpGet]
