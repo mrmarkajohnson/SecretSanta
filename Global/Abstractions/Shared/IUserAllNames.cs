@@ -1,4 +1,5 @@
 ﻿using static Global.Settings.GlobalSettings;
+using static Global.Settings.IdentitySettings;
 
 namespace Global.Abstractions.Shared;
 
@@ -6,8 +7,8 @@ public interface IUserAllNames
 {
     string Forename { get; set; }
     string? MiddleNames { get; set; }
+    PreferredNameOption PreferredNameType { get; set; }
     string? PreferredFirstName { get; set; }
-    bool PreferredIsNickname { get; set; }
     string Surname { get; set; }
     Gender Gender { get; set; }
 
@@ -33,7 +34,7 @@ public static class UserAllNamesExtensions
                 middleNames = middleNames.Replace(fullName + " ", "").Replace(" " + fullName, ""); // avoid repeating preferred name
             }
             
-            fullName += " " + middleNames.Tidy();
+            fullName += " " + middleNames.Tidy(true);
         }
 
         fullName += " " + user.Surname;
@@ -45,7 +46,7 @@ public static class UserAllNamesExtensions
         string foreName = user.Forename.Trim();
         string? middleNames = user.MiddleNames.Tidy(false);
 
-        string? preferredName = IncludePreferredName(user.PreferredFirstName, foreName, middleNames)
+        string? preferredName = IncludePreferredName(user, foreName, middleNames)
             ? user.PreferredFirstName?.Trim()
             : null;
 
@@ -53,7 +54,9 @@ public static class UserAllNamesExtensions
 
         if (preferredName.NotEmpty())
         {
-            fullName += (user.PreferredIsNickname ? $"'{preferredName}'" : preferredName) + " ";
+            fullName += (user.PreferredNameType == PreferredNameOption.Nickname 
+                ? $"'{preferredName}'" 
+                : preferredName) + " ";
         }
 
         if (middleNames.NotEmpty())
@@ -65,12 +68,12 @@ public static class UserAllNamesExtensions
         return fullName.Tidy();
     }
 
-    private static bool IncludePreferredName(string? preferredFirstName, string foreName, string? middleNames)
+    private static bool IncludePreferredName(IUserAllNames user, string foreName, string? middleNames)
     {
-        if (string.IsNullOrWhiteSpace(preferredFirstName))
+        if (user.PreferredNameType == PreferredNameOption.Forename || string.IsNullOrWhiteSpace(user.PreferredFirstName))
             return false;
 
-        preferredFirstName = preferredFirstName.Trim();
+        string preferredFirstName = user.PreferredFirstName.Trim();
 
         if (foreName == preferredFirstName
             || middleNames == preferredFirstName

@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using Global.Abstractions.Areas.Account;
+using Global.Names;
+using Global.Settings;
 using Global.Validation;
 
 namespace Global.Abstractions.Shared;
@@ -20,5 +22,20 @@ public class GlobalUserValidator<T> : IdentityUserValidator<T> where T : IGlobal
         RuleFor(x => x.Surname)
             .NotNull().NotEmpty()
             .Length(UserVal.Surname.MinLength, UserVal.Surname.MaxLength);
+
+        RuleFor(x => x.MiddleNames)
+            .NotNullOrEmpty()
+            .When(x => x.PreferredNameType == IdentitySettings.PreferredNameOption.MiddleName)
+            .WithMessage($"A Middle Name is required when your {UserDisplayNames.PreferredNameType} is your Middle Name");
+
+        RuleFor(x => x.PreferredFirstName)
+            .NotNullOrEmpty()
+            .When(x => x.PreferredNameType == IdentitySettings.PreferredNameOption.Nickname)
+            .WithMessage($"A {UserDisplayNames.PreferredFirstName} is required when your {UserDisplayNames.PreferredNameType} is a Nickname");
+
+        RuleFor(x => x.PreferredFirstName)
+            .NotNullOrEmpty()
+            .When(x => x.PreferredNameType == IdentitySettings.PreferredNameOption.Other)
+            .WithMessage($"A {UserDisplayNames.PreferredFirstName} is required when your {UserDisplayNames.PreferredNameType} type is 'Other'");
     }
 }

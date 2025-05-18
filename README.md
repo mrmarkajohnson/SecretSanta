@@ -20,6 +20,8 @@ This section needs to be completed...
 I've sometimes decided to try a different approach to what I'm used to, to see what happens!  
 
 So this is experimental and not necessarily trying to use 'established best practice', what I've done elsewhere, etc.  That included using:
+- Interfaces that generally extend to database tables (not sure I'd do this again, 
+	as it often prevents composition over inheritance and isn't very compatible with many design patterns)
 - Standard JavaScript where possible, as I was rusty (although JQuery was already embedded)
 - ASP.NET Identity and User Secrets (for development) but with my own modifications
 - Encryption of usernames, e-mails and security answers to keep future users safe, e.g. if this is cloned
@@ -28,4 +30,4 @@ So this is experimental and not necessarily trying to use 'established best prac
 - Bootstrap 5, as I was used to Bootstrap 3
 - My own 'light' version of CQRS without using (e.g.) Mediator, to see what happens, adding 'Actions' that just update an item
 
-I've made light use of AutoMapper, e.g. avoiding mapping to Entities, as version 12 takes away a lot of functionality. 
+I've made light use of AutoMapper, e.g. avoiding mapping into Entities, as version 12 took away a lot of functionality. 

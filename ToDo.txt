@@ -1,6 +1,7 @@
 GENERAL
 Use Central Package Management
 * Handle index pages etc. in bundles/routing
+* Show a little 'User Card' whenever someone's name is shown
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages

@@ -2,6 +2,7 @@
 using Global.Names;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
+using static Global.Settings.IdentitySettings;
 
 namespace Application.Shared.BaseModels;
 
@@ -18,10 +19,11 @@ public class UserNamesBase : BaseUser, IUserNamesBase
     [Display(Name = "Middle Names")]
     public string? MiddleNames { get; set; }
 
-    [Display(Name = "Preferred Name")]
-    public string? PreferredFirstName { get; set; }
+    [Display(Name = UserDisplayNames.PreferredNameType)]
+    public PreferredNameOption PreferredNameType { get; set; }
 
-    public bool PreferredIsNickname { get; set; }
+    [Display(Name = UserDisplayNames.PreferredFirstName)]
+    public string? PreferredFirstName { get; set; }
 
     [Display(Name = "Surname")]
     public string Surname { get; set; } = string.Empty;

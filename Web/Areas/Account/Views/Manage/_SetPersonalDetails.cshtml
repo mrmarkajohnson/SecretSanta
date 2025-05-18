@@ -1,4 +1,5 @@
 ﻿@using Global.Names
+@using static Global.Settings.IdentitySettings
 
 @model SantaUser
 @{
@@ -11,7 +12,7 @@
     <div class="@StandardGroupWidth">
         <div class="mb-3">
             <label asp-for="Forename" class="control-label required"></label>
-            <input asp-for="Forename" class="form-control show-name" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
+            <input asp-for="Forename" class="form-control first-name show-name" autocomplete="firstname" aria-required="true" placeholder="Enter your first name here" />
             <div>
                 <span asp-validation-for="Forename" class="text-danger"></span>
             </div>
@@ -20,7 +21,7 @@
         <div class="mb-3">
             <label asp-for="MiddleNames" class="control-label"></label>
             <div class="input-group input-info">
-                <input asp-for="MiddleNames" class="form-control show-name" autocomplete="middlenames" aria-required="false" 
+                <input asp-for="MiddleNames" class="form-control middle-names show-name" autocomplete="middlenames" aria-required="false" 
                     placeholder="Enter any middle names here (optional)" />
                 <partial name="_InputQuestion" model="@middleNamesExplanation" />
             </div>
@@ -29,27 +30,53 @@
             </div>
         </div>
 
-        <div class="mb-3 d-flex input-with-checkbox-container">
+        <div class="mb-3 d-flex">
             <div class="form-group-ib col-sm-12">
-                <label asp-for="PreferredFirstName" class="control-label"></label>
-                <div class="input-group input-info">
-                    <input asp-for="PreferredFirstName" class="form-control show-name" autocomplete="preferredName" aria-required="false"
-                           placeholder="Enter your preferred first name here (optional)" />
-                    <partial name="_InputQuestion" model="@preferredNameExplanation" />
+                <label asp-for="PreferredNameType" class="control-label required"></label>
+                <div class="d-flex flex-wrap align-items-center" style="vertical-align: middle">
+                    <div class="control-label fw-normal">
+                        First
+                        <input type="radio" asp-for="PreferredNameType" class="form-check-input preferred-name-option show-name" 
+                            autocomplete="off" aria-required="false" value="@PreferredNameOption.Forename" />
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                        Middle
+                        <input type="radio" asp-for="PreferredNameType" class="form-check-input preferred-name-option show-name" 
+                            autocomplete="off" aria-required="false" value="@PreferredNameOption.MiddleName" />
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                        Nickname
+                        <input type="radio" asp-for="PreferredNameType" class="form-check-input preferred-name-option show-name" 
+                            autocomplete="off" aria-required="false" value="@PreferredNameOption.Nickname" />
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                        Other
+                        <input type="radio" asp-for="PreferredNameType" class="form-check-input preferred-name-option show-name" 
+                            autocomplete="off" aria-required="false" value="@PreferredNameOption.Other" />
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </div>
+                    <div class="flex-grow-1">
+                        <input asp-for="PreferredFirstName" class="form-control show-name preferred-name" autocomplete="preferredName" 
+                            aria-required="false" placeholder="Preferred name" />
+                    </div>
+                    <div class="float-end ps-3">
+                        <partial name="_FormInlineQuestion" model="@preferredNameExplanation" />
+                    </div>
                 </div>
                 <div>
                     <span asp-validation-for="PreferredFirstName" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group-ib col-sm-3 col-4" style="display: none !important">
-                &nbsp;
-                <div>
-                    <label class="control-label pt-1 ps-2 d-flex justify-content-end">
-                        &nbsp;
-                        Nickname
-                        &nbsp;
-                        <input asp-for="PreferredIsNickname" type="checkbox" class="form-check-input show-name" />
-                    </label>
                 </div>
             </div>
         </div>

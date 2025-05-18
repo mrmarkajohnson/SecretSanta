@@ -1,5 +1,5 @@
 ﻿using Global.Abstractions.Areas.Account;
-using Global.Settings.Settings;
+using Global.Settings;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;

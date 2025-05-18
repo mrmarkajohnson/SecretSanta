@@ -1,5 +1,6 @@
 ﻿using Application.Areas.Account.BaseModels;
 using Global.Abstractions.Areas.Account;
+using Global.Settings;
 
 namespace Application.Shared.Helpers;
 

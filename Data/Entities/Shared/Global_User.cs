@@ -7,6 +7,7 @@ using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Global.Settings.GlobalSettings;
+using static Global.Settings.IdentitySettings;
 
 namespace Data.Entities.Shared;
 
@@ -30,10 +31,11 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [Audit("Middle Names"), MaxLength(UserVal.MiddleNames.MaxLength)]
     public string? MiddleNames { get; set; }
 
-    [Audit("Preferred Name"), MaxLength(UserVal.PreferredFirstName.MaxLength)]
-    public string? PreferredFirstName { get; set; }
+    [Audit(UserDisplayNames.PreferredNameType)]
+    public PreferredNameOption PreferredNameType { get; set; }
 
-    public bool PreferredIsNickname { get; set; }
+    [Audit(UserDisplayNames.PreferredFirstName), MaxLength(UserVal.PreferredFirstName.MaxLength)]
+    public string? PreferredFirstName { get; set; }
 
     [Required, MaxLength(UserVal.Surname.MaxLength)]
     public required string Surname { get; set; }

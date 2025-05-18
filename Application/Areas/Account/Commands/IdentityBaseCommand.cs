@@ -1,5 +1,6 @@
 ﻿using Global.Abstractions.Areas.Account;
 using Microsoft.AspNetCore.Identity;
+using static Global.Settings.IdentitySettings;
 
 namespace Application.Areas.Account.Commands;
 
@@ -71,10 +72,16 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 
     private protected void SetOtherNames(Global_User dbCurrentUser)
     {
-        string preferredFirstName = Item.PreferredFirstName.NullIfEmpty();
+        string? preferredFirstName = Item.PreferredNameType switch
+        {
+            PreferredNameOption.Forename => null,
+            PreferredNameOption.MiddleName => Item.MiddleNames,
+            _ => Item.PreferredFirstName.NullIfEmpty()
+
+        };
 
         dbCurrentUser.MiddleNames = Item.MiddleNames.NullIfEmpty();
-        dbCurrentUser.PreferredFirstName = preferredFirstName;
-        dbCurrentUser.PreferredIsNickname = Item.PreferredIsNickname && preferredFirstName != null;
+        dbCurrentUser.PreferredNameType = Item.PreferredNameType;
+        dbCurrentUser.PreferredFirstName = preferredFirstName;        
     }
 }
