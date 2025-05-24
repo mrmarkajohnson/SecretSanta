@@ -26,7 +26,18 @@ else
         <div class="row d-flex align-items-center justify-content-center text-center">
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                     
-                <p>These will be used to identity you if you forget your password in the future.</p>
+                @if (!Model.SecurityQuestionsSet)
+                {
+                    <p>
+                        Santa has one final task for you before he can accept your wish list. 
+                        Please set some security questions, in case you forget your password and need to reset it.
+                    </p>
+                }
+                else
+                {
+                    <p>These will be used to identity you if you forget your password in the future.</p>
+                }
+
                 <p>Please enter two questions, or select from the existing lists. Choose answers that you'll remember, but others won't know.</p>
                 <p>To protect your security and privacy answers and hints, and your greeting, are scrambled immediately in the database.</p>
                 <br />

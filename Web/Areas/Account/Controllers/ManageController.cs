@@ -22,6 +22,8 @@ public sealed class ManageController : BaseController
     [HttpGet]
     public IActionResult Register(string? returnUrl = null)
     {
+        returnUrl ??= Url.Action(nameof(SetSecurityQuestions));
+
         var model = new RegisterVm
         {
             ReturnUrl = returnUrl,
