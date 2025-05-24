@@ -22,7 +22,8 @@
 @if (_signInManager.IsSignedIn(User))
 {
     <h1>@welcomeSignedInUser</h1>
-    <div class="mt-2 d-flex text-center align-items-center justify-content-center">
+
+    <div class="mt-2 @CenterFlexNoWrapContainer">
         @if (mustSetSecurityQuestions)
         {
             <p>
