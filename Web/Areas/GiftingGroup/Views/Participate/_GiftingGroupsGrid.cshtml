@@ -26,6 +26,16 @@
             <text>Not yet selected</text>
         }
     </text>;
+
+    Func<IUserGiftingGroupYear, object> adminCheckbox =
+    @<text>
+        <readonly-checkbox for="@item.GroupAdmin" />
+    </text>;
+
+    Func<IUserGiftingGroupYear, object> includedCheckbox =
+    @<text>
+        <readonly-checkbox for="@item.Included" />
+    </text>;
 }
 
 @(Html
@@ -33,8 +43,8 @@
     .Build(columns =>
     {
         columns.Add(x => x.GiftingGroupName).Titled("Group Name");
-        columns.Add(x => x.GroupAdmin).Titled("Administrator");
-        columns.Add(x => x.Included).Titled($"Participating in {DateTime.Today.Year}");
+        columns.Add(x => x.GroupAdmin).RenderedAs(adminCheckbox).Titled("Administrator");
+        columns.Add(x => x.Included).RenderedAs(includedCheckbox).Titled($"Participating in {DateTime.Today.Year}");
         columns.Add(x => x.Limit).RenderedAs(x => x.LimitString).Titled("Spending Limit");
         columns.Add().RenderedAs(recipientName).Titled("Recipient");
         columns.Add().RenderedAs(actions).Encoded(false);
