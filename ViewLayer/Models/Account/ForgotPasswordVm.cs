@@ -24,7 +24,7 @@ public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     [Display(Name = "Greeting")]
     public string Greeting { get; set; } = string.Empty;
 
-    [Display(Name = "E-mail Address or Username")]
+    [Display(Name = $"{UserDisplayNames.Email} or {UserDisplayNames.UserName}")]
     public string EmailOrUserName { get; set; } = string.Empty;
 
     [Display(Name = UserDisplayNames.Forename)]

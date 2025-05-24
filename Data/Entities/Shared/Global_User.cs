@@ -2,7 +2,6 @@
 using Data.Entities.Santa;
 using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Shared;
-using Global.Names;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;

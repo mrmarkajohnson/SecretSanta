@@ -4,6 +4,6 @@ namespace Application.Shared.Identity;
 
 public class UserIdentificationBase : HasEmailBase, IHashableUserBase
 {
-    [Display(Name = "Username")]
+    [Display(Name = UserDisplayNames.UserName)]
     public virtual string? UserName { get; set; }
 }

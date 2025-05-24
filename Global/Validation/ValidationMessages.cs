@@ -6,17 +6,17 @@ public static class ValidationMessages
 {
     public const string PasswordConfirmationError = "Password and Confirmation Password do not match.";
 
-    public const string EmailError = "{0} is not a valid e-mail address.";
+    public const string EmailError = $"{{0}} is not a valid {UserDisplayNames.EmailLower}.";
     public const string GreaterOrEqualError = "{0} must be at least {1}.";
-    public const string GreaterThanError = "'{0}' must be greater than {1}.";
+    public const string GreaterThanError = "{0} must be greater than {1}.";
     public const string LengthError = "{0} must be {2} to {1} characters long.";
     public const string MaxLengthError = "{0} must be {1} characters or less.";
     public const string MinLengthError = "{0} must be at least {1} characters long.";
     public const string LessOrEqualError = "{0} cannot be more than {1}.";
-    public const string LessThanError = "'{0}' must be less than '{1}'.";
+    public const string LessThanError = "{0} must be less than {1}.";
     public const string RequiredError = "{0} is required.";
-    public const string NotEqualError = "'{0}' cannot be {1}.";
-    public const string EqualError = "'{0}' must be {1}.";
+    public const string NotEqualError = "{0} cannot be {1}.";
+    public const string EqualError = "{0} must be {1}.";
     public const string ExactLengthError = "{0} must be {1} characters long.";
     public const string InclusiveBetweenError = "{0} must be between {1} and {2}.";
     public const string ExclusiveBetweenError = "{0} must be less than {1} and more than {2}.";
@@ -25,6 +25,9 @@ public static class ValidationMessages
     public const string EmptyError = "{0} must be empty.";
     public const string NotValidError = "{0} is not valid.";
     public const string NotInDropDownError = "Please select a {0} from the drop-down list.";
+    public const string IncorrectFormatError = "{0} is not in the correct format.";
+    public const string PrecisionError = "{0} must not be more than {ExpectedPrecision} digits in total, with allowance for " +
+        "{ExpectedScale} decimals. {Digits} digits and {ActualScale} decimals were found.";
 
     internal static readonly IList<ValidationMessageLink> MessageLinks =
     [
@@ -42,13 +45,13 @@ public static class ValidationMessages
         new ValidationMessageLink("NotNullValidator", typeof(RequiredAttribute), RequiredError),
         new ValidationMessageLink("PredicateValidator", typeof(ValidationAttribute), NotValidError),
         new ValidationMessageLink("AsyncPredicateValidator", typeof(ValidationAttribute), NotValidError),
-        new ValidationMessageLink("RegularExpressionValidator", typeof(ValidationAttribute), "{0} is not in the correct format."),
+        new ValidationMessageLink("RegularExpressionValidator", typeof(ValidationAttribute), IncorrectFormatError),
         new ValidationMessageLink("EqualValidator", typeof(ValidationAttribute), EqualError, "ComparisonValue"),
         new ValidationMessageLink("ExactLengthValidator", typeof(ValidationAttribute), ExactLengthError, "MaxLength"),
         new ValidationMessageLink("InclusiveBetweenValidator", typeof(ValidationAttribute), InclusiveBetweenError, "From", "To"),
         new ValidationMessageLink("ExclusiveBetweenValidator", typeof(ValidationAttribute), ExclusiveBetweenError, "From", "To"),
         new ValidationMessageLink("CreditCardValidator", typeof(CreditCardAttribute), CreditCardError),
-        new ValidationMessageLink("ScalePrecisionValidator", typeof(ValidationAttribute), "{0} must not be more than {ExpectedPrecision} digits in total, with allowance for {ExpectedScale} decimals. {Digits} digits and {ActualScale} decimals were found."),
+        new ValidationMessageLink("ScalePrecisionValidator", typeof(ValidationAttribute), PrecisionError),
         new ValidationMessageLink("EmptyValidator", typeof(ValidationAttribute), EmptyError),
         new ValidationMessageLink("NullValidator", typeof(ValidationAttribute), EmptyError),
         new ValidationMessageLink("EnumValidator", typeof(RangeAttribute), NotInRangeError, "PropertyValue"),

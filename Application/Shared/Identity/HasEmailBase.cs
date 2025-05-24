@@ -4,8 +4,8 @@ namespace Application.Shared.Identity;
 
 public abstract class HasEmailBase : IHasEmail
 {
-    [EmailAddress(ErrorMessage = "E-mail Address is not valid e-mail.")]
-    [Display(Name = "E-mail Address")]
+    [EmailAddress(ErrorMessage = $"{UserDisplayNames.Email} is not a valid {UserDisplayNames.EmailLower}.")]
+    [Display(Name = UserDisplayNames.Email)]
     public virtual string? Email { get; set; }
 
     public bool ShowEmail { get; set; }

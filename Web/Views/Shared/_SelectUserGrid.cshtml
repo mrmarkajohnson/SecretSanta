@@ -12,8 +12,8 @@
     .Build(columns =>
     {
         columns.Add(x => x.UserDisplayName).Titled("Name");
-        columns.Add(x => x.UserName).Titled("UserName");
-        columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled("E-mail Address");
+        columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
+        columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
         columns.Add().RenderedAs(actions).Encoded(false);
     })
     .Pageable(pager =>

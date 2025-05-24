@@ -16,7 +16,7 @@ public class IdentityUserValidator<T> : AbstractValidator<T> where T : IIdentity
         RuleFor(x => x.UserName)
             .NotNullOrEmpty()
             .When(x => string.IsNullOrWhiteSpace(x.Email))
-            .WithMessage($"Please provide a Username if no E-mail Address is provided.");
+            .WithMessage($"Please provide a {UserDisplayNames.UserName} or {UserDisplayNames.Email}.");
 
         RuleFor(x => x.UserName)
             .MinimumLength(IdentityVal.UserNames.MinLength);

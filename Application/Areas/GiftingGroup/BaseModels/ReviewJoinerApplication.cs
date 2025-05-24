@@ -11,7 +11,7 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
     [Display(Name = "Group Name")]
     public string GroupName { get; set; } = string.Empty;
 
-    [Display(Name = "Applicant UserName")]
+    [Display(Name = $"Applicant {UserDisplayNames.UserName}")]
     public override string? UserName { get; set; } = string.Empty;
 
     [Display(Name = "Applicant Name")]
@@ -21,7 +21,7 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
         set => UserDisplayName = value;
     }
 
-    [Display(Name = "Applicant E-mail Address")]
+    [Display(Name = $"Applicant {UserDisplayNames.Email}")]
     public override string? Email { get; set; }
 
     public int PreviousRequestCount { get; set; }

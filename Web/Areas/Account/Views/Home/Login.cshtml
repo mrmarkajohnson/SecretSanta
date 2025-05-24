@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Log in";
-    string emailOrUserNameExplanation = "If you have provided an E-mail Address you can enter it here, or enter your Username";
     string rememberMeExplanation = "If ticked, you will stay logged in even if you close the browser (and in different browsers) until your login expires.";
 }
 
@@ -33,7 +32,7 @@
                                 <label asp-for="EmailOrUserName" class="control-label required"></label>
                                 <div class="input-group input-info">
                                     <input asp-for="EmailOrUserName" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com" />
-                                    <partial name="_InputQuestion" model="@emailOrUserNameExplanation" />
+                                    <partial name="_InputQuestion" model="@StandardPhrases.EmailOrUserNameExplanation" />
                                 </div>
                             </div>
                     

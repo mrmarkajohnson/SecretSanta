@@ -1,5 +1,4 @@
 ﻿using Application.Shared.Identity;
-using Global.Names;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
 using static Global.Settings.IdentitySettings;

@@ -8,7 +8,7 @@ public sealed class LoginVm : BaseFormVm, ILogin, IFormVm
 {
     //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    [Display(Name = "E-mail Address or Username")]
+    [Display(Name = $"{UserDisplayNames.Email} or {UserDisplayNames.UserName}")]
     public string EmailOrUserName { get; set; } = string.Empty;
 
     [Required]

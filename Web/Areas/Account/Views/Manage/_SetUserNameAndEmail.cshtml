@@ -1,9 +1,9 @@
 ﻿@model SantaUser
 @{
     string emailExplanation = "Not mandatory, but if provided this will only be used to provide updates from your group.";
-    string userNameExplanation = "Required if E-mail is not provided; you can use either to log in.<br/><br/>" 
-        + "However, if you <b>don't</b> set a UserName, users who view your details can see your E-mail address.";
-    string useEmailExplanation = "Note that if ticked, users who view your details can see your E-mail address.";
+    string userNameExplanation = $"Required if {UserDisplayNames.Email} is not provided; you can use either to log in.<br/><br/>"
+        + $"If you <b>don't</b> set a {UserDisplayNames.UserName}, {StandardPhrases.EmailVisibleExplanation}.";
+    string useEmailExplanation = $"Note that if ticked, {StandardPhrases.EmailVisibleExplanation}.";
 }
 
 <div class="d-flex flex-wrap text-center justify-content-center align-content-center">
@@ -14,7 +14,7 @@
                 <label asp-for="UserName" class="control-label"></label>
                 <div class="input-group input-info">
                     <input asp-for="UserName" class="form-control username-input" autocomplete="username" aria-required="false" 
-                        placeholder="Create a username (recommended)" />
+                        placeholder="Create a @UserDisplayNames.UserName (recommended)" />
                     <partial name="_InputQuestion" model="@userNameExplanation" />
                 </div>
                 <div>
@@ -30,8 +30,6 @@
                         &nbsp;
 
                         <input type="checkbox" class="form-check-input use-email-checkbox" />
-                        &nbsp;
-                        &nbsp;
                         &nbsp;
                         &nbsp;
 

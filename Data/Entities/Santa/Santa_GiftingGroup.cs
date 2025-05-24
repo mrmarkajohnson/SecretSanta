@@ -1,6 +1,5 @@
 ﻿using Data.Attributes;
 using Global.Abstractions.Areas.GiftingGroup;
-using Global.Names;
 using Global.Settings;
 using Global.Validation;
 using System.Globalization;

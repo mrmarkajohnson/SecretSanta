@@ -27,7 +27,7 @@
                 </li>
 
                 <li>
-                    <div class="dropdown-item"><b>Username:</b> @currentUser.UserName</div>
+                    <div class="dropdown-item"><b>@UserDisplayNames.UserName:</b> @currentUser.UserName</div>
                 </li>
                 <li>
                     <div class="dropdown-item"><b>Greeting:</b> @greeting</div>
@@ -35,7 +35,7 @@
                 @if (currentUser.Email.NotEmpty() && currentUser.Email != currentUser.UserName)
                 {
                     <li>
-                        <div class="dropdown-item"><b>E-mail:</b> @currentUser.Email</div>
+                        <div class="dropdown-item"><b>@UserDisplayNames.Email:</b> @currentUser.Email</div>
                     </li>
                 }
             </ul>
