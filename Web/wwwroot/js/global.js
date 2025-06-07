@@ -471,9 +471,9 @@ function initSummernote() {
                 ['font', ['bold', 'underline', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
-                /*            ['table', ['table']],*/
+                /*['table', ['table']],*/
                 ['insert', ['link',]], //'picture', 'video']],
-                /*            ['view', ['fullscreen', 'codeview', 'help']]*/
+                /*['view', ['fullscreen', 'codeview', 'help']]*/
             ]
         });
 
