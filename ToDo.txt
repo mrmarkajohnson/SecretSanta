@@ -3,7 +3,7 @@ GENERAL
 * Show a suggestions section at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
-Add back buttons to relevant pages
+Add back buttons to relevant pages?
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled
 Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name 
@@ -26,8 +26,9 @@ GIFTING GROUPS
 * Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
-Set other users as admins
-Remove users from group
+Show admins who is in the group, and
+	- allow setting other users as admins
+	- allow removing users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail
 Invite users without an e-mail address in the system to join using a unique token on the user, similar to the JoinerToken on groups, used only for that
@@ -52,7 +53,7 @@ Add other messages e.g.
 - response to invitation to join a group
 - message group admin
 - report bug/issue
-- report abuve
+- report abuse
 Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates
 Show if a message has changed, or it's no longer relevant
 
