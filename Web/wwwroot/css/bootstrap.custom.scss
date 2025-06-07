@@ -516,7 +516,7 @@ table tr td {
     border: 1px solid $gold !important;
 }
 
-.card {
+.homepage-cards .card {
     margin: 12px;
     background-color: $gold-light !important;
     border-color: $purple-background;
@@ -525,14 +525,14 @@ table tr td {
     box-shadow: $purple-box-shadow-light;
 }
 
-.card .card-header {
+.homepage-cards .card .card-header {
     font-size: 18px !important;
     font-weight: 500;
     background-color: $purple-background !important;
     color: $white !important;
 }
 
-.card .card-title {
+.homepage-cards .card .card-title {
     font-weight: 600 !important;
     background-color: inherit !important;
     color: $grey !important;

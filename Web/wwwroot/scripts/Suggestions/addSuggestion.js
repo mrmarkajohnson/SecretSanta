@@ -1,9 +1,11 @@
 ﻿window.addEventListener('load', function () {
     initAddSuggestion();
+    initSummernote();
 });
 
 document.addEventListener('reloadend', function (e) {
     initAddSuggestion();
+    initSummernote();
 });
 
 function initAddSuggestion() {

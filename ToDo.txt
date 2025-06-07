@@ -57,4 +57,4 @@ Link messages to the thing they relate to, so they can be updated or archived wh
 Show if a message has changed, or it's no longer relevant
 
 SUGGESTIONS
-* Add support for links etc. in the notes
+* Show truncated HTML properly in the grid if possible, but don't truncate links

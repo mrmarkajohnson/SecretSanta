@@ -1,9 +1,11 @@
 window.addEventListener('load', function () {
     initAddSuggestion();
+    initSummernote();
 });
 
 document.addEventListener('reloadend', function (e) {
     initAddSuggestion();
+    initSummernote();
 });
 
 function initAddSuggestion() {
@@ -21,7 +23,7 @@ function initGroupCheckboxes(form) {
         if (!checkbox.getAttribute('data-initialised')) {
             checkbox.setAttribute('data-initialised', true);
 
-            checkbox.addEventListener('click', function(e) {
+            checkbox.addEventListener('click', function (e) {
                 groupCheckboxClicked(checkbox);
             });
         }
@@ -52,7 +54,7 @@ function initGroupCheckboxes(form) {
                             className: 'btn-no'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
 
                         if (!result) {

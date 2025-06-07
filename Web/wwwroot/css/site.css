@@ -167,3 +167,12 @@ input::-ms-reveal, input::-ms-clear {
 .collapse {
     display: none !important;
 }
+
+div.note-editor.note-frame .note-btn {
+    background-color: white !important;
+    color: black !important;
+}
+
+div.note-editor .note-editable.card-block {
+    text-align: left !important;
+}

@@ -9,14 +9,14 @@ Html
     .Build(columns =>
     {
         columns.Add(x => x.SuggestionText).Titled("Suggestion");
-        columns.Add(x => x.OtherNotes).RenderedAs(x => x.NotesTruncated()).Titled("Notes");
+        columns.Add(x => x.OtherNotes).Titled("Notes").Encoded(false);
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("MySuggestionsGrid"))
+    .UsingUrl(Url.Action("RecipientSuggestionsGrid", new { giftingGroupKey = Model.GiftingGroupKey, hashedUserId = Model.HashedRecipientId } ))
     .Empty("No suggestions found")
     .Id("suggestions-grid")
     .Filterable()

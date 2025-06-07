@@ -9,7 +9,7 @@
         if (!checkbox.getAttribute('data-initialised')) {
             checkbox.setAttribute('data-initialised', true);
 
-            checkbox.addEventListener('click', function(e) {
+            checkbox.addEventListener('click', function (e) {
                 groupCheckboxClicked(checkbox);
             });
         }
@@ -40,7 +40,7 @@
                             className: 'btn-no'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
 
                         if (!result) {

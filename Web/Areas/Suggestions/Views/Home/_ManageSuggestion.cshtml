@@ -58,7 +58,13 @@
                 <div class="mb-3">
                     <label asp-for="OtherNotes" class="control-label"></label>
                     <div class="input-group input-info">
-                        <textarea asp-for="OtherNotes" class="form-control" aria-required="false" rows="5"></textarea>
+                        <div class="flex-grow-1"> @* This is needed to handle the flex group *@
+                            <div class="collapse">
+                                <input type="hidden" asp-for="OtherNotes" class="summernote-content" />
+                            </div>
+
+                            <div class="summernote form-control"></div>
+                        </div>
                         <partial name="_InputQuestion" model="@notesExplanation" />
                     </div>
                     <div>

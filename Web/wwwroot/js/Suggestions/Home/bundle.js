@@ -2,8 +2,13 @@ document.addEventListener('modalOpening', function (e) {
     suggestionsModalOpening(e);
 });
 
+document.addEventListener('modalSaved', function (e) {
+    suggestionsModalSaved(e);
+});
+
 async function suggestionsModalOpening(e) {
     let modal = e.detail.modal;
+
     if (modal.id == 'manageSuggestionModal') {
         suggestionModalOpened(modal);
     }
@@ -12,6 +17,15 @@ async function suggestionsModalOpening(e) {
 function suggestionModalOpened(modal) {
     let form = modal.querySelector('form');
     initGroupCheckboxes(form);
+    initSummernote();
+}
+
+async function suggestionsModalSaved(e) {
+    let modal = e.detail.modal;
+
+    if (modal.id == 'manageSuggestionModal') {
+        reloadGrid();
+    }
 }
 function initGroupCheckboxes(form) {
     let groupCheckboxes = form.querySelectorAll('input[type=checkbox].apply-group-checkbox');
@@ -24,7 +38,7 @@ function initGroupCheckboxes(form) {
         if (!checkbox.getAttribute('data-initialised')) {
             checkbox.setAttribute('data-initialised', true);
 
-            checkbox.addEventListener('click', function(e) {
+            checkbox.addEventListener('click', function (e) {
                 groupCheckboxClicked(checkbox);
             });
         }
@@ -55,7 +69,7 @@ function initGroupCheckboxes(form) {
                             className: 'btn-no'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
 
                         if (!result) {

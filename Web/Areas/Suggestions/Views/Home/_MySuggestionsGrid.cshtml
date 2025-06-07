@@ -26,7 +26,7 @@ Html
     .Build(columns =>
     {
         columns.Add(x => x.SuggestionText).Titled("Suggestion");
-        columns.Add(x => x.OtherNotes).RenderedAs(x => x.NotesTruncated()).Titled("Notes");
+        columns.Add(x => x.OtherNotes).Titled("Notes").Encoded(false);
         columns.Add(x => x.Priority).Titled("Priority");
 
         if (Model.AllGroups.Count > 0)
