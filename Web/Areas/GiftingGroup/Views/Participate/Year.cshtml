@@ -124,7 +124,14 @@
                         <div class="mb-3">
                             <label asp-for="Recipient" class="control-label"></label>
                             <div class="control-label fw-normal">
-                                <text>@Model.RecipientString</text>
+                                <text>
+                                    @Model.RecipientString
+
+                                    @if (Model.Recipient != null)
+                                    {
+                                        <partial name="_UserInfoCard" model="@Model.Recipient" />
+                                    }
+                                </text>
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;

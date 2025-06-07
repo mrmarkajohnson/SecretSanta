@@ -1,8 +1,6 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
 using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
-using Global.Abstractions.Areas.Suggestions;
-using Global.Names;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ViewLayer.Abstractions;
 using ViewLayer.Models.Suggestions;

@@ -1,0 +1,47 @@
+﻿@model IUserAllNames?
+@{
+    string Line(string label, string text) => $"<span class=\"nowrap\"><b>{label}:</b> {text}</span>";
+
+    string? info = null;
+
+    if (Model != null)
+    {
+        string displayName = Model.DisplayName(false);
+        string fullName = Model.FullName();
+        string? userName = Model is IHashableUserBase userNamesBase ? userNamesBase.UserName : null;
+        string? eMail = Model is IHasEmail hasEmail && hasEmail.ShowEmail ? hasEmail.Email : null;
+
+        info = Line("Name", displayName);
+
+        if (fullName != displayName)
+        {
+            info += "<br/>" + Line("Full Name", fullName);
+        }
+
+        if (userName != null)
+        {
+            info += "<br/>" + Line(UserDisplayNames.UserName, userName);
+        }
+
+        if (eMail != null && eMail != userName)
+        {
+            info += "<br/>" + Line(UserDisplayNames.Email, eMail);
+        }
+    }
+}
+
+@if (info != null)
+{
+    <style>
+        .tooltip, .tooltip-inner {
+            max-width: 100%; /* Max Width of the popover (depending on the container!) */
+            width: fit-content !important;
+            text-align: left !important;
+        }
+    </style>
+
+    <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="body" title="@info"
+            style="font-size: 13px !important">
+        <i class="fa fa-circle-info fa-border" style="font-size: 13px !important"></i>
+    </span>
+}

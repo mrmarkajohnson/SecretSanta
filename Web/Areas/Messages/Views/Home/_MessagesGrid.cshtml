@@ -7,7 +7,20 @@
            data-toggle="tooltip" title="View Message">
             <i class="fa fa-eye"></i>
         </a>
-    </text> ;
+    </text>;
+
+    Func<IReadMessage, object> from =
+    @<text>
+        @if (item.Sender != null)
+        {
+            @item.SenderName
+            <partial name="_UserInfoCard" model="@item.Sender" />
+        }
+        else
+        {
+            @item.SenderName
+        }
+    </text>;
 }
 
 @(Html

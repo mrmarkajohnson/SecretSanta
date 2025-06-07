@@ -59,7 +59,11 @@
                                     <input type="hidden" asp-for="PossibleRelationships[i].AlreadyConfirmed" />
                                     <input type="hidden" asp-for="PossibleRelationships[i].SharedGroupNames" />
                                 </span>
-                                @relationship.Partner.UserDisplayName
+
+                                <span class="nowrap">
+                                    @relationship.Partner.UserDisplayName 
+                                    <partial name="_UserInfoCard" model="@relationship.Partner" />
+                                </span>
                             </td>
                             <td>@relationship.Partner.UserName</td>
                             <td>@relationship.SharedGroupsDisplay</td>

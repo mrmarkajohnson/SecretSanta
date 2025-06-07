@@ -8,7 +8,13 @@
                 asp-route-groupApplicationKey="@item.GroupApplicationKey" asp-route-singleApplication="@singleApplication">
             <i class="fa fa-pencil"></i>
         </a>
-    </text> ;
+    </text>;
+
+    Func<IReviewApplication, object> applicant =
+    @<text>
+        @item.ApplicantName
+        <partial name="_UserInfoCard" model="@item" />
+    </text>;
 }
 
 @(Html
@@ -16,7 +22,7 @@
     .Build(columns =>
     {
         columns.Add(x => x.GroupName).Titled("Group Name");
-        columns.Add(x => x.ApplicantName).Titled("Applicant Name");
+        columns.Add(x => x.ApplicantName).RenderedAs(applicant).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
         columns.Add(x => x.Email ?? string.Empty).Titled(UserDisplayNames.Email);
         columns.Add().RenderedAs(actions).Encoded(false);

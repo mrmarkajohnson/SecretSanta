@@ -16,10 +16,14 @@
     @<text>        
         @if (item.Included && item.Recipient != null)
         {
-            <a href="#" data-name="@item.Recipient?.UserDisplayName" data-user-name="@item.RecipientString"
-                data-toggle="tooltip" title="Show who you are giving to" onclick="showRecipient(this)">
+            <a href="#" data-user-name="@item.RecipientString" data-group-name="@item.GiftingGroupName"
+                    data-toggle="tooltip" title="Show who you are giving to this year" onclick="showRecipient(this)">
                 Show
             </a>
+
+            <span class="user-info-card collapse">
+                <partial name="_UserInfoCard" model="@item.Recipient" />
+            </span>
         }
         else
         {

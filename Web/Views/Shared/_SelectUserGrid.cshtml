@@ -4,14 +4,20 @@
     Func<IVisibleUser, object> actions =
     @<text>
         <input type="radio" class="user-select" name="UserSelect" data-hashed-user-id="@item.HashedUserId" data-name="@item.UserDisplayName" data-toggle="tooltip" title="Select" />
-    </text> ;
+    </text>;
+
+    Func<IVisibleUser, object> displayName =
+    @<text>
+        @item.UserDisplayName
+        <partial name="_UserInfoCard" model="@item" />
+    </text>;
 }
 
 @(Html
     .Grid(Model.Users)
     .Build(columns =>
     {
-        columns.Add(x => x.UserDisplayName).Titled("Name");
+        columns.Add(x => x.UserDisplayName).RenderedAs(displayName).Titled("Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
         columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
         columns.Add().RenderedAs(actions).Encoded(false);

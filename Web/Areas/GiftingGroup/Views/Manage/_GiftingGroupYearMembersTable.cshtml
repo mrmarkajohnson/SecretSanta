@@ -27,7 +27,8 @@
                                 <input type="hidden" asp-for="GroupMembers[i].SantaUserKey" />
                                 <partial name="_UserHiddenInputs" for="GroupMembers[i]" />
                             </span>
-                            @user.UserDisplayName</td>
+                            <span class="nowrap">@user.UserDisplayName <partial name="_UserInfoCard" model="@user" /></span>
+                        </td>
                         <td>@user.UserName</td>
                         <td>
                             <span class="text-secondary">No</span> 

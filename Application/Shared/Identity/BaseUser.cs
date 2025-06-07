@@ -1,6 +1,4 @@
-﻿using Global.Extensions.System;
-
-namespace Application.Shared.Identity;
+﻿namespace Application.Shared.Identity;
 
 public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHashedUserId
 {

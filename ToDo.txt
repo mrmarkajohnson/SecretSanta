@@ -1,6 +1,6 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
-* Show a little 'User Card' whenever someone's name is shown (e.g. as an 'i' symbol like groups
+* Show a suggestions section at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages
