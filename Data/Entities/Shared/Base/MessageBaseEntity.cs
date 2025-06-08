@@ -20,4 +20,5 @@ public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessageEntity
     public required string MessageText { get; set; }
 
     public bool Important { get; set; }
+    public bool CanReply { get; set; }
 }
