@@ -2,6 +2,7 @@
 using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -15,7 +16,7 @@ public sealed class GiftingGroupMappingProfile : Profile
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroupYear>()
             .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
             .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
-            .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => src.GroupAdmin ? GroupMemberStatus.Admin : GroupMemberStatus.Joined))
             .ForMember(dest => dest.Included, opt => opt.Ignore())
             .ForMember(dest => dest.Recipient, opt => opt.Ignore())
             .ForMember(dest => dest.CalendarYear, opt => opt.MapFrom(src => DateTime.Today.Year))
@@ -31,6 +32,18 @@ public sealed class GiftingGroupMappingProfile : Profile
 
         CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYear>();
         CreateMap<IUserGiftingGroupYear, IManageUserGiftingGroupYear>().As<ManageUserGiftingGroupYear>();
+
+        CreateMap<Santa_GiftingGroupApplication, UserGiftingGroupYear>()
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
+            .ForMember(dest => dest.GiftingGroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Applied))
+            .ForMember(dest => dest.Included, opt => opt.MapFrom(src => false))
+            .ForMember(dest => dest.Recipient, opt => opt.Ignore())
+            .ForMember(dest => dest.CalendarYear, opt => opt.MapFrom(src => DateTime.Today.Year))
+            .ForMember(dest => dest.Limit, opt => opt.MapFrom(src => (decimal?)null))
+            .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => "N/A"))
+            .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => "N/A"));
+        CreateMap<Santa_GiftingGroupApplication, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroup>()
             .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))

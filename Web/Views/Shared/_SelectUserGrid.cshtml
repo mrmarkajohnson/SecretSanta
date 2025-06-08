@@ -20,14 +20,14 @@
         columns.Add(x => x.UserDisplayName).RenderedAs(displayName).Titled("Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
         columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
-        columns.Add().RenderedAs(actions).Encoded(false);
+        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action(Model.UserGridAction))
+    .UsingUrl(Url.Action(Model.UserGridAction) ?? "")
     .Empty("Nobody found")
     .Id("select-user-grid")
     .Filterable()

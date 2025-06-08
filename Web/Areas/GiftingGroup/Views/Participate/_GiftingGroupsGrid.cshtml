@@ -2,13 +2,16 @@
 @{
     Func<IUserGiftingGroupYear, object> actions =
     @<text>
-        <a asp-action="Year" asp-controller="Participate" asp-area="GiftingGroup" data-toggle="tooltip" title="View details and participate"
-           asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
-
-        @if (item.GroupAdmin)
+        @if (item.MemberStatus >= GroupMemberStatus.Joined)
         {
-            <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
-                data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"><i class="fa fa-pencil"></i></a>
+            <a asp-action="Year" asp-controller="Participate" asp-area="GiftingGroup" data-toggle="tooltip" title="View details and participate"
+               asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
+
+            @if (item.MemberStatus == GroupMemberStatus.Admin)
+            {
+                <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
+                    data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"><i class="fa fa-pencil"></i></a>
+            }
         }
     </text>;
 
@@ -27,19 +30,20 @@
         }
         else
         {
-            <text>Not yet selected</text>
+            <text>@item.RecipientString</text>
         }
-    </text>;
-
-    Func<IUserGiftingGroupYear, object> adminCheckbox =
-    @<text>
-        <readonly-checkbox for="@item.GroupAdmin" />
     </text>;
 
     Func<IUserGiftingGroupYear, object> includedCheckbox =
     @<text>
         <readonly-checkbox for="@item.Included" />
-    </text>;
+    </text>
+    ;
+
+    static string RowClass(IUserGiftingGroupYear item) =>
+        item.MemberStatus == GroupMemberStatus.Admin
+        ? "bold"
+        : (item.MemberStatus <= GroupMemberStatus.Rejected ? "text-grey" : "");
 }
 
 @(Html
@@ -47,20 +51,21 @@
     .Build(columns =>
     {
         columns.Add(x => x.GiftingGroupName).Titled("Group Name");
-        columns.Add(x => x.GroupAdmin).RenderedAs(adminCheckbox).Titled("Administrator");
+        columns.Add(x => x.MemberStatus).RenderedAs(x => x.MemberStatus.DisplayName()).Titled(GiftingGroupNames.MemberStatus);
         columns.Add(x => x.Included).RenderedAs(includedCheckbox).Titled($"Participating in {DateTime.Today.Year}");
         columns.Add(x => x.Limit).RenderedAs(x => x.LimitString).Titled("Spending Limit");
         columns.Add().RenderedAs(recipientName).Titled("Recipient");
-        columns.Add().RenderedAs(actions).Encoded(false);
+        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("GiftingGroupsGrid"))
+    .UsingUrl(Url.Action("GiftingGroupsGrid") ?? "")
     .Empty("No active applications found")
     .Id("gifting-groups-grid")
     .Filterable()
     .Sortable()
+    .RowAttributed(x => new { @class = (RowClass(x)) })
 )

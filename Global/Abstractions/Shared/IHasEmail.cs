@@ -8,6 +8,8 @@ public interface IHasEmail
     string? Email { get; set; }
 
     bool ShowEmail { get; set; }
+
+    string NonNullableEmail => this.EmailForDisplay();
 }
 
 public static class HasEmailExtensions

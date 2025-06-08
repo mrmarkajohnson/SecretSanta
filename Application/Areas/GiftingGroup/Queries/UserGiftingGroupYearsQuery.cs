@@ -20,7 +20,8 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
                 .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
 
             userGroups = GetYearsWithMemberSet(dbSantaUser, dbActiveLinks)
-                .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks));
+                .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks))
+                .Union(GetJoinerRequests(dbSantaUser, dbActiveLinks));
         }
 
         return Result(userGroups);
@@ -44,6 +45,18 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
         return dbActiveLinks
             .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear == DateTime.Today.Year)
                 .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
+            .AsQueryable()
+            .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);
+    }
+
+    private IQueryable<IUserGiftingGroupYear> GetJoinerRequests(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
+    {
+        IEnumerable<Santa_GiftingGroupApplication> dbJoinerRequests = dbSantaUser.GiftingGroupApplications
+            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.Accepted == null)
+            .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
+
+        return dbJoinerRequests
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);
     }

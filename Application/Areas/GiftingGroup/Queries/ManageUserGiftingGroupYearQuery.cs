@@ -3,6 +3,7 @@ using Application.Areas.GiftingGroup.Mapping;
 using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -52,7 +53,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
             {
                 GiftingGroupKey = dbGiftingGroupLink.GiftingGroupKey,
                 GiftingGroupName = dbGiftingGroup.Name,
-                GroupAdmin = dbGiftingGroupLink.GroupAdmin,
+                MemberStatus = dbGiftingGroupLink.GroupAdmin ? GroupMemberStatus.Admin : GroupMemberStatus.Joined,
                 Limit = dbYear?.Limit,
                 CurrencyCode = dbYear?.CurrencyCode ?? dbGiftingGroup.GetCurrencyCode(),
                 CurrencySymbol = dbYear?.CurrencySymbol ?? dbGiftingGroup.GetCurrencySymbol(),

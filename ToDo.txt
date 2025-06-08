@@ -1,6 +1,6 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
-* Show a suggestions section at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
+* Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages?
@@ -23,7 +23,6 @@ Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
 * Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names
-* Include applications in groups list for the year (but don't show any actions) in the groups list for the year, and use a status of 'Administrator', 'Member' or 'Applied to Join'
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
 Show admins who is in the group, and

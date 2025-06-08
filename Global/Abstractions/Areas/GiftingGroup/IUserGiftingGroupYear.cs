@@ -1,10 +1,11 @@
 ﻿using Global.Abstractions.Shared;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
 public interface IUserGiftingGroupYear : IGiftingGroupYearBase, IUserGroupYearShared
 {
-    bool GroupAdmin { get; }
+    GroupMemberStatus MemberStatus { get; }
     IUserNamesBase? Recipient { get; }
 
     string LimitString { get; }

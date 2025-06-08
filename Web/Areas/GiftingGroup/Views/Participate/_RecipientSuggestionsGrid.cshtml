@@ -16,7 +16,8 @@ Html
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("RecipientSuggestionsGrid", new { giftingGroupKey = Model.GiftingGroupKey, hashedUserId = Model.HashedRecipientId } ))
+    .UsingUrl(Url.Action("RecipientSuggestionsGrid", 
+        new { giftingGroupKey = Model.GiftingGroupKey, hashedUserId = Model.HashedRecipientId }) ?? "")
     .Empty("No suggestions found")
     .Id("suggestions-grid")
     .Filterable()

@@ -3,6 +3,7 @@ using Application.Shared.BaseModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.GiftingGroup;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -19,7 +20,9 @@ internal static class GiftingGroupManualMappings
         {
             GiftingGroupKey = dbGiftingGroupYear.GiftingGroupKey,
             GiftingGroupName = dbGiftingGroupYear.GiftingGroup.Name,
-            GroupAdmin = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin,
+            MemberStatus = dbGiftingGroupYear.GiftingGroup.UserLinks.First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin
+                ? GroupMemberStatus.Admin 
+                : GroupMemberStatus.Joined,
             Included = dbYearGroupUser.Included ?? false,
             Recipient = dbYearGroupUser.RecipientSantaUserKey > 0
                 ? (mapper.Map<UserNamesBase>(dbYearGroupUser.RecipientSantaUser).UnHash())

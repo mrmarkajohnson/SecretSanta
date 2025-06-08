@@ -1,4 +1,5 @@
 ﻿@using Global.Abstractions.Areas.Messages
+
 @model IQueryable<IReadMessage>
 @{
     Func<IReadMessage, object> actions =
@@ -31,17 +32,17 @@
         columns.Add(x => x.SenderName).Titled("From");
         columns.Add(x => x.RecipientTypes).RenderedAs(x => x.RecipientTypes.DisplayName()).Titled("To");
         columns.Add(x => x.HeaderText).Titled("Subject");
-        columns.Add().RenderedAs(actions).Encoded(false);
+        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("MessagesGrid"))
+    .UsingUrl(Url.Action("MessagesGrid") ?? "")
     .Empty("No messages found")
     .Id("messages-grid")
     .Filterable()
     .Sortable()
-    .RowAttributed(model => new { @class = (model.Important ? "bold " : "") + (!model.Read ? "text-danger" : "") })
+    .RowAttributed(x => new { @class = (x.Important ? "bold " : "") + (!x.Read ? "text-danger" : "") })
 )

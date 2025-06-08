@@ -177,7 +177,7 @@
         <div class="row @CenterFlexNoWrapContainer">
 
             <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
-                @if (Model.GroupAdmin)
+                @if (Model.MemberStatus == GroupMemberStatus.Admin)
                 {            
                     <div>
                         <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"

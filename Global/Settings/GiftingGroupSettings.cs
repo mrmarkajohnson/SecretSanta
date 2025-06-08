@@ -17,4 +17,22 @@ public static class GiftingGroupSettings
     }
 
     public const int MinimumParticipatingMembers = 3;
+
+    public enum GroupMemberStatus
+    {
+        [Display(Name = "Not Applied")]
+        None = 0,
+
+        [Display(Name = "Applied to Join")]
+        Applied,
+
+        [Display(Name = "Application Rejected")]
+        Rejected,
+
+        [Display(Name = "Member")]
+        Joined,
+
+        [Display(Name = "Administrator")]
+        Admin
+    }
 }

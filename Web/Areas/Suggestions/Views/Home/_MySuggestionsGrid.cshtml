@@ -38,7 +38,7 @@ Html
                     .Titled(group.GroupName);
             }
 
-            columns.Add().RenderedAs(actions).Encoded(false).Css("nowrap");
+            columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
         }
     })
     .Pageable(pager =>
@@ -46,7 +46,7 @@ Html
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("MySuggestionsGrid"))
+    .UsingUrl(Url.Action("MySuggestionsGrid") ?? "")
     .Empty("No suggestions found")
     .Id("suggestions-grid")
     .Filterable()

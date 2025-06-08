@@ -24,15 +24,15 @@
         columns.Add(x => x.GroupName).Titled("Group Name");
         columns.Add(x => x.ApplicantName).RenderedAs(applicant).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
-        columns.Add(x => x.Email ?? string.Empty).Titled(UserDisplayNames.Email);
-        columns.Add().RenderedAs(actions).Encoded(false);
+        columns.Add(x => x.NonNullableEmail).Titled(UserDisplayNames.Email);
+        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("JoinerApplicationsGrid"))
+    .UsingUrl(Url.Action("JoinerApplicationsGrid") ?? "")
     .Empty("No active applications found")
     .Id("joiner-applications-grid")
     .Filterable()
