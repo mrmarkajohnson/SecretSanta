@@ -15,4 +15,5 @@ public interface IMessageBase
     string MessageText { get; set; }
 
     bool Important { get; set; }
+    bool CanReply { get; set; }
 }

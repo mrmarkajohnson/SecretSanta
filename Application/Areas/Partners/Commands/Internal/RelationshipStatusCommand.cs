@@ -255,6 +255,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
             HeaderText = _headerText,
             MessageText = _messageText,
             Important = false,
+            CanReply = false,
             ShowAsFromSanta = true
         };
 

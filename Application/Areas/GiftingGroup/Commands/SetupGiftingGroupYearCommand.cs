@@ -196,6 +196,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
             HeaderText = headerText,
             MessageText = messageText,
             Important = cancelled != false,
+            CanReply = false,
             ShowAsFromSanta = true
         };
 

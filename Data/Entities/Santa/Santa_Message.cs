@@ -14,6 +14,12 @@ public class Santa_Message : MessageBaseEntity, IMessageEntity
     public virtual Santa_GiftingGroupYear? GiftingGroupYear { get; set; }
 
     public virtual required Santa_User Sender { get; set; }
+
+    public bool CanReply { get; set; }
+
+    /// <summary>
+    /// Original message that this messsage is replying to
+    /// </summary>
     public virtual Santa_MessageReply? ReplyTo { get; set; }
 
     public virtual ICollection<Santa_MessageRecipient> Recipients { get; set; }

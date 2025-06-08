@@ -59,6 +59,7 @@ public sealed class AddRelationshipCommand : BaseCommand<IAddRelationship>
             HeaderText = (Item.IsActive ? "Are" : "Were") + " you in a relationship?",
             MessageText = messageText,
             Important = true,
+            CanReply = false,
             ShowAsFromSanta = true
         };
 

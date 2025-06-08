@@ -1,6 +1,8 @@
 GENERAL
 * Handle index pages etc. in bundles/routing
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
+Add an 'About' section on the homepage, and a link to that section on a separate page - e.g. what SS does
+Add a Help page
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add testing and production configuration
 Add back buttons to relevant pages?
