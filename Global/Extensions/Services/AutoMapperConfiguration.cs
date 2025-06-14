@@ -8,7 +8,7 @@ public static class AutoMapperConfiguration
 {
     public static void ConfigureAutoMapperProfiles(this IServiceCollection services)
     {
-        string[] mapperAssemblyNames = ["Application", "ViewLayer"];
+        string[] mapperAssemblyNames = ["Application", "ViewModels"];
         Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies()
             .Where(x => mapperAssemblyNames.Contains(x.GetName().Name))
             .ToArray();

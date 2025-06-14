@@ -4,7 +4,7 @@ using Application.Areas.Account.Queries;
 using Global.Abstractions.Areas.Account;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.Account;
+using ViewModels.Models.Account;
 
 namespace Web.Areas.Account.Controllers;
 

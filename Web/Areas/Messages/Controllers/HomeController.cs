@@ -3,7 +3,7 @@ using Application.Areas.Messages.Queries;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.Messages;
+using ViewModels.Models.Messages;
 
 namespace Web.Areas.Messages.Controllers;
 

@@ -4,8 +4,8 @@ using Application.Shared.Helpers;
 using Global.Abstractions.Areas.Partners;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.Partners;
-using ViewLayer.Models.Shared;
+using ViewModels.Models.Partners;
+using ViewModels.Models.Shared;
 using static Global.Settings.PartnerSettings;
 
 namespace Web.Areas.Partners.Controllers;

@@ -4,8 +4,8 @@ using Application.Areas.Suggestions.Queries;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Suggestions;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.Participate;
-using ViewLayer.Models.Suggestions;
+using ViewModels.Models.Participate;
+using ViewModels.Models.Suggestions;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 

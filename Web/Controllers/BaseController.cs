@@ -8,8 +8,8 @@ using Global.Abstractions.Areas.Account;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
-using ViewLayer.Abstractions;
-using ViewLayer.Models.Home;
+using ViewModels.Abstractions;
+using ViewModels.Models.Home;
 using Web.Helpers;
 
 namespace Web.Controllers;

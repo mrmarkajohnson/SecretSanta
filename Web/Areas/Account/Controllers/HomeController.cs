@@ -2,7 +2,7 @@
 using Application.Areas.Account.Queries;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
-using ViewLayer.Models.Account;
+using ViewModels.Models.Account;
 
 namespace Web.Areas.Account.Controllers;
 

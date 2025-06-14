@@ -1,7 +1,7 @@
 ﻿using Application.Areas.Suggestions.Commands;
 using Application.Areas.Suggestions.Queries;
 using Global.Abstractions.Areas.Suggestions;
-using ViewLayer.Models.Suggestions;
+using ViewModels.Models.Suggestions;
 
 namespace Web.Areas.Suggestions.Controllers;
 

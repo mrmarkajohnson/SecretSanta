@@ -35,7 +35,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddTransient<BaseActionFilter>();
 builder.Services.AddRazorPages().AddMvcOptions(options => options.Filters.AddService<BaseActionFilter>());
 
-string[] mapperAssemblyNames = ["Application", "ViewLayer"];
+string[] mapperAssemblyNames = ["Application", "ViewModels"];
 Assembly[] mapperAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => mapperAssemblyNames.Contains(x.GetName().Name)).ToArray();
 var profiles = mapperAssemblies.SelectMany(x => x.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x))).ToArray();
 builder.Services.ConfigureAutoMapperProfiles();

@@ -3,8 +3,8 @@ using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
-using ViewLayer.Models.GiftingGroup;
-using static ViewLayer.Models.GiftingGroup.JoinGiftingGroupVm;
+using ViewModels.Models.GiftingGroup;
+using static ViewModels.Models.GiftingGroup.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
