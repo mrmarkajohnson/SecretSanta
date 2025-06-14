@@ -1,5 +1,7 @@
 ﻿namespace Data.Entities.Santa;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+
 public class Santa_GiftingGroupYear_Audit : AuditBaseEntity, IAuditEntity<Santa_GiftingGroupYear, Santa_GiftingGroupYear_AuditChange>
 {
     public Santa_GiftingGroupYear_Audit()

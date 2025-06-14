@@ -10,9 +10,10 @@ public sealed class CustomValidationAttributeAdapterProvider
 
     IAttributeAdapter IValidationAttributeAdapterProvider.GetAttributeAdapter(
         ValidationAttribute attribute,
-        IStringLocalizer stringLocalizer)
+        IStringLocalizer? stringLocalizer)
     {
         IAttributeAdapter adapter = base.GetAttributeAdapter(attribute, stringLocalizer);
+
         var attributeType = attribute.GetType();
 
         var matchedLink = ValidationMessages.AttributeMessageLinks.Find(x => attributeType == x.DataAttribute?.UnderlyingSystemType);

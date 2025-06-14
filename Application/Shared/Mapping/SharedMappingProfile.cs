@@ -3,6 +3,8 @@ using AutoMapper;
 
 namespace Application.Shared.Mapping;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
 public sealed class SharedMappingProfile : Profile
 {
     public SharedMappingProfile()

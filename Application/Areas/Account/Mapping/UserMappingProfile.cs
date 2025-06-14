@@ -4,6 +4,8 @@ using AutoMapper;
 
 namespace Application.Areas.Account.Mapping;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
 public sealed class UserMappingProfile : Profile
 {
     public UserMappingProfile()
