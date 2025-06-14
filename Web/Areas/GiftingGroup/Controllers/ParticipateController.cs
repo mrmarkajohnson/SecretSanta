@@ -1,11 +1,11 @@
-﻿using Application.Areas.GiftingGroup.Commands;
-using Application.Areas.GiftingGroup.Queries;
+﻿using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Participate.Commands;
+using Application.Areas.Participate.Queries;
+using Application.Areas.Participate.ViewModels;
 using Application.Areas.Suggestions.Queries;
-using Global.Abstractions.Areas.GiftingGroup;
-using Global.Abstractions.Areas.Suggestions;
+using Application.Areas.Suggestions.ViewModels;
+using Global.Abstractions.Areas.Participate;
 using Microsoft.AspNetCore.Authorization;
-using ViewModels.Models.Participate;
-using ViewModels.Models.Suggestions;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 

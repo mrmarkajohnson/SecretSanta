@@ -1,7 +1,7 @@
-﻿using Application.Areas.GiftingGroup.Mapping;
+﻿using Application.Areas.Participate.Mapping;
 using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
-using Global.Abstractions.Areas.GiftingGroup;
+using Global.Abstractions.Areas.Participate;
 
 namespace Application.Areas.GiftingGroup.Queries;
 

@@ -1,4 +1,5 @@
-﻿@model ISucceedVm
+﻿@using Global.Abstractions.ViewModels
+@model ISucceedVm
 
 <div class="collapse">
     <input type="hidden" asp-for="SuccessMessage" id="successMessage" /> @* NB: This is lost on submit as the model is an interface, but that's desired anyway *@

@@ -1,15 +1,15 @@
 ﻿using Application.Areas.Account.Queries;
 using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Home.ViewModels;
 using Application.Shared.Requests;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
+using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
-using ViewModels.Abstractions;
-using ViewModels.Models.Home;
 using Web.Helpers;
 
 namespace Web.Controllers;

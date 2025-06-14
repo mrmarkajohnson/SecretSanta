@@ -1,10 +1,10 @@
 ﻿using Application.Areas.GiftingGroup.Actions;
 using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.GiftingGroup.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
-using ViewModels.Models.GiftingGroup;
-using static ViewModels.Models.GiftingGroup.JoinGiftingGroupVm;
+using static Application.Areas.GiftingGroup.ViewModels.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 

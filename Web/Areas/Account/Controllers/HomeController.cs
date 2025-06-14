@@ -1,8 +1,8 @@
 ﻿using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
+using Application.Areas.Account.ViewModels;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
-using ViewModels.Models.Account;
 
 namespace Web.Areas.Account.Controllers;
 

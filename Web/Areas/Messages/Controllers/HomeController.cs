@@ -1,9 +1,9 @@
 ﻿using Application.Areas.Messages.Commands;
 using Application.Areas.Messages.Queries;
+using Application.Areas.Messages.ViewModels;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
-using ViewModels.Models.Messages;
 
 namespace Web.Areas.Messages.Controllers;
 

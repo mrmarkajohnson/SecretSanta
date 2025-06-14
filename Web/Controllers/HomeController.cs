@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using ViewModels.Models.Shared;
+using Application.Shared.ViewModels;
 
 namespace SecretSanta.Controllers;
 

@@ -1,4 +1,5 @@
-﻿@model MainMenuVm
+﻿@using Application.Areas.Home.ViewModels
+@model MainMenuVm
 @{
     string navItemClass = "nav-item dropdown" 
         + (string.IsNullOrEmpty(Model.DropdownClass) ? string.Empty : (" " + Model.DropdownClass));

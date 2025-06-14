@@ -1,10 +1,10 @@
 ﻿using Application.Areas.Account.BaseModels;
 using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
+using Application.Areas.Account.ViewModels;
 using Global.Abstractions.Areas.Account;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
-using ViewModels.Models.Account;
 
 namespace Web.Areas.Account.Controllers;
 
