@@ -8,3 +8,5 @@ dotnet user-secrets set "EncryptionSettings:SymmetricKeyEnd" "{desired-key]" --p
 2. To create the database, run the following command in the PMC:
 
 Update-Database -project "Data"
+
+3. See 'Migrations.txt' in the Data project for any other migrations
