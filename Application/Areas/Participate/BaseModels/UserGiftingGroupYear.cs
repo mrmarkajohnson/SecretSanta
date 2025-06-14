@@ -1,9 +1,10 @@
-﻿using Application.Shared.BaseModels;
+﻿using Application.Areas.GiftingGroup.BaseModels;
+using Application.Shared.BaseModels;
 using Global.Abstractions.Areas.Participate;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GiftingGroupSettings;
 
-namespace Application.Areas.GiftingGroup.BaseModels;
+namespace Application.Areas.Participate.BaseModels;
 
 public class UserGiftingGroupYear : GiftingGroupYearBase, IUserGiftingGroupYear
 {

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Data;
 using Global.Abstractions.Areas.Account;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SecretSanta.Data;
 using System.Linq.Expressions;
 using System.Security.Claims;
 

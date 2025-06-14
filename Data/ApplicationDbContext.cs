@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using static Global.Settings.GlobalSettings;
 
-namespace SecretSanta.Data;
+namespace Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {

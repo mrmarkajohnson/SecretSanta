@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Application.Shared.Helpers;
+namespace Global.Helpers;
 
 public static class EncryptionHelper
 {

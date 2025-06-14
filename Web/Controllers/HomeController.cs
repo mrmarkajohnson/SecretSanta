@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Application.Shared.ViewModels;
 
-namespace SecretSanta.Controllers;
+namespace Web.Controllers;
 
 public sealed class HomeController : BaseController
 {

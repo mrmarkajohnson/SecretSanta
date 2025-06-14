@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SecretSanta.Data;
 using System.Reflection;
 
 namespace UnitTests.Context;

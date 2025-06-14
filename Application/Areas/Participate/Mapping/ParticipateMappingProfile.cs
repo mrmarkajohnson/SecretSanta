@@ -1,5 +1,4 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Areas.Participate.BaseModels;
+﻿using Application.Areas.Participate.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.Participate;
 using static Global.Settings.GiftingGroupSettings;

@@ -1,5 +1,4 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Areas.Participate.BaseModels;
+﻿using Application.Areas.Participate.BaseModels;
 using Application.Shared.BaseModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;

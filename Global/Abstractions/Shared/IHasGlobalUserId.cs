@@ -1,4 +1,4 @@
-﻿using Application.Shared.Helpers;
+﻿using Global.Helpers;
 
 namespace Global.Abstractions.Shared;
 

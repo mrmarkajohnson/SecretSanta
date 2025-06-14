@@ -1,5 +1,4 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Global.Abstractions.Areas.Participate;
+﻿using Global.Abstractions.Areas.Participate;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Participate.BaseModels;

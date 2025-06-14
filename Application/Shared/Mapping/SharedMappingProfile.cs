@@ -1,7 +1,7 @@
 ﻿using Application.Shared.BaseModels;
 using AutoMapper;
 
-namespace Application.Areas.Shared.Mapping;
+namespace Application.Shared.Mapping;
 
 public sealed class SharedMappingProfile : Profile
 {

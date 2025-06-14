@@ -1,10 +1,10 @@
 using AutoMapper;
+using Data;
 using Global.Extensions.Services;
 using Global.Validation;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SecretSanta.Data;
 using System.Reflection;
 using Web.GlobalErrorHandling;
 

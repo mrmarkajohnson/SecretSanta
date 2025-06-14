@@ -1,6 +1,4 @@
-﻿using Application.Shared.Helpers;
-
-namespace Global.Helpers;
+﻿namespace Global.Helpers;
 
 public static class UserHelper
 {
