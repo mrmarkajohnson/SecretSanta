@@ -1,0 +1,14 @@
+﻿@model SendMessageVm
+@{
+    ViewData["Title"] = Model.PageTitle;
+}
+
+<h1>@Model.PageTitle</h1>
+
+<section>
+    <form asp-area="Messages" asp-controller="Home" asp-action="SendMessage" method="post" id="messageForm">
+
+        <partial name="_WriteMessage" />
+
+    </form>
+</section>

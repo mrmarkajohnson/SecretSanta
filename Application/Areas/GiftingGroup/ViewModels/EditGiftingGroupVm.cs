@@ -42,7 +42,7 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
         .ToList();
 
     public IList<LocationSelectable> Currencies => Cultures
-        .Where(x => x.CurrencyString.NotEmpty())
+        .Where(x => x.CurrencyString.IsNotEmpty())
         .DistinctBy(x => x.CurrencyString)
         .OrderBy(x => x.CurrencyString)
         .ToList();

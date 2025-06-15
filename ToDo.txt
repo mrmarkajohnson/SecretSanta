@@ -11,6 +11,7 @@ Ensure all deletions and archives are handled
 Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name 
 	(or replace it with a boolean to display middle names, and use DisplayName() based on that)
 Log unhandled exceptions from GlobalRequestProcessor into a database table
+Create sysadmin role, set the first user as a sysadmin, allow sysadmins to add other admins, and allow users to message them
 
 USERS/SECURITY
 Handle 'forgot password' if security questions not yet set
@@ -57,6 +58,7 @@ Add other messages e.g.
 - report abuse
 Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates
 Show if a message has changed, or it's no longer relevant
+Forwarding?
 
 SUGGESTIONS
 * Show truncated HTML properly in the grid if possible, but don't truncate links

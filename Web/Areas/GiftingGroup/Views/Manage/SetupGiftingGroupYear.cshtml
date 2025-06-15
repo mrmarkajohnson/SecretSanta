@@ -37,7 +37,7 @@
                 </p>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                @if (Model.PreviousYearsWarning.NotEmpty())
+                @if (Model.PreviousYearsWarning.IsNotEmpty())
                 {
                     <div class="text-danger">@Model.PreviousYearsWarning</div>
                 }

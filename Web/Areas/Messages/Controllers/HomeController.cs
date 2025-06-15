@@ -3,6 +3,7 @@ using Application.Areas.Messages.Queries;
 using Application.Areas.Messages.ViewModels;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
+using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.Messages.Controllers;
@@ -59,5 +60,39 @@ public sealed class HomeController : BaseController
         }
 
         return Ok();
+    }
+
+    [HttpGet]
+    public IActionResult WriteMessage(int? giftingGroupKey)
+    {
+        var model = new SendMessageVm
+        {
+            GiftingGroupKey = giftingGroupKey
+        };
+
+        var giftingGroups = HomeModel.GiftingGroups;
+        model.GiftingGroups = giftingGroups;
+
+        if (giftingGroupKey > 0 && !giftingGroups.Any(x => x.GiftingGroupKey == giftingGroupKey.Value))
+        {
+            model.GiftingGroupKey = giftingGroupKey = null;
+        }
+        
+        if (giftingGroupKey.IsEmpty() && giftingGroups.Count == 1)
+        {
+            model.GiftingGroupKey = giftingGroups.First().GiftingGroupKey;
+        }
+
+        return View(model);
+    }
+
+    // TODO: Add message reply option; include the original message type in the model
+
+    [HttpPost]
+    public async Task<IActionResult> SendMessage(SendMessageVm model)
+    {
+        model.RecipientType = model.RecipientType.ActualType(model.IncludeFutureMembers);
+
+        throw new NotImplementedException();
     }
 }

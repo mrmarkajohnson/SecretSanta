@@ -1,5 +1,4 @@
 ﻿using Global.Abstractions.Shared;
-using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Areas.Messages;
 
@@ -16,8 +15,8 @@ public interface IReadMessage : IMessageBase
     IUserNamesBase? Sender { get; }
     bool ShowAsFromSanta { get; }
 
-    [Display(Name = "From")]
     string SenderName { get; }
+    string? GroupName { get; }
 
     bool Read { get; set; }
 }

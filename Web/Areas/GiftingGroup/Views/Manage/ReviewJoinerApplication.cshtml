@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="mb-3 d-flex">
-                            @if (Model.Email.NotEmpty())
+                            @if (Model.Email.IsNotEmpty())
                             {
                                 <div class="form-group-ib col-6">
                                     <label asp-for="Email" class="control-label"></label>

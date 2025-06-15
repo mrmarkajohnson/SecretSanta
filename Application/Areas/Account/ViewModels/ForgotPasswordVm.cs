@@ -35,7 +35,7 @@ public sealed class ForgotPasswordVm : SetPasswordBaseVm, IForgotPassword, IForm
     public override string SubmitButtonText { get; set; } = "Submit";
     public override string SubmitButtonIcon { get; set; } = "fa-paper-plane";
 
-    public bool SecurityQuestionsSet => SecurityAnswer1.NotEmpty() && SecurityAnswer2.NotEmpty();
+    public bool SecurityQuestionsSet => SecurityAnswer1.IsNotEmpty() && SecurityAnswer2.IsNotEmpty();
     public bool PasswordResetSuccessfully { get; set; }
 }
 

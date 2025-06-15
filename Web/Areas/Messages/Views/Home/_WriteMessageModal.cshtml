@@ -1,16 +1,14 @@
-﻿@using Application.Areas.Suggestions.ViewModels
+﻿@model SendMessageVm
 
-@model ManageSuggestionVm
-
-<div class="modal santa-modal" tabindex="-1" id="manageSuggestionModal">
+<div class="modal santa-modal" tabindex="-1" id="writeMessageModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <partial name="Modal/_ModalHeader" />
 
-            <form asp-area="Suggestions" asp-controller="Home" asp-action="SaveSuggestion" method="post">
+            <form asp-area="Messages" asp-controller="Home" asp-action="SendMessage" method="post">
                 <div class="modal-body">
-                    
-                    <partial name="_ManageSuggestion" />
+
+                    <partial name="_WriteMessage" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 </div>

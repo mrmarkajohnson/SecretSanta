@@ -15,7 +15,7 @@ public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
     {
         List<string> existingTokens = DbContext.Santa_GiftingGroups.Select(x => x.JoinerToken).ToList();
 
-        if (_existingToken.NotEmpty() && IsUnique(_existingToken, existingTokens))
+        if (_existingToken.IsNotEmpty() && IsUnique(_existingToken, existingTokens))
         {
             return Result(_existingToken);
         }

@@ -8,7 +8,6 @@ using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
 using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
-using Global.Extensions.System;
 using Microsoft.AspNetCore.Authentication;
 using Web.Helpers;
 

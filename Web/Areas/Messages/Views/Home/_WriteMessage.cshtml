@@ -1,0 +1,140 @@
+﻿@using static Global.Settings.MessageSettings
+@model SendMessageVm
+@{
+    string guidance = Model.IsReply
+        ? "" : 
+        $"Send a message to one or more members of {(Model.GiftingGroupKey > 0 ? "the" : "a")} group.";
+
+    string recipientTypeExplanation = "Select who this message will go to.";
+    // TODO: Add more help for specific types, when present
+
+    string futureMembersExplanation = "";
+    string headerExplanation = "Give your message a short subject";
+    string textExplanation = "Write the main part of your message here.";
+}
+
+<partial name="_FormHiddenInputs" />
+
+<div class="row @CenterFlexNoWrapContainer">
+
+    <div class="collapse">
+        <input type="hidden" asp-for="ReplyToMessageKey" />
+        <input type="hidden" asp-for="IsModal" />
+    </div>
+
+    <div class="mb-5">
+
+        @if (guidance.IsNotEmpty())
+        {
+            <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
+                <p>@guidance</p>
+            </div>
+        }
+
+        <div class="@CenterFlexWrapContainer">
+            <div class="@Model.GroupWidth">
+
+                @if (Model.GiftingGroupKey.IsEmpty())
+                {                        
+                    <div class="mb-3">
+                        <label asp-for="GiftingGroupKey" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <select asp-for="GiftingGroupKey" class="form-control" aria-required="true"
+                                    asp-items="Model.GroupSelection">
+                                <option value="@null">@StandardPhrases.PleaseSelect</option>
+                            </select>
+                            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="collapse">
+                        <input type="hidden" asp-for="GiftingGroupKey" />
+                    </div>
+
+                    @if (Model.GroupSelection.Count > 1 && Model.GroupName.IsNotEmpty())
+                    {
+                        <div class="mb-3">
+                            <label asp-for="GiftingGroupKey" class="control-label"></label>
+                            <div class="control-label fw-normal">
+                                @Model.GroupName
+                            </div>
+                        </div>
+                    }
+                }
+                
+                <div class="mb-3 d-flex">                    
+                    <div class="form-group-ib col-6">
+                        <label asp-for="RecipientType" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <select asp-for="RecipientType" class="form-control" aria-required="true">
+                                <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
+                                
+                                @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
+                                {
+                                    <option value="@type" data-future-label="@type.FutureLabel()"
+                                            data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+                                        @type.SenderToDescription()
+                                    </option>
+
+                                    // TODO: Adjust 'Group Administrators' depending on whether the sender is an admin, 
+                                    // once the group is selected - e.g. 'Other Administrators'?
+
+                                    // TODO: Use data-future-label and data-future-explanation to show or hide IncludeFutureMembers
+                                    // and set its label and explanation
+                                }
+                            </select>
+                            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
+                        </div>            
+                    </div>
+                    <div class="form-group-ib col-6 collapse">
+                        <label asp-for="IncludeFutureMembers" class="control-label include-future-members-label"></label>
+                        <div class="control-label fw-normal">
+                            <input type="checkbox" asp-for="IncludeFutureMembers" class="form-check-input" 
+                                autocomplete="off" aria-required="false" /> &nbsp; Yes
+
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            <partial name="_InlineQuestion" model="@futureMembersExplanation" class="include-future-members-question" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="HeaderText" class="control-label"></label>
+                    <div class="input-group input-info">
+                        <input asp-for="HeaderText" class="form-control" aria-required="true" />
+                        <partial name="_InputQuestion" model="@headerExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="HeaderText" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MessageText" class="control-label"></label>
+                    <div class="input-group input-info">
+                        <div class="flex-grow-1">
+                            @* This is needed to handle the flex group *@
+                            <div class="collapse">
+                                <input type="hidden" asp-for="MessageText" class="summernote-content" />
+                            </div>
+
+                            <div class="summernote form-control"></div>
+                        </div>
+                        <partial name="_InputQuestion" model="@textExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="MessageText" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

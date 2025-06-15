@@ -25,7 +25,7 @@ public static class UserAllNamesExtensions
 
         string? middleNames = user.MiddleNames.Tidy(false);
 
-        includeMiddleNames = includeMiddleNames && middleNames.NotEmpty() && !fullName.ContainsWord(middleNames);
+        includeMiddleNames = includeMiddleNames && middleNames.IsNotEmpty() && !fullName.ContainsWord(middleNames);
 
         if (includeMiddleNames)
         {
@@ -52,14 +52,14 @@ public static class UserAllNamesExtensions
 
         string fullName = foreName + " ";
 
-        if (preferredName.NotEmpty())
+        if (preferredName.IsNotEmpty())
         {
             fullName += (user.PreferredNameType == PreferredNameOption.Nickname 
                 ? $"'{preferredName}'" 
                 : preferredName) + " ";
         }
 
-        if (middleNames.NotEmpty())
+        if (middleNames.IsNotEmpty())
         {
             fullName += middleNames.Trim() + " ";
         }

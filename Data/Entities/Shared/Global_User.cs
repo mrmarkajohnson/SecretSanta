@@ -64,7 +64,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     public required string Greeting { get; set; }
 
     [NotAudited]
-    public bool SecurityQuestionsSet => SecurityAnswer1.NotEmpty() && SecurityAnswer2.NotEmpty();
+    public bool SecurityQuestionsSet => SecurityAnswer1.IsNotEmpty() && SecurityAnswer2.IsNotEmpty();
 
     [Audit(NoDetails = true)]
     public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }

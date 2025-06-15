@@ -115,7 +115,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             Important = messageDetails.Important,
             HeaderText = messageDetails.HeaderText,
             MessageText = messageDetails.MessageText,
-            RecipientTypes = messageDetails.RecipientTypes
+            RecipientType = messageDetails.RecipientType
         };
 
         dbMessage.Recipients.Add(new Santa_MessageRecipient

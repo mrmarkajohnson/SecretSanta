@@ -15,7 +15,7 @@ public sealed class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TIte
     {
         Global_User? dbGlobalUser = GetGlobalUser(_user);
 
-        if (dbGlobalUser != null && Item.Password.NotEmpty())
+        if (dbGlobalUser != null && Item.Password.IsNotEmpty())
         {
             await ChangePassword(dbGlobalUser);
         }

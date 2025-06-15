@@ -83,14 +83,14 @@ public static class StringExtensions
         return string.IsNullOrWhiteSpace(text) ? null : text.Trim();
     }
 
-    public static bool NotEmpty([NotNullWhen(true)]this string? text)
+    public static bool IsNotEmpty([NotNullWhen(true)]this string? text)
     {
         return !string.IsNullOrWhiteSpace(text);
     }
 
     public static bool ContainsWord(this string? text, string? word)
     {
-        if (text.NotEmpty() && word.NotEmpty())
+        if (text.IsNotEmpty() && word.IsNotEmpty())
         {
             text = text.Trim();
             word = word.Trim();

@@ -1,6 +1,6 @@
 ﻿@model SantaUser
 
-@if (Model.Forename.NotEmpty() && Model.Surname.NotEmpty())
+@if (Model.Forename.IsNotEmpty() && Model.Surname.IsNotEmpty())
 {
     string normalDisplay = Model.DisplayName(false);
     string longDisplay = Model.DisplayName(true);

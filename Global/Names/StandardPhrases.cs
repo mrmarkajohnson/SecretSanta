@@ -12,4 +12,9 @@ public static class StandardPhrases
         $"or enter your {UserDisplayNames.UserName}";
 
     public const string EmailVisibleExplanation = $"users who view your details can see your {UserDisplayNames.EmailLower}";
+
+    /// <summary>
+    /// For select tags that may start empty
+    /// </summary>
+    public const string PleaseSelect = "Please select one...";
 }

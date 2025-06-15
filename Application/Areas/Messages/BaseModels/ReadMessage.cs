@@ -16,5 +16,8 @@ public class ReadMessage : MessageBase, IReadMessage
     [Display(Name = "From")]
     public string SenderName => (ShowAsFromSanta || Sender == null) ? "Santa" : Sender.UserDisplayName;
 
+    [Display(Name = "For Group")]
+    public string? GroupName { get; set; }
+
     public bool Read { get; set; }
 }

@@ -12,7 +12,7 @@ public abstract class MessageBaseEntity : ArchivableBaseEntity, IMessageEntity
 
     public int SenderKey { get; set; }
 
-    public MessageRecipientType RecipientTypes { get; set; }
+    public MessageRecipientType RecipientType { get; set; }
 
     [MaxLength(200)]
     public required string HeaderText { get; set; }

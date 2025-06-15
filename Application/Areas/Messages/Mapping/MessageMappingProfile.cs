@@ -4,6 +4,8 @@ using Global.Abstractions.Areas.Messages;
 
 namespace Application.Areas.Messages.Mapping;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
 public sealed class MessageMappingProfile : Profile
 {
     public MessageMappingProfile()
@@ -23,9 +25,10 @@ public sealed class MessageMappingProfile : Profile
                 opt.MapFrom(src => src.Sender.GlobalUser);
             })
             .ForMember(dest => dest.ShowAsFromSanta, opt => opt.MapFrom(src => src.ShowAsFromSanta))
-            .ForMember(dest => dest.RecipientTypes, opt => opt.MapFrom(src => src.RecipientTypes))
+            .ForMember(dest => dest.RecipientType, opt => opt.MapFrom(src => src.RecipientType))
             .ForMember(dest => dest.HeaderText, opt => opt.MapFrom(src => src.HeaderText))
             .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.MessageText))
+            .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroupYear.GiftingGroup.Name))
             .ForMember(dest => dest.Important, opt => opt.MapFrom(src => src.Important));
         CreateMap<Santa_Message, IReadMessage>().As<ReadMessage>();
     }

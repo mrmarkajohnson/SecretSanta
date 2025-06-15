@@ -32,7 +32,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
 
         HandleStatusChange();
 
-        if (_messageText.NotEmpty())
+        if (_messageText.IsNotEmpty())
         {
             SendUpdateMessage();
         }
@@ -251,7 +251,7 @@ public sealed class RelationshipStatusCommand : BaseCommand<IChangeRelationshipS
 
         var message = new SendSantaMessage
         {
-            RecipientTypes = MessageRecipientType.PotentialPartner,
+            RecipientType = MessageRecipientType.PotentialPartner,
             HeaderText = _headerText,
             MessageText = _messageText,
             Important = false,

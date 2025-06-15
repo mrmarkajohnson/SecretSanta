@@ -30,9 +30,9 @@
                                 </div>
                             </div>
                             <div class="form-group-ib col-6">
-                                <label asp-for="RecipientTypes" class="control-label"></label>
+                                <label asp-for="RecipientType" class="control-label"></label>
                                 <div class="control-label fw-normal">
-                                    @Model.RecipientTypes.DisplayName()
+                                    @Model.RecipientType.MessageRecipientToDescription(Model.GroupName)
                                 </div>
                             </div>
                         </div>

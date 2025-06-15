@@ -62,7 +62,7 @@
                     </div>
                 </div>
 
-                @if (Model.Description.NotEmpty())
+                @if (Model.Description.IsNotEmpty())
                 {
                     <div class="mb-3">
                         <label asp-for="Description" class="control-label">Group Description</label>

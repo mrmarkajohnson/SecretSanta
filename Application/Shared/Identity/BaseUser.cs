@@ -9,7 +9,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_globalUserId) && _hashedUserId.NotEmpty())
+            if (string.IsNullOrWhiteSpace(_globalUserId) && _hashedUserId.IsNotEmpty())
             {
                 _globalUserId = this.GetStringUserId();
             }
@@ -18,7 +18,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
         }
         set
         {
-            if (value.NotEmpty() && value != Guid.Empty.ToString())
+            if (value.IsNotEmpty() && value != Guid.Empty.ToString())
             {
                 _globalUserId = value;
             }
@@ -31,7 +31,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_hashedUserId) && _globalUserId.NotEmpty())
+            if (string.IsNullOrWhiteSpace(_hashedUserId) && _globalUserId.IsNotEmpty())
             {
                 _hashedUserId = this.GetHashedUserId();
             }
@@ -40,7 +40,7 @@ public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHash
         }
         set
         {
-            if (value.NotEmpty())
+            if (value.IsNotEmpty())
             {
                 _hashedUserId = value;
             }

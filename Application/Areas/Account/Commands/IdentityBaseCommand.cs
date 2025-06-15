@@ -30,7 +30,7 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 
     private protected async Task StoreEmailAddress(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
     {
-        if (Item.Email.NotEmpty())
+        if (Item.Email.IsNotEmpty())
         {
             try
             {
@@ -57,12 +57,12 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
 
     private protected string ReplaceHashedDetails(string message, string? originalUserName, string? originalEmail)
     {
-        if (Item.UserName.NotEmpty())
+        if (Item.UserName.IsNotEmpty())
         {
             message = message.Replace(Item.UserName, originalUserName);
         }
 
-        if (Item.Email.NotEmpty())
+        if (Item.Email.IsNotEmpty())
         {
             message = message.Replace(Item.Email, originalEmail);
         }

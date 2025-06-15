@@ -1,5 +1,4 @@
 ﻿using Global.Abstractions.Areas.Messages;
-using Global.Settings;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Messages.BaseModels;
@@ -7,7 +6,7 @@ namespace Application.Areas.Messages.BaseModels;
 public class MessageBase : IMessageBase
 {
     [Display(Name = "To")]
-    public required MessageSettings.MessageRecipientType RecipientTypes { get; set; }
+    public required MessageSettings.MessageRecipientType RecipientType { get; set; }
 
     [Display(Name = "Title")]
     public required string HeaderText { get; set; }

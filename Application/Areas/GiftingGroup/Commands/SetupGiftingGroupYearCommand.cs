@@ -192,7 +192,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
 
         var message = new SendSantaMessage
         {
-            RecipientTypes = MessageRecipientType.GiftRecipient,
+            RecipientType = MessageRecipientType.GiftRecipient,
             HeaderText = headerText,
             MessageText = messageText,
             Important = cancelled != false,

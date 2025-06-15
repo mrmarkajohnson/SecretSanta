@@ -55,7 +55,7 @@ public sealed class AddRelationshipCommand : BaseCommand<IAddRelationship>
 
         var message = new SendSantaMessage
         {
-            RecipientTypes = MessageRecipientType.PotentialPartner,
+            RecipientType = MessageRecipientType.PotentialPartner,
             HeaderText = (Item.IsActive ? "Are" : "Were") + " you in a relationship?",
             MessageText = messageText,
             Important = true,
