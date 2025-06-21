@@ -1,8 +1,12 @@
-﻿document.addEventListener('modalClosed', function (e) {
-    messageModalClosed(e);
+﻿document.addEventListener('modalOpened', function (e) {
+    viewMessageModalClosed(e);
 });
 
-async function messageModalClosed(e) {
+document.addEventListener('modalClosed', function (e) {
+    viewMessageModalClosed(e);
+});
+
+async function viewMessageModalClosed(e) {
     let modal = e.detail.modal;
     if (modal.id == 'viewMessageModal') {
         let read = modal.getAttribute('data-read');

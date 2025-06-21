@@ -1,6 +1,8 @@
-﻿using Application.Areas.Messages.Commands;
+﻿using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Messages.Commands;
 using Application.Areas.Messages.Queries;
 using Application.Areas.Messages.ViewModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
@@ -63,9 +65,9 @@ public sealed class HomeController : BaseController
     }
 
     [HttpGet]
-    public IActionResult WriteMessage(int? giftingGroupKey)
+    public async Task<IActionResult> WriteMessage(int? giftingGroupKey)
     {
-        var model = new SendMessageVm
+        var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey
         };
@@ -83,13 +85,38 @@ public sealed class HomeController : BaseController
             model.GiftingGroupKey = giftingGroups.First().GiftingGroupKey;
         }
 
+        await AddGroupMembers(model);
+
         return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChooseMessageRecipient(ChooseMessageRecipientVm model)
+    {
+        await AddGroupMembers(model);
+
+        return PartialView("_ChooseMessageRecipient", model);
+    }
+
+    private async Task AddGroupMembers(ChooseMessageRecipientVm model)
+    {
+        if (model.GiftingGroupKey > 0)
+        {
+            var groupMembers = await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value));
+            model.GroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
+
+            // TODO: Process group admins label if the current user is an admin, but there are also other admins
+        }
+        else
+        {
+            model.GroupMembers = new List<IGroupMember>();
+        }
     }
 
     // TODO: Add message reply option; include the original message type in the model
 
     [HttpPost]
-    public async Task<IActionResult> SendMessage(SendMessageVm model)
+    public async Task<IActionResult> SendMessage(WriteMessageVm model)
     {
         model.RecipientType = model.RecipientType.ActualType(model.IncludeFutureMembers);
 

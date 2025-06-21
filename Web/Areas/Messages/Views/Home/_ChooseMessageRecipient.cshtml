@@ -1,0 +1,54 @@
+﻿@using static Global.Settings.MessageSettings
+@model WriteMessageVm
+@{
+    string recipientTypeExplanation = "Select who this message will go to.";
+    // TODO: Add more help for specific types, when present
+
+    string futureMembersExplanation = "";
+}
+
+<div class="mb-3 d-flex">
+    <div class="form-group-ib col-6">
+        <label asp-for="RecipientType" class="control-label"></label>
+        <div class="input-group input-info">
+            <select asp-for="RecipientType" class="form-control" aria-required="true">
+                <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
+
+                @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
+                {
+                    <option value="@type" data-future-label="@type.FutureLabel()"
+                            data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+                        @type.SenderToDescription()
+                    </option>
+
+                    // TODO: Adjust 'Group Administrators' depending on whether the sender is an admin,
+                    // once the group is selected - e.g. 'Other Administrators'?
+
+                    // TODO: Use data-future-label and data-future-explanation to show or hide IncludeFutureMembers
+                    // and set its label and explanation
+                }
+            </select>
+            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
+        </div>
+    </div>
+    <div class="form-group-ib col-6 collapse future-members-section">
+        <label asp-for="IncludeFutureMembers" class="control-label include-future-members-label"></label>
+        <div class="control-label fw-normal">
+            <input type="checkbox" asp-for="IncludeFutureMembers" class="form-check-input"
+                    autocomplete="off" aria-required="false" /> &nbsp; Yes
+
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+            <partial name="_InlineQuestion" model="@futureMembersExplanation" class="include-future-members-question" />
+        </div>
+    </div>
+    <div class="form-group-ib col-6 collapse specific-recipient-section">
+        <label asp-for="SpecificGroupMemberKey" class="control-label include-future-members-label"></label>
+        <div class="control-label fw-normal">
+            <select asp-for="SpecificGroupMemberKey" class="form-check-input" aria-required="true"></select>
+        </div>
+    </div>
+</div>

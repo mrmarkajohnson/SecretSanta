@@ -1,9 +1,7 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Areas.Participate.BaseModels;
 using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
-using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -84,5 +82,15 @@ public sealed class GiftingGroupMappingProfile : Profile
         CreateMap<Global_User, IYearGroupUserBase>().As<YearGroupUserBase>();
 
         CreateMap<IYearGroupUserBase, YearGroupUserBase>();
+
+        CreateMap<Santa_GiftingGroupUser, GroupMember>()
+            .IncludeMembers(src => src.SantaUser)
+            .ForMember(src => src.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin));
+        CreateMap<Santa_GiftingGroupUser, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_User, GroupMember>()
+            .IncludeBase<Santa_User, UserNamesBase>()
+            .ForMember(src => src.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey));
+        CreateMap<Santa_GiftingGroupUser, IGroupMember>().As<GroupMember>();
     }
 }

@@ -1,22 +1,19 @@
 ﻿using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
-using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
-using static Global.Settings.GlobalSettings;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public class SendMessageVm : BaseFormVm, ISendSantaMessage, IFormVm, IModalVm
+public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipient
 {
-    public SendMessageVm()
+    public ChooseMessageRecipientVm()
     {
-        SubmitButtonText = "Send";
-        SubmitButtonIcon = "fa-paper-plane";
         GiftingGroups = new List<IUserGiftingGroup>();
+        GroupMembers = new List<IGroupMember>();
     }
-
+    
     public int? ReplyToMessageKey { get; set; }
     public MessageRecipientType? OriginalRecipientType { get; set; }
     public bool IsReply => ReplyToMessageKey > 0;
@@ -27,31 +24,23 @@ public class SendMessageVm : BaseFormVm, ISendSantaMessage, IFormVm, IModalVm
     [Display(Name = "To")]
     public MessageRecipientType RecipientType { get; set; } = MessageRecipientType.TBC;
 
-    [Display(Name = "Title")]
-    public string HeaderText { get; set; } = string.Empty;
+    [Display(Name = "To")]
+    public int? SpecificGroupMemberKey { get; set; }
 
-    [Display(Name = "Message")]
-    public string MessageText { get; set; } = string.Empty;
-
-    public bool Important { get; set; }
-    public bool CanReply { get; set; }
-    public bool ShowAsFromSanta { get; set; }
-
+    [Display(Name = "For Group")]
     public int? GiftingGroupKey { get; set; }
-    public string? GroupName => GiftingGroupKey > 0 ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName : null;
-
-    public string PageTitle => IsReply ? "Reply to Message" : "Write Message"; public string ModalTitle => PageTitle;
-
-    public bool IsModal { get; set; }
-    public bool ShowSaveButton => true;
-    public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
+    public string? GroupName => GiftingGroupKey > 0 
+        ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName 
+        : null;
 
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
     public IList<StandardSelectable> GroupSelection => GetSelectableGroups();
 
-    public List<MessageRecipientType> AvailableRecipientTypes => IsReply 
-        ? ( ReplyRecipientTypes)
+    public List<MessageRecipientType> AvailableRecipientTypes => IsReply
+        ? (ReplyRecipientTypes)
         : OriginalRecipientTypes;
+
+    public IList<IGroupMember> GroupMembers { get; set; }
 
     private List<StandardSelectable> GetSelectableGroups()
     {

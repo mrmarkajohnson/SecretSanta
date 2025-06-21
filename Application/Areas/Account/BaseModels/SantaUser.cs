@@ -5,4 +5,5 @@ namespace Application.Areas.Account.BaseModels;
 
 public class SantaUser : GlobalUser, ISantaUser
 {
+    public int? SantaUserKey { get; set; }
 }

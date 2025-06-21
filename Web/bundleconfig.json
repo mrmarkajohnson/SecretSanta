@@ -146,7 +146,9 @@
   {
     "outputFileName": "wwwroot/js/Messages/Home/Index/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Messages/viewMessages.js"
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/writeMessage.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,
@@ -157,7 +159,9 @@
   {
     "outputFileName": "wwwroot/js/Messages/Home/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Messages/viewMessages.js"
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/writeMessage.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,
@@ -168,7 +172,21 @@
   {
     "outputFileName": "wwwroot/js/Messages/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Messages/viewMessages.js"
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/writeMessage.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/Messages/Home/WriteMessage/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Messages/writeMessage.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,

@@ -1,8 +1,12 @@
-document.addEventListener('modalClosed', function (e) {
-    messageModalClosed(e);
+document.addEventListener('modalOpened', function (e) {
+    viewMessageModalClosed(e);
 });
 
-async function messageModalClosed(e) {
+document.addEventListener('modalClosed', function (e) {
+    viewMessageModalClosed(e);
+});
+
+async function viewMessageModalClosed(e) {
     let modal = e.detail.modal;
     if (modal.id == 'viewMessageModal') {
         let read = modal.getAttribute('data-read');
@@ -24,5 +28,24 @@ async function messageModalClosed(e) {
             await response;
             reloadGrid();
         }
+    }
+}
+
+window.addEventListener('load', function () {
+    initSendMessage();
+});
+
+document.addEventListener('reloadend', function (e) {
+    initSendMessage();
+});
+function initSendMessage() {
+    initSummernote();
+
+    let form = document.getElementById('messageForm');
+
+    if (form && !form.getAttribute('data-initalised-wm')) {
+        form.setAttribute('data-initalised-wm', true);
+
+
     }
 }

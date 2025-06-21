@@ -19,4 +19,16 @@
         <partial name="_MessagesGrid" />
         @* @Html.AjaxGrid(Url.Action("MessagesGrid"), new { id = "messages-grid" }) *@
     </div>
+
+    <div class="row @CenterFlexNoWrapContainer mt-4">
+
+        <div class="@StandardGroupWidth">           
+            <div>
+                <a asp-area="Messages" asp-controller="Home" asp-action="WriteMessage">
+                    Write A Message
+                </a>
+            </div>
+        </div>
+
+    </div>
 </div>

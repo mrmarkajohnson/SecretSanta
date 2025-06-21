@@ -10,7 +10,7 @@ public class ReadMessage : MessageBase, IReadMessage
     public int MessageKey { get; set; }
     public DateTime Sent { get; set; }
 
-    public IUserNamesBase? Sender { get; set; } = new UserNamesBase();
+    public IUserNamesBase? Sender { get; set; } = new UserNamesBase(); // must be initialised for the mapping
     public bool ShowAsFromSanta { get; set; }
 
     [Display(Name = "From")]

@@ -1,11 +1,7 @@
-﻿using static Global.Settings.MessageSettings;
+﻿namespace Global.Abstractions.Areas.Messages;
 
-namespace Global.Abstractions.Areas.Messages;
-
-public interface IMessageBase
+public interface IMessageBase : IHasMessageRecipientType
 {
-    MessageRecipientType RecipientType { get; }
-
     string HeaderText { get; }
     string MessageText { get; set; }
 

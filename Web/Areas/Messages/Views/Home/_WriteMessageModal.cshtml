@@ -1,11 +1,11 @@
-﻿@model SendMessageVm
+﻿@model WriteMessageVm
 
 <div class="modal santa-modal" tabindex="-1" id="writeMessageModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <partial name="Modal/_ModalHeader" />
 
-            <form asp-area="Messages" asp-controller="Home" asp-action="SendMessage" method="post">
+            <form asp-area="Messages" asp-controller="Home" asp-action="SendMessage" method="post" id="messageForm">
                 <div class="modal-body">
 
                     <partial name="_WriteMessage" />

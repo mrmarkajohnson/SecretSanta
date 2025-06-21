@@ -1,4 +1,5 @@
 GENERAL
+* Redirect from the login page to the home page, if the user is already logged in
 * Handle index pages etc. in bundles/routing
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
 Add an 'About' section on the homepage, and a link to that section on a separate page - e.g. what SS does
@@ -50,13 +51,15 @@ Add user postal and e-mail address functionality for sending and receiving gifts
 Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
-Allow users to reply (when appropriate)
-Add other messages e.g. 
-- response to invitation to join a group
+Allow users to reply (when appropriate) and show all messages in the thread
+Allow users to see their sent messages
+Add other standard messages e.g. 
+- response to invitation to join a group (automatic)
+Add automatic message options, e.g.
 - message group admin
 - report bug/issue
 - report abuse
-Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates
+Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates (at least until read)
 Show if a message has changed, or it's no longer relevant
 Forwarding?
 

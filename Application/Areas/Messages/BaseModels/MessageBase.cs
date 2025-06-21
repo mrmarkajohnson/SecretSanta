@@ -6,7 +6,7 @@ namespace Application.Areas.Messages.BaseModels;
 public class MessageBase : IMessageBase
 {
     [Display(Name = "To")]
-    public required MessageSettings.MessageRecipientType RecipientType { get; set; }
+    public MessageSettings.MessageRecipientType RecipientType { get; set; }
 
     [Display(Name = "Title")]
     public required string HeaderText { get; set; }

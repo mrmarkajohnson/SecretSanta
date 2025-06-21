@@ -13,6 +13,7 @@ public sealed class UserMappingProfile : Profile
         IList<int> UserKeysForVisibleEmail = new List<int>();
 
         CreateMap<Global_User, SantaUser>()
+            .ForMember(dest => dest.SantaUserKey, opt => opt.MapFrom(src => src.SantaUser.SantaUserKey))
             .ForMember(dest => dest.IdentificationHashed, opt => opt.MapFrom(src => true))
             .ForMember(dest => dest.ShowEmail, opt => opt.MapFrom(src => UserKeysForVisibleEmail.Contains(src.SantaUser.SantaUserKey)));
 

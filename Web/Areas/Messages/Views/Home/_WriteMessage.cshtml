@@ -1,14 +1,11 @@
 ﻿@using static Global.Settings.MessageSettings
-@model SendMessageVm
+@model WriteMessageVm
 @{
     string guidance = Model.IsReply
         ? "" : 
         $"Send a message to one or more members of {(Model.GiftingGroupKey > 0 ? "the" : "a")} group.";
 
-    string recipientTypeExplanation = "Select who this message will go to.";
-    // TODO: Add more help for specific types, when present
-
-    string futureMembersExplanation = "";
+    string selectGroupExplanation = "You can only message members in one of your groups. Please select the group first.";
     string headerExplanation = "Give your message a short subject";
     string textExplanation = "Write the main part of your message here.";
 }
@@ -39,11 +36,13 @@
                     <div class="mb-3">
                         <label asp-for="GiftingGroupKey" class="control-label"></label>
                         <div class="input-group input-info">
-                            <select asp-for="GiftingGroupKey" class="form-control" aria-required="true"
-                                    asp-items="Model.GroupSelection">
+                            <select asp-for="GiftingGroupKey" class="form-control gifting-group-select" aria-required="true"
+                                asp-items="Model.GroupSelection"
+                                data-url="@Url.Action(Context, "ChooseMessageRecipient", "Home", "Messages")">
+
                                 <option value="@null">@StandardPhrases.PleaseSelect</option>
                             </select>
-                            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
+                            <partial name="_InputQuestion" model="@selectGroupExplanation" />
                         </div>
                     </div>
                 }
@@ -64,45 +63,7 @@
                     }
                 }
                 
-                <div class="mb-3 d-flex">                    
-                    <div class="form-group-ib col-6">
-                        <label asp-for="RecipientType" class="control-label"></label>
-                        <div class="input-group input-info">
-                            <select asp-for="RecipientType" class="form-control" aria-required="true">
-                                <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
-                                
-                                @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
-                                {
-                                    <option value="@type" data-future-label="@type.FutureLabel()"
-                                            data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
-                                        @type.SenderToDescription()
-                                    </option>
-
-                                    // TODO: Adjust 'Group Administrators' depending on whether the sender is an admin, 
-                                    // once the group is selected - e.g. 'Other Administrators'?
-
-                                    // TODO: Use data-future-label and data-future-explanation to show or hide IncludeFutureMembers
-                                    // and set its label and explanation
-                                }
-                            </select>
-                            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
-                        </div>            
-                    </div>
-                    <div class="form-group-ib col-6 collapse">
-                        <label asp-for="IncludeFutureMembers" class="control-label include-future-members-label"></label>
-                        <div class="control-label fw-normal">
-                            <input type="checkbox" asp-for="IncludeFutureMembers" class="form-check-input" 
-                                autocomplete="off" aria-required="false" /> &nbsp; Yes
-
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-                            &nbsp;
-
-                            <partial name="_InlineQuestion" model="@futureMembersExplanation" class="include-future-members-question" />
-                        </div>
-                    </div>
-                </div>
+                <partial name="_ChooseMessageRecipient" />
 
                 <div class="mb-3">
                     <label asp-for="HeaderText" class="control-label"></label>

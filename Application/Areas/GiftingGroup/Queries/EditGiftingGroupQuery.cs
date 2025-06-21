@@ -22,6 +22,4 @@ public sealed class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
         return Mapper.Map<IGiftingGroup>(dbGiftingGroupLink.GiftingGroup);
     }
-
-
 }
