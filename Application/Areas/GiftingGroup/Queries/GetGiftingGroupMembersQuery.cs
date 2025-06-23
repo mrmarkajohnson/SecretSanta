@@ -20,7 +20,7 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IEnumerable<IGr
             throw new NotFoundException("Gifting Group");
         }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
+        Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, false);
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         return dbGiftingGroup.UserLinks

@@ -1,23 +1,28 @@
 ﻿@using static Global.Settings.MessageSettings
-@model WriteMessageVm
+
+@model ChooseMessageRecipientVm
 @{
-    string recipientTypeExplanation = "Select who this message will go to.";
+    string recipientTypeExplanation = Model.GiftingGroupKey > 0 ? "Select who this message will go to." : "Please select a group first.";
     // TODO: Add more help for specific types, when present
 
-    string futureMembersExplanation = "";
+    string futureMembersExplanation = "Allow group members who fit this category in future (but not now) to view this message.";
+
+    bool recipientTypeDisabled = Model.GiftingGroupKey > 0 == false;
 }
 
 <div class="mb-3 d-flex">
     <div class="form-group-ib col-6">
         <label asp-for="RecipientType" class="control-label"></label>
         <div class="input-group input-info">
-            <select asp-for="RecipientType" class="form-control" aria-required="true">
+            <select asp-for="RecipientType" class="form-control recipient-type-select" aria-required="true" disabled="@recipientTypeDisabled">
                 <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
 
                 @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
                 {
-                    <option value="@type" data-future-label="@type.FutureLabel()"
-                            data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+                    <option value="@type" data-specific="@type.SpecificMember()"
+                        data-future-label="@type.FutureLabel()"
+                        data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+
                         @type.SenderToDescription()
                     </option>
 
@@ -31,9 +36,10 @@
             <partial name="_InputQuestion" model="@recipientTypeExplanation" />
         </div>
     </div>
-    <div class="form-group-ib col-6 collapse future-members-section">
+
+    <div class="form-group-ib col-6 ps-3 collapse future-members-section">
         <label asp-for="IncludeFutureMembers" class="control-label include-future-members-label"></label>
-        <div class="control-label fw-normal">
+        <div class="control-label fw-normal mt-1">
             <input type="checkbox" asp-for="IncludeFutureMembers" class="form-check-input"
                     autocomplete="off" aria-required="false" /> &nbsp; Yes
 
@@ -42,13 +48,18 @@
             &nbsp;
             &nbsp;
 
-            <partial name="_InlineQuestion" model="@futureMembersExplanation" class="include-future-members-question" />
+            <partial name="_FormInlineQuestion" model="@futureMembersExplanation" />
         </div>
     </div>
-    <div class="form-group-ib col-6 collapse specific-recipient-section">
+
+    <div class="form-group-ib col-6 ps-3 collapse specific-recipient-section">
         <label asp-for="SpecificGroupMemberKey" class="control-label include-future-members-label"></label>
-        <div class="control-label fw-normal">
-            <select asp-for="SpecificGroupMemberKey" class="form-check-input" aria-required="true"></select>
+        <div class="input-group input-info">
+            <select asp-for="SpecificGroupMemberKey" class="form-control" aria-required="true" asp-items="Model.MemberSelection">
+                <option value="@null">@StandardPhrases.PleaseSelect</option>
+            </select>
+
+            @* TODO: When this has a value and when it changes, show the info icon for the selected user *@
         </div>
     </div>
 </div>

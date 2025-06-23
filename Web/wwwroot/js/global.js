@@ -359,9 +359,18 @@ document.addEventListener('reloadend', function (e) {
     initDeleteLinks();
 });
 function initPopper() {
+    setPopovers();
+    setTooltips();
+}
+
+function setPopovers() {
     $('[data-toggle="popover"]').popover();
+}
+
+function setTooltips() {
     $('[data-toggle="tooltip"]').tooltip();
 }
+
 let successMessageUrlStart = 'successMessage=';
 
 function initSuccessMessage() {

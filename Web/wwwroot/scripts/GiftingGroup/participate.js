@@ -9,5 +9,5 @@
     }
 
     bootbox.alert({ title: title, message: message });
-    $('[data-toggle="tooltip"]').tooltip();
+    setTooltips();
 }

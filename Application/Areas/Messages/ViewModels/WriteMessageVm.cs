@@ -23,7 +23,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IFor
     public bool CanReply { get; set; }
     public bool ShowAsFromSanta { get; set; }
 
-    public string PageTitle => IsReply ? "Reply to Message" : "Write Message"; public string ModalTitle => PageTitle;
+    public string PageTitle => IsReply ? "Reply to Message" : "Write a Message"; public string ModalTitle => PageTitle;
 
     public bool IsModal { get; set; }
     public bool ShowSaveButton => true;

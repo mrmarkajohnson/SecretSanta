@@ -104,7 +104,8 @@ public sealed class HomeController : BaseController
         {
             var groupMembers = await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value));
             model.GroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
-
+            
+            model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.GroupAdmin == true;
             // TODO: Process group admins label if the current user is an admin, but there are also other admins
         }
         else

@@ -1,4 +1,5 @@
 ﻿@using static Global.Settings.MessageSettings
+
 @model WriteMessageVm
 @{
     string guidance = Model.IsReply
@@ -63,7 +64,9 @@
                     }
                 }
                 
-                <partial name="_ChooseMessageRecipient" />
+                <div class="message-recipient-section">
+                    <partial name="_ChooseMessageRecipient" />
+                </div>
 
                 <div class="mb-3">
                     <label asp-for="HeaderText" class="control-label"></label>

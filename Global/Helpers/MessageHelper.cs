@@ -56,6 +56,11 @@ public static class MessageHelper
         return recipientType;
     }
 
+    public static bool SpecificMember(this MessageRecipientType recipientType)
+    {
+        return recipientType == MessageRecipientType.SingleGroupMember;
+    }
+
     public static string FutureLabel(this MessageRecipientType recipientType)
     {
         return recipientType switch

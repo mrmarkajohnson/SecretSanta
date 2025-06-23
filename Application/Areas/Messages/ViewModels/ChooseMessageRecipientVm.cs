@@ -13,7 +13,7 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
         GiftingGroups = new List<IUserGiftingGroup>();
         GroupMembers = new List<IGroupMember>();
     }
-    
+
     public int? ReplyToMessageKey { get; set; }
     public MessageRecipientType? OriginalRecipientType { get; set; }
     public bool IsReply => ReplyToMessageKey > 0;
@@ -29,21 +29,38 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
 
     [Display(Name = "For Group")]
     public int? GiftingGroupKey { get; set; }
-    public string? GroupName => GiftingGroupKey > 0 
-        ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName 
+
+    public string? GroupName => GiftingGroupKey > 0
+        ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName
         : null;
+
+    public bool GroupAdmin { get; set; }
 
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
     public IList<StandardSelectable> GroupSelection => GetSelectableGroups();
 
     public List<MessageRecipientType> AvailableRecipientTypes => IsReply
         ? (ReplyRecipientTypes)
-        : OriginalRecipientTypes;
+        : GetOriginalRecipientTypes();
+
+    private List<MessageRecipientType> GetOriginalRecipientTypes()
+    {
+        return OriginalRecipientTypes
+            .Where(x => x != MessageRecipientType.GroupAdmins || !GroupAdmin || GroupMembers.Any(y => y.GroupAdmin))
+            .Where(x => !x.SpecificMember() || MemberSelection.Count > 0)
+            .ToList();
+    }
 
     public IList<IGroupMember> GroupMembers { get; set; }
+    public IList<StandardSelectable> MemberSelection => GetSelectableMembers();
 
     private List<StandardSelectable> GetSelectableGroups()
     {
         return GiftingGroups.Select(x => new StandardSelectable(x.GiftingGroupKey, x.GroupName)).ToList();
+    }
+
+    private List<StandardSelectable> GetSelectableMembers()
+    {
+        return GroupMembers.Select(x => new StandardSelectable(x.SantaUserKey, x.UserDisplayName)).ToList();
     }
 }
