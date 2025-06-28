@@ -11,7 +11,7 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
     public ChooseMessageRecipientVm()
     {
         GiftingGroups = new List<IUserGiftingGroup>();
-        GroupMembers = new List<IGroupMember>();
+        OtherGroupMembers = new List<IGroupMember>();
     }
 
     public int? ReplyToMessageKey { get; set; }
@@ -46,12 +46,12 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
     private List<MessageRecipientType> GetOriginalRecipientTypes()
     {
         return OriginalRecipientTypes
-            .Where(x => x != MessageRecipientType.GroupAdmins || !GroupAdmin || GroupMembers.Any(y => y.GroupAdmin))
+            .Where(x => x != MessageRecipientType.GroupAdmins || !GroupAdmin || OtherGroupMembers.Any(y => y.GroupAdmin))
             .Where(x => !x.SpecificMember() || MemberSelection.Count > 0)
             .ToList();
     }
 
-    public IList<IGroupMember> GroupMembers { get; set; }
+    public IList<IGroupMember> OtherGroupMembers { get; set; }
     public IList<StandardSelectable> MemberSelection => GetSelectableMembers();
 
     private List<StandardSelectable> GetSelectableGroups()
@@ -61,6 +61,6 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
 
     private List<StandardSelectable> GetSelectableMembers()
     {
-        return GroupMembers.Select(x => new StandardSelectable(x.SantaUserKey, x.UserDisplayName)).ToList();
+        return OtherGroupMembers.Select(x => new StandardSelectable(x.SantaUserKey, x.UserDisplayName)).ToList();
     }
 }

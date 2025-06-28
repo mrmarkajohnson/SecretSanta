@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Global.Abstractions.Shared;
 
 namespace Global.Abstractions.Areas.Messages;
 
-public interface IWriteSantaMessage : ISendSantaMessage, IChooseMessageRecipient
+public interface IWriteSantaMessage : ISendSantaMessage, IChooseMessageRecipient, IHasCalendarYear
 {
 }

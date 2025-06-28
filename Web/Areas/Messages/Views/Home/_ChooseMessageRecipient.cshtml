@@ -8,6 +8,7 @@
     string futureMembersExplanation = "Allow group members who fit this category in future (but not now) to view this message.";
 
     bool recipientTypeDisabled = Model.GiftingGroupKey > 0 == false;
+    bool otherAdmins = Model.OtherGroupMembers.Any(x => x.GroupAdmin);
 }
 
 <div class="mb-3 d-flex">
@@ -23,14 +24,8 @@
                         data-future-label="@type.FutureLabel()"
                         data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
 
-                        @type.SenderToDescription()
+                        @type.SenderToDescription(Model.GroupName, otherAdmins)
                     </option>
-
-                    // TODO: Adjust 'Group Administrators' depending on whether the sender is an admin,
-                    // once the group is selected - e.g. 'Other Administrators'?
-
-                    // TODO: Use data-future-label and data-future-explanation to show or hide IncludeFutureMembers
-                    // and set its label and explanation
                 }
             </select>
             <partial name="_InputQuestion" model="@recipientTypeExplanation" />

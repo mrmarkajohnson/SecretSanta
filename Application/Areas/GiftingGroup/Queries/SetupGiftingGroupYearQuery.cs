@@ -29,7 +29,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
         GiftingGroupYear giftingGroupYear = new();
         DateTime firstDayOfNextYear = new DateTime(_year + 1, 1, 1);
 
-        var validGroupMembers = dbGiftingGroup.UserLinks
+        var validGroupMembers = dbGiftingGroup.Members
                 .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));
 
         if (dbGiftingGroupYear != null)

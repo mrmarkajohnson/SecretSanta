@@ -11,7 +11,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 {
     public Santa_GiftingGroup()
     {
-        UserLinks = new HashSet<Santa_GiftingGroupUser>();
+        Members = new HashSet<Santa_GiftingGroupUser>();
         Years = new HashSet<Santa_GiftingGroupYear>();
         MemberApplications = new HashSet<Santa_GiftingGroupApplication>();
         AuditTrail = new HashSet<Santa_GiftingGroup_Audit>();
@@ -40,7 +40,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 
     public int FirstYear { get; set; }
 
-    public virtual ICollection<Santa_GiftingGroupUser> UserLinks { get; set; }
+    public virtual ICollection<Santa_GiftingGroupUser> Members { get; set; }
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
     public virtual ICollection<Santa_GiftingGroupApplication> MemberApplications { get; set; }
     public virtual ICollection<Santa_GiftingGroup_Audit> AuditTrail { get; set; }
@@ -60,5 +60,12 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
             .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
             .FirstOrDefault()?
             .SantaUser;
+    }
+
+    public IEnumerable<Santa_GiftingGroupUser> OtherMembers(Santa_User? dbExcludingUser = null)
+    {
+        return Members
+            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => dbExcludingUser == null || x.SantaUserKey != dbExcludingUser.SantaUserKey);
     }
 }

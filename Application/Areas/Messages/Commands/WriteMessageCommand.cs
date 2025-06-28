@@ -1,0 +1,50 @@
+﻿using Application.Areas.GiftingGroup.Commands;
+using Application.Areas.Messages.Queries.Internals;
+using Global.Abstractions.Areas.Messages;
+using static Global.Settings.MessageSettings;
+
+namespace Application.Areas.Messages.Commands;
+
+public class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IWriteSantaMessage
+{
+    public WriteMessageCommand(TItem item) : base(item)
+    {
+    }
+
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
+    {
+        if (Item.GiftingGroupKey == null) // just in case
+        {
+            AddValidationError(nameof(Item.GiftingGroupKey), ValidationMessages.RequiredError);
+            return await Result();
+        }
+
+        Santa_User dbCurrentUser = GetCurrentSantaUser();
+
+        Item.CanReply = true;
+
+        Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey.Value, false);
+        Santa_GiftingGroupYear dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
+
+        IList<Santa_User> dbRecipients = await Send(new GetPossibleMessageRecipientsQuery(dbCurrentUser, dbGiftingGroupYear, Item));
+
+        if (dbRecipients.Count == 0 && !Item.IncludeFutureMembers)
+        {
+            string futureLabel = Item.RecipientType.FutureLabel();
+            if (futureLabel.IsNotEmpty())
+            {
+                AddValidationError(nameof(Item.IncludeFutureMembers),
+                    $"There are currently no {Item.RecipientType.SenderToDescription(dbGiftingGroup.Name)}s. Please select '{futureLabel}' to ensure your message can be read.");
+            }
+        }
+
+        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter;
+
+        if (!Validation.IsValid)
+            return await Result();
+
+        SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
+
+        return await SaveAndReturnSuccess();
+    }
+}

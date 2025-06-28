@@ -2,5 +2,5 @@
 
 public interface ISendSantaMessage : IMessageBase
 {
-    bool ShowAsFromSanta { get; }
+    bool ShowAsFromSanta { get; set; }
 }

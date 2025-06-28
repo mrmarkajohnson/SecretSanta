@@ -1,4 +1,5 @@
-﻿using Application.Shared.Requests;
+﻿using Application.Areas.GiftingGroup.Queries.Internal;
+using Application.Shared.Requests;
 using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
@@ -7,6 +8,25 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
 {
     protected GiftingGroupYearBaseCommand(TItem item) : base(item)
     {
+    }
+
+    protected async Task<Santa_GiftingGroup> GetGiftingGroup(int giftingGroupKey, bool adminOnly)
+    {
+        Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(giftingGroupKey, adminOnly));
+        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
+        return dbGiftingGroup;
+    }
+
+    protected Santa_GiftingGroupYear GetOrCreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup)
+    {        
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == Item.CalendarYear);
+
+        if (dbGiftingGroupYear == null)
+        {
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
+        }
+
+        return dbGiftingGroupYear;
     }
 
     protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup)

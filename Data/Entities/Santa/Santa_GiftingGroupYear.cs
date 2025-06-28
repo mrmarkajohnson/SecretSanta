@@ -36,7 +36,7 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     {
         DateTime firstDayOfNextYear = new DateTime(CalendarYear + 1, 1, 1);
 
-        return GiftingGroup.UserLinks
+        return GiftingGroup.Members
             .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));
     }
 

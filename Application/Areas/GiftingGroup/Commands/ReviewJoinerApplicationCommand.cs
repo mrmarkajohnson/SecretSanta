@@ -60,7 +60,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> w
 
     private static void AddToGiftingGroup(Santa_GiftingGroupApplication dbApplication)
     {
-        dbApplication.GiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
+        dbApplication.GiftingGroup.Members.Add(new Santa_GiftingGroupUser
         {
             GiftingGroup = dbApplication.GiftingGroup,
             GiftingGroupKey = dbApplication.GiftingGroupKey,

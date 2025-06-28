@@ -58,7 +58,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
         .Union(GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .Where(x => x.GroupAdmin)
-            .SelectMany(y => y.GiftingGroup.UserLinks)
+            .SelectMany(y => y.GiftingGroup.Members)
             .Select(z => z.SantaUserKey))
         .ToList();
 }

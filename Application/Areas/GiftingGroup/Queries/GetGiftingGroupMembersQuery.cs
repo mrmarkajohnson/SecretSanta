@@ -23,7 +23,7 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IEnumerable<IGr
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, false);
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
-        return dbGiftingGroup.UserLinks
+        return dbGiftingGroup.Members
             .Where(x => x.DateDeleted == null && x.DateArchived == null)
             .AsQueryable()
             .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider);

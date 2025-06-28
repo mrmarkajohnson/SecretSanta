@@ -20,12 +20,12 @@ public static class MessageHelper
         };
     }
 
-    public static string SenderToDescription(this MessageRecipientType recipientType, string? groupName = null)
+    public static string SenderToDescription(this MessageRecipientType recipientType, string? groupName = null, bool otherAdmins = false)
     {
-        return TypeNameWithGroup(recipientType, groupName);
+        return TypeNameWithGroup(recipientType, groupName, otherAdmins);
     }
 
-    public static string TypeNameWithGroup(this MessageRecipientType recipientType, string? groupName)
+    public static string TypeNameWithGroup(this MessageRecipientType recipientType, string? groupName, bool otherAdmins = false)
     {
         string displayName = recipientType.DisplayName();
 
@@ -35,6 +35,11 @@ public static class MessageHelper
             return displayName
                 .Replace("the group", fullGroup)
                 .Replace("group", fullGroup, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        if (otherAdmins && recipientType == MessageRecipientType.GroupAdmins)
+        {
+            displayName = "Other " + displayName;
         }
 
         return displayName;
@@ -61,9 +66,15 @@ public static class MessageHelper
         return recipientType == MessageRecipientType.SingleGroupMember;
     }
 
+    public static bool AllowsFutureViewing(this MessageRecipientType recipientType)
+    {
+        return recipientType.ToString().Contains("AllEver")
+            || recipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter;
+    }
+
     public static string FutureLabel(this MessageRecipientType recipientType)
     {
-        return recipientType switch
+        return recipientType switch // the label goes on the corresponding 'Current' type
         {
             MessageRecipientType.YearGroupCurrentMembers => "Include Future Partipicipants",
             MessageRecipientType.GroupCurrentMembers => "Include Future Members",
@@ -74,7 +85,7 @@ public static class MessageHelper
 
     public static string FutureExplanation(this MessageRecipientType recipientType, MessageRecipientType? originalType = null)
     {
-        return recipientType switch
+        return recipientType switch // the explanation goes on the corresponding 'Current' type
         {
             MessageRecipientType.YearGroupCurrentMembers
                 => "Make this visible to any future partipants, who are included later?",

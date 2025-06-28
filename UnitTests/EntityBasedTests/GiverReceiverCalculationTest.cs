@@ -279,7 +279,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink1);
+        giftingGroup1.Members.Add(userLink1);
 
         var userLink2 = new Santa_GiftingGroupUser
         {
@@ -291,7 +291,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink2);
+        giftingGroup1.Members.Add(userLink2);
 
         var userLink3 = new Santa_GiftingGroupUser
         {
@@ -303,7 +303,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink3);
+        giftingGroup1.Members.Add(userLink3);
 
         var userLink4 = new Santa_GiftingGroupUser
         {
@@ -315,7 +315,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink4);
+        giftingGroup1.Members.Add(userLink4);
 
         var userLink5 = new Santa_GiftingGroupUser
         {
@@ -327,7 +327,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink5);
+        giftingGroup1.Members.Add(userLink5);
 
         var userLink6 = new Santa_GiftingGroupUser
         {
@@ -339,7 +339,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
             GiftingGroup = giftingGroup1
         };
 
-        giftingGroup1.UserLinks.Add(userLink6);
+        giftingGroup1.Members.Add(userLink6);
 
         #endregion Santa Groups
 
@@ -365,7 +365,7 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
 
             context.Santa_GiftingGroupYears.Add(giftingYear1);
 
-            foreach (var userLink in giftingGroup1.UserLinks)
+            foreach (var userLink in giftingGroup1.Members)
             {
                 var yearUser = new Santa_YearGroupUser
                 {

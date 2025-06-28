@@ -27,7 +27,7 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
         if (string.IsNullOrWhiteSpace(recipientId) || dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, oldYear) != null)
             return; // TODO: Return a validation failure
 
-        var dbMatchedGroupUser = dbGiftingGroup.UserLinks.FirstOrDefault(x => x.SantaUser.GlobalUserId == recipientId);
+        var dbMatchedGroupUser = dbGiftingGroup.Members.FirstOrDefault(x => x.SantaUser.GlobalUserId == recipientId);
         if (dbMatchedGroupUser == null)
             return; // TODO: Return a validation failure
 

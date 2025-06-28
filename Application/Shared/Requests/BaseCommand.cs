@@ -105,7 +105,12 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         Validation.Errors.Add(new ValidationFailure(propertyName, errorMessage));
     }
 
-    protected void SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipientSantaUser, Santa_GiftingGroupYear? dbYear = null)
+    protected void SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroupYear? dbYear = null)
+    {
+        SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
+    }
+
+    protected void SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
     {
         var dbMessage = new Santa_Message
         {
@@ -115,14 +120,18 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             Important = messageDetails.Important,
             HeaderText = messageDetails.HeaderText,
             MessageText = messageDetails.MessageText,
-            RecipientType = messageDetails.RecipientType
+            RecipientType = messageDetails.RecipientType,
+            CanReply = messageDetails.CanReply
         };
 
-        dbMessage.Recipients.Add(new Santa_MessageRecipient
+        foreach (var dbRecipient in dbRecipients)
         {
-            Message = dbMessage,
-            RecipientSantaUser = dbRecipientSantaUser
-        });
+            dbMessage.Recipients.Add(new Santa_MessageRecipient
+            {
+                Message = dbMessage,
+                RecipientSantaUser = dbRecipient
+            });
+        }
 
         DbContext.Santa_Messages.Add(dbMessage);
     }

@@ -1,4 +1,5 @@
-﻿using Global.Abstractions.Areas.Messages;
+﻿using FluentValidation;
+using Global.Abstractions.Areas.Messages;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
@@ -28,4 +29,23 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IFor
     public bool IsModal { get; set; }
     public bool ShowSaveButton => true;
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
+
+    public int CalendarYear { get; set; } = DateTime.Today.Year;
+}
+
+public class WriteMessageVmValidator : AbstractValidator<WriteMessageVm>
+{
+    public WriteMessageVmValidator()
+    {
+        RuleFor(x => x.HeaderText.IsNotEmpty());
+        RuleFor(x => x.MessageText.IsNotEmpty());
+
+        RuleFor(x => x.GiftingGroupKey).NotNullOrEmpty();
+
+        RuleFor(x => x.RecipientType).IsInDropDownList(x => x.AvailableRecipientTypes, false);
+
+        RuleFor(x => x.SpecificGroupMemberKey)
+            .NotNullOrEmpty()
+            .When(x => x.RecipientType.SpecificMember());
+    }
 }

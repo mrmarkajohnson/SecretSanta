@@ -11,7 +11,7 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
 
         var visibleUsers = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateArchived == null && x.DateDeleted == null)
-            .SelectMany(x => x.GiftingGroup.UserLinks)
+            .SelectMany(x => x.GiftingGroup.Members)
             .Where(y => y.DateArchived == null && y.DateDeleted == null)
             .Where(y => y.SantaUser != null && y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
             .Select(y => y.SantaUser)

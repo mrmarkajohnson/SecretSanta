@@ -47,7 +47,7 @@ public sealed class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TI
             dbGiftingGroup = new Santa_GiftingGroup();
             DbContext.Add(dbGiftingGroup);
 
-            dbGiftingGroup.UserLinks.Add(new Santa_GiftingGroupUser
+            dbGiftingGroup.Members.Add(new Santa_GiftingGroupUser
             {
                 GroupAdmin = true,
                 SantaUserKey = dbCurrentSantaUser.SantaUserKey,

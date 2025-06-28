@@ -33,19 +33,9 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         }
 
         _dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
-        if (_dbCurrentUser.SantaUser == null)
-        {
-            throw new AccessDeniedException();
-        }
 
-        Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupKey, true));
-        Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == Item.CalendarYear);
-
-        if (dbGiftingGroupYear == null)
-        {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
-        }
+        Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey, true);
+        Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup, Item.CalendarYear);
 
         foreach (IYearGroupUserBase member in Item.GroupMembers)
         {
@@ -75,7 +65,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         else if (Item.CalculationOption == YearCalculationOption.Calculate)
         {
             var missingGroupMembers = dbGiftingGroupYear.ValidGroupMembers()
-                .Where(x => dbGiftingGroup.UserLinks.Any(y => y.SantaUserKey == x.SantaUserKey) == false
+                .Where(x => dbGiftingGroup.Members.Any(y => y.SantaUserKey == x.SantaUserKey) == false
                     || Item.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false);
 
             if (missingGroupMembers.Any())

@@ -103,14 +103,14 @@ public sealed class HomeController : BaseController
         if (model.GiftingGroupKey > 0)
         {
             var groupMembers = await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value));
-            model.GroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
+            model.OtherGroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
             
             model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.GroupAdmin == true;
             // TODO: Process group admins label if the current user is an admin, but there are also other admins
         }
         else
         {
-            model.GroupMembers = new List<IGroupMember>();
+            model.OtherGroupMembers = new List<IGroupMember>();
         }
     }
 
@@ -120,7 +120,6 @@ public sealed class HomeController : BaseController
     public async Task<IActionResult> SendMessage(WriteMessageVm model)
     {
         model.RecipientType = model.RecipientType.ActualType(model.IncludeFutureMembers);
-
-        throw new NotImplementedException();
+        var commandResuilt = await Send(new WriteMessageCommand<WriteMessageVm>(model), new WriteMessageVmValidator());
     }
 }
