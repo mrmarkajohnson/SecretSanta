@@ -35,11 +35,11 @@ public sealed class HomeController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ViewMessage(int messageRecipientKey)
+    public async Task<IActionResult> ViewMessage(int messageKey, int? messageRecipientKey)
     {
         try
         {
-            IReadMessage message = await Send(new ViewMessageQuery(messageRecipientKey));
+            IReadMessage message = await Send(new ViewMessageQuery(messageKey, messageRecipientKey));
             var model = Mapper.Map<ReadMessageVm>(message);
             return PartialView("_ViewMessageModal", model);
         }
@@ -50,11 +50,11 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> MarkMessageRead(int messageRecipientKey)
+    public async Task<IActionResult> MarkMessageRead(int messageKey, int? messageRecipientKey)
     {
         try
         {
-            await Send(new MarkMessageReadCommand(messageRecipientKey), null);
+            await Send(new MarkMessageReadCommand(messageKey, messageRecipientKey), null);
         }
         catch
         {
@@ -120,6 +120,31 @@ public sealed class HomeController : BaseController
     public async Task<IActionResult> SendMessage(WriteMessageVm model)
     {
         model.RecipientType = model.RecipientType.ActualType(model.IncludeFutureMembers);
-        var commandResuilt = await Send(new WriteMessageCommand<WriteMessageVm>(model), new WriteMessageVmValidator());
+        var commandResult = await Send(new WriteMessageCommand<WriteMessageVm>(model), new WriteMessageVmValidator());
+
+        if (commandResult.Success)
+        {
+            string message = "Message sent successfully";
+
+            if (string.IsNullOrEmpty(model.ReturnUrl))
+            {
+                if (model.IsModal)
+                {
+                    return Ok(message);
+                }
+
+                model.ReturnUrl = Url.Action(nameof(Index));
+            }
+
+            return RedirectWithMessage(model.ReturnUrl, message);
+        }
+        else if (model.IsModal)
+        {
+            return PartialView("_WriteMessageModal", model);
+        }
+        else
+        {
+            return View("WriteMessage", model);
+        }
     }
 }

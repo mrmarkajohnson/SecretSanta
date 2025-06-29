@@ -51,7 +51,7 @@ Add user postal and e-mail address functionality for sending and receiving gifts
 Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
-* Show messages for auto-inclusion (e.g. future group members or participants, the recipient or gifter etc.) that didn't exist when sent
+Create the modal version
 Save draft
 Allow users to reply (when appropriate) and show all messages in the thread
 Allow users to see their sent messages

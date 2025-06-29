@@ -59,8 +59,8 @@ public class HomeController : BaseController
 
         if (commandResult.Success)
         {
-            string changed = update ? "Updated" : "Added";
-            string message = $"Suggestion {changed} Successfully";
+            string changed = update ? "updated" : "added";
+            string message = $"Suggestion {changed} successfully";
 
             if (string.IsNullOrEmpty(model.ReturnUrl))
             {

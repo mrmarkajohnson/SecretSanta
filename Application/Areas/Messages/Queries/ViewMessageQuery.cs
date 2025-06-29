@@ -1,16 +1,18 @@
-﻿using Application.Shared.Requests;
+﻿using Application.Areas.Messages.Queries.Internals;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Messages.Queries;
 
-public sealed class ViewMessageQuery : BaseQuery<IReadMessage>
+public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
 {
-    public int MessageRecipientKey { get; }
+    public int MessageKey { get; }
+    public int? MessageRecipientKey { get; }
 
-    public ViewMessageQuery(int messageRecipientKey)
+    public ViewMessageQuery(int messageKey, int? messageRecipientKey)
     {
+        MessageKey = messageKey;
         MessageRecipientKey = messageRecipientKey;
     }
 
@@ -18,12 +20,30 @@ public sealed class ViewMessageQuery : BaseQuery<IReadMessage>
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
-        var message = dbCurrentSantaUser.ReceivedMessages
-            .Where(x => x.MessageRecipientKey == MessageRecipientKey)
-            .AsQueryable()
-            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
-            .FirstOrDefault();
+        IReadMessage? message = null;
 
+        if (MessageRecipientKey > 0)
+        {
+            message = dbCurrentSantaUser.ReceivedMessages
+                .Where(x => x.MessageKey == MessageKey)
+                .Where(x => x.RecipientSantaUserKey == MessageRecipientKey)
+                .AsQueryable()
+                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
+        if (message == null)
+        {
+            message = dbCurrentSantaUser.GiftingGroupYears
+                .SelectMany(x => x.GiftingGroupYear.Messages)
+                .Where(x => x.MessageKey == MessageKey)
+                .ToList()
+                .Where(y => IsIndirectRecipient(dbCurrentSantaUser, y))
+                .AsQueryable()
+                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+        
         if (message == null)
             throw new NotFoundException("Message");
 

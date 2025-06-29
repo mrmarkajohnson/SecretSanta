@@ -35,7 +35,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         _dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
 
         Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey, true);
-        Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup, Item.CalendarYear);
+        Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
 
         foreach (IYearGroupUserBase member in Item.GroupMembers)
         {

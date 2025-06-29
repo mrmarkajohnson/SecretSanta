@@ -5,7 +5,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.Commands;
 
-public class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IWriteSantaMessage
+public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : IWriteSantaMessage
 {
     public WriteMessageCommand(TItem item) : base(item)
     {
@@ -33,8 +33,10 @@ public class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TItem> whe
             string futureLabel = Item.RecipientType.FutureLabel();
             if (futureLabel.IsNotEmpty())
             {
+                string othersDescription = Item.RecipientType.SenderToDescription(dbGiftingGroup.Name).Replace("All ", "").Replace("other ", "");
+
                 AddValidationError(nameof(Item.IncludeFutureMembers),
-                    $"There are currently no {Item.RecipientType.SenderToDescription(dbGiftingGroup.Name)}s. Please select '{futureLabel}' to ensure your message can be read.");
+                    $"There are currently no other {othersDescription}. Please select '{futureLabel}' to ensure your message can be read.");
             }
         }
 
