@@ -77,7 +77,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 
         IList<Santa_User> dbRecipients = dbPossibleRecipients
             .Where(x => x.SantaUserKey != dbSender.SantaUserKey)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .ToList();
+
         return dbRecipients;
     }
 

@@ -19,9 +19,9 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<IReadMess
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider);
 
         var messages = receivedMessages.Union(otherAvailableMessages)
-            .OrderBy(x => x.Read)
-            .ThenBy(x => !x.Important)
-            .ThenByDescending(x => x.Sent)
+            .OrderBy(x => x.Read || !x.Important) // show important unread first
+            .ThenBy(x => x.Read) // then all other unread
+            .ThenByDescending(x => x.Sent) // then by date sent, desending
             .AsQueryable();
 
         return Result(messages);        

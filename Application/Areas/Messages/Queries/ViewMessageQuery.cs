@@ -22,15 +22,24 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
 
         IReadMessage? message = null;
 
+        var receivedMessages = dbCurrentSantaUser.ReceivedMessages
+            .Where(x => x.DateArchived == null)
+            .Where(x => x.Message.DateArchived == null)
+            .Where(x => x.MessageKey == MessageKey);
+
         if (MessageRecipientKey > 0)
         {
-            message = dbCurrentSantaUser.ReceivedMessages
-                .Where(x => x.MessageKey == MessageKey)
-                .Where(x => x.RecipientSantaUserKey == MessageRecipientKey)
+            message = receivedMessages
+                .Where(x => x.MessageRecipientKey == MessageRecipientKey)
                 .AsQueryable()
                 .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
+
+        message ??= receivedMessages
+                .AsQueryable()
+                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
         if (message == null)
         {
