@@ -44,6 +44,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     protected bool IsIndirectRecipient(Santa_User dbSantaUser, Santa_Message dbOriginalMessage)
     {
         return dbOriginalMessage.RecipientType.AllowsFutureViewing()
+            && !dbOriginalMessage.Recipients.Any(x => x.RecipientSantaUserKey == dbSantaUser.SantaUserKey)
             && GetPossibleRecipients(dbOriginalMessage).Any(z => z.SantaUserKey == dbSantaUser.SantaUserKey);
     }
 

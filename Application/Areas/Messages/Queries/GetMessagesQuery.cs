@@ -18,7 +18,12 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<IReadMess
             .AsQueryable()
             .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider);
 
-        var messages = receivedMessages.Union(otherAvailableMessages);
+        var messages = receivedMessages.Union(otherAvailableMessages)
+            .OrderBy(x => x.Read)
+            .ThenBy(x => !x.Important)
+            .ThenByDescending(x => x.Sent)
+            .AsQueryable();
+
         return Result(messages);        
     }
 }
