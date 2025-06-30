@@ -18,6 +18,7 @@
     <div class="collapse">
         <input type="hidden" asp-for="ReplyToMessageKey" />
         <input type="hidden" asp-for="IsModal" />
+        <input type="hidden" asp-for="GroupKeyPreset" />
     </div>
 
     <div class="mb-5">
@@ -29,10 +30,15 @@
             </div>
         }
 
+        @if (!Model.IsModal)
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        }
+
         <div class="@CenterFlexWrapContainer">
             <div class="@Model.GroupWidth">
 
-                @if (Model.GiftingGroupKey.IsEmpty())
+                @if (!Model.GroupKeyPreset || Model.GiftingGroupKey.IsEmpty())
                 {                        
                     <div class="mb-3">
                         <label asp-for="GiftingGroupKey" class="control-label"></label>
@@ -44,6 +50,9 @@
                                 <option value="@null">@StandardPhrases.PleaseSelect</option>
                             </select>
                             <partial name="_InputQuestion" model="@selectGroupExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="GiftingGroupKey" class="text-danger"></span>
                         </div>
                     </div>
                 }
@@ -99,6 +108,14 @@
 
             </div>
         </div>
+
+        @if (!Model.IsModal)
+        {
+            <br />
+            <div class="col-md-12">
+                <partial name="_SubmitButton" />
+            </div>
+        }
     </div>
 
 </div>

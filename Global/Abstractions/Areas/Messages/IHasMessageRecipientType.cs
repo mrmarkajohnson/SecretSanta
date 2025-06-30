@@ -4,5 +4,5 @@ namespace Global.Abstractions.Areas.Messages;
 
 public interface IHasMessageRecipientType
 {
-    MessageRecipientType RecipientType { get; }
+    MessageRecipientType RecipientType { get; set; }
 }

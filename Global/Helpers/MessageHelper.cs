@@ -45,21 +45,12 @@ public static class MessageHelper
         return displayName;
     }
 
-    public static MessageRecipientType ActualType(this MessageRecipientType recipientType, bool includeFutureMembers)
+    public static Dictionary<MessageRecipientType, MessageRecipientType> FutureRecipientSwitches => new Dictionary<MessageRecipientType, MessageRecipientType>
     {
-        if (includeFutureMembers)
-        {
-            return recipientType switch
-            {
-                MessageRecipientType.YearGroupCurrentMembers => MessageRecipientType.YearGroupAllEverMembers,
-                MessageRecipientType.GroupCurrentMembers => MessageRecipientType.GroupAllEverMembers,
-                MessageRecipientType.OriginalCurrentRecipients => MessageRecipientType.OriginalAllEverRecipients,
-                _ => recipientType
-            };
-        }
-
-        return recipientType;
-    }
+        { MessageRecipientType.YearGroupCurrentMembers, MessageRecipientType.YearGroupAllEverMembers },
+        { MessageRecipientType.GroupCurrentMembers,  MessageRecipientType.GroupAllEverMembers },
+        { MessageRecipientType.OriginalCurrentRecipients, MessageRecipientType.OriginalAllEverRecipients }
+    };
 
     public static bool SpecificMember(this MessageRecipientType recipientType)
     {

@@ -67,34 +67,40 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> WriteMessage(int? giftingGroupKey)
     {
+        WriteMessageVm model = await SendMessage(giftingGroupKey);
+        model.ReturnUrl = Url.Action(nameof(Index));
+        return View(model);
+    }
+
+    private async Task<WriteMessageVm> SendMessage(int? giftingGroupKey)
+    {
         var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey
         };
 
-        var giftingGroups = HomeModel.GiftingGroups;
-        model.GiftingGroups = giftingGroups;
+        model.GiftingGroups = HomeModel.GiftingGroups;
 
-        if (giftingGroupKey > 0 && !giftingGroups.Any(x => x.GiftingGroupKey == giftingGroupKey.Value))
+        if (model.GiftingGroupKey > 0 && !model.GiftingGroups.Any(x => x.GiftingGroupKey == model.GiftingGroupKey.Value))
         {
-            model.GiftingGroupKey = giftingGroupKey = null;
+            model.GiftingGroupKey = null;
         }
-        
-        if (giftingGroupKey.IsEmpty() && giftingGroups.Count == 1)
+
+        if (model.GiftingGroupKey.IsEmpty() && model.GiftingGroups.Count == 1)
         {
-            model.GiftingGroupKey = giftingGroups.First().GiftingGroupKey;
+            model.GiftingGroupKey = model.GiftingGroups.First().GiftingGroupKey;
         }
+
+        model.GroupKeyPreset = model.GiftingGroupKey > 0;
 
         await AddGroupMembers(model);
-
-        return View(model);
+        return model;
     }
 
     [HttpPost]
     public async Task<IActionResult> ChooseMessageRecipient(ChooseMessageRecipientVm model)
     {
         await AddGroupMembers(model);
-
         return PartialView("_ChooseMessageRecipient", model);
     }
 
@@ -117,9 +123,19 @@ public sealed class HomeController : BaseController
     // TODO: Add message reply option; include the original message type in the model
 
     [HttpPost]
+    public async Task<IActionResult> WriteMessage(WriteMessageVm model)
+    {
+        return await SendMessage(model);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> SendMessage(WriteMessageVm model)
     {
-        model.RecipientType = model.RecipientType.ActualType(model.IncludeFutureMembers);
+        ModelState.Clear();
+
+        model.GiftingGroups = HomeModel.GiftingGroups;
+        await AddGroupMembers(model);
+        
         var commandResult = await Send(new WriteMessageCommand<WriteMessageVm>(model), new WriteMessageVmValidator());
 
         if (commandResult.Success)
@@ -138,13 +154,18 @@ public sealed class HomeController : BaseController
 
             return RedirectWithMessage(model.ReturnUrl, message);
         }
-        else if (model.IsModal)
-        {
-            return PartialView("_WriteMessageModal", model);
-        }
         else
         {
-            return View("WriteMessage", model);
+            model.SetDisplayRecipientType();
+            
+            if (model.IsModal)
+            {
+                return PartialView("_WriteMessageModal", model);
+            }
+            else
+            {
+                return View("WriteMessage", model);
+            }
         }
     }
 }

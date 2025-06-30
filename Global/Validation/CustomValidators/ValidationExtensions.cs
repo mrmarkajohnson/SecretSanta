@@ -1,5 +1,6 @@
 ﻿using Global.Validation;
 using Global.Validation.CustomValidators;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FluentValidation;
 
@@ -22,6 +23,15 @@ public static class ValidationExtensions
         return ruleBuilder
             .Must((root, x, context) => (allowEmpty && IsEmpty(x))
                 || ((TEnumerable?)list.DynamicInvoke(root))?.ToList().Contains(x) == true)
+            .WithMessage(ConvertMessageForFluentValidation(ValidationMessages.NotInDropDownError));
+    }
+
+    public static IRuleBuilderOptions<T, TProperty> IsInDropDownList<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, 
+        Func<T, IEnumerable<SelectListItem>> list, bool allowEmpty)
+    {
+        return ruleBuilder
+            .Must((root, x, context) => (allowEmpty && IsEmpty(x))
+                || ((IEnumerable<SelectListItem>?)list.DynamicInvoke(root))?.Any(y => y.Value == x.ToString()) == true)
             .WithMessage(ConvertMessageForFluentValidation(ValidationMessages.NotInDropDownError));
     }
 

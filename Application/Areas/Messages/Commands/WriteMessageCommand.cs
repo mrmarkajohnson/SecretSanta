@@ -45,6 +45,7 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
         if (!Validation.IsValid)
             return await Result();
 
+        Item.SetActualRecipientType();
         SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
 
         return await SaveAndReturnSuccess();

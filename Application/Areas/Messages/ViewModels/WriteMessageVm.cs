@@ -14,6 +14,8 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IFor
         SubmitButtonIcon = "fa-paper-plane";
     }
 
+    public bool GroupKeyPreset { get; set; }
+
     [Display(Name = "Title")]
     public string HeaderText { get; set; } = string.Empty;
 
@@ -37,12 +39,21 @@ public class WriteMessageVmValidator : AbstractValidator<WriteMessageVm>
 {
     public WriteMessageVmValidator()
     {
-        RuleFor(x => x.HeaderText.IsNotEmpty());
-        RuleFor(x => x.MessageText.IsNotEmpty());
+        RuleFor(x => x.HeaderText).NotEmpty();
+        RuleFor(x => x.MessageText).NotEmpty();
 
-        RuleFor(x => x.GiftingGroupKey).NotNullOrEmpty();
+        RuleFor(x => x.GiftingGroupKey)
+            .IsInDropDownList(x => x.GroupSelection, false)
+            .When(x => x.GroupSelection.Any());
 
-        RuleFor(x => x.RecipientType).IsInDropDownList(x => x.AvailableRecipientTypes, false);
+        RuleFor(x => x.GiftingGroupKey)
+            .NotNullOrEmpty()
+            .When(x => !x.GroupSelection.Any());
+
+        RuleFor(x => x.RecipientType)
+            .IsInDropDownList(x => x.AvailableRecipientTypes, false)
+            .When(x => x.GiftingGroupKey > 0)
+            .WithName("recipient type");
 
         RuleFor(x => x.SpecificGroupMemberKey)
             .NotNullOrEmpty()
