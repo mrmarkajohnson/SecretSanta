@@ -55,7 +55,19 @@ public static class TypeExtensions
 
     public static IDictionary<string, object?> ToDictionary(this object obj) // Thanks to Khaja Minhajuddin and Mark Bell for this (adapted)
     {
+        try
+        {
+            IDictionary<string, object?>? dictionary = obj as Dictionary<string, object?>;
+
+            if (dictionary != null)
+                return dictionary;
+        }
+        catch
+        {
+        }
+
         IDictionary<string, object?> result = new Dictionary<string, object?>();
+
         PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
 
         foreach (PropertyDescriptor property in properties)
