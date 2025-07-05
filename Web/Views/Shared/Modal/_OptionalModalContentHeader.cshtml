@@ -1,0 +1,29 @@
+﻿@using Web.Extensions
+
+@model IOptionalModalFormVm
+
+<div class="collapse">
+    <input type="hidden" asp-for="IsModal" />
+</div>
+
+@if (Model.SubTitle.IsNotEmpty())
+{
+    <h2>@Model.SubTitle</h2>
+}
+
+@if (Model.Guidance.Any())
+{
+    <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
+        @foreach (string line in Model.Guidance)
+        {
+            <p>
+                @line.ToRawHtml()
+            </p>
+        }
+    </div>
+}
+
+@if (!Model.IsModal)
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+}

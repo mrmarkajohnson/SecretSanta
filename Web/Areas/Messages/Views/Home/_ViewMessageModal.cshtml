@@ -3,8 +3,11 @@
 @using Web.Extensions
 
 @model ReadMessageVm
+@{
+    string modalId = Model.SentMessage ? "sentMessageModal" : "viewMessageModal";
+}
 
-<div class="modal santa-modal" tabindex="-1" id="viewMessageModal" data-close-url="@Url.Action(Context, "MarkMessageRead", "Home", "Messages")" 
+<div class="modal santa-modal" tabindex="-1" id="@modalId" data-close-url="@Url.Action(Context, "MarkMessageRead", "Home", "Messages")" 
     data-message-key="@Model.MessageKey" data-message-recipient-key="@Model.MessageRecipientKey" data-read="@Model.Read">
 
     <div class="modal-dialog modal-lg">

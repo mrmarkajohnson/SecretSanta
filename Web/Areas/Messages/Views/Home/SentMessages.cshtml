@@ -1,31 +1,30 @@
 ﻿@using Global.Abstractions.Areas.Messages
 
-@model IQueryable<IReadMessage>
+@model IQueryable<ISantaMessageBase>
 @{
-    ViewData["Title"] = "Messages";
+    ViewData["Title"] = "Sent Messages";
 }
 
-<h1>Messages</h1>
+<h1>Sent Messages</h1>
 
 <div class="row @CenterFlexNoWrapContainer">
 
     <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
         <p>
-            Here you can read your messages. Unread messages are in red. Messages marked 'important' are in bold text.
+            Here you can see messages that you've sent. Messages marked 'important' are in bold text.
         </p>
     </div>
 
     <div class="@StandardFullWidthGridContainer">
-        <partial name="_MessagesGrid" />
-        @* @Html.AjaxGrid(Url.Action("MessagesGrid"), new { id = "messages-grid" }) *@
+        <partial name="_SentMessagesGrid" />
     </div>
 
     <div class="row @CenterFlexNoWrapContainer mt-4">
 
         <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
             <div>
-                <a asp-area="Messages" asp-controller="Home" asp-action="SentMessages">
-                    Sent Messages
+                <a asp-area="Messages" asp-controller="Home" asp-action="Index">
+                    Received Messages
                 </a>
             </div>
             <div>

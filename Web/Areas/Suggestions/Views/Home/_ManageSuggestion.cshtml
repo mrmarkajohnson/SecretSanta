@@ -1,17 +1,7 @@
 ﻿@using Application.Areas.Suggestions.ViewModels
+
 @model ManageSuggestionVm
 @{
-    List<string> guidance = [Model.Existing ? "" : "Suggest a present that you'd like to receive from your Secret Santa."];
-
-    if (Model.YearGroupUserLinks.Count > 0)
-    {
-        guidance.Add("You can assign your suggestion to one or more groups. Make sure it is realistic for the spending limit of each group.");
-    }
-    else if (Model.YearGroupUserLinks.Count == 1)
-    {
-        guidance.Add($"Make sure your suggestion is realistic for the spending limit of the '{Model.YearGroupUserLinks[0].GiftingGroupName}' group.");
-    }
-
     string suggestionExplanation = "Add a short description of your suggestion";
     string notesExplanation = "Add any other relevant information, including any links, items to avoid, size details etc.";
     string priorityExplanation = $"A sort order between 1 and {PriorityLimit}; items with priority 1 appear first";
@@ -23,28 +13,14 @@
 
     <div class="collapse">
         <input type="hidden" asp-for="SuggestionKey" />
-        <input type="hidden" asp-for="IsModal" />
     </div>
 
     <div class="mb-5">
-        <h2>@Model.SubTitle</h2>
-
-        <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
-            @foreach (string line in guidance)
-            {
-                <p>
-                    @line
-                </p>
-            }
-        </div>
-
-        @if (!Model.IsModal)
-        {
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-        }
+        <partial name="Modal/_OptionalModalContentHeader" />
 
         <div class="@CenterFlexWrapContainer">
             <div class="@Model.GroupWidth">
+
                 <div class="mb-3">
                     <label asp-for="SuggestionText" class="control-label required"></label>
                     <div class="input-group input-info">
@@ -128,13 +104,7 @@
             </div>
         </div>
 
-        @if (!Model.IsModal)
-        {
-            <br />
-            <div class="col-md-12">
-                <partial name="_SubmitButton" />
-            </div>
-        }
+        <partial name="Modal/_OptionalModalContentFooter" />
     </div>
 
 </div>

@@ -24,6 +24,6 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<IReadMess
             .ThenByDescending(x => x.Sent) // then by date sent, desending
             .AsQueryable();
 
-        return Result(messages);        
+        return Result(messages);
     }
 }

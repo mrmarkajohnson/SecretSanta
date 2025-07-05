@@ -23,15 +23,41 @@ public sealed class HomeController : BaseController
         if (AjaxRequest())
             return await MessagesGrid();
 
-        IQueryable<IReadMessage> messages = await Send(new GetMessagesQuery());
+        IQueryable<IReadMessage> messages = await GetMessages();
         return View(messages);
     }
 
     [HttpGet]
     public async Task<IActionResult> MessagesGrid()
     {
-        IQueryable<IReadMessage> messages = await Send(new GetMessagesQuery());
+        IQueryable<IReadMessage> messages = await GetMessages();
         return PartialView("_MessagesGrid", messages);
+    }
+
+    private async Task<IQueryable<IReadMessage>> GetMessages()
+    {
+        return await Send(new GetMessagesQuery());
+    }
+
+    public async Task<IActionResult> SentMessages()
+    {
+        if (AjaxRequest())
+            return await SentMessagesGrid();
+
+        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
+        return View(messages);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SentMessagesGrid()
+    {
+        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
+        return PartialView("_SentMessagesGrid", messages);
+    }
+
+    private async Task<IQueryable<ISantaMessageBase>> GetSentMessages()
+    {
+        return await Send(new SentMessagesQuery());
     }
 
     [HttpGet]
@@ -47,6 +73,22 @@ public sealed class HomeController : BaseController
         {
             return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ViewSentMessage(int messageKey)
+    {
+        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
+        ISantaMessageBase? message = messages.FirstOrDefault(x => x.MessageKey == messageKey);
+
+        if (message == null)
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, "Message not found");
+        }
+
+        var model = Mapper.Map<ReadMessageVm>(message);
+        model.SentMessage = true;
+        return PartialView("_ViewMessageModal", model);        
     }
 
     [HttpPost]
@@ -68,7 +110,7 @@ public sealed class HomeController : BaseController
     public async Task<IActionResult> WriteMessage(int? giftingGroupKey)
     {
         WriteMessageVm model = await SendMessage(giftingGroupKey);
-        model.ReturnUrl = Url.Action(nameof(Index));
+        model.ReturnUrl = Url.Action(nameof(SentMessages));
         return View(model);
     }
 
@@ -76,7 +118,8 @@ public sealed class HomeController : BaseController
     {
         var model = new WriteMessageVm
         {
-            GiftingGroupKey = giftingGroupKey
+            GiftingGroupKey = giftingGroupKey,
+            AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions")
         };
 
         model.GiftingGroups = HomeModel.GiftingGroups;
@@ -149,7 +192,7 @@ public sealed class HomeController : BaseController
                     return Ok(message);
                 }
 
-                model.ReturnUrl = Url.Action(nameof(Index));
+                model.ReturnUrl = Url.Action(nameof(SentMessages));
             }
 
             return RedirectWithMessage(model.ReturnUrl, message);
@@ -157,7 +200,8 @@ public sealed class HomeController : BaseController
         else
         {
             model.SetDisplayRecipientType();
-            
+            model.AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions");
+
             if (model.IsModal)
             {
                 return PartialView("_WriteMessageModal", model);

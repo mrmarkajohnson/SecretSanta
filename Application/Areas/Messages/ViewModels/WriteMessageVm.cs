@@ -6,7 +6,7 @@ using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IFormVm, IModalVm
+public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOptionalModalFormVm
 {
     public WriteMessageVm()
     {
@@ -26,13 +26,27 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IFor
     public bool CanReply { get; set; }
     public bool ShowAsFromSanta { get; set; }
 
-    public string PageTitle => IsReply ? "Reply to Message" : "Write a Message"; public string ModalTitle => PageTitle;
+    public string AddSuggestionUrl { get; set; } = string.Empty;
+
+    public string PageTitle => IsReply ? "Reply to Message" : "Write a Message";
+    public string ModalTitle => PageTitle;
+    public string? SubTitle => null;
+    public List<string> Guidance => GetGuidance();
 
     public bool IsModal { get; set; }
     public bool ShowSaveButton => true;
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 
     public int CalendarYear { get; set; } = DateTime.Today.Year;
+
+    private List<string> GetGuidance()
+    {
+        if (IsReply)
+            return [];
+
+        return [$"Send a message to one or more members of {(GiftingGroupKey > 0 ? "the" : "a")} group.",
+            $"For gift suggestions, please use the '<a href=\"{AddSuggestionUrl}\">Add Suggestion</a>' option instead of messages."];
+    }
 }
 
 public class WriteMessageVmValidator : AbstractValidator<WriteMessageVm>

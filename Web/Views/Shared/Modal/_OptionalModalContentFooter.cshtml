@@ -1,0 +1,9 @@
+﻿@model IOptionalModalFormVm
+
+@if (!Model.IsModal && Model.ShowSaveButton)
+{
+    <br />
+    <div class="col-md-12">
+        <partial name="_SubmitButton" />
+    </div>
+}

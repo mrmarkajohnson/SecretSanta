@@ -56,6 +56,8 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
         if (message == null)
             throw new NotFoundException("Message");
 
+        message.SentMessage = message.Sender?.GlobalUserId == dbCurrentSantaUser.GlobalUserId;
+
         return Result(message);
     }
 }
