@@ -6,4 +6,5 @@ public interface IOptionalModalFormVm : IFormVm, IModalVm
     string PageTitle { get; }
     string? SubTitle { get; }
     List<string> Guidance { get; }
+    string GroupWidth { get; }
 }

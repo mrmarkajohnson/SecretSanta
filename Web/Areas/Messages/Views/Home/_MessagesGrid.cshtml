@@ -1,16 +1,20 @@
 ﻿@using Global.Abstractions.Areas.Messages
 
-@model IQueryable<IReadMessage>
+@model IQueryable<ISantaMessage>
 @{
-    Func<IReadMessage, object> actions =
+    Func<ISantaMessage, object> actions =
     @<text>
         <a class="modal-link" data-url="@Url.Action(Context, "ViewMessage", "Home", "Messages", new { messageKey=item.MessageKey, messageRecipientKey=item.MessageRecipientKey })"
-           data-toggle="tooltip" title="View Message">
-            <i class="fa fa-eye"></i>
-        </a>
+           data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
+
+        @if (item.CanReply)
+        {
+            <a class="modal-link" data-url="@Url.Action(Context, "Reply", "Home", "Messages", new { messageKey = item.MessageKey })"
+               data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></a>
+        }
     </text>;
 
-    Func<IReadMessage, object> from =
+    Func<ISantaMessage, object> from =
     @<text>
         @if (item.Sender != null)
         {

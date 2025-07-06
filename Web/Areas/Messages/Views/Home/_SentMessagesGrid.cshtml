@@ -5,9 +5,13 @@
     Func<ISantaMessageBase, object> actions =
     @<text>
         <a class="modal-link" data-url="@Url.Action(Context, "ViewSentMessage", "Home", "Messages", new { messageKey=item.MessageKey })"
-           data-toggle="tooltip" title="View Message">
-            <i class="fa fa-eye"></i>
-        </a>
+           data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
+
+        @if (item.CanReply)
+        {
+            // <a class="modal-link" data-url="@Url.Action(Context, "Reply", "Home", "Messages", new { messageKey = item.MessageKey })"
+            //    data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></a>
+        }
     </text>;
 }
 

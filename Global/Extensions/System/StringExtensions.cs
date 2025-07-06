@@ -16,6 +16,18 @@ public static class StringExtensions
         return Regex.Replace(Regex.Replace(value, "([a-z])([A-Z])", "$1 $2"), "([A-Z])([A-Z])([a-z])", "$1 $2$3");
     }
 
+    public static string TrimStart(this string text, string remove)
+    {
+        if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(remove) || !text.Trim().StartsWith(remove))
+        {
+            return text;
+        }
+        else
+        {
+            return text[remove.Length..];
+        }
+    }
+
     public static string TrimEnd(this string text, string remove)
     {
         if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(remove) || !text.Trim().EndsWith(remove))

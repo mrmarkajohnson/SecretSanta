@@ -222,7 +222,7 @@ function reloadGrid() {
     grid.reload();
 }
 function initModalLinks() {
-    let modalLinks = document.querySelectorAll('a.modal-link');
+    let modalLinks = document.querySelectorAll('.modal-link');
     modalLinks.forEach(initModalLink);
 }
 

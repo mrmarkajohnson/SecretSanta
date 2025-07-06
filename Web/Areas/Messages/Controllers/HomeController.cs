@@ -7,6 +7,7 @@ using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Web.Areas.Messages.Controllers;
 
@@ -23,18 +24,18 @@ public sealed class HomeController : BaseController
         if (AjaxRequest())
             return await MessagesGrid();
 
-        IQueryable<IReadMessage> messages = await GetMessages();
+        IQueryable<ISantaMessage> messages = await GetMessages();
         return View(messages);
     }
 
     [HttpGet]
     public async Task<IActionResult> MessagesGrid()
     {
-        IQueryable<IReadMessage> messages = await GetMessages();
+        IQueryable<ISantaMessage> messages = await GetMessages();
         return PartialView("_MessagesGrid", messages);
     }
 
-    private async Task<IQueryable<IReadMessage>> GetMessages()
+    private async Task<IQueryable<ISantaMessage>> GetMessages()
     {
         return await Send(new GetMessagesQuery());
     }
@@ -87,7 +88,7 @@ public sealed class HomeController : BaseController
         }
 
         var model = Mapper.Map<ReadMessageVm>(message);
-        model.SentMessage = true;
+        model.IsSentMessage = true;
         return PartialView("_ViewMessageModal", model);        
     }
 
@@ -109,20 +110,19 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> WriteMessage(int? giftingGroupKey)
     {
-        WriteMessageVm model = await SendMessage(giftingGroupKey);
+        WriteMessageVm model = await GetSendMessageModel(giftingGroupKey);
         model.ReturnUrl = Url.Action(nameof(SentMessages));
         return View(model);
     }
 
-    private async Task<WriteMessageVm> SendMessage(int? giftingGroupKey)
+    private async Task<WriteMessageVm> GetSendMessageModel(int? giftingGroupKey)
     {
         var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey,
-            AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions")
+            AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions"),
+            GiftingGroups = HomeModel.GiftingGroups
         };
-
-        model.GiftingGroups = HomeModel.GiftingGroups;
 
         if (model.GiftingGroupKey > 0 && !model.GiftingGroups.Any(x => x.GiftingGroupKey == model.GiftingGroupKey.Value))
         {
@@ -163,10 +163,41 @@ public sealed class HomeController : BaseController
         }
     }
 
-    // TODO: Add message reply option; include the original message type in the model
+    [HttpGet]
+    public async Task<IActionResult> Reply(int messageKey, int? messageRecipientKey)
+    {
+        try
+        {
+            IReadMessage originalMessage = await Send(new ViewMessageQuery(messageKey, messageRecipientKey));
+
+            var model = new WriteReplyVm
+            {
+                GiftingGroupKey = originalMessage.GiftingGroupKey,
+                GroupName = originalMessage.GroupName,
+                ReplyToMessageKey = messageKey,
+                IsModal = true,
+                ReturnUrl = Url.Action(nameof(SentMessages)),
+                OriginalRecipientType = originalMessage.RecipientType,
+                ReplyToName = originalMessage.SenderName,
+                HeaderText = "RE: " + originalMessage.HeaderText.TrimStart("RE: ")
+            };
+
+            return PartialView("_WriteMessageModal", model);
+        }
+        catch (NotFoundException ex)
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
+        }
+    }
 
     [HttpPost]
     public async Task<IActionResult> WriteMessage(WriteMessageVm model)
+    {
+        return await SendMessage(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Reply(WriteReplyVm model)
     {
         return await SendMessage(model);
     }

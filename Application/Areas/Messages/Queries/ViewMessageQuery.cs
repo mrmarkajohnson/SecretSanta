@@ -22,6 +22,9 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
 
         IReadMessage? message = null;
 
+        var allGroupMessages = dbCurrentSantaUser.GiftingGroupYears
+                .SelectMany(x => x.GiftingGroupYear.Messages);
+
         var receivedMessages = dbCurrentSantaUser.ReceivedMessages
             .Where(x => x.DateArchived == null)
             .Where(x => x.Message.DateArchived == null)
@@ -43,8 +46,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
 
         if (message == null)
         {
-            message = dbCurrentSantaUser.GiftingGroupYears
-                .SelectMany(x => x.GiftingGroupYear.Messages)
+            message = allGroupMessages
                 .Where(x => x.MessageKey == MessageKey)
                 .ToList()
                 .Where(y => IsIndirectRecipient(dbCurrentSantaUser, y))
@@ -56,7 +58,30 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
         if (message == null)
             throw new NotFoundException("Message");
 
-        message.SentMessage = message.Sender?.GlobalUserId == dbCurrentSantaUser.GlobalUserId;
+        message.IsSentMessage = message.Sender?.GlobalUserId == dbCurrentSantaUser.GlobalUserId;
+
+        var previousMessages = allGroupMessages
+            .Where(x => x.ReplyTo?.OriginalMessageKey == MessageKey)
+            .ToList();
+
+        var olderMessages = previousMessages;
+
+        while (olderMessages.Count > 0)
+        {
+            olderMessages = allGroupMessages
+                .Where(x => olderMessages.Any(y => x.ReplyTo?.OriginalMessageKey == y.MessageKey))
+                .ToList();
+
+            if (olderMessages.Count > 0)
+            {
+                previousMessages.AddRange(olderMessages);
+            }
+        }
+
+        message.PreviousMessages = previousMessages
+            .AsQueryable()
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider)
+            .ToList();
 
         return Result(message);
     }

@@ -14,25 +14,33 @@
 <div class="mb-3 d-flex">
     <div class="form-group-ib col-6">
         <label asp-for="RecipientType" class="control-label"></label>
-        <div class="input-group input-info">
-            <select asp-for="RecipientType" class="form-control recipient-type-select" aria-required="true" disabled="@recipientTypeDisabled">
-                <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
 
-                @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
-                {
-                    <option value="@type" data-specific="@type.SpecificMember()"
-                        data-future-label="@type.FutureLabel()"
-                        data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+        @if (Model.AvailableRecipientTypes.Count > 1)
+        {
+            <div class="input-group input-info">
+                <select asp-for="RecipientType" class="form-control recipient-type-select" aria-required="true" disabled="@recipientTypeDisabled">
+                    <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
 
-                        @type.SenderToDescription(Model.GroupName, otherAdmins)
-                    </option>
-                }
-            </select>
-            <partial name="_InputQuestion" model="@recipientTypeExplanation" />
-        </div>
-        <div>
-            <span asp-validation-for="RecipientType" class="text-danger"></span>
-        </div>
+                    @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
+                    {
+                        <option value="@type" data-specific="@type.SpecificMember()"
+                            data-future-label="@type.FutureLabel(Model.OriginalRecipientType)"
+                            data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
+
+                            @type.SenderToDescription(Model.GroupName, otherAdmins)
+                        </option>
+                    }
+                </select>
+                <partial name="_InputQuestion" model="@recipientTypeExplanation" />
+            </div>
+            <div>
+                <span asp-validation-for="RecipientType" class="text-danger"></span>
+            </div>
+        }
+        else if (Model.IsReply && Model.ReplyToName.IsNotEmpty())
+        {
+            <span class="control-label fw-normal">@Model.ReplyToName</span>
+        }
     </div>
 
     <div class="form-group-ib col-6 ps-3 collapse future-members-section">

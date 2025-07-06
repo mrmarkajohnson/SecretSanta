@@ -63,13 +63,18 @@ public static class MessageHelper
             || recipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter;
     }
 
-    public static string FutureLabel(this MessageRecipientType recipientType)
+    public static string FutureLabel(this MessageRecipientType recipientType, MessageRecipientType? originalType = null)
     {
         return recipientType switch // the label goes on the corresponding 'Current' type
         {
-            MessageRecipientType.YearGroupCurrentMembers => "Include Future Partipicipants",
-            MessageRecipientType.GroupCurrentMembers => "Include Future Members",
-            MessageRecipientType.OriginalCurrentRecipients => "Include Future Recipients",
+            MessageRecipientType.YearGroupCurrentMembers 
+                => "Include Future Partipicipants",
+            MessageRecipientType.GroupCurrentMembers 
+                => "Include Future Members",
+            MessageRecipientType.OriginalCurrentRecipients 
+                => originalType is MessageRecipientType.YearGroupAllEverMembers or MessageRecipientType.GroupAllEverMembers
+                    ? "Include Future Recipients"
+                    : string.Empty,
             _ => string.Empty
         };
     }
@@ -85,9 +90,9 @@ public static class MessageHelper
             MessageRecipientType.OriginalCurrentRecipients
                 => originalType switch
                 {
-                    MessageRecipientType.YearGroupCurrentMembers =>
+                    MessageRecipientType.YearGroupAllEverMembers =>
                         "Make this visible to any future recipients of the original message, i.e. future partipants included later?",
-                    MessageRecipientType.GroupCurrentMembers =>
+                    MessageRecipientType.GroupAllEverMembers =>
                         "Make this visible to any future recipients of the original message, i.e. group members added later?",
                     _ => string.Empty
                 },

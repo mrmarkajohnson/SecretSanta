@@ -5,12 +5,26 @@
 <partial name="_SuccessMessage" />
 
 <div class="modal-footer santa-modal-footer">
+    @if (Model.AdditionalFooterButtonPartial.IsNotEmpty())
+    {
+        <partial name="@Model.AdditionalFooterButtonPartial" />
+    }
+
     @if (Model.ShowSaveButton)
     {
+        string text = "Save";
+        string icon = "fa-save";
+
+        if (Model is IForm formModel)
+        {
+            text = formModel.SubmitButtonText;
+            icon = formModel.SubmitButtonIcon;
+        }
+
         <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Save your changes and close">
             <button type="button" class="btn btn-save-close-modal">
-                <i class="fa fa-save"></i>
-                Save
+                <i class="fa @icon"></i>
+                @text
             </button>
         </div>
         <div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="label" title="Close without saving">

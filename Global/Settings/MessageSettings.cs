@@ -63,13 +63,13 @@ public static class MessageSettings
         /// <summary>
         /// Reply to all current recipients of the original message
         /// </summary>
-        [Display(Name = "All recipients of the original message")]
+        [Display(Name = "The sender and all recipients")]
         OriginalCurrentRecipients = 9,
 
         /// <summary>
         /// Reply visible to any future recipients of the original, e.g. if sent to all group members
         /// </summary>
-        [Display(Name = "All recipients of the original message")]
+        [Display(Name = "The sender and all recipients")]
         OriginalAllEverRecipients = 10,
         
         /// <summary>

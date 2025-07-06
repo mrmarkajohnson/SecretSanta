@@ -15,14 +15,15 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
     }
 
     public int? ReplyToMessageKey { get; set; }
+    public string? ReplyToName { get; set; }
     public MessageRecipientType? OriginalRecipientType { get; set; }
-    public bool IsReply => ReplyToMessageKey > 0;
+    public virtual bool IsReply => ReplyToMessageKey > 0;
 
     [Display(Name = "Include Future Members")]
     public bool IncludeFutureMembers { get; set; }
 
     [Display(Name = "To")]
-    public MessageRecipientType RecipientType { get; set; } = MessageRecipientType.TBC;
+    public virtual MessageRecipientType RecipientType { get; set; } = MessageRecipientType.TBC;
 
     [Display(Name = "To")]
     public int? SpecificGroupMemberKey { get; set; }
@@ -30,18 +31,36 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
     [Display(Name = "For Group")]
     public int? GiftingGroupKey { get; set; }
 
-    public string? GroupName => GiftingGroupKey > 0
-        ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName
-        : null;
+    public virtual string? GroupName
+    {
+        get => GiftingGroupKey > 0
+            ? GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey)?.GroupName
+            : null;
+        set { } // allows setter override
+    }
 
     public bool GroupAdmin { get; set; }
 
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
-    public IList<StandardSelectable> GroupSelection => GetSelectableGroups();
+    public virtual IList<StandardSelectable> GroupSelection => GetSelectableGroups();
 
-    public List<MessageRecipientType> AvailableRecipientTypes => IsReply
-        ? (ReplyRecipientTypes)
+    public virtual List<MessageRecipientType> AvailableRecipientTypes => IsReply
+        ? GetReplyRecipientTypes()
         : GetOriginalRecipientTypes();
+
+    public IList<IGroupMember> OtherGroupMembers { get; set; }
+    public virtual IList<StandardSelectable> MemberSelection => GetSelectableMembers();
+
+    protected List<MessageRecipientType> GetReplyRecipientTypes()
+    {
+        return OriginalRecipientType switch
+        {
+            MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter or MessageRecipientType.OriginalSender
+                or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleGroupMember
+                    => [MessageRecipientType.OriginalSender],
+            _ => ReplyRecipientTypes
+        };
+    }
 
     private List<MessageRecipientType> GetOriginalRecipientTypes()
     {
@@ -50,9 +69,6 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
             .Where(x => !x.SpecificMember() || MemberSelection.Count > 0)
             .ToList();
     }
-
-    public IList<IGroupMember> OtherGroupMembers { get; set; }
-    public IList<StandardSelectable> MemberSelection => GetSelectableMembers();
 
     private List<StandardSelectable> GetSelectableGroups()
     {

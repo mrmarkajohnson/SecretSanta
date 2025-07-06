@@ -30,6 +30,7 @@ public class ManageSuggestionVm : ManageSuggestion, IOptionalModalFormVm
 
     public bool IsModal { get; set; }
     public bool ShowSaveButton => true;
+    public string? AdditionalFooterButtonPartial { get; }
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 
     private List<string> GetGuidance()

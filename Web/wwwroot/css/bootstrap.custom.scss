@@ -324,8 +324,8 @@ a:hover {
 .modal.santa-modal .modal-footer.santa-modal-footer .btn.btn-save-close-modal {
     background: none !important;
     font-size: 20px;
-    border: 0.5px inset $white !important;
-    box-shadow: none !important;
+    border: 2px ridge $gold-background !important;
+    box-shadow: $btn-box-shadow !important;
     color: $gold-background !important;
     opacity: 1;
     font-weight: 600 !important;

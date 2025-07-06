@@ -1,10 +1,17 @@
-document.addEventListener('modalOpened', function (e) {
-    viewMessageModalClosed(e);
+document.addEventListener('modalOpening', function (e) {
+    writeMessageModalOpening(e);
 });
 
 document.addEventListener('modalClosed', function (e) {
     viewMessageModalClosed(e);
 });
+
+async function writeMessageModalOpening(e) {
+    let modal = e.detail.modal;
+    if (modal.id == 'writeMessageModal') {
+        initSendMessage();
+    }
+}
 
 async function viewMessageModalClosed(e) {
     let modal = e.detail.modal;

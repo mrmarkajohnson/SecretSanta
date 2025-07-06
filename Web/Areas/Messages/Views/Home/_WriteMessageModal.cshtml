@@ -1,11 +1,14 @@
 ﻿@model WriteMessageVm
+@{
+    string action = Model is WriteReplyVm ? "Reply" : "WriteMessage";
+}
 
 <div class="modal santa-modal" tabindex="-1" id="writeMessageModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <partial name="Modal/_ModalHeader" />
 
-            <form asp-area="Messages" asp-controller="Home" asp-action="SendMessage" method="post" id="messageForm">
+            <form asp-area="Messages" asp-controller="Home" asp-action="@action" method="post" id="messageForm">
                 <div class="modal-body">
 
                     <partial name="_WriteMessage" />

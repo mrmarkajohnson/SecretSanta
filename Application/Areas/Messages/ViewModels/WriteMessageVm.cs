@@ -35,6 +35,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
 
     public bool IsModal { get; set; }
     public bool ShowSaveButton => true;
+    public string? AdditionalFooterButtonPartial { get; }
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 
     public int CalendarYear { get; set; } = DateTime.Today.Year;

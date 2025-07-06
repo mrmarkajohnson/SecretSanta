@@ -4,7 +4,7 @@
 
 @model ReadMessageVm
 @{
-    string modalId = Model.SentMessage ? "sentMessageModal" : "viewMessageModal";
+    string modalId = Model.IsSentMessage ? "sentMessageModal" : "viewMessageModal";
 }
 
 <div class="modal santa-modal" tabindex="-1" id="@modalId" data-close-url="@Url.Action(Context, "MarkMessageRead", "Home", "Messages")" 

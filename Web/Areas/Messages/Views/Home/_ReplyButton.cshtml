@@ -1,0 +1,10 @@
+﻿@model ISantaMessage
+
+<div class="d-inline" data-toggle="tooltip" data-html="true" data-bs-html="true" 
+    data-bs-container="label" title="Reply">
+    
+    <button type="button" class="btn btn-save-close-modal modal-link" data-bs-dismiss="modal"
+            data-url="@Url.Action(Context, "Reply", "Home", "Messages", new { messageKey = Model.MessageKey })">
+        <i class="fa fa-reply"></i> Reply
+    </button>
+</div>

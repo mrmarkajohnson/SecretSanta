@@ -1,18 +1,8 @@
-﻿using Global.Abstractions.Shared;
+﻿namespace Global.Abstractions.Areas.Messages;
 
-namespace Global.Abstractions.Areas.Messages;
-
-public interface IReadMessage : ISantaMessageBase
+public interface IReadMessage : ISantaMessage
 {
-    /// <summary>
-    /// Key of the MessageRecipient record
-    /// </summary>
-    int MessageRecipientKey { get; }
-
-    IUserNamesBase? Sender { get; }
-
-    string SenderName { get; }
-
-    bool Read { get; set; }
-    bool SentMessage { get; set; }
+    int GiftingGroupKey { get; }
+    
+    IList<ISantaMessage> PreviousMessages { get; set; }
 }

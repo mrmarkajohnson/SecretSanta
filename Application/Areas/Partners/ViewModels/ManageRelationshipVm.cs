@@ -65,6 +65,7 @@ public sealed class ManageRelationshipVm : RelationshipVm, IRelationship, IModal
 
     public bool ShowSaveButton => true;
     public string? SuccessMessage { get; set; }
+    public string? AdditionalFooterButtonPartial { get; }
 
     public void UpdateStatus()
     {

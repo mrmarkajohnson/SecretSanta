@@ -4,19 +4,19 @@ using Global.Abstractions.Areas.Messages;
 
 namespace Application.Areas.Messages.Queries;
 
-public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<IReadMessage>>
+public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMessage>>
 {
-    protected override Task<IQueryable<IReadMessage>> Handle()
+    protected override Task<IQueryable<ISantaMessage>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
 
-        IQueryable<IReadMessage> receivedMessages = dbCurrentSantaUser.ReceivedMessages
+        IQueryable<ISantaMessage> receivedMessages = dbCurrentSantaUser.ReceivedMessages
             .AsQueryable()
-            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider);
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider);
 
-        IQueryable<IReadMessage> otherAvailableMessages = IndirectMessages(dbCurrentSantaUser)
+        IQueryable<ISantaMessage> otherAvailableMessages = IndirectMessages(dbCurrentSantaUser)
             .AsQueryable()
-            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider);
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider);
 
         var messages = receivedMessages.Union(otherAvailableMessages)
             .OrderBy(x => x.Read || !x.Important) // show important unread first
