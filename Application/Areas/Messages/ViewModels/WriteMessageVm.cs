@@ -12,6 +12,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
     {
         SubmitButtonText = "Send";
         SubmitButtonIcon = "fa-paper-plane";
+        PreviousMessages = new List<ISantaMessage>();
     }
 
     public bool GroupKeyPreset { get; set; }
@@ -39,6 +40,8 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 
     public int CalendarYear { get; set; } = DateTime.Today.Year;
+
+    public IList<ISantaMessage> PreviousMessages { get; set; }
 
     private List<string> GetGuidance()
     {

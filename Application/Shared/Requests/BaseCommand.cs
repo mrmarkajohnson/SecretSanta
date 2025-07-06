@@ -105,12 +105,12 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         Validation.Errors.Add(new ValidationFailure(propertyName, errorMessage));
     }
 
-    protected void SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroupYear? dbYear = null)
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroupYear? dbYear = null)
     {
-        SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
+        return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
     }
 
-    protected void SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
     {
         var dbMessage = new Santa_Message
         {
@@ -134,5 +134,6 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         }
 
         DbContext.Santa_Messages.Add(dbMessage);
+        return dbMessage;
     }
 }

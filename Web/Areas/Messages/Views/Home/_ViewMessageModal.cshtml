@@ -16,50 +16,19 @@
 
             <div class="modal-body">
                 <div class="row @CenterFlexNoWrapContainer">
+                    <partial name="_ViewMessageDetails" />
 
-                    <div class="col-11">
-                        <div class="form-group-ib col-12 mb-3">
-                            <label asp-for="Sent" class="control-label"></label>
-                            <div class="control-label fw-normal">
-                                @Model.Sent.ToDateTimeString()
-                            </div>
-                        </div>
-                    </div>
+                    @if (Model.PreviousMessages.Any())
+                    {
+                        <div class="col-11">
+                            <h2>Previous Messages</h2>
 
-                    <div class="col-11">
-                        <div class="mb-3 d-flex">
-                            <div class="form-group-ib col-6">
-                                <label asp-for="SenderName" class="control-label"></label>
-                                <div class="control-label fw-normal">
-                                    @Model.SenderName
-                                </div>
-                            </div>
-                            <div class="form-group-ib col-6">
-                                <label asp-for="RecipientType" class="control-label"></label>
-                                <div class="control-label fw-normal">
-                                    @Model.RecipientType.MessageRecipientToDescription(Model.GroupName)
-                                </div>
-                            </div>
+                            @foreach (var message in Model.PreviousMessages)
+                            {
+                                <partial name="_PreviousMessageDetails" model="@message" />
+                            }
                         </div>
-                    </div>
-
-                    <div class="col-11">
-                        <div class="form-group-ib col-12 mb-3">
-                            <label asp-for="HeaderText" class="control-label"></label>
-                            <div class="control-label fw-normal">
-                                @Model.HeaderText
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-11">
-                        <div class="form-group-ib col-12 mb-3">
-                            <label asp-for="MessageText" class="control-label"></label>
-                            <div class="control-label fw-normal">
-                                @Model.MessageText.ToRawHtml()
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
 

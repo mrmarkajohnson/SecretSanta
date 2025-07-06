@@ -40,6 +40,6 @@ public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase
            .AsQueryable()
            .ProjectTo<ISuggestionBase>(Mapper.ConfigurationProvider);
 
-        return Task.FromResult(dbSuggestions);
+        return Result(dbSuggestions);
     }
 }

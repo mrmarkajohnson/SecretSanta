@@ -16,7 +16,7 @@ public class Santa_Message : MessageBaseEntity, IMessageEntity
     public virtual required Santa_User Sender { get; set; }
 
     /// <summary>
-    /// Original message that this messsage is replying to
+    /// Link to the original message that this one is replying to
     /// </summary>
     public virtual Santa_MessageReply? ReplyTo { get; set; }
 

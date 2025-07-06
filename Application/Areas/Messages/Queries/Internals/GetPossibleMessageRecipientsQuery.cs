@@ -36,6 +36,6 @@ public sealed class GetPossibleMessageRecipientsQuery : GetMessagesBaseQuery<ILi
         IList<Santa_User> dbRecipients = GetPossibleRecipients(_dbGiftingGroupYear, _dbSender, _replyToMessageKey, 
             _recipientType, _specificGroupMemberKey, true);
 
-        return Task.FromResult(dbRecipients);
+        return Result(dbRecipients);
     }
 }

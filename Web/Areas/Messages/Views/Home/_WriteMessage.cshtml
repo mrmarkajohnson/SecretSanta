@@ -94,6 +94,16 @@
                     </div>
                 </div>
 
+                @if (Model.PreviousMessages.Any())
+                {
+                    <h2>Previous Messages</h2>
+
+                    @foreach (var message in Model.PreviousMessages)
+                    {
+                        <partial name="_PreviousMessageDetails" model="@message" />
+                    }
+                }
+
             </div>
         </div>
 

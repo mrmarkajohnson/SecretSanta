@@ -1,11 +1,8 @@
-﻿using Application.Shared.Requests;
-using AutoMapper.QueryableExtensions;
-using Global.Abstractions.Areas.Messages;
-using static Global.Settings.MessageSettings;
+﻿using Global.Abstractions.Areas.Messages;
 
 namespace Application.Areas.Messages.Queries;
 
-public sealed class SentMessagesQuery : BaseQuery<IQueryable<ISantaMessageBase>>
+public sealed class SentMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMessageBase>>
 {
     public SentMessagesQuery()
     {
@@ -14,12 +11,7 @@ public sealed class SentMessagesQuery : BaseQuery<IQueryable<ISantaMessageBase>>
     protected override Task<IQueryable<ISantaMessageBase>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
-
-        IQueryable<ISantaMessageBase> sentMessages = dbCurrentSantaUser.SentMessages
-            .Where(x => x.RecipientType != MessageRecipientType.PotentialPartner)
-            .AsQueryable()
-            .ProjectTo<ISantaMessageBase>(Mapper.ConfigurationProvider);
-
+        IQueryable<ISantaMessageBase> sentMessages = GetSentMessages<ISantaMessageBase>(dbCurrentSantaUser);
         return Result(sentMessages);
     }
 }

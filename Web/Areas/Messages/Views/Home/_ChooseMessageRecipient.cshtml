@@ -39,7 +39,9 @@
         }
         else if (Model.IsReply && Model.ReplyToName.IsNotEmpty())
         {
-            <span class="control-label fw-normal">@Model.ReplyToName</span>
+            <div style="text-align: left !important">
+                <span class="control-label fw-normal">@Model.ReplyToName</span>
+            </div>
         }
     </div>
 

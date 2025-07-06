@@ -1,5 +1,4 @@
-﻿using Application.Areas.Messages.Queries.Internals;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 
@@ -10,7 +9,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
     public int MessageKey { get; }
     public int? MessageRecipientKey { get; }
 
-    public ViewMessageQuery(int messageKey, int? messageRecipientKey)
+    public ViewMessageQuery(int messageKey, int? messageRecipientKey = null)
     {
         MessageKey = messageKey;
         MessageRecipientKey = messageRecipientKey;
@@ -22,8 +21,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
 
         IReadMessage? message = null;
 
-        var allGroupMessages = dbCurrentSantaUser.GiftingGroupYears
-                .SelectMany(x => x.GiftingGroupYear.Messages);
+        IEnumerable<Santa_Message> allGroupMessages = GetAllGroupMessages(dbCurrentSantaUser);
 
         var receivedMessages = dbCurrentSantaUser.ReceivedMessages
             .Where(x => x.DateArchived == null)
@@ -54,34 +52,11 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
                 .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
-        
+
         if (message == null)
             throw new NotFoundException("Message");
 
-        message.IsSentMessage = message.Sender?.GlobalUserId == dbCurrentSantaUser.GlobalUserId;
-
-        var previousMessages = allGroupMessages
-            .Where(x => x.ReplyTo?.OriginalMessageKey == MessageKey)
-            .ToList();
-
-        var olderMessages = previousMessages;
-
-        while (olderMessages.Count > 0)
-        {
-            olderMessages = allGroupMessages
-                .Where(x => olderMessages.Any(y => x.ReplyTo?.OriginalMessageKey == y.MessageKey))
-                .ToList();
-
-            if (olderMessages.Count > 0)
-            {
-                previousMessages.AddRange(olderMessages);
-            }
-        }
-
-        message.PreviousMessages = previousMessages
-            .AsQueryable()
-            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider)
-            .ToList();
+        AddPreviousMessages(message, dbCurrentSantaUser, allGroupMessages);
 
         return Result(message);
     }

@@ -12,6 +12,6 @@ internal sealed class GetIndirectMessagesQuery : GetMessagesBaseQuery<IEnumerabl
     protected override Task<IEnumerable<Santa_Message>> Handle()
     {
         var indirectMessages = IndirectMessages(DbSantaUser);
-        return Task.FromResult(indirectMessages);
+        return Result(indirectMessages);
     }
 }

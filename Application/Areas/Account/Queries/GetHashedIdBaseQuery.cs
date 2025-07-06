@@ -1,7 +1,6 @@
 ﻿using Application.Areas.Account.BaseModels;
 using Application.Shared.Requests;
 using Global.Abstractions.Areas.Account;
-using Global.Settings;
 
 namespace Application.Areas.Account.Queries;
 

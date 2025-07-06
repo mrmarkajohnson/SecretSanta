@@ -5,9 +5,7 @@ using Application.Areas.Messages.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
-using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace Web.Areas.Messages.Controllers;
 
@@ -79,17 +77,16 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> ViewSentMessage(int messageKey)
     {
-        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
-        ISantaMessageBase? message = messages.FirstOrDefault(x => x.MessageKey == messageKey);
-
-        if (message == null)
+        try
         {
-            return StatusCode(StatusCodes.Status422UnprocessableEntity, "Message not found");
+            IReadMessage message = await Send(new ViewSentMessageQuery(messageKey));
+            var model = Mapper.Map<ReadMessageVm>(message);
+            return PartialView("_ViewMessageModal", model);
         }
-
-        var model = Mapper.Map<ReadMessageVm>(message);
-        model.IsSentMessage = true;
-        return PartialView("_ViewMessageModal", model);        
+        catch (NotFoundException ex)
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
+        }
     }
 
     [HttpPost]
@@ -168,25 +165,37 @@ public sealed class HomeController : BaseController
     {
         try
         {
-            IReadMessage originalMessage = await Send(new ViewMessageQuery(messageKey, messageRecipientKey));
-
-            var model = new WriteReplyVm
-            {
-                GiftingGroupKey = originalMessage.GiftingGroupKey,
-                GroupName = originalMessage.GroupName,
-                ReplyToMessageKey = messageKey,
-                IsModal = true,
-                ReturnUrl = Url.Action(nameof(SentMessages)),
-                OriginalRecipientType = originalMessage.RecipientType,
-                ReplyToName = originalMessage.SenderName,
-                HeaderText = "RE: " + originalMessage.HeaderText.TrimStart("RE: ")
-            };
+            var model = new WriteReplyVm();
+            await SetUpReply(model, messageKey, messageRecipientKey);
 
             return PartialView("_WriteMessageModal", model);
         }
         catch (NotFoundException ex)
         {
             return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
+        }
+    }
+
+    private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, int? messageRecipientKey = null)
+    {
+        IReadMessage originalMessage = await Send(new ViewMessageQuery(replyToMessageKey, messageRecipientKey));
+
+        if (originalMessage != null)
+        {
+            model.ReplyToMessageKey = replyToMessageKey;
+            model.GiftingGroupKey = originalMessage.GiftingGroupKey;
+            model.GroupName = originalMessage.GroupName;
+            model.IsModal = true;
+            model.ReturnUrl = Url.Action(nameof(SentMessages));
+            model.OriginalRecipientType = originalMessage.RecipientType;
+            model.ReplyToName = originalMessage.SenderName;
+
+            if (string.IsNullOrWhiteSpace(model.HeaderText))
+                model.HeaderText = "RE: " + originalMessage.HeaderText.TrimStart("RE: ");
+            
+            model.PreviousMessages = (new List<ISantaMessage> { originalMessage })
+                .Union(originalMessage.PreviousMessages)
+                .ToList();
         }
     }
 
@@ -230,17 +239,27 @@ public sealed class HomeController : BaseController
         }
         else
         {
-            model.SetDisplayRecipientType();
-            model.AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions");
+            return await SendMessageFailed(model);
+        }
+    }
 
-            if (model.IsModal)
-            {
-                return PartialView("_WriteMessageModal", model);
-            }
-            else
-            {
-                return View("WriteMessage", model);
-            }
+    private async Task<IActionResult> SendMessageFailed(WriteMessageVm model)
+    {
+        if (model.ReplyToMessageKey > 0)
+        {
+            await SetUpReply(model, model.ReplyToMessageKey.Value);
+        }
+
+        model.SetDisplayRecipientType();
+        model.AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions");        
+
+        if (model.IsModal)
+        {
+            return PartialView("_WriteMessageModal", model);
+        }
+        else
+        {
+            return View("WriteMessage", model);
         }
     }
 }

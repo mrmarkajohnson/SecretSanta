@@ -46,7 +46,21 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             return await Result();
 
         Item.SetActualRecipientType();
-        SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
+        
+        var dbMessage = SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
+
+        if (Item.ReplyToMessageKey > 0)
+        {
+            Santa_Message dbOriginalMessage = await Send(new GetOriginalMessageQuery(Item.ReplyToMessageKey.Value, dbCurrentUser));
+
+            var dbReply = new Santa_MessageReply
+            {
+                OriginalMessage = dbOriginalMessage,
+                ReplyMessage = dbMessage
+            };
+
+            dbMessage.ReplyTo = dbReply;
+        }
 
         return await SaveAndReturnSuccess();
     }

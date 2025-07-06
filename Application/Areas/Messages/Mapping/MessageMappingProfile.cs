@@ -8,6 +8,8 @@ public sealed class MessageMappingProfile : Profile
 {
     public MessageMappingProfile()
     {
+        int? CurrentSantaUserKey = null;
+        
         CreateMap<Santa_MessageRecipient, ReadMessage>()
             .IncludeMembers(src => src.Message)
             .ForMember(dest => dest.MessageRecipientKey, opt => opt.MapFrom(src => src.MessageRecipientKey))
@@ -33,7 +35,8 @@ public sealed class MessageMappingProfile : Profile
             {
                 opt.Condition(src => (src.ShowAsFromSanta == false));
                 opt.MapFrom(src => src.Sender.GlobalUser);
-            });
+            })
+            .ForMember(dest => dest.IsSentMessage, opt => opt.MapFrom(src => src.SenderKey == CurrentSantaUserKey));
         CreateMap<Santa_Message, ISantaMessage>().As<SantaMessage>();
 
         CreateMap<Santa_Message, SantaMessageBase>()

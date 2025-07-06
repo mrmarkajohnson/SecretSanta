@@ -1,5 +1,4 @@
-﻿using Application.Areas.Messages.Queries.Internals;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 
 namespace Application.Areas.Messages.Queries;
@@ -21,7 +20,7 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMes
         var messages = receivedMessages.Union(otherAvailableMessages)
             .OrderBy(x => x.Read || !x.Important) // show important unread first
             .ThenBy(x => x.Read) // then all other unread
-            .ThenByDescending(x => x.Sent) // then by date sent, desending
+            .ThenByDescending(x => x.Sent) // then by date sent, descending
             .AsQueryable();
 
         return Result(messages);
