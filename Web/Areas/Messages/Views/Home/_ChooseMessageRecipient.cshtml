@@ -27,7 +27,14 @@
                             data-future-label="@type.FutureLabel(Model.OriginalRecipientType)"
                             data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
 
-                            @type.SenderToDescription(Model.GroupName, otherAdmins)
+                            @if (Model.IsReply)
+                            {
+                                @type.SenderToDescription(Model.GroupName, Model.ReplyToName)
+                            }
+                            else
+                            {
+                                @type.SenderToDescription(Model.GroupName, otherAdmins)
+                            }
                         </option>
                     }
                 </select>

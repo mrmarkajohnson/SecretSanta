@@ -1,6 +1,7 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.Messages;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.Mapping;
 
@@ -42,7 +43,8 @@ public sealed class MessageMappingProfile : Profile
         CreateMap<Santa_Message, SantaMessageBase>()
             .ForMember(dest => dest.MessageKey, opt => opt.MapFrom(src => src.MessageKey))
             .ForMember(dest => dest.Sent, opt => opt.MapFrom(src => src.DateCreated))
-            .ForMember(dest => dest.ShowAsFromSanta, opt => opt.MapFrom(src => src.ShowAsFromSanta))
+            .ForMember(dest => dest.ShowAsFromSanta, opt => opt.MapFrom(src => src.ShowAsFromSanta 
+                || src.RecipientType == MessageRecipientType.GiftRecipient))
             .ForMember(dest => dest.RecipientType, opt => opt.MapFrom(src => src.RecipientType))
             .ForMember(dest => dest.HeaderText, opt => opt.MapFrom(src => src.HeaderText))
             .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.MessageText))
@@ -52,5 +54,12 @@ public sealed class MessageMappingProfile : Profile
             .ForMember(dest => dest.Important, opt => opt.MapFrom(src => src.Important))
             .ForMember(dest => dest.CanReply, opt => opt.MapFrom(src => src.CanReply));
         CreateMap<Santa_Message, ISantaMessageBase>().As<SantaMessageBase>();
+
+        CreateMap<Santa_Message, SentMessage>()
+            .IncludeBase<Santa_Message, SantaMessageBase>()
+            .ForMember(dest => dest.ReplyTo, opt => opt.MapFrom(src => src.ReplyTo == null ? null : 
+                src.ReplyTo.OriginalMessage.ShowAsFromSanta ? null : src.ReplyTo.OriginalMessage.Sender))
+            .ForMember(dest => dest.ReplyToName, opt => opt.Ignore());
+        CreateMap<Santa_Message, ISentMessage>().As<SentMessage>();
     }
 }

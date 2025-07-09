@@ -57,7 +57,7 @@ public static class MessageSettings
         /// <summary>
         /// Direct reply only to the sender
         /// </summary>
-        [Display(Name = "The original sender (only)")]
+        [Display(Name = "The original sender")]
         OriginalSender = 8,
 
         /// <summary>

@@ -2,16 +2,16 @@
 
 namespace Application.Areas.Messages.Queries;
 
-public sealed class SentMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMessageBase>>
+public sealed class SentMessagesQuery : GetMessagesBaseQuery<IQueryable<ISentMessage>>
 {
     public SentMessagesQuery()
     {
     }
 
-    protected override Task<IQueryable<ISantaMessageBase>> Handle()
+    protected override Task<IQueryable<ISentMessage>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
-        IQueryable<ISantaMessageBase> sentMessages = GetSentMessages<ISantaMessageBase>(dbCurrentSantaUser);
+        IQueryable<ISentMessage> sentMessages = GetSentMessages<ISentMessage>(dbCurrentSantaUser);
         return Result(sentMessages);
     }
 }

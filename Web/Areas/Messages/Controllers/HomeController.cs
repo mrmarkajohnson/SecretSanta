@@ -43,18 +43,18 @@ public sealed class HomeController : BaseController
         if (AjaxRequest())
             return await SentMessagesGrid();
 
-        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
+        IQueryable<ISentMessage> messages = await GetSentMessages();
         return View(messages);
     }
 
     [HttpGet]
     public async Task<IActionResult> SentMessagesGrid()
     {
-        IQueryable<ISantaMessageBase> messages = await GetSentMessages();
+        IQueryable<ISentMessage> messages = await GetSentMessages();
         return PartialView("_SentMessagesGrid", messages);
     }
 
-    private async Task<IQueryable<ISantaMessageBase>> GetSentMessages()
+    private async Task<IQueryable<ISentMessage>> GetSentMessages()
     {
         return await Send(new SentMessagesQuery());
     }
@@ -188,7 +188,7 @@ public sealed class HomeController : BaseController
             model.IsModal = true;
             model.ReturnUrl = Url.Action(nameof(SentMessages));
             model.OriginalRecipientType = originalMessage.RecipientType;
-            model.ReplyToName = originalMessage.SenderName;
+            model.ReplyToName = originalMessage.ShowAsFromSanta ? "Santa" : originalMessage.SenderName;
 
             if (string.IsNullOrWhiteSpace(model.HeaderText))
                 model.HeaderText = "RE: " + originalMessage.HeaderText.TrimStart("RE: ");

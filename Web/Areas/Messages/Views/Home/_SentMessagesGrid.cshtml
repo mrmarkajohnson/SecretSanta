@@ -1,8 +1,8 @@
 ﻿@using Global.Abstractions.Areas.Messages
 
-@model IQueryable<ISantaMessageBase>
+@model IQueryable<ISentMessage>
 @{
-    Func<ISantaMessageBase, object> actions =
+    Func<ISentMessage, object> actions =
     @<text>
         <a class="modal-link" data-url="@Url.Action(Context, "ViewSentMessage", "Home", "Messages", new { messageKey=item.MessageKey })"
            data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
@@ -20,7 +20,7 @@
     .Build(columns =>
     {
         columns.Add(x => x.Sent).RenderedAs(x => x.Sent.ToDateTimeString()).Titled("Sent");
-        columns.Add(x => x.RecipientType).RenderedAs(x => x.RecipientType.SenderToDescription(x.GroupName)).Titled("To");
+        columns.Add(x => x.RecipientType).RenderedAs(x => x.RecipientType.SenderToDescription(x.GroupName, x.ReplyToName)).Titled("To");
         columns.Add(x => x.HeaderText).Titled("Subject");
         columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })

@@ -25,6 +25,25 @@ public static class MessageHelper
         return TypeNameWithGroup(recipientType, groupName, otherAdmins);
     }
 
+    public static string SenderToDescription(this MessageRecipientType recipientType, string? groupName, string? recipientName)
+    {
+        string description = TypeNameWithGroup(recipientType, groupName);
+
+        if (recipientName.IsNotEmpty())
+        {
+            if (recipientType >= MessageRecipientType.OriginalSender && recipientType <= MessageRecipientType.OriginalAllEverRecipients)
+            {
+                description = description.Replace("sender ", $"sender ({recipientName}) ");
+            }
+            else if (recipientType == MessageRecipientType.GiftRecipient)
+            {
+                description = description + $" ({recipientName})";
+            }
+        }
+
+        return description;
+    }
+
     public static string TypeNameWithGroup(this MessageRecipientType recipientType, string? groupName, bool otherAdmins = false)
     {
         string displayName = recipientType.DisplayName();
