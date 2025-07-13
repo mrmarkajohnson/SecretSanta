@@ -10,4 +10,7 @@ public sealed class ReadMessageVm : ReadMessage, IReadMessage, IModalVm
     public bool ShowSaveButton => false;
     public string? SuccessMessage { get; set; }
     public string? AdditionalFooterButtonPartial => "_ReplyButton";
+
+    public override string? ReplyToName { get; set; }
+    public override string? SpecificRecipientName { get; set; }
 }

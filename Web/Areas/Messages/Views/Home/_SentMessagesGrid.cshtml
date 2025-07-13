@@ -9,8 +9,8 @@
 
         @if (item.CanReply)
         {
-            // <a class="modal-link" data-url="@Url.Action(Context, "Reply", "Home", "Messages", new { messageKey = item.MessageKey })"
-            //    data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></a>
+            <a class="modal-link" data-url="@Url.Action(Context, "ReplyToSent", "Home", "Messages", new { messageKey = item.MessageKey })"
+               data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></a>
         }
     </text>;
 }
@@ -20,7 +20,7 @@
     .Build(columns =>
     {
         columns.Add(x => x.Sent).RenderedAs(x => x.Sent.ToDateTimeString()).Titled("Sent");
-        columns.Add(x => x.RecipientType).RenderedAs(x => x.RecipientType.SenderToDescription(x.GroupName, x.ReplyToName)).Titled("To");
+        columns.Add(x => x.RecipientType).RenderedAs(x => x.SenderToDescription()).Titled("To");
         columns.Add(x => x.HeaderText).Titled("Subject");
         columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })

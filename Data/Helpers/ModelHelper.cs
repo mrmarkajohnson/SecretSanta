@@ -130,16 +130,17 @@ internal static class ModelHelper
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_Message>()
-            .HasOne(e => e.ReplyTo)
-            .WithOne(e => e.ReplyMessage)
-            .HasForeignKey<Santa_MessageReply>(e => e.ReplyMessageKey)
-            .IsRequired(false);
-
-        modelBuilder.Entity<Santa_MessageReply>()
-            .HasOne(e => e.OriginalMessage)
+            .HasOne(e => e.ReplyToMessage)            
             .WithMany(e => e.Replies)
+            .HasForeignKey(e => e.ReplyToMessageKey)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Santa_Message>()
+            .HasOne(e => e.OriginalMessage)
+            .WithMany(e => e.RepliesToReplies)
             .HasForeignKey(e => e.OriginalMessageKey)
-            .IsRequired(true)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Santa_MessageRecipient>()

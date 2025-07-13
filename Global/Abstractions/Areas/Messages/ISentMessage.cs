@@ -1,6 +1,5 @@
 ﻿namespace Global.Abstractions.Areas.Messages;
 
-public interface ISentMessage : ISantaMessageBase
+public interface ISentMessage : ISantaMessageShared
 {
-    string? ReplyToName { get; }
 }

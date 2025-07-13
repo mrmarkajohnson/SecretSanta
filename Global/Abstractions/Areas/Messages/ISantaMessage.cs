@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Global.Abstractions.Areas.Messages;
 
-public interface ISantaMessage : ISantaMessageBase
+public interface ISantaMessage : ISantaMessageShared
 {
     /// <summary>
     /// Key of the MessageRecipient record
@@ -15,6 +15,5 @@ public interface ISantaMessage : ISantaMessageBase
     [Display(Name = "From")]
     string SenderName { get; }
 
-    bool IsSentMessage { get; set; }
     bool Read { get; set; }
 }

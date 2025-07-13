@@ -1,11 +1,6 @@
 ﻿@using Web.Extensions
 
 @model ISantaMessage
-@{
-    string toDescription = Model.IsSentMessage 
-        ? Model.RecipientType.SenderToDescription(Model.GroupName)
-        : Model.RecipientType.MessageRecipientToDescription(Model.GroupName);
-}
 
 <div class="col-11">
     <div class="form-group-ib col-12 mb-3">
@@ -27,7 +22,7 @@
         <div class="form-group-ib col-6">
             <label asp-for="RecipientType" class="control-label"></label>
             <div class="control-label fw-normal">
-                @toDescription
+                @Model.ToDescription()
             </div>
         </div>
     </div>

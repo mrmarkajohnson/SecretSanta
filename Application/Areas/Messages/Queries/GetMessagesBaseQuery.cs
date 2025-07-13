@@ -89,7 +89,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 
     private IList<Santa_User> GetPossibleRecipients(Santa_Message dbMessage)
     {
-        return GetPossibleRecipients(dbMessage.GiftingGroupYear, dbMessage.Sender, dbMessage.ReplyTo?.OriginalMessageKey,
+        return GetPossibleRecipients(dbMessage.GiftingGroupYear, dbMessage.Sender, dbMessage.ReplyToMessage?.MessageKey,
             dbMessage.RecipientType, dbMessage.Recipients.FirstOrDefault()?.RecipientSantaUserKey, false);
     }
 
@@ -164,7 +164,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Where(x => x.RecipientType != MessageRecipientType.PotentialPartner)
             .OrderByDescending(x => x.DateCreated)
             .AsQueryable()
-            .ProjectTo<T>(Mapper.ConfigurationProvider);
+            .ProjectTo<T>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey });
     }
 
     protected void AddPreviousMessages(IReadMessage message, Santa_User dbSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
@@ -183,7 +183,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         allGroupMessages ??= GetAllGroupMessages(dbSantaUser);
 
         List<Santa_Message> previousMessages = allGroupMessages
-            .Where(x => x.Replies.Any(x => x.ReplyMessageKey == messageKey))
+            .Where(x => x.Replies.Any(y => y.MessageKey == messageKey))
             .ToList();
 
         var olderMessages = previousMessages;
@@ -191,7 +191,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         while (olderMessages.Count > 0)
         {
             olderMessages = allGroupMessages
-                .Where(x => olderMessages.Any(y => y.ReplyTo?.OriginalMessageKey == x.MessageKey))
+                .Where(x => olderMessages.Any(y => y.ReplyToMessage?.MessageKey == x.MessageKey))
                 .ToList();
 
             if (olderMessages.Count > 0)
@@ -200,6 +200,6 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             }
         }
 
-        return previousMessages;
+        return previousMessages.DistinctBy(x => x.MessageKey).ToList();
     }
 }

@@ -183,7 +183,7 @@
     "sourceMap": true
   },
   {
-    "outputFileName": "wwwroot/js/Messages/SentMessages/bundle.js",
+    "outputFileName": "wwwroot/js/Messages/Home/SentMessages/bundle.js",
     "inputFiles": [
       "wwwroot/scripts/Messages/viewMessages.js",
       "wwwroot/scripts/Messages/writeMessage.js",

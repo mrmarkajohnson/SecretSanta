@@ -33,7 +33,7 @@ public static class MessageHelper
         {
             if (recipientType >= MessageRecipientType.OriginalSender && recipientType <= MessageRecipientType.OriginalAllEverRecipients)
             {
-                description = description.Replace("sender ", $"sender ({recipientName}) ");
+                description = description.Replace(" sender", $" sender ({recipientName})");
             }
             else if (recipientType == MessageRecipientType.GiftRecipient)
             {

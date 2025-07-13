@@ -8,7 +8,7 @@ public class ReadMessage : SantaMessage, IReadMessage
     {
         PreviousMessages = new List<ISantaMessage>();
     }
-    
+
     public int GiftingGroupKey { get; set; }
 
     public IList<ISantaMessage> PreviousMessages { get; set; }

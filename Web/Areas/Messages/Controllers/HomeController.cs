@@ -5,6 +5,7 @@ using Application.Areas.Messages.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
+using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.Messages.Controllers;
@@ -167,7 +168,6 @@ public sealed class HomeController : BaseController
         {
             var model = new WriteReplyVm();
             await SetUpReply(model, messageKey, messageRecipientKey);
-
             return PartialView("_WriteMessageModal", model);
         }
         catch (NotFoundException ex)
@@ -176,23 +176,56 @@ public sealed class HomeController : BaseController
         }
     }
 
-    private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, int? messageRecipientKey = null)
+    [HttpGet]
+    public async Task<IActionResult> ReplyToSent(int messageKey)
+    {
+        try
+        {
+            var model = new WriteReplyVm();
+            await SetUpReply(model, messageKey, true);
+            return PartialView("_WriteMessageModal", model);
+        }
+        catch (NotFoundException ex)
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
+        }
+    }
+
+    private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, int? messageRecipientKey)
     {
         IReadMessage originalMessage = await Send(new ViewMessageQuery(replyToMessageKey, messageRecipientKey));
+        SetUpReply(model, originalMessage);
+    }
 
+    private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, bool replyToSentMessage)
+    {
+        IReadMessage originalMessage = replyToSentMessage 
+            ? await Send(new ViewSentMessageQuery(replyToMessageKey))
+            : await Send(new ViewMessageQuery(replyToMessageKey));
+
+        SetUpReply(model, originalMessage);
+
+        if (replyToSentMessage)
+        {
+            model.ReplyToName = originalMessage.SenderToDescription();
+        }
+    }
+
+    private void SetUpReply(WriteMessageVm model, IReadMessage originalMessage)
+    {
         if (originalMessage != null)
         {
-            model.ReplyToMessageKey = replyToMessageKey;
+            model.ReplyToMessageKey = originalMessage.MessageKey;
             model.GiftingGroupKey = originalMessage.GiftingGroupKey;
             model.GroupName = originalMessage.GroupName;
             model.IsModal = true;
             model.ReturnUrl = Url.Action(nameof(SentMessages));
             model.OriginalRecipientType = originalMessage.RecipientType;
-            model.ReplyToName = originalMessage.ShowAsFromSanta ? "Santa" : originalMessage.SenderName;
+            model.ReplyToName = originalMessage.SenderName;
 
             if (string.IsNullOrWhiteSpace(model.HeaderText))
                 model.HeaderText = "RE: " + originalMessage.HeaderText.TrimStart("RE: ");
-            
+
             model.PreviousMessages = (new List<ISantaMessage> { originalMessage })
                 .Union(originalMessage.PreviousMessages)
                 .ToList();
@@ -247,7 +280,7 @@ public sealed class HomeController : BaseController
     {
         if (model.ReplyToMessageKey > 0)
         {
-            await SetUpReply(model, model.ReplyToMessageKey.Value);
+            await SetUpReply(model, model.ReplyToMessageKey.Value, false);
         }
 
         model.SetDisplayRecipientType();
