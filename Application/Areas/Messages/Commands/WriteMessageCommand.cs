@@ -52,13 +52,13 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
 
         if (Item.ReplyToMessageKey > 0)
         {
-            Santa_Message dbOriginalMessage = await Send(new GetOriginalMessageQuery(Item.ReplyToMessageKey.Value, dbCurrentUser));
+            Santa_Message dbOriginalMessage = await Send(new GetOriginalMessageQuery(Item.ReplyToMessageKey.Value, dbCurrentUser, false));
             dbMessage.ReplyToMessage = dbOriginalMessage;
             dbMessage.ReplyToMessageKey = dbOriginalMessage.MessageKey;
 
             if (dbOriginalMessage.SenderKey == dbCurrentUser.SantaUserKey)
             {
-                dbMessage.OriginalMessageKey = dbOriginalMessage.OriginalMessageKey ?? dbMessage.ReplyToMessageKey;
+                dbMessage.OriginalMessageKey = dbOriginalMessage.OriginalMessageKey ?? dbOriginalMessage.ReplyToMessageKey;
             }
         }
 

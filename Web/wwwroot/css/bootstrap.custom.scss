@@ -291,6 +291,11 @@ a:hover {
     background-color: $gold-light-solid;
 }
 
+.modal.santa-modal .modal-body {
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+}
+
 .modal.santa-modal .modal-header.santa-modal-header {
     background: linear-gradient(0deg, $primary-bg-subtle 0%, $primary 50%, $primary 100%);
     color: $white;

@@ -176,3 +176,8 @@ div.note-editor.note-frame .note-btn {
 div.note-editor .note-editable.card-block {
     text-align: left !important;
 }
+
+div.squashed {
+    font-size: 90% !important;
+    line-height: 90% !important;
+}

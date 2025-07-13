@@ -9,26 +9,45 @@ namespace Application.Areas.Messages.Queries;
 public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 {
     /// <summary>
-    /// Use dbCheckRecipient to check that the user was a recipient, or could be (e.g. if using 'All Ever' types)
+    /// Use getFirstMessageIfSent to return the first message in the chain that wasn't sent by the user, if it's a sent message
+    /// Use checkReplySecurity to check that the user was the sender or a recipient, or could be (e.g. if using 'All Ever' types)
     /// </summary>
-    protected Santa_Message GetOriginalMessage(int messageKey, Santa_User? dbCheckRecipient)
+    protected Santa_Message GetOriginalMessage(int messageKey, Santa_User dbSantaUser, bool getFirstMessageIfSent, bool checkReplySecurity)
     {
         Santa_Message? dbOriginalMessage = DbContext.Santa_Messages
             .Where(x => x.MessageKey == messageKey)
             .FirstOrDefault();
 
-        if (dbOriginalMessage != null && dbCheckRecipient != null)
+        if (dbOriginalMessage != null)
         {
-            bool isRecipient = dbOriginalMessage.Recipients.Any(y => y.RecipientSantaUserKey == dbCheckRecipient.SantaUserKey);
+            bool isSender = dbOriginalMessage.SenderKey == dbSantaUser.SantaUserKey;
 
-            if (!isRecipient)
+            if (isSender)
             {
-                isRecipient = IsIndirectRecipient(dbCheckRecipient, dbOriginalMessage);
+                if (getFirstMessageIfSent)
+                {
+                    if (dbOriginalMessage.OriginalMessage != null && dbOriginalMessage.OriginalMessage.SenderKey != dbSantaUser.SantaUserKey)
+                        return dbOriginalMessage;
+
+                    if (dbOriginalMessage.ReplyToMessage != null && dbOriginalMessage.ReplyToMessage.SenderKey != dbSantaUser.SantaUserKey)
+                        return dbOriginalMessage.ReplyToMessage;
+                }
+
+                return dbOriginalMessage;
             }
-
-            if (!isRecipient)
+            else if (checkReplySecurity)
             {
-                throw new AccessDeniedException();
+                bool isRecipient = dbOriginalMessage.Recipients.Any(y => y.RecipientSantaUserKey == dbSantaUser.SantaUserKey);
+
+                if (!isRecipient)
+                {
+                    isRecipient = IsIndirectRecipient(dbSantaUser, dbOriginalMessage);
+                }
+
+                if (!isRecipient)
+                {
+                    throw new AccessDeniedException();
+                }
             }
         }
 
@@ -69,9 +88,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             MessageRecipientType.GroupCurrentMembers or MessageRecipientType.GroupAllEverMembers
                 => GetGroupMembers(dbSender, dbGiftingGroupYear),
             MessageRecipientType.OriginalSender
-                => GetOriginalSender(replyToMessageKey, checkReplySecurity ? dbSender : null),
+                => GetOriginalSender(replyToMessageKey, dbSender, checkReplySecurity),
             MessageRecipientType.OriginalCurrentRecipients or MessageRecipientType.OriginalAllEverRecipients
-                => GetOriginalRecipients(replyToMessageKey, checkReplySecurity ? dbSender : null),
+                => GetOriginalRecipients(replyToMessageKey, dbSender, checkReplySecurity),
             MessageRecipientType.PotentialPartner
                 => [], // should be handled elsewhere
             MessageRecipientType.SingleGroupMember
@@ -126,14 +145,14 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         return dbGiftingGroupYear?.ParticipatingMembers() ?? [];
     }
 
-    private IEnumerable<Santa_User> GetOriginalSender(int? replyToMessageKey, Santa_User? dbCheckRecipient)
+    private IEnumerable<Santa_User> GetOriginalSender(int? replyToMessageKey, Santa_User dbSantaUser, bool checkReplySecurity)
     {
-        return [GetOriginalMessage(replyToMessageKey ?? 0, dbCheckRecipient).Sender];
+        return [GetOriginalMessage(replyToMessageKey ?? 0, dbSantaUser, true, checkReplySecurity).Sender];
     }
 
-    private IEnumerable<Santa_User> GetOriginalRecipients(int? replyToMessageKey, Santa_User? dbCheckRecipient)
+    private IEnumerable<Santa_User> GetOriginalRecipients(int? replyToMessageKey, Santa_User dbSantaUser, bool checkReplySecurity)
     {
-        return GetOriginalMessage(replyToMessageKey ?? 0, dbCheckRecipient)
+        return GetOriginalMessage(replyToMessageKey ?? 0, dbSantaUser, false, checkReplySecurity)
             .Recipients.Select(x => x.RecipientSantaUser);
     }
 
