@@ -6,13 +6,14 @@ using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOptionalModalFormVm
+public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOptionalModalFormVm, IHasMessageChain
 {
     public WriteMessageVm()
     {
         SubmitButtonText = "Send";
         SubmitButtonIcon = "fa-paper-plane";
         PreviousMessages = new List<ISantaMessage>();
+        LaterMessages = new List<ISantaMessage>();
     }
 
     public bool GroupKeyPreset { get; set; }
@@ -42,6 +43,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
     public int CalendarYear { get; set; } = DateTime.Today.Year;
 
     public IList<ISantaMessage> PreviousMessages { get; set; }
+    public IList<ISantaMessage> LaterMessages { get; set; }
 
     private List<string> GetGuidance()
     {

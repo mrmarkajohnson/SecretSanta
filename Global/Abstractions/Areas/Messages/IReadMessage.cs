@@ -1,7 +1,6 @@
 ﻿namespace Global.Abstractions.Areas.Messages;
 
-public interface IReadMessage : ISantaMessage
+public interface IReadMessage : ISantaMessage, IHasMessageChain
 {
-    int GiftingGroupKey { get; }
-    IList<ISantaMessage> PreviousMessages { get; set; }
+    int GiftingGroupKey { get; }    
 }

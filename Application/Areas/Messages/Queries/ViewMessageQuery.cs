@@ -38,9 +38,9 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
         }
 
         message ??= receivedMessages
-                .AsQueryable()
-                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
-                .FirstOrDefault();
+            .AsQueryable()
+            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+            .FirstOrDefault();
 
         if (message == null)
         {
@@ -57,6 +57,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
             throw new NotFoundException("Message");
 
         AddPreviousMessages(message, dbCurrentSantaUser, allGroupMessages);
+        AddLaterMessages(message, dbCurrentSantaUser, allGroupMessages);
 
         return Result(message);
     }

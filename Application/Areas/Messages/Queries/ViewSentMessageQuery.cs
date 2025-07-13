@@ -23,7 +23,10 @@ public sealed class ViewSentMessageQuery : GetMessagesBaseQuery<IReadMessage>
             throw new NotFoundException("Message");
 
         message.IsSentMessage = true;
-        AddPreviousMessages(message, dbCurrentSantaUser);
+
+        IEnumerable<Santa_Message> allGroupMessages = GetAllGroupMessages(dbCurrentSantaUser);
+        AddPreviousMessages(message, dbCurrentSantaUser, allGroupMessages);
+        AddLaterMessages(message, dbCurrentSantaUser, allGroupMessages);
 
         return Result(message);
     }

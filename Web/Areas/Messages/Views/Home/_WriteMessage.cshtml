@@ -26,6 +26,20 @@
         <div class="@CenterFlexWrapContainer">
             <div class="@Model.GroupWidth">
 
+                @if (Model.LaterMessages.Any())
+                {
+                    var latestMessage = Model.LaterMessages.OrderByDescending(x => x.Sent).First();
+                    string replyToLatestAction = latestMessage.IsSentMessage ? "ReplyToSent" : "Reply";
+
+                    <div class="alert alert-info">
+                        You are not replying to the latest message in the conversation. Please see 'Later Messages' below.<br/>
+                        <a class="btn-close-modal modal-link" data-bs-dismiss="modal"
+                                data-url="@Url.Action(Context, replyToLatestAction, "Home", "Messages", new { messageKey = Model.LaterMessages[0].MessageKey })">
+                            Reply to latest
+                        </a>
+                    </div>
+                }
+
                 @if (!Model.GroupKeyPreset || Model.GiftingGroupKey.IsEmpty())
                 {                        
                     <div class="mb-3">
@@ -93,6 +107,16 @@
                         <span asp-validation-for="MessageText" class="text-danger"></span>
                     </div>
                 </div>
+
+                @if (Model.LaterMessages.Any())
+                {
+                    <h2 class="mt-3">Later Messages</h2>
+
+                    @foreach (var message in Model.LaterMessages)
+                    {
+                        <partial name="_PreviousMessageDetails" model="@message" />
+                    }
+                }
 
                 @if (Model.PreviousMessages.Any())
                 {

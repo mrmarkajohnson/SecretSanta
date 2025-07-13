@@ -9,6 +9,5 @@ public sealed class MessageVmMappingProfile : Profile
     public MessageVmMappingProfile()
     {
         CreateMap<IReadMessage, ReadMessageVm>();
-        CreateMap<ISantaMessageBase, ReadMessageVm>();
     }
 }

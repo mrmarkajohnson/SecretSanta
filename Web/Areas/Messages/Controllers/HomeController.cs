@@ -82,6 +82,7 @@ public sealed class HomeController : BaseController
         {
             IReadMessage message = await Send(new ViewSentMessageQuery(messageKey));
             var model = Mapper.Map<ReadMessageVm>(message);
+            model.IsSentMessage = true; // just in case
             return PartialView("_ViewMessageModal", model);
         }
         catch (NotFoundException ex)
@@ -194,7 +195,7 @@ public sealed class HomeController : BaseController
     private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, int? messageRecipientKey)
     {
         IReadMessage originalMessage = await Send(new ViewMessageQuery(replyToMessageKey, messageRecipientKey));
-        SetUpReply(model, originalMessage);
+        SetUpReply(model, originalMessage, originalMessage.IsSentMessage);
     }
 
     private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, bool replyToSentMessage)
@@ -203,15 +204,10 @@ public sealed class HomeController : BaseController
             ? await Send(new ViewSentMessageQuery(replyToMessageKey))
             : await Send(new ViewMessageQuery(replyToMessageKey));
 
-        SetUpReply(model, originalMessage);
-
-        if (replyToSentMessage)
-        {
-            model.ReplyToName = originalMessage.SenderToDescription();
-        }
+        SetUpReply(model, originalMessage, replyToSentMessage || originalMessage.IsSentMessage);
     }
 
-    private void SetUpReply(WriteMessageVm model, IReadMessage originalMessage)
+    private void SetUpReply(WriteMessageVm model, IReadMessage originalMessage, bool replyToSentMessage)
     {
         if (originalMessage != null)
         {
@@ -229,6 +225,13 @@ public sealed class HomeController : BaseController
             model.PreviousMessages = (new List<ISantaMessage> { originalMessage })
                 .Union(originalMessage.PreviousMessages)
                 .ToList();
+
+            model.LaterMessages = originalMessage.LaterMessages;
+
+            if (replyToSentMessage || originalMessage.IsSentMessage)
+            {
+                model.ReplyToName = originalMessage.SenderToDescription();
+            }
         }
     }
 

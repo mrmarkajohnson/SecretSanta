@@ -326,7 +326,7 @@ a:hover {
     padding: 6px;
 }
 
-.modal.santa-modal .modal-footer.santa-modal-footer .btn.btn-save-close-modal {
+.modal.santa-modal .modal-footer.santa-modal-footer .btn.btn-save-close-modal, .btn.btn-close-modal {
     background: none !important;
     font-size: 20px;
     border: 2px ridge $gold-background !important;
@@ -336,7 +336,7 @@ a:hover {
     font-weight: 600 !important;
 }
 
-.modal.santa-modal .modal-footer.santa-modal-footer .btn.btn-save-close-modal:hover {
+.modal.santa-modal .modal-footer.santa-modal-footer .btn.btn-save-close-modal:hover, .btn.btn-close-modal:hover {
     color: $purple !important;
     border: 1px solid $purple !important;
     background: $gold-background !important;

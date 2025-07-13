@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.Queries;
@@ -20,7 +21,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 
         if (dbOriginalMessage != null)
         {
-            bool isSender = dbOriginalMessage.SenderKey == dbSantaUser.SantaUserKey;
+            bool canAccess = CanAccess(dbSantaUser, dbOriginalMessage, out bool isSender);
 
             if (isSender)
             {
@@ -37,14 +38,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             }
             else if (checkReplySecurity)
             {
-                bool isRecipient = dbOriginalMessage.Recipients.Any(y => y.RecipientSantaUserKey == dbSantaUser.SantaUserKey);
-
-                if (!isRecipient)
-                {
-                    isRecipient = IsIndirectRecipient(dbSantaUser, dbOriginalMessage);
-                }
-
-                if (!isRecipient)
+                if (!canAccess)
                 {
                     throw new AccessDeniedException();
                 }
@@ -52,6 +46,24 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         }
 
         return dbOriginalMessage ?? throw new NotFoundException("Message");
+    }
+
+    private bool CanAccess(Santa_User dbSantaUser, Santa_Message dbMessage, out bool isSender)
+    {
+        isSender = dbMessage.SenderKey == dbSantaUser.SantaUserKey;
+        return isSender || IsRecipient(dbSantaUser, dbMessage);
+    }
+
+    private bool IsRecipient(Santa_User dbSantaUser, Santa_Message dbMessage)
+    {
+        bool isRecipient = dbMessage.Recipients.Any(y => y.RecipientSantaUserKey == dbSantaUser.SantaUserKey);
+
+        if (!isRecipient)
+        {
+            isRecipient = IsIndirectRecipient(dbSantaUser, dbMessage);
+        }
+
+        return isRecipient;
     }
 
     protected IEnumerable<Santa_Message> IndirectMessages(Santa_User dbSantaUser)
@@ -112,7 +124,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             dbMessage.RecipientType, dbMessage.Recipients.FirstOrDefault()?.RecipientSantaUserKey, false);
     }
 
-    private IEnumerable<Santa_User> GetGroupAdmins(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetGroupAdmins(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return dbGiftingGroupYear?.GiftingGroup
             .OtherMembers(dbSender)
@@ -120,7 +132,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Select(x => x.SantaUser) ?? [];
     }
 
-    private IEnumerable<Santa_User> GetRecipient(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetRecipient(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return GetParticipants(dbGiftingGroupYear)
             .Where(x => x.SantaUserKey == dbSender.SantaUserKey)
@@ -128,19 +140,19 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Select(x => x.RecipientSantaUser);
     }
 
-    private IEnumerable<Santa_User> GetGifter(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetGifter(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return GetParticipants(dbGiftingGroupYear)
             .Where(x => x.RecipientSantaUserKey == dbSender.SantaUserKey)
             .Select(x => x.SantaUser);
     }
 
-    private IEnumerable<Santa_User> GetParticipatingSantaUsers(Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetParticipatingSantaUsers(Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return GetParticipants(dbGiftingGroupYear).Select(x => x.SantaUser);
     }
 
-    private List<Santa_YearGroupUser> GetParticipants(Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static List<Santa_YearGroupUser> GetParticipants(Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return dbGiftingGroupYear?.ParticipatingMembers() ?? [];
     }
@@ -156,14 +168,14 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Recipients.Select(x => x.RecipientSantaUser);
     }
 
-    private IEnumerable<Santa_User> GetGroupMembers(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetGroupMembers(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return dbGiftingGroupYear?.GiftingGroup
             .OtherMembers(dbSender)
             .Select(x => x.SantaUser) ?? [];
     }
 
-    private IEnumerable<Santa_User> GetSpecificGroupMember(Santa_User dbSender, int? specificGroupMemberKey, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetSpecificGroupMember(Santa_User dbSender, int? specificGroupMemberKey, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return GetGroupMembers(dbSender, dbGiftingGroupYear)
             .Where(x => x.SantaUserKey == specificGroupMemberKey);
@@ -220,5 +232,42 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         }
 
         return previousMessages.DistinctBy(x => x.MessageKey).ToList();
+    }
+
+    protected void AddLaterMessages(IReadMessage message, Santa_User dbSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
+    {
+        List<Santa_Message> laterMessages = GetLaterMessages(message.MessageKey, dbSantaUser, allGroupMessages);
+
+        message.LaterMessages = laterMessages
+            .AsQueryable()
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey })
+            .OrderByDescending(x => x.Sent)
+            .ToList();
+    }
+
+    private List<Santa_Message> GetLaterMessages(int messageKey, Santa_User dbSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
+    {
+        allGroupMessages ??= GetAllGroupMessages(dbSantaUser);
+        var accessibleGroupMessages = allGroupMessages.ToList().Where(x => CanAccess(dbSantaUser, x, out bool _)).ToList();
+
+        List<Santa_Message> laterMessages = accessibleGroupMessages
+            .Where(x => x.ReplyToMessageKey == messageKey)
+            .ToList();
+
+        var newerMessages = laterMessages;
+
+        while (newerMessages.Count > 0)
+        {
+            newerMessages = accessibleGroupMessages
+                .Where(x => newerMessages.Any(y => x.ReplyToMessageKey == y.MessageKey))                
+                .ToList();
+
+            if (newerMessages.Count > 0)
+            {
+                laterMessages.AddRange(newerMessages);
+            }
+        }
+
+        return laterMessages.DistinctBy(x => x.MessageKey).ToList();
     }
 }

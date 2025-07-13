@@ -16,7 +16,27 @@
 
             <div class="modal-body">
                 <div class="row @CenterFlexNoWrapContainer">
+                    
+                    @if (Model.LaterMessages.Any())
+                    {
+                        <div class="alert alert-info col-11">
+                            This is not the latest message in the conversation. Please see 'Later Messages' below.
+                        </div>
+                    }
+
                     <partial name="_ViewMessageDetails" />
+
+                    @if (Model.LaterMessages.Any())
+                    {
+                        <div class="col-11">
+                            <h2>Later Messages</h2>
+
+                            @foreach (var message in Model.LaterMessages)
+                            {
+                                <partial name="_PreviousMessageDetails" model="@message" />
+                            }
+                        </div>
+                    }
 
                     @if (Model.PreviousMessages.Any())
                     {
