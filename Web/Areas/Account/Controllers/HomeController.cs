@@ -21,6 +21,11 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> Login(string? returnUrl = null, bool timedOut = false)
     {
+        if (SignInManager.IsSignedIn(User))
+        {
+            return RedirectToLocalUrl(Url.Action("Index", "Home", new { Area = "" }));
+        }
+
         var model = new LoginVm
         {
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),

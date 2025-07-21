@@ -2,26 +2,28 @@
     ViewData["Title"] = "Privacy And Security";
 }
 
-<h1>@ViewData["Title"]</h1>
+<section class="@CenterFlexWrapContainer">
+    <div class="@StandardPageWidth">
 
-<h2>Santa is very concerned with privacy and security!</h2>
-<h3>He runs a global operation, after all!</h3>
-<br />
-<p>He's added a lot of privacy and security controls so that even Administrators won't know your details.</p>
-<div class="d-flex justify-content-center">
-    <li>
-        <ul class="bulleted">
-            <li>Passwords are protected using the latest security features, and one-way encryption</li>
-            <li>Security answers are uniquely<small>*</small> one-way encrypted,k so they can never be decrypted</li>
-            <li>Greetings are uniquely<small>*</small> encrypted</li>
-            <li>Even hints for security answers are scrambled</li>
-            <li>@StandardPhrases.DetailsScrambled</li>
-            <li>@StandardPhrases.EmailVisibility</li>
-            <li>The only cookie this site uses is the one that keeps you logged in when you're using it</li>
-        </ul>
-    </p>
-</div>
-<br />
-<p>If you do add your @UserDisplayNames.EmailLower to your account, it will only be used to tell you about things you actually need to know.</p>
-<br />
-<p><small>*Unique encryption means that even two users with the <i>same</i> value will have different encrypted versions.</small></p>
+        <h1>@ViewData["Title"]</h1>
+
+        <h2>Santa is very concerned with privacy and security!</h2>
+        <h3>He runs a global operation, after all!</h3>
+        <p class="mt-3 mb-2">Secret Santa won't ever share your information with anyone else.</p>
+        <p class="mt-2">He's also added a lot of privacy and security controls so that even Administrators won't know your details:</p>
+        <div class="@CenterFlexNoWrapContainer mb-2">
+            <ul class="bulleted" style="margin-bottom: 0 !important">
+                <li>Passwords are protected using the latest security features, and one-way encryption</li>
+                <li>Security answers are uniquely<small>*</small> one-way encrypted,k so they can never be decrypted</li>
+                <li>Greetings are uniquely<small>*</small> encrypted</li>
+                <li>Even hints for security answers are scrambled</li>
+                <li>@StandardPhrases.DetailsScrambled</li>
+                <li>@StandardPhrases.EmailVisibility</li>
+                <li>The only cookie this site uses is the one that keeps you logged in when you're using it</li>
+            </ul>
+        </div>
+        <p class="mt-2 mb-2">If you do add your @UserDisplayNames.EmailLower to your account, it will only be used to tell you about things you actually need to know.</p>
+        <p><small>*Unique encryption means that even two users with the <i>same</i> value will have different encrypted versions.</small></p>
+
+    </div>
+</section>

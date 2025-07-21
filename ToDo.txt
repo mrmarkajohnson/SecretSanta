@@ -53,12 +53,12 @@ Allow users to choose one other person they don't want to exchange gifts with
 MESSAGES
 * Show the sender's name when replying, and when viewing replies
 * Show actual recipients when viewing, from an 'i' symbol, except when it's the gifter/recipient (or it's obvious)
-Allow users to reply to their own messages
 Save draft
 Use the modal version for writing messages from the index or sent pages?
 Add other standard messages e.g. 
 - response to invitation to join a group (automatic)
 Add automatic message options, e.g.
+- reply to suggestions
 - message group admin
 - report bug/issue
 - report abuse

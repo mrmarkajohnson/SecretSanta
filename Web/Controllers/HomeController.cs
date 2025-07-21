@@ -15,6 +15,16 @@ public sealed class HomeController : BaseController
         return View(HomeModel);
     }
 
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    public IActionResult FAQs()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
