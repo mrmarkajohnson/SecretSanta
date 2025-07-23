@@ -51,6 +51,8 @@
             <div class="container-fluid align-items-start">
                 @if (SignInManager.IsSignedIn(User))
                 {
+                    <a class="navbar-brand d-none d-xl-block" asp-area=@string.Empty asp-controller="Home" asp-action="Index">Secret Santa</a>
+                    
                     @if (mustSetSecurityQuestions)
                     {
                         <a class="navbar-brand" href="#"></a>
@@ -91,7 +93,23 @@
                 }
                 else
                 {
-                    <a class="navbar-brand" href="#"></a>
+                    <a class="navbar-brand" asp-area=@string.Empty asp-controller="Home" asp-action="Index">Secret Santa</a>
+
+                    <div class="text-start justify-content-start">
+                        <div class="navbar" style="padding: 4px 0 0 8px !important;">
+                            <ul class="navbar-nav left-menu-item">
+                                <li class="nav-item-dropdown">
+                                    <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="fa-solid fa-question" style="color: #ffffff">&nbsp;</span>Help
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpDropdown">
+                                        <partial name="Menu/_HelpSubMenu" />
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" title="Menu"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="fa-solid fa-bars"></span>
@@ -137,9 +155,15 @@
     </div>
 
     <footer class="footer d-flex justify-content-between">        
-        <div><span class="text-secondary text-glow">Secret Santa</span> was created by <a target="_blank" href="http://mrmarkajohnson.co.uk/">Mark Johnson</a></div>
-        <div class="text-center"><a asp-area=@string.Empty asp-controller="Home" asp-action="Privacy">Privacy</a></div>
-        <div class="text-end"> <a target="_blank" href="https://icons8.com/icon/52PmO1ntgoRU/berries">Berries</a> icon by 
+        <div>
+            <a class="navbar-brand" asp-area=@string.Empty asp-controller="Home" asp-action="Index">Secret Santa</a> &nbsp; 
+            was created by <a target="_blank" href="http://mrmarkajohnson.co.uk/">Mark Johnson</a>
+        </div>
+        <div class="text-center">
+            <a asp-area=@string.Empty asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+        <div class="text-end">
+            <a target="_blank" href="https://icons8.com/icon/52PmO1ntgoRU/berries">Berries</a> icon by 
             <a target="_blank" href="https://icons8.com">Icons8</a> and converted in <a target="_blank" href="https://www.xiconeditor.com/">XIconEditor</a>
         </div>
         

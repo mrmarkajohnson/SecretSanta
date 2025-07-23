@@ -36,7 +36,8 @@ $gold-text-shadow: -1.5px -1.5px 0 $gold-glow, 1px 0 0 $gold-glow, -1.5px 1.5px 
         0.1px 0 $grey, 0 0.1px $grey, -0.1px 0 $grey, 0 -0.1px $grey;
 $green-gold-text-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
 $grey-blue-text-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
-
+$red-text-shadow: 1px 1px $secondary;
+$solid-gold-text-shadow: 1px 1px $gold;
 
 h1 {
     color: $secondary;
@@ -144,6 +145,20 @@ btn-no:hover, .btn.btn-no:hover {
 .btn.btn-md {
     --bs-btn-padding-y: 0.45rem;
     font-size: 1rem;
+}
+
+a.navbar-brand {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: $red-text-shadow !important;
+    font-style: italic !important;
+}
+
+a.navbar-brand:hover, footer a.navbar-brand:hover {
+    color: $gold !important;
+    font-weight: 700 !important;
+    text-shadow: $red-text-shadow !important;
+    text-decoration: underline !important;
 }
 
 nav.navbar {
