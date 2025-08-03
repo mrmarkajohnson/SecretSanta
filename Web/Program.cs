@@ -12,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
-connectionStringBuilder.UserID = builder.Configuration["DatabaseSettings:UserId"];
-connectionStringBuilder.Password = builder.Configuration["DatabaseSettings:Password"];
+connectionStringBuilder.UserID = builder.Configuration["DatabaseSettings:SecretSantaUserId"];
+connectionStringBuilder.Password = builder.Configuration["DatabaseSettings:SecretSantaPassword"];
 string connectionString = connectionStringBuilder.ConnectionString;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options

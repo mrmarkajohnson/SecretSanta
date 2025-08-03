@@ -169,8 +169,8 @@ public class ApplicationDbContext : IdentityDbContext
                 .Build();
 
             var connectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
-            connectionStringBuilder.UserID = configuration["DatabaseSettings:UserId"];
-            connectionStringBuilder.Password = configuration["DatabaseSettings:Password"];
+            connectionStringBuilder.UserID = configuration["DatabaseSettings:SecretSantaUserId"];
+            connectionStringBuilder.Password = configuration["DatabaseSettings:SecretSantaPassword"];
             string connectionString = connectionStringBuilder.ConnectionString;
 
             optionsBuilder

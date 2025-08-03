@@ -3,9 +3,9 @@ DEVELOPMENT/TEST
 1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
 (NB: DO NOT change the symmetric key once used!):
 
-dotnet user-secrets set "DatabaseSettings:DevUserId" "{desired-username]" --project "Data"
-dotnet user-secrets set "DatabaseSettings:DevPassword" "{desired-password]" --project "Data"
-dotnet user-secrets set "EncryptionSettings:SymmetricKeyEnd" "{desired-key]" --project "Data" 
+dotnet user-secrets set "DatabaseSettings:SecretSantaUserId" "{desired-username]" --project "Data"
+dotnet user-secrets set "DatabaseSettings:SecretSantaPassword" "{desired-password]" --project "Data"
+dotnet user-secrets set "EncryptionSettings:SecretSantaSymmetricKeyEnd" "{desired-key]" --project "Data" 
 
 2. To create the database, run the following command in the PMC:
 
@@ -19,9 +19,9 @@ LIVE
 
 2. Create the following environment variables* using the UserID and password above, and a random string for SymmetricKeyEnd:
 
-EncryptionSettings:SymmetricKeyEnd
-DatabaseSettings:UserId
-DatabaseSettings:Password
+EncryptionSettings:SecretSantaSymmetricKeyEnd
+DatabaseSettings:SecretSantaUserId
+DatabaseSettings:SecretSantaPassword
 
 3. To create the database structure, run the following command in the PMC:
 
