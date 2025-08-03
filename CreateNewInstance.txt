@@ -1,3 +1,7 @@
+ALL ENVIRONMENTS
+
+1. Edit IdentitySettings and change SymmetricKeyStart (so that it's unique)
+
 DEVELOPMENT/TEST
 
 1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
