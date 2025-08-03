@@ -19,6 +19,7 @@ internal class TestDbContext : ApplicationDbContext
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .AddEnvironmentVariables()
                 .Build();
 
             optionsBuilder

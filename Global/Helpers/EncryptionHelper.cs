@@ -136,6 +136,7 @@ public static class EncryptionHelper
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .AddEnvironmentVariables()
                 .Build();
 
             string? key = configuration["EncryptionSettings:SymmetricKeyEnd"];

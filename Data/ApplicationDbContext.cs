@@ -165,11 +165,12 @@ public class ApplicationDbContext : IdentityDbContext
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .AddEnvironmentVariables()
                 .Build();
 
             var connectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
-            connectionStringBuilder.UserID = configuration["DatabaseSettings:DevUserId"];
-            connectionStringBuilder.Password = configuration["DatabaseSettings:DevPassword"];
+            connectionStringBuilder.UserID = configuration["DatabaseSettings:UserId"];
+            connectionStringBuilder.Password = configuration["DatabaseSettings:Password"];
             string connectionString = connectionStringBuilder.ConnectionString;
 
             optionsBuilder

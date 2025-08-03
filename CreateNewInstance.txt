@@ -1,3 +1,5 @@
+DEVELOPMENT/TEST
+
 1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
 (NB: DO NOT change the symmetric key once used!):
 
@@ -10,3 +12,21 @@ dotnet user-secrets set "EncryptionSettings:SymmetricKeyEnd" "{desired-key]" --p
 Update-Database -project "Data"
 
 3. See 'Migrations.txt' in the Data project for any other migrations
+
+LIVE
+
+1. Create the database and make a secure note of the userID and password needed to connect
+
+2. Create the following environment variables* using the UserID and password above, and a random string for SymmetricKeyEnd:
+
+EncryptionSettings:SymmetricKeyEnd
+DatabaseSettings:UserId
+DatabaseSettings:Password
+
+3. To create the database structure, run the following command in the PMC:
+
+Script-Migration
+
+4. Copy the output and run it in the database
+
+* Depending on the environment, use a key vault or whatever tools are available to protect the credentials
