@@ -9,28 +9,36 @@ DEVELOPMENT/TEST
 
 dotnet user-secrets set "DatabaseSettings:SecretSantaUserId" "{desired-username]" --project "Data"
 dotnet user-secrets set "DatabaseSettings:SecretSantaPassword" "{desired-password]" --project "Data"
-dotnet user-secrets set "EncryptionSettings:SecretSantaSymmetricKeyEnd" "{desired-key]" --project "Data" 
+dotnet user-secrets set "EncryptionSettings:SecretSantaSymmetricKeyEnd" "{desired-key]" --project "Data"
 
-2. To create the database, run the following command in the PMC:
+2. If you don't want to use mssqllocaldb on local, run the following command in the PMC, replacing the curly brackets with the server name:
+
+dotnet user-secrets set "DatabaseSettings:SecretSantaDatabaseServer" "{server-name]" --project "Data"
+
+3. To create the database, run the following command in the PMC:
 
 Update-Database -project "Data"
 
-3. See 'Migrations.txt' in the Data project for any other migrations
+4. See 'Migrations.txt' in the Data project for any other migrations
 
 LIVE
 
-1. Create the database and make a secure note of the userID and password needed to connect
+1. Create the database with name "SecretSanta", and make a secure note of the userID and password needed to connect
 
-2. Create the following environment variables* using the UserID and password above, and a random string for SymmetricKeyEnd:
+2. Create the following environment variables* for the database server name, UserID and password (above) respectively:
 
-EncryptionSettings:SecretSantaSymmetricKeyEnd
+DatabaseSettings:SecretSantaDatabaseServer
 DatabaseSettings:SecretSantaUserId
 DatabaseSettings:SecretSantaPassword
 
-3. To create the database structure, run the following command in the PMC:
+3. Create the following environment variable using a (relatively) random string:
+
+EncryptionSettings:SecretSantaSymmetricKeyEnd
+
+4. To create the database structure, run the following command in the PMC:
 
 Script-Migration
 
-4. Copy the output and run it in the database
+5. Copy the output and run it in the database
 
 * Depending on the environment, use a key vault or whatever tools are available to protect the credentials

@@ -2,6 +2,7 @@
 using Data.DummyImplementations;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
+using Data.Extensions;
 using Data.Helpers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
@@ -157,9 +158,9 @@ public class ApplicationDbContext : IdentityDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        if (!optionsBuilder.IsConfigured)
+        if (!options.IsConfigured)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -169,13 +170,8 @@ public class ApplicationDbContext : IdentityDbContext
                 .Build();
 
             var connectionStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
-            connectionStringBuilder.UserID = configuration["DatabaseSettings:SecretSantaUserId"];
-            connectionStringBuilder.Password = configuration["DatabaseSettings:SecretSantaPassword"];
-            string connectionString = connectionStringBuilder.ConnectionString;
-
-            optionsBuilder
-                .UseLazyLoadingProxies()
-                .UseSqlServer(connectionString);
+            string connectionString = configuration.GetConnectionString(connectionStringBuilder);
+            options.ConfigureDatabaseOptions(connectionString);
         }
     }
 }
