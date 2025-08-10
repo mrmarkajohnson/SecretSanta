@@ -1,6 +1,8 @@
 ALL ENVIRONMENTS
 
 1. Edit IdentitySettings and change SymmetricKeyStart (so that it's unique)
+2. Follow the steps below for the relevant environment
+3. Run the application and register yourself, so that you become the system admin (the first user registered is the initial sysadmin)
 
 DEVELOPMENT/TEST
 
@@ -39,6 +41,6 @@ EncryptionSettings:SecretSantaSymmetricKeyEnd
 
 Script-Migration
 
-5. Copy the output and run it in the database
+5. Copy the output, split it into separate transactions where any compilation errors would occur, and run it in the database
 
 * Depending on the environment, use a key vault or whatever tools are available to protect the credentials
