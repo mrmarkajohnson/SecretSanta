@@ -129,7 +129,15 @@ public class HealthchecksController : BaseController
         try
         {
             int giftingGroupsCount = await Send(new GiftingGroupsCountQuery());
-            model.QueryResult = $"There are {giftingGroupsCount} active gifting groups.";
+
+            if (giftingGroupsCount == 1)
+            {
+                model.QueryResult = $"There is 1 active gifting group.";
+            }
+            else
+            {
+                model.QueryResult = $"There are {giftingGroupsCount} active gifting groups.";
+            }
         }
         catch (Exception ex)
         {
