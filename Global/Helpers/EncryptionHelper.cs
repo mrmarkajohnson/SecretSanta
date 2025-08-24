@@ -139,7 +139,7 @@ public static class EncryptionHelper
                 .AddEnvironmentVariables()
                 .Build();
 
-            string? key = configuration["EncryptionSettings:SecretSantaSymmetricKeyEnd"];
+            string? key = configuration[ConfigurationSettings.SymmetricKeyEnd];
             if (key == null)
             {
                 throw new ArgumentException("No symmetric key has been created by the system administrator.");
