@@ -168,6 +168,10 @@ input::-ms-reveal, input::-ms-clear {
     display: none !important;
 }
 
+.navbar-collapse.collapse.show {
+    display: block !important; /* required for Bootstrap navigation bar expansion */
+}
+
 div.note-editor.note-frame .note-btn {
     background-color: white !important;
     color: black !important;

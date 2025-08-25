@@ -146,6 +146,7 @@ public class HealthchecksController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(HealthChecksVm model)
     {
         if (model == null)
