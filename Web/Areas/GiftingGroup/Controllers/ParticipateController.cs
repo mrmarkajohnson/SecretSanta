@@ -66,7 +66,7 @@ public sealed class ParticipateController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken] // sent via fetch
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Year(ManageUserGiftingGroupYearVm model)
     {
         model.CurrencyCode ??= model.CurrencySymbol ??= ""; // avoid invalid model state

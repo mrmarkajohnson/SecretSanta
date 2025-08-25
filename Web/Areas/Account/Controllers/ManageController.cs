@@ -172,7 +172,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken] // sent via fetch
+    [ValidateAntiForgeryToken]
     public IActionResult ShowNameVariations(SantaUser model)
     {
         return PartialView("_ShowNameVariations", model);

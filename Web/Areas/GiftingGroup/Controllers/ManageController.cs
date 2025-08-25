@@ -87,7 +87,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken] // sent via fetch
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> GetGroupDetailsForJoiner(JoinGiftingGroupVm model)
     {
         ModelState.Clear();

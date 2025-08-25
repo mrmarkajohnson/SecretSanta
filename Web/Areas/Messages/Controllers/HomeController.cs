@@ -141,7 +141,7 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken] // sent via fetch
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChooseMessageRecipient(ChooseMessageRecipientVm model)
     {
         await AddGroupMembers(model);
