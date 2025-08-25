@@ -57,6 +57,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditGiftingGroup(EditGiftingGroupVm model)
     {
         ModelState.Clear();
@@ -86,7 +87,8 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> GetGroupDetailsForJoiner(JoinGiftingGroupVm model) // TODO: Call this
+    [ValidateAntiForgeryToken] // sent via fetch
+    public async Task<IActionResult> GetGroupDetailsForJoiner(JoinGiftingGroupVm model)
     {
         ModelState.Clear();
 
@@ -102,6 +104,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> JoinGiftingGroup(JoinGiftingGroupVm model)
     {
         ModelState.Clear();
@@ -162,6 +165,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReviewJoinerApplication(ReviewJoinerApplicationVm model)
     {
         var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model), new ReviewJoinerApplicationVmValidator());
@@ -195,6 +199,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SetupGiftingGroupYear(SetupGiftingGroupYearVm model, int giftingGroupKey) // giftingGroupKey is not used, but preserves the URL
     {
         var commandResult = await Send(new SetupGiftingGroupYearCommand<SetupGiftingGroupYearVm>(model), new SetupGiftingGroupYearVmValidator());

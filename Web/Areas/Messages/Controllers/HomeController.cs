@@ -92,6 +92,7 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> MarkMessageRead(int messageKey, int? messageRecipientKey)
     {
         try
@@ -140,6 +141,7 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken] // sent via fetch
     public async Task<IActionResult> ChooseMessageRecipient(ChooseMessageRecipientVm model)
     {
         await AddGroupMembers(model);
@@ -236,18 +238,21 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> WriteMessage(WriteMessageVm model)
     {
         return await SendMessage(model);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Reply(WriteReplyVm model)
     {
         return await SendMessage(model);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SendMessage(WriteMessageVm model)
     {
         ModelState.Clear();

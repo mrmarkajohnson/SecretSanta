@@ -2,10 +2,12 @@
 using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
 using Global.Abstractions.Areas.Suggestions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.Suggestions.Controllers;
 
 [Area("Suggestions")]
+[Authorize]
 public class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
@@ -50,6 +52,7 @@ public class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SaveSuggestion(ManageSuggestionVm model)
     {
         ModelState.Clear();
@@ -85,6 +88,7 @@ public class HomeController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteSuggestion(int suggestionKey)
     {
         var commandResult = await Send(new DeleteSuggestionCommand(suggestionKey), null);

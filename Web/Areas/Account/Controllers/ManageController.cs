@@ -34,6 +34,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterVm model)
     {
         //model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -100,6 +101,8 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SetSecurityQuestions(SetSecurityQuestionsVm model)
     {
         if (ModelState.IsValid)
@@ -151,6 +154,7 @@ public sealed class ManageController : BaseController
 
     [HttpPost]
     [Authorize]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateDetails(UpdateDetailsVm model)
     {
         if (ModelState.IsValid)
@@ -168,6 +172,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken] // sent via fetch
     public IActionResult ShowNameVariations(SantaUser model)
     {
         return PartialView("_ShowNameVariations", model);
@@ -201,6 +206,7 @@ public sealed class ManageController : BaseController
 
     [HttpPost]
     [Authorize]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordVm model)
     {
         if (ModelState.IsValid)

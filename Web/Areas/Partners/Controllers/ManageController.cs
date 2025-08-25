@@ -72,8 +72,6 @@ public sealed class ManageController : BaseController
         return PartialView("_SelectUserGrid", model);
     }
 
-    // TODO: Allow deleting relationships if they haven't been confirmed yet
-
     [HttpPost]
     public async Task<IActionResult> AddRelationship(string hashedUserId, bool active)
     {
@@ -110,6 +108,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditRelationship(ManageRelationshipVm model)
     {
         ModelState.Clear();
@@ -133,6 +132,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, string hashedUserId)
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");

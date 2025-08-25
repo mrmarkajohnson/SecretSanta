@@ -1,3 +1,9 @@
+IMMEDIATE
+Greeting - please make a note of this!
+Fix dropdowns in Samsung Internet?
+Add bug reporting
+Add e-mails
+
 GENERAL
 Handle index pages etc. in bundles/routing
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
