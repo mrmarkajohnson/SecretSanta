@@ -85,6 +85,12 @@ public static class MessageSettings
         SingleGroupMember = 12,
 
         /// <summary>
+        /// For automated messages, e.g. for failed group applications
+        /// </summary>
+        [Display(Name = "A specific person not in the group")]
+        SingleNonGroupMember = 13,
+
+        /// <summary>
         /// Not set yet - when sending a message (equivalent to null)
         /// </summary>
         TBC = 999
@@ -102,5 +108,10 @@ public static class MessageSettings
     {
         MessageRecipientType.OriginalSender, MessageRecipientType.OriginalCurrentRecipients, 
         // MessageRecipientType.OriginalAllEverRecipients // handled elsewhere
+    };
+
+    public static List<MessageRecipientType> SpecificRecipientTypes = new List<MessageRecipientType>
+    {
+        MessageRecipientType.GiftRecipient, MessageRecipientType.SingleGroupMember, MessageRecipientType.SingleNonGroupMember
     };
 }

@@ -90,6 +90,8 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return commandResult;
     }
 
+    #region Validation
+
     protected void AddUserNotFoundError()
     {
         AddGeneralValidationError("User not found. Please log in again.");
@@ -105,8 +107,18 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         Validation.Errors.Add(new ValidationFailure(propertyName, errorMessage));
     }
 
+    #endregion Validation
+
+    #region Messages
+
     protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroupYear? dbYear = null)
     {
+        return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
+    }
+
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroup dbGiftingGroup)
+    {
+        var dbYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
         return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
     }
 
@@ -136,4 +148,54 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         DbContext.Santa_Messages.Add(dbMessage);
         return dbMessage;
     }
+
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroup dbGiftingGroup)
+    {
+        var dbYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
+        return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
+    }
+
+    public static string MessageLink(string url, string display, bool addQuotes)
+    {
+        string quote = addQuotes ? "'" : "";
+        return $"<a href=\"{url}\">{quote}{display}{quote}</a>";
+    }
+
+    #endregion Messages
+
+    #region Gifting Group Years
+
+    protected Santa_GiftingGroupYear GetOrCreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int year = 0)
+    {
+        if (year > 0 == false)
+            year = DateTime.Today.Year;
+        
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == year);
+
+        if (dbGiftingGroupYear == null)
+        {
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup, year);
+        }
+
+        return dbGiftingGroupYear;
+    }
+
+    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int year)
+    {
+        Santa_GiftingGroupYear? dbGiftingGroupYear;
+
+        dbGiftingGroupYear = new Santa_GiftingGroupYear
+        {
+            GiftingGroup = dbGiftingGroup,
+            CalendarYear = year,
+            CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
+            CurrencySymbol = dbGiftingGroup.GetCurrencySymbol()
+        };
+
+        dbGiftingGroup.Years.Add(dbGiftingGroupYear);
+        DbContext.ChangeTracker.DetectChanges();
+        return dbGiftingGroupYear;
+    }
+
+    #endregion Gifting Group Years
 }

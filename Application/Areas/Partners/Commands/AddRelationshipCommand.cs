@@ -1,8 +1,10 @@
 ﻿using Application.Areas.Messages.BaseModels;
+using Application.Areas.Partners.BaseModels;
 using Application.Areas.Partners.Queries;
 using Application.Shared.Requests;
 using Global.Abstractions.Areas.Partners;
 using Global.Extensions.Exceptions;
+using System;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Partners.Commands;
@@ -50,8 +52,10 @@ public sealed class AddRelationshipCommand : BaseCommand<IAddRelationship>
 
         string areOrWere = Item.IsActive ? "are" : "were once";
         string they = dbCurrentUser.Gender.Direct();
-        string messageText = $"{dbCurrentUser.DisplayName()} says {they} {areOrWere} in a relationship with you. Is it true? Please go to " +
-                $"<a href=\"{Item.ManageRelationshipsLink}\">'Manage Your Relationships'</a> to confirm.";
+        string messageLink = MessageLink(Item.ManageRelationshipsLink, "Manage Your Relationships", true);
+
+        string messageText = $"{dbCurrentUser.DisplayName()} says {they} {areOrWere} in a relationship with you. " +
+            $"Is it true? Please go to {messageLink} to confirm.";
 
         var message = new SendSantaMessage
         {

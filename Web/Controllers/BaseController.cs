@@ -208,6 +208,7 @@ public class BaseController : Controller
 
     private string GetFullUrl(HttpRequest request, string action, string controller, string area)
     {
+        controller = controller.TrimEnd("Controller");
         return Url.Action(request, action, controller, area);
     }
 

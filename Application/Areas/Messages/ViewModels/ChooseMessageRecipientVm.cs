@@ -56,7 +56,7 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
         return OriginalRecipientType switch
         {
             MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter or MessageRecipientType.OriginalSender
-                or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleGroupMember
+                or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleGroupMember or MessageRecipientType.SingleNonGroupMember
                     => [MessageRecipientType.OriginalSender],
             _ => ReplyRecipientTypes
         };

@@ -1,13 +1,18 @@
-﻿using Application.Shared.Requests;
+﻿using Application.Areas.Messages.BaseModels;
+using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
 public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TItem : IReviewApplication
 {
-    public ReviewJoinerApplicationCommand(TItem item) : base(item)
+    private string _loginUrl;
+
+    public ReviewJoinerApplicationCommand(TItem item, string loginUrl) : base(item)
     {
+        _loginUrl = loginUrl;
     }
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
@@ -46,11 +51,42 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> w
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
             dbApplication.ResponseBySantaUserKey = dbCurrentSantaUser.SantaUserKey;
 
+            var message = new SendSantaMessage
+            {
+                RecipientType = Item.Accepted ? MessageRecipientType.SingleGroupMember : MessageRecipientType.SingleNonGroupMember,
+                HeaderText = string.Empty, // set below
+                MessageText = string.Empty, // ditto
+                Important = false,
+                CanReply = false,
+                ShowAsFromSanta = true
+            };
+
             if (Item.Accepted)
             {
                 AddToGiftingGroup(dbApplication);
                 AddToCurrentYear(dbApplication);
+
+                message.HeaderText = $"Welcome to group '{dbApplication.GiftingGroup.Name}'!";
+                message.MessageText = $"Your application to join group '{dbApplication.GiftingGroup.Name}' has been accepted. " +
+                    $"{MessageLink(_loginUrl, "Log in", false)} to take part.";
             }
+            else
+            {
+                message.HeaderText = $"Your application for '{dbApplication.GiftingGroup.Name}' was not accepted.";
+                message.MessageText = $"Sorry, you haven't been accepted into group '{dbApplication.GiftingGroup.Name}'.";
+
+                if (Item.RejectionMessage.IsNotEmpty())
+                {
+                    message.MessageText += " " + Item.RejectionMessage;
+                }
+
+                if (Item.Blocked)
+                {
+                    message.MessageText += " As this is not the first time, you are now blocked from applying again.";
+                }
+            }
+
+            SendMessage(message, dbCurrentSantaUser, dbApplication.SantaUser, dbApplication.GiftingGroup);
 
             return await SaveAndReturnSuccess();
         }

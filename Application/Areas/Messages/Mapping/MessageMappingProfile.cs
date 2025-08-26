@@ -43,7 +43,7 @@ public sealed class MessageMappingProfile : Profile
                 || src.RecipientType == MessageRecipientType.GiftRecipient))
             .ForMember(dest => dest.RecipientType, opt => opt.MapFrom(src => src.RecipientType))
             .ForMember(dest => dest.UseSpecificRecipient, opt => opt.MapFrom(src => src.Recipients.Count() == 1
-                && (src.RecipientType == MessageRecipientType.GiftRecipient || src.RecipientType == MessageRecipientType.SingleGroupMember)))
+                && SpecificRecipientTypes.Contains(src.RecipientType)))
             .ForMember(dest => dest.SpecificRecipient, opt => opt.MapFrom(src => src.Recipients.Count() == 1
                 ? src.Recipients.First().RecipientSantaUser
                 : src.Sender)) // we have to map from something, so this is handled in the DTOs when required

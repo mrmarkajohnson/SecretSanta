@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
-using Microsoft.AspNetCore.SignalR.Protocol;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.Queries;
@@ -84,7 +83,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     #region Possible recipients
 
     protected IList<Santa_User> GetPossibleRecipients(Santa_GiftingGroupYear? dbGiftingGroupYear, Santa_User dbSender,
-        int? replyToMessageKey, MessageRecipientType recipientType, int? specificGroupMemberKey, bool checkReplySecurity)
+        int? replyToMessageKey, MessageRecipientType recipientType, int? specificSantaUserKey, bool checkReplySecurity)
     {
         IEnumerable<Santa_User> dbPossibleRecipients = recipientType switch // may include the current user, who is removed below
         {
@@ -106,7 +105,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             MessageRecipientType.PotentialPartner
                 => [], // should be handled elsewhere
             MessageRecipientType.SingleGroupMember
-                => GetSpecificGroupMember(dbSender, specificGroupMemberKey, dbGiftingGroupYear),
+                => GetSpecificGroupMember(dbSender, specificSantaUserKey, dbGiftingGroupYear),
+            MessageRecipientType.SingleNonGroupMember
+                => GetSpecificNonGroupMember(specificSantaUserKey),
             _ => []
         };
 
@@ -175,10 +176,16 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Select(x => x.SantaUser) ?? [];
     }
 
-    private static IEnumerable<Santa_User> GetSpecificGroupMember(Santa_User dbSender, int? specificGroupMemberKey, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetSpecificGroupMember(Santa_User dbSender, int? specificSantaUserKey, Santa_GiftingGroupYear? dbGiftingGroupYear)
     {
         return GetGroupMembers(dbSender, dbGiftingGroupYear)
-            .Where(x => x.SantaUserKey == specificGroupMemberKey);
+            .Where(x => x.SantaUserKey == specificSantaUserKey);
+    }
+
+    private IEnumerable<Santa_User> GetSpecificNonGroupMember(int? specificSantaUserKey)
+    {
+        var dbMatchedSantaUser = DbContext.Santa_Users.FirstOrDefault(x => x.SantaUserKey == specificSantaUserKey);
+        return dbMatchedSantaUser == null ? [] : [dbMatchedSantaUser];
     }
 
     #endregion Possible recipients
@@ -192,7 +199,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     protected IQueryable<T> GetSentMessages<T>(Santa_User dbSantaUser)
     {
         return dbSantaUser.SentMessages
-            .Where(x => x.RecipientType != MessageRecipientType.PotentialPartner)
+            .Where(x => x.RecipientType is not MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember)
             .OrderByDescending(x => x.DateCreated)
             .AsQueryable()
             .ProjectTo<T>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey });

@@ -11,6 +11,7 @@ public sealed class GetPossibleMessageRecipientsQuery : GetMessagesBaseQuery<ILi
     private readonly MessageRecipientType _recipientType;
     private readonly int? _specificGroupMemberKey;
 
+    /*
     public GetPossibleMessageRecipientsQuery(Santa_User dbSender, Santa_GiftingGroupYear dbGiftingGroupYear,
         int? replyToMessageKey, MessageRecipientType recipientType, int? specificGroupMemberKey)
     {
@@ -20,6 +21,7 @@ public sealed class GetPossibleMessageRecipientsQuery : GetMessagesBaseQuery<ILi
         _recipientType = recipientType;
         _specificGroupMemberKey = specificGroupMemberKey;
     }
+    */
 
     public GetPossibleMessageRecipientsQuery(Santa_User dbSender, Santa_GiftingGroupYear dbGiftingGroupYear,
         IWriteSantaMessage message)

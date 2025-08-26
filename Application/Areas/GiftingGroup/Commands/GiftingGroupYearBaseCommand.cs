@@ -18,32 +18,8 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
     }
 
     protected Santa_GiftingGroupYear GetOrCreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup)
-    {        
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == Item.CalendarYear);
-
-        if (dbGiftingGroupYear == null)
-        {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
-        }
-
-        return dbGiftingGroupYear;
-    }
-
-    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup)
     {
-        Santa_GiftingGroupYear? dbGiftingGroupYear;
-
-        dbGiftingGroupYear = new Santa_GiftingGroupYear
-        {
-            GiftingGroup = dbGiftingGroup,
-            CalendarYear = Item.CalendarYear,
-            CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
-            CurrencySymbol = dbGiftingGroup.GetCurrencySymbol()
-        };
-
-        dbGiftingGroup.Years.Add(dbGiftingGroupYear);
-        DbContext.ChangeTracker.DetectChanges();
-        return dbGiftingGroupYear;
+        return GetOrCreateGiftingGroupYear(dbGiftingGroup, Item.CalendarYear);
     }
 
     protected Santa_YearGroupUser AddOrUpdateUserGroupYear(Santa_User dbSantaUser, int giftingGroupKey, 
@@ -67,7 +43,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
 
         if (dbGiftingGroupYear == null)
         {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup);
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup, Item.CalendarYear);
         }
 
         Santa_User dbSantaUser = dbGiftingGroupLink.SantaUser;

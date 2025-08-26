@@ -36,8 +36,7 @@ public class SantaMessageBase : MessageBase, ISantaMessageShared
 
     internal bool UseSpecificRecipient 
     {
-        get => _useSpecificRecipient && IsSentMessage && !ShowAsToSanta
-            && (RecipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.SingleGroupMember);
+        get => _useSpecificRecipient && IsSentMessage && !ShowAsToSanta && SpecificRecipientTypes.Contains(RecipientType);
         set => _useSpecificRecipient = value;
     }
 

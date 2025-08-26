@@ -1,14 +1,19 @@
 ﻿using Application.Areas.GiftingGroup.Actions;
+using Application.Areas.Messages.BaseModels;
 using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
 public sealed class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TItem : IJoinGiftingGroup
 {
-    public JoinGiftingGroupCommand(TItem item) : base(item)
+    private string _joinerApplicationsUrl;
+
+    public JoinGiftingGroupCommand(TItem item, string joinerApplicationsUrl) : base(item)
     {
+        _joinerApplicationsUrl = joinerApplicationsUrl;
     }
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
@@ -68,6 +73,19 @@ public sealed class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TI
             };
 
             DbContext.Add(dbApplication);
+
+            var message = new SendSantaMessage
+            {
+                RecipientType = MessageRecipientType.GroupAdmins,
+                HeaderText = $"{dbCurrentSantaUser.GlobalUser.FullName()} has applied to join group '{dbGiftingGroup.Name}'",
+                MessageText = $"Please review this application at the " +
+                    $"{MessageLink(_joinerApplicationsUrl, "Review Joiner Applications", true)} page.",
+                Important = true,
+                CanReply = false,
+                ShowAsFromSanta = true
+            };
+
+            SendMessage(message, dbCurrentSantaUser, dbGiftingGroup.GroupAdministrators(), dbGiftingGroup);
 
             return await SaveAndReturnSuccess();
         }

@@ -4,6 +4,7 @@ using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
+using Account = Web.Areas.Account.Controllers;
 using static Application.Areas.GiftingGroup.ViewModels.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;
@@ -109,7 +110,9 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
 
-        var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model), new JoinGiftingGroupVmValidator());
+        string joinerApplicationsUrl = GetFullUrl(nameof(JoinerApplications), nameof(ManageController), "GiftingGroup");
+        var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model, joinerApplicationsUrl), 
+            new JoinGiftingGroupVmValidator());
 
         if (commandResult.Success)
         {
@@ -168,7 +171,10 @@ public sealed class ManageController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReviewJoinerApplication(ReviewJoinerApplicationVm model)
     {
-        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model), new ReviewJoinerApplicationVmValidator());
+        string loginUrl = GetFullUrl(nameof(Account.Controllers.HomeController.Login), nameof(Account.Controllers.HomeController), "Account");
+
+        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, loginUrl), 
+            new ReviewJoinerApplicationVmValidator());
 
         if (commandResult.Success)
         {

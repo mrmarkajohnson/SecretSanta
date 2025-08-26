@@ -7,7 +7,7 @@ public static class MessageHelper
     public static string MessageRecipientToDescription(this MessageRecipientType recipientType, string? groupName = null)
     {
         if (recipientType is MessageRecipientType.OriginalSender or MessageRecipientType.PotentialPartner
-                or MessageRecipientType.SingleGroupMember)
+                or MessageRecipientType.SingleGroupMember or MessageRecipientType.SingleNonGroupMember)
         {
             return "You";
         }
