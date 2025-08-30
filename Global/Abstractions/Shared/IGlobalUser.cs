@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Global.Abstractions.Areas.Account;
-using Global.Names;
 using Global.Settings;
 using Global.Validation;
 
@@ -9,6 +8,7 @@ namespace Global.Abstractions.Shared;
 public interface IGlobalUser : IIdentityUser, IUserAllNames
 {
     bool SecurityQuestionsSet { get; }
+    bool SystemAdmin { get; }
 }
 
 public class GlobalUserValidator<T> : IdentityUserValidator<T> where T : IGlobalUser

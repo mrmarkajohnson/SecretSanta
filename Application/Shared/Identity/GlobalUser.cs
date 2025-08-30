@@ -30,6 +30,7 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
     public Gender Gender { get; set; }
 
     public bool SecurityQuestionsSet { get; set; }
+    public bool SystemAdmin { get; set; }
 
     public string UserDisplayName
     {

@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Account.Actions;
 using Global.Abstractions.Areas.Account;
-using Global.Settings;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Areas.Account.Commands;
@@ -26,7 +25,8 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
             Surname = Item.Surname.Trim(),
             Email = Item.Email.NullIfEmpty(),
             UserName = Item.UserName.NullIfEmpty(),
-            Greeting = Item.Greeting
+            Greeting = Item.Greeting,
+            SystemAdmin = DbContext.Global_Users.Count() == 0 // if the first user, make them a system administrator
         };
 
         SetOtherNames(dbGlobalUser);

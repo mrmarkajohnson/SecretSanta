@@ -69,6 +69,8 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     [Audit(NoDetails = true)]
     public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
 
+    public bool SystemAdmin { get; set; }
+
     public virtual ICollection<Global_User_Audit> AuditTrail { get; set; }
 
     #region For the IGlobalUser interface
