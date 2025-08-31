@@ -2,6 +2,7 @@ using AutoMapper;
 using Data;
 using Data.Extensions;
 using Global.Extensions.Services;
+using Global.Settings;
 using Global.Validation;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
@@ -46,7 +47,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 
     options.LoginPath = "/Account/Home/Login";
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.AccessDeniedPath = "/Account/Home/AccessDenied";
     options.SlidingExpiration = true;
 });
 
@@ -72,40 +73,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}",
-    constraints: new { id = @"\d*" });
-
-app.MapControllerRoute(
-    name: "root",
-    pattern: "/{controller:exists}/{action:exists}",
-    defaults: new { area = string.Empty });
-
-app.MapControllerRoute(
-    name: "slash",
-    pattern: "/",
-    defaults: new { area = string.Empty, controller = "Home", action = "index" });
-
-app.MapControllerRoute(
-    name: "empty",
-    pattern: "",
-    defaults: new { area = string.Empty, controller = "Home", action = "index" });
-
-app.MapControllerRoute(
-    name: "currentarea",
-    pattern: "{controller=Home}/{action:exists}/{id?}",
-    constraints: new { id = @"\d*" });
-
-app.MapControllerRoute(
-    name: "home",
-    pattern: "home/{*url}",
-    defaults: new { controller = "Home", action = "Index" });
-
-app.MapControllerRoute(
-    name: "index",
-    pattern: "index",
-    defaults: new { action = "Index" });
+MapControllerRoutes(app);
 
 app.MapRazorPages();
 
@@ -113,4 +81,44 @@ FluentValidationConfiguration.SetFluentValidationOptions();
 
 app.UseMiddleware(typeof(GlobalRequestProcessor));
 
-app.Run();
+app.Start();
+ConfigurationSettings.BaseUrl = app.Urls.FirstOrDefault();
+app.WaitForShutdown();
+
+static void MapControllerRoutes(WebApplication app)
+{
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}",
+        constraints: new { id = @"\d*" });
+
+    app.MapControllerRoute(
+        name: "root",
+        pattern: "/{controller:exists}/{action:exists}",
+        defaults: new { area = string.Empty });
+
+    app.MapControllerRoute(
+        name: "slash",
+        pattern: "/",
+        defaults: new { area = string.Empty, controller = "Home", action = "index" });
+
+    app.MapControllerRoute(
+        name: "empty",
+        pattern: "",
+        defaults: new { area = string.Empty, controller = "Home", action = "index" });
+
+    app.MapControllerRoute(
+        name: "currentarea",
+        pattern: "{controller=Home}/{action:exists}/{id?}",
+        constraints: new { id = @"\d*" });
+
+    app.MapControllerRoute(
+        name: "home",
+        pattern: "home/{*url}",
+        defaults: new { controller = "Home", action = "Index" });
+
+    app.MapControllerRoute(
+        name: "index",
+        pattern: "index",
+        defaults: new { action = "Index" });
+}

@@ -1,4 +1,23 @@
-﻿document.addEventListener('modalOpening', function (e) {
+﻿window.addEventListener('load', function () {
+    let messageKey = document.getElementById('messageKey').value;
+    let recipientKey = document.getElementById('messageRecipientKey').value;
+
+    if (messageKey > 0) {
+        let viewMessageSelector = '.view-message-link[data-message-key="' + messageKey + '"]';
+        let recipientSelector = viewMessageSelector + '[data-message-recipient-key="' + recipientKey + '"]';
+
+        let viewLink = document.querySelector(recipientSelector);
+
+        if (!viewLink)
+            viewLink = document.querySelector(viewMessageSelector);
+
+        if (viewLink) {
+            viewLink.dispatchEvent(new Event('click'));
+        }
+    }
+});
+
+document.addEventListener('modalOpening', function (e) {
     writeMessageModalOpening(e);
 });
 

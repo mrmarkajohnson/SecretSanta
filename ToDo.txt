@@ -1,4 +1,5 @@
 IMMEDIATE
+Add e-mail preferences, and use them
 Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?
 Add bug reporting

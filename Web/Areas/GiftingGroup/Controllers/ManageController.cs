@@ -171,9 +171,9 @@ public sealed class ManageController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReviewJoinerApplication(ReviewJoinerApplicationVm model)
     {
-        string loginUrl = GetFullUrl(nameof(Account.Controllers.HomeController.Login), nameof(Account.Controllers.HomeController), "Account");
+        string participateUrl = GetFullUrl(nameof(ParticipateController), nameof(ParticipateController.Index), "GiftingGroup");
 
-        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, loginUrl), 
+        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, participateUrl), 
             new ReviewJoinerApplicationVmValidator());
 
         if (commandResult.Success)

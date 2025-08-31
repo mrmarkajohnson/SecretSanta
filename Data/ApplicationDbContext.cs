@@ -27,23 +27,29 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public string? CurrentUserId { get; set; }
+    public List<Santa_Message> MessagesToSend { get; set; } = new();
+    public IEmailClient? EmailClient { get; set; }
 
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        ChangeTracker.DetectChanges();
         AddAuditTrails();
-        return await base.SaveChangesAsync(cancellationToken);
+        int result = await base.SaveChangesAsync(cancellationToken);
+        SendMessages();
+        return result;
     }
 
     public override int SaveChanges()
     {
-        ChangeTracker.DetectChanges();
         AddAuditTrails();
-        return base.SaveChanges();
+        int result = base.SaveChanges();
+        SendMessages();
+        return result;
     }
 
     private void AddAuditTrails()
     {
+        ChangeTracker.DetectChanges();
+
         var modifiedAuditableEntities = ChangeTracker.Entries()
             .Where(e => e.Entity is IAuditableEntity)
             .Where(e => e.State == EntityState.Added
@@ -132,6 +138,33 @@ public class ApplicationDbContext : IdentityDbContext
             }
         }
         return changes;
+    }
+
+    private void SendMessages()
+    {
+        return; // TODO: Remove this once e-mails are safe to send
+        
+        MessagesToSend ??= new();
+
+        if (EmailClient == null)
+            return; // TODO: Log failure (or queue the messages)
+
+        if (MessagesToSend.Any())
+        {
+            foreach (var dbMessage in MessagesToSend)
+            {
+                try
+                {
+                    EmailClient.SendMessage(dbMessage); // TODO: Log any validation messages
+                }
+                catch
+                {
+                    // just continue // TODO: Log failure (or queue the messages)
+                }
+            }
+
+            MessagesToSend.Clear();
+        }
     }
 
     public DbSet<Global_User> Global_Users => Set<Global_User>();

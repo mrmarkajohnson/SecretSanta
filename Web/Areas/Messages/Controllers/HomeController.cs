@@ -20,11 +20,19 @@ public sealed class HomeController : BaseController
 
     public async Task<IActionResult> Index()
     {
+        return await ViewMessages(null);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ViewMessages(int? messageKey, int? messageRecipientKey = null)
+    {
         if (AjaxRequest())
             return await MessagesGrid();
 
-        IQueryable<ISantaMessage> messages = await GetMessages();
-        return View(messages);
+        var model = new ViewMessagesVm(messageKey, messageRecipientKey);
+        model.Messages = await GetMessages();
+
+        return View("Index", model);
     }
 
     [HttpGet]
@@ -89,22 +97,6 @@ public sealed class HomeController : BaseController
         {
             return StatusCode(StatusCodes.Status422UnprocessableEntity, ex.Message);
         }
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkMessageRead(int messageKey, int? messageRecipientKey)
-    {
-        try
-        {
-            await Send(new MarkMessageReadCommand(messageKey, messageRecipientKey), null);
-        }
-        catch
-        {
-            // no point throwing an exception here
-        }
-
-        return Ok();
     }
 
     [HttpGet]

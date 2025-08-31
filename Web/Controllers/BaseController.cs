@@ -1,6 +1,7 @@
 ﻿using Application.Areas.Account.Queries;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.Home.ViewModels;
+using Application.Areas.Messages.Commands;
 using Application.Shared.Requests;
 using AutoMapper;
 using FluentValidation;
@@ -111,8 +112,6 @@ public class BaseController : Controller
         }
     }
 
-
-
     private ValidationResult Validate<TItem>(TItem item, AbstractValidator<TItem>? validator)
     {
         ValidationResult validationResult = new();
@@ -203,19 +202,33 @@ public class BaseController : Controller
         return View("NotFound", message);
     }
 
-    protected string GetFullUrl(string action, string controller, string area)
+    protected string GetFullUrl(string action, string controller, string area, object? values = null)
     {
-        return GetFullUrl(Request, action, controller, area);
+        return GetFullUrl(Request, action, controller, area, values);
     }
 
-    private string GetFullUrl(HttpRequest request, string action, string controller, string area)
+    private string GetFullUrl(HttpRequest request, string action, string controller, string area, object? values = null)
     {
         controller = controller.TrimEnd("Controller");
-        return Url.Action(request, action, controller, area);
+        return Url.Action(request, action, controller, area, values);
     }
 
     protected bool AjaxRequest()
     {
         return HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+    }
+
+    public async Task<IActionResult> MarkMessageRead(int messageKey, int? messageRecipientKey)
+    {
+        try
+        {
+            await Send(new MarkMessageReadCommand(messageKey, messageRecipientKey), null);
+        }
+        catch
+        {
+            // no point throwing an exception here
+        }
+
+        return Ok();
     }
 }

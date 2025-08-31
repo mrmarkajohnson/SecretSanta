@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Data.Abstractions;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Messages;
@@ -9,7 +10,7 @@ using MimeKit;
 
 namespace Application.Shared.Requests;
 
-internal class EmailClient
+internal class EmailClient : IEmailClient
 {
     public EmailClient(IServiceProvider services)
     {
@@ -31,18 +32,18 @@ internal class EmailClient
 
         var recipients = dbMessage.Recipients
             .AsQueryable()
-            .ProjectTo<IUserNamesBase>(_mapper.ConfigurationProvider)
+            .ProjectTo<IEmailRecipient>(_mapper.ConfigurationProvider)
             .ToList();
 
         recipients.ForEach(x => x.UnHash());
         return SendMessage(dbMessage, recipients);
     }
 
-    public ValidationResult SendMessage(IMessageBase message, List<IUserNamesBase> recipients)
+    public ValidationResult SendMessage(IMessageBase message, List<IEmailRecipient> recipients)
     {
         var result = new ValidationResult();
 
-        List<IUserNamesBase> validRecipients = recipients.Where(x => x.Email.IsNotEmpty()).ToList();
+        List<IEmailRecipient> validRecipients = recipients.Where(x => x.Email.IsNotEmpty()).ToList();
 
         if (!validRecipients.Any())
         {
@@ -59,7 +60,7 @@ internal class EmailClient
                 // Note: only needed if the SMTP server requires authentication
                 client.Authenticate(_mailSettings.UserName, _mailSettings.Password);
 
-                foreach (IUserNamesBase recipient in validRecipients)
+                foreach (IEmailRecipient recipient in validRecipients)
                 {
                     SendMessage(message, recipient, client, result);
                 }
@@ -75,7 +76,7 @@ internal class EmailClient
         return result;
     }
 
-    private void SendMessage(IMessageBase message, IUserNamesBase recipient, SmtpClient client, ValidationResult result)
+    private void SendMessage(IMessageBase message, IEmailRecipient recipient, SmtpClient client, ValidationResult result)
     {
         if (recipient.IdentificationHashed)
             recipient.UnHash();
@@ -92,6 +93,8 @@ internal class EmailClient
             return;
         }
 
+        string messageText = GetMessageText(message, recipient);
+
         try
         {
             var mimeMessage = new MimeMessage();
@@ -99,7 +102,7 @@ internal class EmailClient
             mimeMessage.From.Add(new MailboxAddress(_mailSettings.FromName, _mailSettings.FromAddress));
             mimeMessage.To.Add(new MailboxAddress(recipient.DisplayName(), recipient.Email));
             mimeMessage.Subject = message.HeaderText;
-            mimeMessage.Body = new TextPart("html") { Text = message.MessageText };
+            mimeMessage.Body = new TextPart("html") { Text = messageText };
 
             client.Send(mimeMessage);
             return;
@@ -110,5 +113,38 @@ internal class EmailClient
         }
     }
 
+    private string GetMessageText(IMessageBase message, IEmailRecipient recipient)
+    {
+        string? viewMessageUrl = MessageSettings.ViewMessageUrl.IsNotEmpty() && recipient.MessageKey > 0
+            ? $"?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
+            : null;
 
+        string messageText = message.MessageText + $"<br/><br/>You cannot reply directly to this e-mail.";
+
+        if (viewMessageUrl.IsNotEmpty())
+        {
+            messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient)} to reply.";
+        }
+
+        string fromMessage = $"{MessageSettings.FromMessageParameter}={recipient.MessageKey}";
+        string fromRecipient = $"{MessageSettings.FromRecipientParameter}={recipient.MessageRecipientKey}";
+
+        messageText = messageText
+            .Replace($"{MessageSettings.FromMessageParameter}=null", fromMessage)
+            .Replace($"{MessageSettings.FromMessageParameter}=0", fromMessage)
+            .Replace($"{MessageSettings.FromRecipientParameter}=null", fromRecipient)
+            .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
+
+        return messageText;
+    }
+
+    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null)
+    {
+        url += (url.Contains("?") ? "&" : "?")
+            + $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
+            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+
+        string quote = addQuotes ? "'" : "";
+        return $"<a href=\"{url}\">{quote}{display}{quote}</a>";
+    }
 }

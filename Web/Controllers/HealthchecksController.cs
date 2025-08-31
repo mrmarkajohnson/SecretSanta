@@ -14,11 +14,15 @@ namespace Web.Controllers;
 public class HealthchecksController : BaseController
 {
     private IConfiguration _configuration;
+    private IMailSettings _mailSettings;
+
+    private string _notFound = "Not Found";
 
     public HealthchecksController(IConfiguration configuration, IServiceProvider services, SignInManager<IdentityUser> signInManager)
         : base(services, signInManager)
     {
         _configuration = configuration;
+        _mailSettings = services.GetRequiredService<IMailSettings>();
     }
 
     [HttpGet]
@@ -31,77 +35,64 @@ public class HealthchecksController : BaseController
 
     private async Task PopulateHealthchecksModel(HealthChecksVm model)
     {
-        string notFound = "Not Found";
-        string? userID = notFound;
-        string? password = notFound;
-
         AddServer(model);
 
-        userID = AddUserID(model, notFound, userID);
-        password = AddPassword(model, notFound, password);
+        string dabaseUserID = AddDatabaseUserID(model);
+        string databasePassword = AddDatabasePassword(model);
 
         AddSymmetricKeyEnd(model);
-        AddConnectionString(model, notFound, userID, password);
+        AddConnectionString(model, dabaseUserID, databasePassword);
+
+        AddMailUserId(model);
+        AddMailPassword(model);
+        AddMailFrom(model);
+        AddSmtpHost(model);
+        AddSmtpPort(model);
 
         await AddQueryResult(model);
     }
 
     private void AddServer(HealthChecksVm model)
     {
-        try
-        {
-            model.Server = _configuration[ConfigurationSettings.DatabaseServer];
-        }
-        catch (Exception ex)
-        {
-            model.Server = $"Could not obtain variable '{ConfigurationSettings.DatabaseServer}': {ex.Message}. Stack trace: {ex.StackTrace}";
-        }
+        model.Server = GetConfigurationItem(ConfigurationSettings.DatabaseServer);
     }
 
-    private string? AddUserID(HealthChecksVm model, string notFound, string? userID)
+    private string AddDatabaseUserID(HealthChecksVm model)
     {
         try
         {
-            userID = _configuration[ConfigurationSettings.DatabaseUser] ?? notFound;
-            model.SafeUserID = userID == null ? "" : userID.First() + "****" + userID.Last();
+            string userID = GetConfigurationItem(ConfigurationSettings.DatabaseUser);
+            model.SafeDatabaseUserID = GetDisplayValue(userID);
+            return userID; // return the original 'unsafe' value, so we can replace it later in the connection string
         }
         catch (Exception ex)
         {
-            model.SafeUserID = $"Could not obtain variable '{ConfigurationSettings.DatabaseUser}': {ex.Message}. Stack trace: {ex.StackTrace}";
+            model.SafeDatabaseUserID = $"Could not obtain variable '{ConfigurationSettings.DatabaseUser}': {ex.Message}. Stack trace: {ex.StackTrace}";
+            return _notFound;
         }
-
-        return userID;
     }
 
-    private string? AddPassword(HealthChecksVm model, string notFound, string? password)
+    private string AddDatabasePassword(HealthChecksVm model)
     {
         try
         {
-            password = _configuration[ConfigurationSettings.DatabasePassword] ?? notFound;
-            model.SafePassword = password == null ? "" : password.First() + "****" + password.Last();
+            string password = GetConfigurationItem(ConfigurationSettings.DatabasePassword);
+            model.SafeDatabasePassword = GetDisplayValue(password);
+            return password; // return the original 'unsafe' value, so we can replace it later in the connection string
         }
         catch (Exception ex)
         {
-            model.SafePassword = $"Could not obtain variable '{ConfigurationSettings.DatabasePassword}': {ex.Message}. Stack trace: {ex.StackTrace}";
+            model.SafeDatabasePassword = $"Could not obtain variable '{ConfigurationSettings.DatabasePassword}': {ex.Message}. Stack trace: {ex.StackTrace}";
+            return _notFound;
         }
-
-        return password;
     }
 
     private void AddSymmetricKeyEnd(HealthChecksVm model)
     {
-        try
-        {
-            string? keyEnd = _configuration[ConfigurationSettings.SymmetricKeyEnd];
-            model.SafeKeyEnd = keyEnd == null ? "" : keyEnd.First() + "****" + keyEnd.Last();
-        }
-        catch (Exception ex)
-        {
-            model.SafeKeyEnd = $"Could not obtain variable '{ConfigurationSettings.SymmetricKeyEnd}': {ex.Message}. Stack trace: {ex.StackTrace}";
-        }
+        model.SafeKeyEnd = GetSafeConfigurationItem(ConfigurationSettings.SymmetricKeyEnd);
     }
 
-    private void AddConnectionString(HealthChecksVm model, string notFound, string? userID, string? password)
+    private void AddConnectionString(HealthChecksVm model, string userID, string password)
     {
         try
         {
@@ -110,9 +101,9 @@ public class HealthchecksController : BaseController
             var connectionStringBuilder = new SqlConnectionStringBuilder(model.DefaultConnection);
             string connectionString = _configuration.GetConnectionString(connectionStringBuilder);
 
-            if (userID.IsNotEmpty() && userID != notFound && password.IsNotEmpty() && password != notFound)
+            if (userID.IsNotEmpty() && userID != _notFound && password.IsNotEmpty() && password != _notFound)
             {
-                model.SafeConnectionString = connectionString.Replace(userID, model.SafeUserID).Replace(password, model.SafePassword);
+                model.SafeConnectionString = connectionString.Replace(userID, model.SafeDatabaseUserID).Replace(password, model.SafeDatabasePassword);
             }
             else if (connectionString.IsNotEmpty())
             {
@@ -127,6 +118,61 @@ public class HealthchecksController : BaseController
         {
             model.SafeConnectionString = $"Could not obtain connection string: {ex.Message}. Stack trace: {ex.StackTrace}";
         }
+    }
+
+    private void AddMailUserId(HealthChecksVm model)
+    {
+        model.SafeMailUserID = GetSafeConfigurationItem(ConfigurationSettings.EmailUserName);
+    }
+
+    private void AddMailPassword(HealthChecksVm model)
+    {
+        model.SafeMailPassword = GetSafeConfigurationItem(ConfigurationSettings.EmailPassword);
+    }
+
+    private void AddMailFrom(HealthChecksVm model)
+    {
+        model.SafeMailFrom = GetSafeConfigurationItem(ConfigurationSettings.EmailFromAddress);
+    }
+
+    private void AddSmtpHost(HealthChecksVm model)
+    {
+        model.SmtpHost = GetConfigurationItem(ConfigurationSettings.EmailHost);
+    }
+
+    private void AddSmtpPort(HealthChecksVm model)
+    {
+        model.SmtpPort = _mailSettings.Port;
+    }
+
+    private string GetSafeConfigurationItem(string configurationName)
+    {
+        return GetConfigurationItem(configurationName, true);
+    }
+
+    private string GetConfigurationItem(string configurationName, bool makeSafe = false)
+    {
+        try
+        {
+            string? value = _configuration[configurationName];
+            return GetDisplayValue(value, makeSafe);
+        }
+        catch (Exception ex)
+        {
+            return $"Could not obtain variable '{configurationName}': {ex.Message}. Stack trace: {ex.StackTrace}";
+        }
+    }
+
+    private string GetDisplayValue(string? value, bool makeSafe = true)
+    {
+        if (value.IsNotEmpty() && value != _notFound)
+        {
+            return makeSafe
+                ? value.First() + "****" + value.Last()
+                : value;
+        }
+
+        return _notFound;
     }
 
     private async Task AddQueryResult(HealthChecksVm model)
@@ -193,7 +239,7 @@ public class HealthchecksController : BaseController
     public async Task<IActionResult> SendTestEmail(SendTestEmailVm model)
     {
         ModelState.Clear();
-        
+
         var commandResult = await Send(new SendTestEmailCommand(model), new SendTestEmailVmValidator());
 
         if (commandResult.Success)

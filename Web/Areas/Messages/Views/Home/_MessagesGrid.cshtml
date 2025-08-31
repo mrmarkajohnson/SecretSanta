@@ -4,8 +4,9 @@
 @{
     Func<ISantaMessage, object> actions =
     @<text>
-        <a class="modal-link" data-url="@Url.Action(Context, "ViewMessage", "Home", "Messages", new { messageKey=item.MessageKey, messageRecipientKey=item.MessageRecipientKey })"
-           data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
+        <a class="modal-link view-message-link" data-message-key="@item.MessageKey" data-message-recipient-key="@item.MessageRecipientKey"
+            data-url="@Url.Action(Context, "ViewMessage", "Home", "Messages", new { messageKey=item.MessageKey, messageRecipientKey=item.MessageRecipientKey })"
+            data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
 
         @if (item.CanReply)
         {

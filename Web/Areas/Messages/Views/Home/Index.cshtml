@@ -1,6 +1,6 @@
 ﻿@using Global.Abstractions.Areas.Messages
 
-@model IQueryable<ISantaMessage>
+@model ViewMessagesVm
 @{
     ViewData["Title"] = "Messages";
 }
@@ -15,8 +15,13 @@
         </p>
     </div>
 
+    <div class="collapse">
+        <input asp-for="MessageKey" id="messageKey" />
+        <input asp-for="MessageRecipientKey" id="messageRecipientKey" />
+    </div>
+
     <div class="@StandardFullWidthGridContainer">
-        <partial name="_MessagesGrid" />
+        <partial name="_MessagesGrid" model="@Model.Messages" />
         @* @Html.AjaxGrid(Url.Action("MessagesGrid"), new { id = "messages-grid" }) *@
     </div>
 

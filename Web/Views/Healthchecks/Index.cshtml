@@ -6,64 +6,108 @@
 <h1>Health Checks</h1>
 
 <form asp-area="" asp-controller="Healthchecks" asp-action="Index" method="post">
-    
+
     <div class="collapse">
         <input type="hidden" asp-for="Server" />
-        <input type="hidden" asp-for="SafeUserID" />
-        <input type="hidden" asp-for="SafePassword" />
+        <input type="hidden" asp-for="SafeDatabaseUserID" />
+        <input type="hidden" asp-for="SafeDatabasePassword" />
         <input type="hidden" asp-for="SafeKeyEnd" />
         <input type="hidden" asp-for="DefaultConnection" />
         <input type="hidden" asp-for="SafeConnectionString" />
         <input type="hidden" asp-for="QueryResult" />
+        <input type="hidden" asp-for="SafeMailUserID" />
+        <input type="hidden" asp-for="SafeMailPassword" />
+        <input type="hidden" asp-for="SafeMailFrom" />
+        <input type="hidden" asp-for="SmtpHost" />
+        <input type="hidden" asp-for="SmtpPort" />
     </div>
-    
+
     <div class="row @CenterFlexNoWrapContainer">
         <div class="mb-5">
 
-            <div class="mb-3">
-                <label asp-for="Server" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.Server</label>
-            </div>
+            <div class="@CenterFlexWrapContainer">
+                <div class="@StandardGroupWidth">
 
-            <div class="mb-3">
-                <label asp-for="SafeUserID" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.SafeUserID</label>
-            </div>
+                    <h2>Database</h2>
 
-            <div class="mb-3">
-                <label asp-for="SafePassword" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.SafePassword</label>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="Server" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.Server</label>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="SafeKeyEnd" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.SafeKeyEnd</label>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="SafeDatabaseUserID" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeDatabaseUserID</label>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="DefaultConnection" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.DefaultConnection</label>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="SafeDatabasePassword" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeDatabasePassword</label>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="SafeConnectionString" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.SafeConnectionString</label>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="DefaultConnection" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.DefaultConnection</label>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="QueryResult" class="control-label"></label>
-                <label class="control-label fw-normal">@Model.QueryResult</label>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="SafeConnectionString" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeConnectionString</label>
+                    </div>
 
-            @if (Model.PostResult.IsNotEmpty())
-            {
-                <div class="mb-3">
-                    <label asp-for="PostResult" class="control-label"></label>
-                    <label class="control-label fw-normal">@Model.PostResult</label>
+                    <h2>Encyrption</h2>
+
+                    <div class="mb-3">
+                        <label asp-for="SafeKeyEnd" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeKeyEnd</label>
+                    </div>
+
+                    <h2>E-mail</h2>
+
+                    <div class="mb-3">
+                        <label asp-for="SafeMailUserID" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeMailUserID</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SafeMailPassword" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeMailPassword</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SafeMailFrom" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeMailFrom</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SmtpHost" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SmtpHost</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SmtpPort" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SmtpPort</label>
+                    </div>
+
+                    <h2>Requests</h2>
+
+                    <div class="mb-3">
+                        <label asp-for="QueryResult" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.QueryResult</label>
+                    </div>
+
+                    @if (Model.PostResult.IsNotEmpty())
+                    {
+                        <div class="mb-3">
+                            <label asp-for="PostResult" class="control-label"></label>
+                            <label class="control-label fw-normal">@Model.PostResult</label>
+                        </div>
+                    }
+
                 </div>
-            }
+            </div>
 
-            <br/>
+            <br />
             <div class="col-md-12">
                 <partial name="_SubmitButton" />
             </div>

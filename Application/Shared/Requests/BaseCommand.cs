@@ -10,7 +10,6 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     public TItem Item { get; set; }
     public AbstractValidator<TItem>? Validator { get; set; }
     public ValidationResult Validation { get; set; } = new ValidationResult();
-    private protected EmailClient? EmailClient { get; set; }
 
     protected bool Success { get; set; }
 
@@ -22,8 +21,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     public async override Task<ICommandResult<TItem>> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
         Initialise(services, claimsUser);
-
-        EmailClient = new EmailClient(Services);
+        DbContext.EmailClient = new EmailClient(services);
 
         if (Validator != null && !Validation.RuleSetsExecuted.Any())
         {
@@ -164,10 +162,9 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
     }
 
-    public static string MessageLink(string url, string display, bool addQuotes)
+    public string MessageLink(string url, string display, bool addQuotes)
     {
-        string quote = addQuotes ? "'" : "";
-        return $"<a href=\"{url}\">{quote}{display}{quote}</a>";
+        return DbContext.EmailClient?.MessageLink(url, display, addQuotes) ?? string.Empty;
     }
 
     #endregion Messages

@@ -4,6 +4,12 @@ namespace Global.Settings;
 
 public static class MessageSettings
 {
+    public const string FromMessageParameter = "fromMessage";
+    public const string FromRecipientParameter = "recipient";
+    public static string? ViewMessageUrl => ConfigurationSettings.BaseUrl.IsNotEmpty()
+        ? ConfigurationSettings.BaseUrl + "/Messages/Home/ViewMessages"
+        : null;
+
     public enum MessageRecipientType
     {
         /// <summary>

@@ -170,6 +170,19 @@
     "sourceMap": true
   },
   {
+    "outputFileName": "wwwroot/js/Messages/Home/ViewMessages/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/writeMessage.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
     "outputFileName": "wwwroot/js/Messages/bundle.js",
     "inputFiles": [
       "wwwroot/scripts/Messages/viewMessages.js",

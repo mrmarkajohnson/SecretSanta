@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using Application.Areas.Messages.ViewModels;
-using Application.Shared.BaseModels;
 using Application.Shared.Requests;
 using FluentValidation;
 using Global.Extensions.Exceptions;
@@ -20,7 +19,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
         if (!dbCurrentUser.SystemAdmin)
             throw new AccessDeniedException("Only system administrators can send test e-mails.");
 
-        if (EmailClient == null)
+        if (DbContext.EmailClient == null)
             throw new NotFoundException("The e-mail client has not been configured.");
 
         var message = new MessageBase
@@ -29,7 +28,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
             MessageText = "This is a test e-mail from Secret Santa."
         };
 
-        var recipient = new UserNamesBase
+        var recipient = new EmailRecipient
         {
             Forename = "Test",
             Surname="Recipient",
@@ -39,7 +38,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
 
         try
         {
-            Validation = EmailClient.SendMessage(message, [recipient]);
+            Validation = DbContext.EmailClient.SendMessage(message, [recipient]);
         }
         catch (Exception ex)
         {

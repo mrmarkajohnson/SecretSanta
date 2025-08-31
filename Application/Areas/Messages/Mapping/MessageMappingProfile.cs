@@ -1,7 +1,7 @@
 ﻿using Application.Areas.Messages.BaseModels;
+using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.Messages;
-using System.Linq.Expressions;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.Mapping;
@@ -23,6 +23,15 @@ public sealed class MessageMappingProfile : Profile
             .ForMember(dest => dest.MessageRecipientKey, opt => opt.MapFrom(src => src.MessageRecipientKey))
             .ForMember(dest => dest.Read, opt => opt.MapFrom(src => src.Read));
         CreateMap<Santa_MessageRecipient, ISantaMessage>().As<SantaMessage>();
+
+        CreateMap<Santa_MessageRecipient, EmailRecipient>()
+            .IncludeMembers(src => src.RecipientSantaUser)
+            .ForMember(dest => dest.MessageKey, opt => opt.MapFrom(src => src.MessageKey))
+            .ForMember(dest => dest.MessageRecipientKey, opt => opt.MapFrom(src => src.RecipientSantaUserKey));
+        CreateMap<Santa_MessageRecipient, IEmailRecipient>().As<EmailRecipient>();
+
+        CreateMap<Santa_User, EmailRecipient>()
+            .IncludeBase<Santa_User, UserNamesBase>();
 
         CreateMap<Santa_Message, ReadMessage>()
             .IncludeBase<Santa_Message, SantaMessage>()
