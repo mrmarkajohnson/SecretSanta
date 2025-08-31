@@ -4,7 +4,7 @@ public sealed class NotFoundException : Exception
 {
     public NotFoundException(string itemDescription)
     {
-        Message = $"{itemDescription} was not found";
+        Message = $"The requested {itemDescription} could not be found; you may not have access to it. Please go back and try again.";
     }
 
     public override string Message { get; }

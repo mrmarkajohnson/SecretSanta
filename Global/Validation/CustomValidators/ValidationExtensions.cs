@@ -1,6 +1,8 @@
-﻿using Global.Validation;
+﻿using FluentValidation.Results;
+using Global.Validation;
 using Global.Validation.CustomValidators;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
 
 namespace FluentValidation;
 
@@ -57,5 +59,15 @@ public static class ValidationExtensions
         {
             return message.Replace("{0}", "{PropertyName}");
         }
+    }
+
+    public static void AddWarning(this ValidationResult result, string message, string? propertyName = null)
+    {
+        result.Errors.Add(new ValidationFailure(propertyName ?? "", message) { Severity = Severity.Warning });
+    }
+
+    public static void AddError(this ValidationResult result, string message, string? propertyName = null)
+    {
+        result.Errors.Add(new ValidationFailure(propertyName ?? "", message));
     }
 }

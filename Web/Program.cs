@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Web.Extensions;
 using Web.GlobalErrorHandling;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,6 @@ string connectionString = builder.Configuration.GetConnectionString(connectionSt
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.ConfigureDatabaseOptions(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddIdentity<ApplicationDbContext>();
 
 if (builder.Services.Any(f => f.ServiceType == typeof(IValidationAttributeAdapterProvider)))
@@ -37,6 +37,7 @@ var profiles = mapperAssemblies.SelectMany(x => x.GetTypes().Where(x => typeof(P
 builder.Services.ConfigureAutoMapperProfiles();
 
 builder.Services.Configure<IdentityOptions>(IdentityVal.ConfigureOptions);
+builder.ConfigureEmail();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model string?
+@{
     ViewData["Title"] = "Access Denied";
 }
 
@@ -7,6 +8,11 @@
     <div class="row @CenterFlexNoWrapContainer">
         <div class="mb-5">
             You do not have access to the requested page.
+
+            @if (Model.IsNotEmpty())
+            {
+                @Model
+            }
         </div>
     </div>
 </section>

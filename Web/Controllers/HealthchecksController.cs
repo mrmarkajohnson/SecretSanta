@@ -1,6 +1,11 @@
-﻿using Application.Areas.GiftingGroup.Queries;
+﻿using Application.Areas.Account.Queries;
+using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Messages.Commands;
+using Application.Areas.Messages.ViewModels;
 using Application.Shared.ViewModels;
 using Data.Extensions;
+using Global.Abstractions.Areas.Account;
+using Global.Extensions.Exceptions;
 using Global.Settings;
 using Microsoft.Data.SqlClient;
 
@@ -169,5 +174,34 @@ public class HealthchecksController : BaseController
         }
 
         return View("Index", model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SendTestEmail()
+    {
+        ISantaUser currentUser = await Send(new GetCurrentUserQuery(false));
+
+        if (!currentUser.SystemAdmin)
+            throw new AccessDeniedException("Only system administrators can send test e-mails.");
+
+        var model = new SendTestEmailVm();
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendTestEmail(SendTestEmailVm model)
+    {
+        ModelState.Clear();
+        
+        var commandResult = await Send(new SendTestEmailCommand(model), new SendTestEmailVmValidator());
+
+        if (commandResult.Success)
+        {
+            model.SuccessMessage = "E-mail sent successfully.";
+            model.RecipientEmailAddress = "";
+        }
+
+        return View(model);
     }
 }

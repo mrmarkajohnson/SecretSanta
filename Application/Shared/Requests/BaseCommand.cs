@@ -10,6 +10,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     public TItem Item { get; set; }
     public AbstractValidator<TItem>? Validator { get; set; }
     public ValidationResult Validation { get; set; } = new ValidationResult();
+    private protected EmailClient? EmailClient { get; set; }
 
     protected bool Success { get; set; }
 
@@ -21,6 +22,8 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     public async override Task<ICommandResult<TItem>> Handle(IServiceProvider services, ClaimsPrincipal claimsUser)
     {
         Initialise(services, claimsUser);
+
+        EmailClient = new EmailClient(Services);
 
         if (Validator != null && !Validation.RuleSetsExecuted.Any())
         {
@@ -56,6 +59,12 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             Success = false;
         }
 
+        return await Result();
+    }
+
+    protected async Task<ICommandResult<TItem>> SuccessResult(bool ignoreValidationResult = false)
+    {
+        Success = Validation.IsValid || ignoreValidationResult;
         return await Result();
     }
 

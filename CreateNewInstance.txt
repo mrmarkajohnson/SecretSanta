@@ -6,12 +6,16 @@ ALL ENVIRONMENTS
 
 DEVELOPMENT/TEST
 
-1. To create the database administrator, run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
-(NB: DO NOT change the symmetric key once used!):
+1. Run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
+(NB: DO NOT change the symmetric key end once used!):
 
-dotnet user-secrets set "DatabaseSettings:SecretSantaUserId" "{desired-username]" --project "Data"
-dotnet user-secrets set "DatabaseSettings:SecretSantaPassword" "{desired-password]" --project "Data"
+dotnet user-secrets set "DatabaseSettings:SecretSantaUserId" "{desired-database-username]" --project "Data"
+dotnet user-secrets set "DatabaseSettings:SecretSantaPassword" "{desired-database-password]" --project "Data"
 dotnet user-secrets set "EncryptionSettings:SecretSantaSymmetricKeyEnd" "{desired-key]" --project "Data"
+dotnet user-secrets set "MailSettings:FromAddress" "{desired-e-mail-address]" --project "Data"
+dotnet user-secrets set "MailSettings:SmtpHost" "{desired-host-url]" --project "Data"
+dotnet user-secrets set "MailSettings:UserName" "{desired-email-username]" --project "Data"
+dotnet user-secrets set "MailSettings:Password" "{desired-email-password]" --project "Data"
 
 2. If you don't want to use mssqllocaldb on local, run the following command in the PMC, replacing the curly brackets with the server name:
 
@@ -37,10 +41,19 @@ DatabaseSettings:SecretSantaPassword
 
 EncryptionSettings:SecretSantaSymmetricKeyEnd
 
-4. To create the database structure, run the following command in the PMC:
+4. Create the following environment variables for e-mail:
+
+MailSettings:FromAddress
+MailSettings:SmtpHost
+MailSettings:UserName
+MailSettings:Password
+
+5. Check any other settings in appsettings.json
+
+6. To create the database structure, run the following command in the PMC:
 
 Script-Migration
 
-5. Copy the output, split it into separate transactions where any compilation errors would occur, and run it in the database
+7. Copy the output, remove any insert or update statements, and run it in the database
 
 * Depending on the environment, use a key vault or whatever tools are available to protect the credentials

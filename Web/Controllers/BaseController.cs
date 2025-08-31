@@ -111,6 +111,8 @@ public class BaseController : Controller
         }
     }
 
+
+
     private ValidationResult Validate<TItem>(TItem item, AbstractValidator<TItem>? validator)
     {
         ValidationResult validationResult = new();
@@ -190,15 +192,15 @@ public class BaseController : Controller
     }
 
     [HttpGet]
-    public IActionResult AccessDenied()
+    public IActionResult AccessDenied(string? message = null)
     {
-        return View();
+        return View("AccessDenied", message);
     }
 
     [HttpGet]
-    new public IActionResult NotFound()
+    public IActionResult NotFound(string? message = null)
     {
-        return View();
+        return View("NotFound", message);
     }
 
     protected string GetFullUrl(string action, string controller, string area)

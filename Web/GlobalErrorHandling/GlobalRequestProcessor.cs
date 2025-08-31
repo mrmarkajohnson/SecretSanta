@@ -35,11 +35,11 @@ public sealed class GlobalRequestProcessor
         }
         else if (exception is AccessDeniedException)
         {
-            context.Response.Redirect($"{baseUrl}/Account/Home/AccessDenied");
+            context.Response.Redirect($"{baseUrl}/Account/Home/AccessDenied?message={exception.Message}");
         }
         else if (exception is NotFoundException)
         {
-            context.Response.Redirect($"{baseUrl}/Account/Home/NotFound");
+            context.Response.Redirect($"{baseUrl}/Account/Home/NotFound?message={exception.Message}");
         }
         else
         {
