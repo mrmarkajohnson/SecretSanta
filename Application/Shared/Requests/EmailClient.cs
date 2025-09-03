@@ -163,26 +163,46 @@ internal class EmailClient : IEmailClient
         if (!recipient.DetailedEmails)
         {
             messageText = ".";
-            
+
             if (viewMessageUrl.IsNotEmpty()) // just in case!
             {
-                messageText += $"<br/><br/> Please {MessageLink(viewMessageUrl, "click here", false, recipient)} to view the message.";
+                messageText += $".<br/><br/> Please {MessageLink(viewMessageUrl, "click here", false, recipient)} to view the message.";
             }
 
             return messageText;
         }
 
-        messageText += ":<br/><br/><i>"
-            + message.MessageText 
-            + $"</i><br/><br/>You cannot reply directly to this e-mail.";
+        messageText += ":<br/><br/><i>" + message.MessageText + $"</i><br/><br/>";
+        messageText = AddViewAndReplyDetails(message, recipient, viewMessageUrl, messageText);
+        messageText = ReplaceEmptyKeys(recipient, messageText);
 
-        if (canReply)
+        return messageText;
+    }
 
-        if (viewMessageUrl.IsNotEmpty()) // just in case!
+    private string AddViewAndReplyDetails(ISantaMessage message, IEmailRecipient recipient, string? viewMessageUrl, string messageText)
+    {
+        if (message.CanReply)
         {
-            messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient)} to reply.";
-        }
+            messageText += $"You cannot reply directly to this e-mail.";
 
+            if (viewMessageUrl.IsNotEmpty()) // just in case!
+            {
+                messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient)} to reply.";
+            }
+        }
+        /* // TODO: Restore this once users can report issues and abuse
+        else if (viewMessageUrl.IsNotEmpty()) // just in case!
+        {
+            messageText += $"You cannot reply, but you can " +
+                $"{MessageLink(viewMessageUrl, "view the message", false, recipient)}" +
+                $"to report an issue or abuse.";            
+        }
+        */
+        return messageText;
+    }
+
+    private static string ReplaceEmptyKeys(IEmailRecipient recipient, string messageText)
+    {
         string fromMessage = $"{MessageSettings.FromMessageParameter}={recipient.MessageKey}";
         string fromRecipient = $"{MessageSettings.FromRecipientParameter}={recipient.MessageRecipientKey}";
 
@@ -191,7 +211,6 @@ internal class EmailClient : IEmailClient
             .Replace($"{MessageSettings.FromMessageParameter}=0", fromMessage)
             .Replace($"{MessageSettings.FromRecipientParameter}=null", fromRecipient)
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
-
         return messageText;
     }
 
