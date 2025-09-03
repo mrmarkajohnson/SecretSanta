@@ -1,4 +1,5 @@
 ﻿using Data.Entities.Shared;
+using Global.Settings;
 
 namespace Data.Entities.Santa;
 
@@ -20,6 +21,9 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity
 
     [Key]
     public int SantaUserKey { get; set; }
+
+    public MessageSettings.EmailPreference ReceiveEmails { get; set; }
+    public bool DetailedEmails { get; set; }
 
     public required string GlobalUserId { get; set; }
     public virtual required Global_User GlobalUser { get; set; }

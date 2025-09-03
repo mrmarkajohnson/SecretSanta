@@ -31,7 +31,10 @@ public sealed class MessageMappingProfile : Profile
         CreateMap<Santa_MessageRecipient, IEmailRecipient>().As<EmailRecipient>();
 
         CreateMap<Santa_User, EmailRecipient>()
-            .IncludeBase<Santa_User, UserNamesBase>();
+            .IncludeBase<Santa_User, UserNamesBase>()
+            .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.GlobalUser.EmailConfirmed))
+            .ForMember(dest => dest.ReceiveEmails, opt => opt.MapFrom(src => src.ReceiveEmails))
+            .ForMember(dest => dest.DetailedEmails, opt => opt.MapFrom(src => src.DetailedEmails));
 
         CreateMap<Santa_Message, ReadMessage>()
             .IncludeBase<Santa_Message, SantaMessage>()

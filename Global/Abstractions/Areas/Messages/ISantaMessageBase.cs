@@ -4,8 +4,8 @@ namespace Global.Abstractions.Areas.Messages;
 
 public interface ISantaMessageBase : IMessageBase
 {
-    int MessageKey { get; set; }
-    public DateTime Sent { get; set; }
+    int MessageKey { get; }
+    public DateTime Sent { get; }
 
     [Display(Name = "For Group")]
     string? GroupName { get; }

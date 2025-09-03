@@ -24,7 +24,7 @@ public static class Greetings
         "Glad tidings of comfort and joy",
         "Deck the halls",
         "Joy to the world",
-        "Were' walking in a winter wonderland",
+        "We're walking in a winter wonderland",
         "Bah, humbug",
         "All I want for Christmas is you",
         "Happy birthday, Jesus",

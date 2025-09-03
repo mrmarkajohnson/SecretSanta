@@ -36,14 +36,19 @@ internal class EmailClient : IEmailClient
             .ToList();
 
         recipients.ForEach(x => x.UnHash());
-        return SendMessage(dbMessage, recipients);
+        var message = _mapper.Map<ISantaMessage>(dbMessage);
+
+        return SendMessage(message, recipients);
     }
 
-    public ValidationResult SendMessage(IMessageBase message, List<IEmailRecipient> recipients)
+    public ValidationResult SendMessage(ISantaMessage message, List<IEmailRecipient> recipients)
     {
         var result = new ValidationResult();
 
-        List<IEmailRecipient> validRecipients = recipients.Where(x => x.Email.IsNotEmpty()).ToList();
+        List<IEmailRecipient> validRecipients = recipients
+            .Where(x => x.CanReceiveEmails())
+            .Where(x => message.Important || x.ReceiveEmails != MessageSettings.EmailPreference.ImportantOnly)
+            .ToList();
 
         if (!validRecipients.Any())
         {
@@ -76,20 +81,14 @@ internal class EmailClient : IEmailClient
         return result;
     }
 
-    private void SendMessage(IMessageBase message, IEmailRecipient recipient, SmtpClient client, ValidationResult result)
+    private void SendMessage(ISantaMessage message, IEmailRecipient recipient, SmtpClient client, ValidationResult result)
     {
         if (recipient.IdentificationHashed)
             recipient.UnHash();
 
-        if (string.IsNullOrEmpty(recipient.Email))
+        bool canSend = CheckValidRecipient(recipient, result);
+        if (!canSend)
         {
-            result.AddWarning($"{recipient.FullName()}'s e-mail address is empty.", nameof(recipient.Email));
-            return;
-        }
-
-        if (!EmailHelper.IsEmail(recipient.Email))
-        {
-            result.AddWarning($"{recipient.FullName()}'s e-mail address is not valid.", nameof(recipient.Email));
             return;
         }
 
@@ -113,15 +112,73 @@ internal class EmailClient : IEmailClient
         }
     }
 
-    private string GetMessageText(IMessageBase message, IEmailRecipient recipient)
+    private static bool CheckValidRecipient(IEmailRecipient recipient, ValidationResult result)
+    {
+        if (!recipient.EmailConfirmed)
+        {
+            result.AddWarning($"{recipient.FullName()} has not confirmed {recipient.Gender.Posessive()} e-mail address.", nameof(recipient.Email));
+            return false;
+        }
+
+        if (recipient.ReceiveEmails == MessageSettings.EmailPreference.None)
+        {
+            result.AddWarning($"{recipient.FullName()} has chosen not to receive e-mails.", nameof(recipient.Email));
+            return false;
+        }
+
+        if (recipient.ReceiveEmails == MessageSettings.EmailPreference.None)
+        {
+            result.AddWarning($"{recipient.FullName()} has chosen not to receive e-mails.", nameof(recipient.Email));
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(recipient.Email))
+        {
+            result.AddWarning($"{recipient.FullName()}'s e-mail address is empty.", nameof(recipient.Email));
+            return false;
+        }
+
+        if (!EmailHelper.IsEmail(recipient.Email))
+        {
+            result.AddWarning($"{recipient.FullName()}'s e-mail address is not valid.", nameof(recipient.Email));
+            return false;
+        }
+
+        return true;
+    }
+
+    private string GetMessageText(ISantaMessage message, IEmailRecipient recipient)
     {
         string? viewMessageUrl = MessageSettings.ViewMessageUrl.IsNotEmpty() && recipient.MessageKey > 0
             ? $"?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
             : null;
 
-        string messageText = message.MessageText + $"<br/><br/>You cannot reply directly to this e-mail.";
+        string messageFrom = message.ShowAsFromSanta || message.Sender == null
+            ? "Santa"
+            : $"{message.Sender.DisplayName(false)} for Secret Santa";
 
-        if (viewMessageUrl.IsNotEmpty())
+        string messageText = $"Dear {recipient.DisplayFirstName()},<br/><br/>" +
+            $"You have a message from {messageFrom}";
+
+        if (!recipient.DetailedEmails)
+        {
+            messageText = ".";
+            
+            if (viewMessageUrl.IsNotEmpty()) // just in case!
+            {
+                messageText += $"<br/><br/> Please {MessageLink(viewMessageUrl, "click here", false, recipient)} to view the message.";
+            }
+
+            return messageText;
+        }
+
+        messageText += ":<br/><br/><i>"
+            + message.MessageText 
+            + $"</i><br/><br/>You cannot reply directly to this e-mail.";
+
+        if (canReply)
+
+        if (viewMessageUrl.IsNotEmpty()) // just in case!
         {
             messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient)} to reply.";
         }

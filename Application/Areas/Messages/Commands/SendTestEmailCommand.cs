@@ -22,10 +22,11 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
         if (DbContext.EmailClient == null)
             throw new NotFoundException("The e-mail client has not been configured.");
 
-        var message = new MessageBase
+        var message = new SantaMessage
         {
             HeaderText = "Test Email",
-            MessageText = "This is a test e-mail from Secret Santa."
+            MessageText = "This is a test e-mail from Secret Santa.",
+            ShowAsFromSanta = true
         };
 
         var recipient = new EmailRecipient
@@ -33,7 +34,10 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
             Forename = "Test",
             Surname="Recipient",
             Email = Item.RecipientEmailAddress,
-            IdentificationHashed = false
+            IdentificationHashed = false,
+            EmailConfirmed = true,
+            ReceiveEmails = MessageSettings.EmailPreference.All,
+            DetailedEmails = true
         };
 
         try

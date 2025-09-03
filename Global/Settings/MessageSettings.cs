@@ -120,4 +120,11 @@ public static class MessageSettings
     {
         MessageRecipientType.GiftRecipient, MessageRecipientType.SingleGroupMember, MessageRecipientType.SingleNonGroupMember
     };
+
+    public enum EmailPreference
+    {
+        None = 0,
+        ImportantOnly = 1,
+        All = 2
+    }
 }

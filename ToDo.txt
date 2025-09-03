@@ -1,5 +1,9 @@
 IMMEDIATE
-Add e-mail preferences, and use them
+Front end for e-mail preferences
+Add e-mail preferences to e-mails, with a link to change them
+Confirm e-mail - which opens the front end for preferences
+Remove confirmation status and re-confirm when e-mail changes
+
 Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?
 Add bug reporting
