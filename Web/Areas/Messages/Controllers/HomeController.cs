@@ -92,7 +92,6 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> MarkMessageRead(int messageKey, int? messageRecipientKey)
     {
         try
