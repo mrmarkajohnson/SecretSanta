@@ -11,6 +11,7 @@ public class ConfigurationSettings
     public const string EmailHost = "MailSettings:SmtpHost";
     public const string EmailUserName = "MailSettings:UserName";
     public const string EmailPassword = "MailSettings:Password";
+    public const string EmailTestAddress = "MailSettings:TestAddress";
 
-    public static string? BaseUrl { get; set; }
+    public static string? BaseUrl { get; set; }    
 }

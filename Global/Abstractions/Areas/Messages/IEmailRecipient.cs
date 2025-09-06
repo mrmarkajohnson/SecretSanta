@@ -3,14 +3,10 @@ using Global.Settings;
 
 namespace Global.Abstractions.Areas.Messages;
 
-public interface IEmailRecipient : IUserNamesBase
+public interface IEmailRecipient : IUserNamesBase, IUserEmailDetails
 {
     int MessageKey { get; }
     int MessageRecipientKey { get; }
-
-    bool EmailConfirmed { get; }
-    MessageSettings.EmailPreference ReceiveEmails { get; }
-    bool DetailedEmails { get; }
 }
 
 public static class EmailRecipientExtensions

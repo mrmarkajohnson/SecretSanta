@@ -3,6 +3,7 @@ using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
 using Global.Abstractions.Areas.Account;
+using Global.Names;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
 
@@ -221,5 +222,47 @@ public sealed class ManageController : BaseController
         }
 
         return await RedirectIfLockedOut("ChangePassword", model);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> ConfirmEmail(string id)
+    {
+        await ConfirmEmailAddress(id);
+        return RedirectWithMessage(Url.Action(nameof(EmailPreferences)), $"{UserDisplayNames.Email} confirmed successfully.");
+    }
+
+    private async Task ConfirmEmailAddress(string id)
+    {
+        await Send(new ConfirmEmailCommand(id), null);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> EmailPreferences(string? id = null)
+    {
+        if (id != null)
+        {
+            try
+            {
+                await ConfirmEmailAddress(id);
+            }
+            catch
+            {
+                // just continue
+            }
+        }
+        
+        var model = await Send(new GetEmailDetailsQuery());
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EmailPreferences(EmailDetails model)
+    {
+        ModelState.Clear();
+        
+        await Send(new SetEmailPreferencesCommand<EmailDetails>(model, _userStore), new EmailDetailsValidator());
+        return View(model);
     }
 }

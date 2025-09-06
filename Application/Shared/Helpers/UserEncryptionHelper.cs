@@ -30,7 +30,7 @@ public static class UserEncryptionHelper
         string? email = string.IsNullOrWhiteSpace(hashableUser.Email)
             ? null
             : hashableUser.IdentificationHashed
-                ? EncryptionHelper.Decrypt(hashableUser.Email.TrimEnd(IdentitySettings.StandardEmailEnd), true)
+                ? EncryptionHelper.DecryptEmail(hashableUser.Email)
                 : hashableUser.Email;
 
         string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName)

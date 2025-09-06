@@ -2,7 +2,6 @@
 using Global.Validation;
 using Global.Validation.CustomValidators;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Reflection;
 
 namespace FluentValidation;
 
@@ -69,5 +68,10 @@ public static class ValidationExtensions
     public static void AddError(this ValidationResult result, string message, string? propertyName = null)
     {
         result.Errors.Add(new ValidationFailure(propertyName ?? "", message));
+    }
+
+    public static void AddResult(this ValidationResult result, ValidationResult additionalResult)
+    {
+        result.Errors.AddRange(additionalResult.Errors);
     }
 }

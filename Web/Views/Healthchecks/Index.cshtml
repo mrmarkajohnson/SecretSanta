@@ -20,6 +20,7 @@
         <input type="hidden" asp-for="SafeMailFrom" />
         <input type="hidden" asp-for="SmtpHost" />
         <input type="hidden" asp-for="SmtpPort" />
+        <input type="hidden" asp-for="SafeTestMailAddress" />
     </div>
 
     <div class="row @CenterFlexNoWrapContainer">
@@ -87,6 +88,11 @@
                     <div class="mb-3">
                         <label asp-for="SmtpPort" class="control-label"></label>
                         <label class="control-label fw-normal">@Model.SmtpPort</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SafeTestMailAddress" class="control-label"></label>
+                        <label class="control-label fw-normal">@Model.SafeTestMailAddress</label>
                     </div>
 
                     <h2>Requests</h2>

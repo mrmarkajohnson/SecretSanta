@@ -1,5 +1,7 @@
 ﻿using Global.Abstractions.Areas.Account;
+using Global.Abstractions.Shared;
 using Global.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -186,5 +188,20 @@ public static class EncryptionHelper
         Buffer.BlockCopy(bytes, 0, result, start, count);
 
         return result;
+    }
+
+    public static string EncryptEmail(string unhashedEmail)
+    {
+        return TwoWayEncrypt(unhashedEmail, true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
+    }
+
+    public static string GetEmaiConfirmationId(string unhashedEmail, IIdentityUser identityUser)
+    {
+        return OneWayEncrypt(unhashedEmail + GetSymmetricEncryptionKey(), identityUser);
+    }
+
+    public static string DecryptEmail(string email)
+    {
+        return Decrypt(email.TrimEnd(IdentitySettings.StandardEmailEnd), true);
     }
 }

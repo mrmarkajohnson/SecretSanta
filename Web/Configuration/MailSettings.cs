@@ -9,4 +9,5 @@ internal class MailSettings : IMailSettings
     public bool UseSSL { get; set; }
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string TestAddress { get; set; } = string.Empty;
 }

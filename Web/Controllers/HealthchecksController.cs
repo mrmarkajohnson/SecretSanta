@@ -48,6 +48,7 @@ public class HealthchecksController : BaseController
         AddMailFrom(model);
         AddSmtpHost(model);
         AddSmtpPort(model);
+        AddTestAddress(model);
 
         await AddQueryResult(model);
     }
@@ -143,6 +144,11 @@ public class HealthchecksController : BaseController
     private void AddSmtpPort(HealthChecksVm model)
     {
         model.SmtpPort = _mailSettings.Port;
+    }
+
+    private void AddTestAddress(HealthChecksVm model)
+    {
+        model.SafeTestMailAddress = GetSafeConfigurationItem(ConfigurationSettings.EmailTestAddress);
     }
 
     private string GetSafeConfigurationItem(string configurationName)

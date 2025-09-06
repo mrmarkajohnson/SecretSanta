@@ -48,6 +48,13 @@ public static class ConfigurationExtensions
         {
             mailSettings.Password = password;
         }
+
+        string? testAddress = builder.Configuration[ConfigurationSettings.EmailTestAddress];
+
+        if (testAddress.IsNotEmpty())
+        {
+            mailSettings.TestAddress = testAddress;
+        }
     }
 
     //private static void Configure<TClass, TInterface>(this WebApplicationBuilder builder, string sectionName)

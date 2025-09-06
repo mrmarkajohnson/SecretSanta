@@ -24,7 +24,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
 
         var message = new SantaMessage
         {
-            HeaderText = "Test Email",
+            HeaderText = MessageSettings.TestEmailHeader,
             MessageText = "This is a test e-mail from Secret Santa.",
             ShowAsFromSanta = true
         };

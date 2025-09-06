@@ -5,7 +5,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Messages;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MimeKit;
 
 namespace Application.Shared.Requests;
@@ -16,10 +18,12 @@ internal class EmailClient : IEmailClient
     {
         _mailSettings = services.GetRequiredService<IMailSettings>();
         _mapper = services.GetRequiredService<IMapper>();
+        _hostEnvironment = services.GetRequiredService<IHostEnvironment>();
     }
 
     private readonly IMailSettings _mailSettings;
     private readonly IMapper _mapper;
+    private readonly IHostEnvironment _hostEnvironment;
 
     public ValidationResult SendMessage(Santa_Message dbMessage)
     {
@@ -98,8 +102,12 @@ internal class EmailClient : IEmailClient
         {
             var mimeMessage = new MimeMessage();
 
+            string toAddress = _hostEnvironment.IsProduction() || message.HeaderText == MessageSettings.TestEmailHeader
+                ? recipient.Email
+                : _mailSettings.TestAddress;
+
             mimeMessage.From.Add(new MailboxAddress(_mailSettings.FromName, _mailSettings.FromAddress));
-            mimeMessage.To.Add(new MailboxAddress(recipient.DisplayName(), recipient.Email));
+            mimeMessage.To.Add(new MailboxAddress(recipient.DisplayName(), toAddress));
             mimeMessage.Subject = message.HeaderText;
             mimeMessage.Body = new TextPart("html") { Text = messageText };
 
@@ -216,9 +224,12 @@ internal class EmailClient : IEmailClient
 
     public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null)
     {
-        url += (url.Contains("?") ? "&" : "?")
-            + $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
-            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+        if (recipient?.MessageKey > 0)
+        {
+            url += (url.Contains("?") ? "&" : "?") +
+                $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
+                $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+        }
 
         string quote = addQuotes ? "'" : "";
         return $"<a href=\"{url}\">{quote}{display}{quote}</a>";

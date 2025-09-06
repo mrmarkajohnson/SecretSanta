@@ -16,6 +16,7 @@ dotnet user-secrets set "MailSettings:FromAddress" "{desired-e-mail-address]" --
 dotnet user-secrets set "MailSettings:SmtpHost" "{desired-host-url]" --project "Data"
 dotnet user-secrets set "MailSettings:UserName" "{desired-email-username]" --project "Data"
 dotnet user-secrets set "MailSettings:Password" "{desired-email-password]" --project "Data"
+dotnet user-secrets set "MailSettings:TestAddress" "{desired-test-email-address]" --project "Data"
 
 2. If you don't want to use mssqllocaldb on local, run the following command in the PMC, replacing the curly brackets with the server name:
 
@@ -47,6 +48,7 @@ MailSettings:FromAddress
 MailSettings:SmtpHost
 MailSettings:UserName
 MailSettings:Password
+MailSettings:TestAddress
 
 5. Check any other settings in appsettings.json
 

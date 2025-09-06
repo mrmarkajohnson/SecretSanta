@@ -13,61 +13,14 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
         UserStore = userStore;
     }
 
-    private protected IUserEmailStore<IdentityUser> GetEmailStore()
-    {
-        if (!UserManager.SupportsUserEmail)
-        {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
-        }
-
-        return (IUserEmailStore<IdentityUser>)UserStore;
-    }
-
     private protected async Task SetUserName(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
     {
         await UserStore.SetUserNameAsync(dbGlobalUser, Item.UserName, CancellationToken.None);
     }
 
-    private protected async Task StoreEmailAddress(Global_User dbGlobalUser) // use this approach so it is thoroughly checked
+    private protected async Task StoreEmailAddress(Global_User dbGlobalUser, string? unhashedEmail) // use this approach so it is thoroughly checked
     {
-        if (Item.Email.IsNotEmpty())
-        {
-            try
-            {
-                await GetEmailStore().SetEmailAsync(dbGlobalUser, Item.Email, CancellationToken.None);
-            }
-            catch
-            {
-                try
-                {
-                    await UserManager.SetEmailAsync(dbGlobalUser, Item.Email);
-                }
-                catch
-                {
-                    string token = await UserManager.GenerateChangeEmailTokenAsync(dbGlobalUser, Item.Email);
-                    await UserManager.ChangeEmailAsync(dbGlobalUser, Item.Email, token);
-                }
-            }
-        }
-        else
-        {
-            dbGlobalUser.Email = null;
-        }
-    }
-
-    private protected string ReplaceHashedDetails(string message, string? originalUserName, string? originalEmail)
-    {
-        if (Item.UserName.IsNotEmpty())
-        {
-            message = message.Replace(Item.UserName, originalUserName);
-        }
-
-        if (Item.Email.IsNotEmpty())
-        {
-            message = message.Replace(Item.Email, originalEmail);
-        }
-
-        return message;
+        await StoreEmailAddress(dbGlobalUser, Item.Email, UserStore, unhashedEmail);
     }
 
     private protected void SetOtherNames(Global_User dbCurrentUser)

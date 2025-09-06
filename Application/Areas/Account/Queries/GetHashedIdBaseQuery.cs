@@ -17,7 +17,7 @@ internal class GetHashedIdBaseQuery<T> : BaseQuery<T> where T : HashedUser, new(
     {
         string? emailHash = string.IsNullOrWhiteSpace(IdentityUser.Email) ? null
             : IdentityUser.IdentificationHashed ? IdentityUser.Email
-            : EncryptionHelper.TwoWayEncrypt(IdentityUser.Email, true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
+            : EncryptionHelper.EncryptEmail(IdentityUser.Email);
 
         string? userNameHash = string.IsNullOrWhiteSpace(IdentityUser.UserName) ? emailHash
             : IdentityUser.IdentificationHashed ? IdentityUser.UserName

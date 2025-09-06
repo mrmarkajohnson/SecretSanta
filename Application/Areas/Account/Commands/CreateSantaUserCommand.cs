@@ -46,7 +46,7 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
         if (result.Succeeded)
         {
             await SetUserName(dbGlobalUser);
-            await StoreEmailAddress(dbGlobalUser);
+            await StoreEmailAddress(dbGlobalUser, originalEmail);
 
             Item.Password = string.Empty;
             await DbContext.SaveChangesAsync();

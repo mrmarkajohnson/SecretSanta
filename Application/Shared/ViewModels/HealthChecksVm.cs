@@ -38,6 +38,9 @@ public class HealthChecksVm : IFormVm
     [Display(Name = "E-mail SMTP Port")]
     public int? SmtpPort { get; set; }
 
+    [Display(Name = "E-mail Test Address")]
+    public string? SafeTestMailAddress { get; set; }
+
     [Display(Name = "Query Result")]
     public string? QueryResult { get; set; }
 

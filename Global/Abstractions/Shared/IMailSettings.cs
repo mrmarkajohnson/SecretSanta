@@ -9,4 +9,5 @@ public interface IMailSettings
     bool UseSSL { get; }
     string UserName { get; }
     string Password { get; }
+    string TestAddress { get; }
 }

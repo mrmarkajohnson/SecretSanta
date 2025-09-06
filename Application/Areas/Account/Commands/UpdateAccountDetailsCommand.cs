@@ -28,41 +28,16 @@ public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TIt
                 }
                 else
                 {
-                    string? originalUserName = Item.UserName;
-                    string? originalEmail = Item.Email;
-                    await Send(new HashUserIdentificationAction(Item));
+                    string? originalUserName = Item.UserName; // get this before it is hashed
+                    string? originalEmail = Item.Email; // ditto;
+                    await Send(new HashUserIdentificationAction(Item)); // now hash it
 
-                    if (Item.UserName != dbCurrentUser.UserName)
-                    {
-                        try
-                        {
-                            await SetUserName(dbCurrentUser);
-                        }
-                        catch (Exception ex)
-                        {
-                            string message = ex.Message;
-                            message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                            AddValidationError(nameof(Item.UserName), message);
-                        }
-                    }
-
-                    if (Item.Email != dbCurrentUser.Email)
-                    {
-                        try
-                        {
-                            await StoreEmailAddress(dbCurrentUser);
-                        }
-                        catch (Exception ex)
-                        {
-                            string message = ex.Message;
-                            message = ReplaceHashedDetails(message, originalUserName, originalEmail);
-                            AddValidationError(nameof(Item.Email), message);
-                        }
-                    }
+                    await HandleUserName(dbCurrentUser, originalUserName, originalEmail);
+                    await HandleEmailAddress(dbCurrentUser, originalUserName, originalEmail);
 
                     if (Validation.IsValid)
                     {
-                        dbCurrentUser.Forename = Item.Forename.Tidy();                        
+                        dbCurrentUser.Forename = Item.Forename.Tidy();
                         dbCurrentUser.Surname = Item.Surname.Tidy();
                         dbCurrentUser.Email = Item.Email.NullIfEmpty().Tidy(false);
                         dbCurrentUser.UserName = Item.UserName.NullIfEmpty().Tidy(false);
@@ -84,5 +59,39 @@ public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TIt
         }
 
         return await Result();
+    }
+
+    private async Task HandleUserName(Global_User dbCurrentUser, string? originalUserName, string? originalEmail)
+    {
+        if (Item.UserName != dbCurrentUser.UserName) // hashed version in both cases
+        {
+            try
+            {
+                await SetUserName(dbCurrentUser);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                message = ReplaceHashedDetails(message, originalUserName, originalEmail);
+                AddValidationError(nameof(Item.UserName), message);
+            }
+        }
+    }
+
+    private async Task HandleEmailAddress(Global_User dbCurrentUser, string? originalUserName, string? originalEmail)
+    {
+        if (Item.Email != dbCurrentUser.Email) // hashed version in both cases
+        {
+            try
+            {
+                await StoreEmailAddress(dbCurrentUser, originalEmail);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                message = ReplaceHashedDetails(message, originalUserName, originalEmail);
+                AddValidationError(nameof(Item.Email), message);
+            }
+        }
     }
 }

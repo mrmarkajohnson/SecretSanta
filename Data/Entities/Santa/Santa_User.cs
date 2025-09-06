@@ -1,9 +1,10 @@
 ﻿using Data.Entities.Shared;
+using Global.Abstractions.Shared;
 using Global.Settings;
 
 namespace Data.Entities.Santa;
 
-public class Santa_User : DeletableBaseEntity, IDeletableEntity
+public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferences
 {
     public Santa_User()
     {

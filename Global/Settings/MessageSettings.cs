@@ -6,9 +6,20 @@ public static class MessageSettings
 {
     public const string FromMessageParameter = "fromMessage";
     public const string FromRecipientParameter = "recipient";
+
     public static string? ViewMessageUrl => ConfigurationSettings.BaseUrl.IsNotEmpty()
         ? ConfigurationSettings.BaseUrl + "/Messages/Home/ViewMessages"
         : null;
+
+    public static string? ConfirmEmailUrl => ConfigurationSettings.BaseUrl.IsNotEmpty()
+        ? ConfigurationSettings.BaseUrl + "/Account/Manage/ConfirmEmail"
+        : null;
+
+    public static string? EmailPreferencesUrl => ConfigurationSettings.BaseUrl.IsNotEmpty()
+        ? ConfigurationSettings.BaseUrl + "/Account/Manage/ConfirmEmail"
+        : null;
+
+    public const string TestEmailHeader = "Test Email";
 
     public enum MessageRecipientType
     {
@@ -124,7 +135,10 @@ public static class MessageSettings
     public enum EmailPreference
     {
         None = 0,
+
+        [Display(Name = "Important Only")]
         ImportantOnly = 1,
+
         All = 2
     }
 }
