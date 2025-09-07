@@ -1,0 +1,8 @@
+﻿@using Web.Extensions
+@model string
+
+<div class="@CenterFlexNoWrapContainer">
+    <div class="alert alert-warning @StandardPageWidth p-2 mt-3 mb-4">
+        @Model.ToRawHtml()
+    </div>
+</div>

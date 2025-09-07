@@ -13,8 +13,10 @@ public sealed class GetEmailDetailsQuery : BaseQuery<IUserEmailDetails>
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
 
-        IUserEmailDetails preferences = new EmailDetails
+        IUserEmailDetails preferences = new UserEmailDetails
         {
+            Email = EncryptionHelper.DecryptEmail(dbCurrentSantaUser.GlobalUser.Email),
+            EmailConfirmed = dbCurrentSantaUser.GlobalUser.EmailConfirmed,
             ReceiveEmails = dbCurrentSantaUser.ReceiveEmails,
             DetailedEmails = dbCurrentSantaUser.DetailedEmails
         };

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Account.BaseModels;
 
-public class EmailDetails : HasEmailBase, IUserEmailDetails
+public class UserEmailDetails : HasEmailBase, IUserEmailDetails
 {
-    public bool EmailConfirmed { get; }
+    public bool EmailConfirmed { get; set; }
 
     [Display(Name = "Receive E-mails?")]
     public MessageSettings.EmailPreference ReceiveEmails { get; set; }
@@ -15,7 +15,7 @@ public class EmailDetails : HasEmailBase, IUserEmailDetails
     public bool DetailedEmails { get; set; }
 }
 
-public sealed class EmailDetailsValidator : AbstractValidator<EmailDetails>
+public sealed class EmailDetailsValidator : AbstractValidator<UserEmailDetails>
 {
     public EmailDetailsValidator()
     {

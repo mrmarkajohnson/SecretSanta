@@ -16,7 +16,7 @@ public static class MessageSettings
         : null;
 
     public static string? EmailPreferencesUrl => ConfigurationSettings.BaseUrl.IsNotEmpty()
-        ? ConfigurationSettings.BaseUrl + "/Account/Manage/ConfirmEmail"
+        ? ConfigurationSettings.BaseUrl + "/Account/Manage/EmailPreferences"
         : null;
 
     public enum MessageRecipientType

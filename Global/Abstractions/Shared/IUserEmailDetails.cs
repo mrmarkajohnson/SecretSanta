@@ -1,6 +1,5 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IUserEmailDetails : IEmailPreferences, IHasEmail
+public interface IUserEmailDetails : IEmailPreferences, IHasEmail, IHasEmailConfirmed
 {
-    bool EmailConfirmed { get; }
 }

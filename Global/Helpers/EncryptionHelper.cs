@@ -20,12 +20,12 @@ public static class EncryptionHelper
 
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    public static string OneWayEncrypt(string? value, IIdentityUser identityUser)
+    public static string OneWayEncrypt(string? value, IIdentityUser identityUser, bool alphanumericOnly = false)
     {
-        return OneWayEncrypt(value, identityUser.GlobalUserId);
+        return OneWayEncrypt(value, identityUser.GlobalUserId, alphanumericOnly);
     }
 
-    public static string OneWayEncrypt(string? value, string saltKey)
+    public static string OneWayEncrypt(string? value, string saltKey, bool alphanumericOnly = false)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -42,7 +42,7 @@ public static class EncryptionHelper
                 _hashAlgorithm,
                 _saltKeySize);
 
-            return Convert.ToBase64String(hash);
+            return ConvertToString(hash, alphanumericOnly);
         }
     }
 
@@ -54,7 +54,7 @@ public static class EncryptionHelper
         }
         else
         {
-            byte[] array;
+            byte[] hash;
 
             using (Aes aes = Aes.Create())
             {
@@ -73,19 +73,24 @@ public static class EncryptionHelper
                             streamWriter.Write(value);
                         }
 
-                        array = memoryStream.ToArray();
+                        hash = memoryStream.ToArray();
                     }
                 }
             }
 
-            if (alphanumericOnly)
-            {
-                return Convert.ToHexString(array);
-            }
-            else
-            {
-                return Convert.ToBase64String(array);
-            }
+            return ConvertToString(hash, alphanumericOnly);
+        }
+    }
+
+    private static string ConvertToString(byte[] array, bool alphanumericOnly)
+    {
+        if (alphanumericOnly)
+        {
+            return Convert.ToHexString(array);
+        }
+        else
+        {
+            return Convert.ToBase64String(array);
         }
     }
 
@@ -195,13 +200,13 @@ public static class EncryptionHelper
         return TwoWayEncrypt(unhashedEmail, true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
     }
 
-    public static string GetEmaiConfirmationId(string unhashedEmail, IIdentityUser identityUser)
+    public static string GetEmailConfirmationId(string unhashedEmail, IIdentityUser identityUser)
     {
-        return OneWayEncrypt(unhashedEmail + GetSymmetricEncryptionKey(), identityUser);
+        return OneWayEncrypt(unhashedEmail + GetSymmetricEncryptionKey(), identityUser, true); // alphanumeric to avoid issues when sent by e-mail
     }
 
-    public static string DecryptEmail(string email)
+    public static string DecryptEmail(string? email)
     {
-        return Decrypt(email.TrimEnd(IdentitySettings.StandardEmailEnd), true);
+        return email.IsNotEmpty() ? Decrypt(email.TrimEnd(IdentitySettings.StandardEmailEnd), true) : string.Empty;
     }
 }

@@ -224,28 +224,44 @@ public sealed class ManageController : BaseController
         return await RedirectIfLockedOut("ChangePassword", model);
     }
 
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> SendEmailConfirmation()
+    {
+        await Send(new SendEmailConfirmationCommand(), null);
+        return Ok();
+    }
+
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> ConfirmEmail(string id)
     {
-        await Send(new ConfirmEmailCommand(id), null);
-        return RedirectWithMessage(Url.Action(nameof(EmailPreferences)), $"{UserDisplayNames.Email} confirmed successfully.");
+        try
+        {
+            await Send(new ConfirmEmailCommand(id), null);
+            return RedirectWithMessage(Url.Action(nameof(EmailPreferences)), $"{UserDisplayNames.Email} confirmed successfully.");
+        }
+        catch (ArgumentException ex)
+        {
+            return AccessDenied(ex.Message);
+        }
     }
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> EmailPreferences()
     {
-        var model = await Send(new GetEmailDetailsQuery());
+        var emailDetails = await Send(new GetEmailDetailsQuery());
+        var model = Mapper.Map<EmailPreferencesVm>(emailDetails);
         return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EmailPreferences(EmailDetails model)
+    public async Task<IActionResult> EmailPreferences(EmailPreferencesVm model)
     {
         ModelState.Clear();
         
-        await Send(new SetEmailPreferencesCommand<EmailDetails>(model, _userStore), new EmailDetailsValidator());
+        await Send(new SetEmailPreferencesCommand<UserEmailDetails>(model, _userStore), new EmailDetailsValidator());
         return View(model);
     }
 }

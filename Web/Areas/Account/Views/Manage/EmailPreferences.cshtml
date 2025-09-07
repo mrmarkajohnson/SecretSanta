@@ -1,11 +1,10 @@
-﻿@using Application.Areas.Messages.BaseModels
-@using static Global.Settings.MessageSettings
+﻿@using static Global.Settings.MessageSettings
 
-@model EmailDetails
+@model EmailPreferencesVm
 @{
     ViewData["Title"] = "E-mail Preferences";
     string receiveExplanation = "Choose whether you receive any e-mails at all, and if so, only ones marked as 'important' by the sender or system.";
-    string detailedExplanation = "If ticked, your e-mails will contain the full message. If not, they will just have a link to it.<br><br>" + 
+    string detailedExplanation = "If ticked, your e-mails will contain the full message. If not, they will just have a link to it.<br><br>" +
         "The link-only option is useful if you share an e-mail address, or other people can acces your e-mails.";
 }
 
@@ -15,12 +14,16 @@
     <form asp-area="Account" asp-controller="Manage" asp-action="SetEmailPreferences" method="post">
         <partial name="_FormHiddenInputs" />
 
+        <div class="collapse">
+            <input type="hidden" asp-for="EmailConfirmed" />
+        </div>
 
         <div class="row @CenterFlexNoWrapContainer">
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
 
                 <p>Here you can choose whether/when to receive e-mails, and what they contain.</p>
 
+                <partial name="_ConfirmEmailWarning" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
                 <div class="@CenterFlexWrapContainer">
@@ -29,20 +32,19 @@
                         <div class="mb-3">
                             <label asp-for="Email" class="control-label"></label>
                             <input asp-for="Email" class="form-control email-input" autocomplete="email" aria-required="false"
-                                    placeholder="name@example.com (optional)" />
-                            <div>
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
+                                   placeholder="name@example.com (optional)" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="w-100 d-flex align-items-center justify-content-between">
-                                <label asp-for="ReceiveEmails" class="control-label required"></label>
-                                <div class="control-label fw-normal">
-                                    
-                                    @foreach (EmailPreference option in Enum.GetValues<EmailPreference>())
-                                    {
-                                        <span class="text">option.GetDisplayName()</span>
+                            
+                        <label asp-for="ReceiveEmails" class="control-label required"></label>
+                            <div class="d-flex align-items-center justify-content-between">
+
+                                @foreach (EmailPreference option in Enum.GetValues<EmailPreference>())
+                                {
+                                    <div class="control-label fw-normal">
+                                        <span class="text">@option.DisplayName()</span>
                                         <input type="radio" asp-for="ReceiveEmails" class="form-check-input receive-option" autocomplete="off" aria-required="false"
                                                value="@option" />
                                         <span>
@@ -51,30 +53,28 @@
                                             &nbsp;
                                             &nbsp;
                                         </span>
-                                    }
+                                    </div>
+                                }
 
-                                    <partial name="_InlineQuestion" model="@receiveExplanation" />
-                                </div>
-                            </label>
+                                <partial name="_InlineQuestion" model="@receiveExplanation" />
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="w-100 d-flex align-items-center justify-content-between">
-                                <label asp-for="DetailedEmails" class="control-label required"></label>
-                                <div class="input-group input-info">
-                                    <div class="control-label fw-normal mt-1">
-                                        <input type="checkbox" asp-for="DetailedEmails" class="form-check-input"
-                                               autocomplete="off" aria-required="false" /> &nbsp; Yes
+                            <label asp-for="DetailedEmails" class="control-label required"></label>
+                            <div class="input-group input-info">
+                                <div class="control-label fw-normal mt-1">
+                                    <input type="checkbox" asp-for="DetailedEmails" class="form-check-input"
+                                           autocomplete="off" aria-required="false" /> &nbsp; Yes
 
-                                        &nbsp;
-                                        &nbsp;
-                                        &nbsp;
-                                        &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
 
-                                        <partial name="_FormInlineQuestion" model="@detailedExplanation" />
-                                    </div>
+                                    <partial name="_FormInlineQuestion" model="@detailedExplanation" />
                                 </div>
-                            </label>
+                            </div>
                         </div>
 
                     </div>

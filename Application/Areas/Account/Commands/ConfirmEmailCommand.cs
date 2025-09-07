@@ -16,7 +16,7 @@ public class ConfirmEmailCommand : BaseCommand<string>
             throw new ArgumentException($"Cannot confirm {UserDisplayNames.Email}, as it is empty.");
 
         string unhashedEmail = EncryptionHelper.DecryptEmail(dbCurrentUser.Email);
-        string expectedConfirmationId = EncryptionHelper.GetEmaiConfirmationId(unhashedEmail, dbCurrentUser);
+        string expectedConfirmationId = EncryptionHelper.GetEmailConfirmationId(unhashedEmail, dbCurrentUser);
 
         if (Item != expectedConfirmationId)
             throw new ArgumentException($"Cannot confirm {UserDisplayNames.Email}, as the key does not match. Please check the URL in the confirmation e-mail.");

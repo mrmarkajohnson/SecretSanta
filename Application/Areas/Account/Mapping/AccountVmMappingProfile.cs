@@ -21,5 +21,7 @@ public sealed class AccountVmMappingProfile : Profile
         CreateMap<ISantaUser, UpdateDetailsVm>()
             .ForMember(dest => dest.CurrentPassword, opt => opt.Ignore())
             .ForMember(dest => dest.Greeting, opt => opt.Ignore());
+
+        CreateMap<IUserEmailDetails, EmailPreferencesVm>();
     }
 }

@@ -5,7 +5,7 @@ using Global.Validation;
 
 namespace Global.Abstractions.Shared;
 
-public interface IGlobalUser : IIdentityUser, IUserAllNames
+public interface IGlobalUser : IIdentityUser, IUserAllNames, IHasEmailConfirmed
 {
     bool SecurityQuestionsSet { get; }
     bool SystemAdmin { get; }

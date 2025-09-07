@@ -57,6 +57,8 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
                 }
             }
 
+            return; // TODO: Remove this once e-mails are safe to send
+            
             unhashedEmail ??= EncryptionHelper.DecryptEmail(hashedEmail);
             SendEmailConfirmation(dbGlobalUser, unhashedEmail);
         }
@@ -91,7 +93,7 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
         if (string.IsNullOrWhiteSpace(MessageSettings.ConfirmEmailUrl))
             throw new NotFoundException("The e-mail confirmation URL has not been set.");
 
-        string confirmationId = EncryptionHelper.GetEmaiConfirmationId(unhashedEmail, dbGlobalUser);
+        string confirmationId = EncryptionHelper.GetEmailConfirmationId(unhashedEmail, dbGlobalUser);
         string? confirmUrl = $"{MessageSettings.ConfirmEmailUrl}?id={confirmationId}";
 
         string messageText = $"Please {MessageLink(confirmUrl, "click here", false)} to confirm your e-mail address " +
