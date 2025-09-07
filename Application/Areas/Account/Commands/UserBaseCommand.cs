@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Areas.Messages.ViewModels;
 using Application.Shared.Requests;
 using FluentValidation;
 using Global.Abstractions.Areas.Account;
@@ -94,11 +93,13 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
 
         string confirmationId = EncryptionHelper.GetEmaiConfirmationId(unhashedEmail, dbGlobalUser);
         string? confirmUrl = $"{MessageSettings.ConfirmEmailUrl}?id={confirmationId}";
-        string messageText = $"Please {MessageLink(confirmUrl, "click here", false)} to confirm your e-mail address.";
+
+        string messageText = $"Please {MessageLink(confirmUrl, "click here", false)} to confirm your e-mail address " +
+            $"and set your e-mail preferences.";
 
         var message = new SantaMessage
         {
-            HeaderText = "Please confirm your e-mail address",
+            HeaderText = StandardPhrases.ConfirmationEmailHeader,
             MessageText = messageText,
             ShowAsFromSanta = true
         };

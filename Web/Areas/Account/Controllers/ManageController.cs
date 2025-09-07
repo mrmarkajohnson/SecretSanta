@@ -228,31 +228,14 @@ public sealed class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> ConfirmEmail(string id)
     {
-        await ConfirmEmailAddress(id);
-        return RedirectWithMessage(Url.Action(nameof(EmailPreferences)), $"{UserDisplayNames.Email} confirmed successfully.");
-    }
-
-    private async Task ConfirmEmailAddress(string id)
-    {
         await Send(new ConfirmEmailCommand(id), null);
+        return RedirectWithMessage(Url.Action(nameof(EmailPreferences)), $"{UserDisplayNames.Email} confirmed successfully.");
     }
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> EmailPreferences(string? id = null)
+    public async Task<IActionResult> EmailPreferences()
     {
-        if (id != null)
-        {
-            try
-            {
-                await ConfirmEmailAddress(id);
-            }
-            catch
-            {
-                // just continue
-            }
-        }
-        
         var model = await Send(new GetEmailDetailsQuery());
         return View(model);
     }

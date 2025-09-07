@@ -1,10 +1,10 @@
 ALL ENVIRONMENTS
 
 1. Edit IdentitySettings and change SymmetricKeyStart (so that it's unique)
-2. Follow the steps below for the relevant environment
+2. Follow the steps below for the relevant environment - see ConfigurationSettings for explanations of the settings
 3. Run the application and register yourself, so that you become the system admin (the first user registered is the initial sysadmin)
 
-DEVELOPMENT/TEST
+LOCAL
 
 1. Run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
 (NB: DO NOT change the symmetric key end once used!):
@@ -28,7 +28,7 @@ Update-Database -project "Data"
 
 4. See 'Migrations.txt' in the Data project for any other migrations
 
-LIVE
+LIVE/TEST
 
 1. Create the database with name "SecretSanta", and make a secure note of the userID and password needed to connect
 
@@ -48,7 +48,7 @@ MailSettings:FromAddress
 MailSettings:SmtpHost
 MailSettings:UserName
 MailSettings:Password
-MailSettings:TestAddress
+MailSettings:TestAddress (for non-production, any e-mails will go to this address, except when using the e-mail test harness)
 
 5. Check any other settings in appsettings.json
 
@@ -58,4 +58,4 @@ Script-Migration
 
 7. Copy the output, remove any insert or update statements, and run it in the database
 
-* Depending on the environment, use a key vault or whatever tools are available to protect the credentials
+* Depending on the environment, use a key vault, web.Release.config (for Web Deploy), or whatever secure tools are available

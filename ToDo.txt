@@ -1,8 +1,6 @@
 IMMEDIATE
-Front end for e-mail preferences
-Add e-mail preferences to e-mails, with a link to change them
-Confirm e-mail - which opens the front end for preferences
-Remove confirmation status and re-confirm when e-mail changes
+Finish front end for e-mail preferences - handle lack of e-mail confirmation
+Add warning on main page (and some others?) if e-mail not confirmed yet, with resend link
 
 Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?

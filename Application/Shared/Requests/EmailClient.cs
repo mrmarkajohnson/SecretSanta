@@ -30,7 +30,7 @@ internal class EmailClient : IEmailClient
         if (!dbMessage.Recipients.Any())
         {
             var result = new ValidationResult();
-            result.AddError($"No recipients were found.");
+            result.AddError("No recipients were found.");
             return result;
         }
 
@@ -56,7 +56,7 @@ internal class EmailClient : IEmailClient
 
         if (!validRecipients.Any())
         {
-            result.AddWarning($"No valid recipients were found.");
+            result.AddWarning("No valid recipients were found.");
             return result;
         }
 
@@ -100,9 +100,12 @@ internal class EmailClient : IEmailClient
 
         try
         {
+            if (recipient.Email == null)
+                return; // for the compiler, should be caught earlier
+
             var mimeMessage = new MimeMessage();
 
-            string toAddress = _hostEnvironment.IsProduction() || message.HeaderText == MessageSettings.TestEmailHeader
+            string toAddress = (_hostEnvironment.IsProduction() || message.HeaderText == StandardPhrases.TestEmailHeader)
                 ? recipient.Email
                 : _mailSettings.TestAddress;
 
@@ -112,7 +115,6 @@ internal class EmailClient : IEmailClient
             mimeMessage.Body = new TextPart("html") { Text = messageText };
 
             client.Send(mimeMessage);
-            return;
         }
         catch (Exception ex)
         {
@@ -168,26 +170,35 @@ internal class EmailClient : IEmailClient
         string messageText = $"Dear {recipient.DisplayFirstName()},<br/><br/>" +
             $"You have a message from {messageFrom}";
 
+        if (message.HeaderText == StandardPhrases.ConfirmationEmailHeader)
+            return $"{messageText}:<br/><br/><i>{message.MessageText}</i>";
+
         if (!recipient.DetailedEmails)
         {
-            messageText = ".";
-
-            if (viewMessageUrl.IsNotEmpty()) // just in case!
-            {
-                messageText += $".<br/><br/> Please {MessageLink(viewMessageUrl, "click here", false, recipient)} to view the message.";
-            }
+            messageText += ".";
+            AddViewDetails(ref messageText, recipient, viewMessageUrl);
+            AddEmailPreferencesFooter(ref messageText);
 
             return messageText;
         }
 
-        messageText += ":<br/><br/><i>" + message.MessageText + $"</i><br/><br/>";
-        messageText = AddViewAndReplyDetails(message, recipient, viewMessageUrl, messageText);
-        messageText = ReplaceEmptyKeys(recipient, messageText);
+        messageText += $":<br/><br/><i>{message.MessageText}</i><br/><br/>";
+        AddViewAndReplyDetails(ref messageText, message, recipient, viewMessageUrl);
+        ReplaceEmptyFromMessageKeys(ref messageText, recipient);
+        AddEmailPreferencesFooter(ref messageText);
 
         return messageText;
     }
 
-    private string AddViewAndReplyDetails(ISantaMessage message, IEmailRecipient recipient, string? viewMessageUrl, string messageText)
+    private void AddViewDetails(ref string messageText, IEmailRecipient recipient, string? viewMessageUrl)
+    {
+        if (viewMessageUrl.IsNotEmpty()) // just in case!
+        {
+            messageText += $"<br/><br/>Please {MessageLink(viewMessageUrl, "click here", false, recipient)} to view the message.";
+        }
+    }
+
+    private void AddViewAndReplyDetails(ref string messageText, ISantaMessage message, IEmailRecipient recipient, string? viewMessageUrl)
     {
         if (message.CanReply)
         {
@@ -206,10 +217,21 @@ internal class EmailClient : IEmailClient
                 $"to report an issue or abuse.";            
         }
         */
-        return messageText;
     }
 
-    private static string ReplaceEmptyKeys(IEmailRecipient recipient, string messageText)
+    private void AddEmailPreferencesFooter(ref string messageText)
+    {
+        if (MessageSettings.EmailPreferencesUrl.IsNotEmpty())
+        {
+            messageText += $"<br/><br/><small>You are receiving this message as a user of the Secret Santa system. " +
+                $"To change your e-mail preferences, {MessageLink(MessageSettings.EmailPreferencesUrl, "click here", false)}.</small>";
+        }
+    }
+
+    /// <summary>
+    /// Ensure any addition to the URL (added before saving) to mark the message as read has the message and receipient keys
+    /// </summary>
+    private static void ReplaceEmptyFromMessageKeys(ref string messageText, IEmailRecipient recipient)
     {
         string fromMessage = $"{MessageSettings.FromMessageParameter}={recipient.MessageKey}";
         string fromRecipient = $"{MessageSettings.FromRecipientParameter}={recipient.MessageRecipientKey}";
@@ -219,16 +241,15 @@ internal class EmailClient : IEmailClient
             .Replace($"{MessageSettings.FromMessageParameter}=0", fromMessage)
             .Replace($"{MessageSettings.FromRecipientParameter}=null", fromRecipient)
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
-        return messageText;
     }
 
     public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null)
     {
         if (recipient?.MessageKey > 0)
         {
-            url += (url.Contains("?") ? "&" : "?") +
+            url += UrlHelper.ParameterDelimiter(url) +
                 $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
-                $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+                $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}"; // add message IDs to mark the message as read
         }
 
         string quote = addQuotes ? "'" : "";

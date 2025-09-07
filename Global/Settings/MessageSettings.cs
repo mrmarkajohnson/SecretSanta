@@ -19,8 +19,6 @@ public static class MessageSettings
         ? ConfigurationSettings.BaseUrl + "/Account/Manage/ConfirmEmail"
         : null;
 
-    public const string TestEmailHeader = "Test Email";
-
     public enum MessageRecipientType
     {
         /// <summary>

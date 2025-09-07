@@ -9,6 +9,7 @@ using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
 using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
+using Global.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Web.Helpers;
 
@@ -67,7 +68,7 @@ public class BaseController : Controller
             url = url.TrimEnd("Controller") + "/Index";
         }
 
-        string addQuery = url.Contains("?") ? "&" : "?";
+        string addQuery = UrlHelper.ParameterDelimiter(url);
         return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
     }
 

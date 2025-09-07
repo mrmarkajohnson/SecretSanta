@@ -13,6 +13,9 @@ public static class StandardPhrases
 
     public const string EmailVisibleExplanation = $"users who view your details can see your {UserDisplayNames.EmailLower}";
 
+    public const string TestEmailHeader = "Test Email";
+    public const string ConfirmationEmailHeader = $"Please confirm your {UserDisplayNames.EmailLower}";
+
     /// <summary>
     /// For select tags that may start empty
     /// </summary>
