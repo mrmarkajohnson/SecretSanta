@@ -51,7 +51,7 @@ public sealed class HomeController : BaseController
 
             if (result.Succeeded)
             {
-                return RedirectWithMessage(model, "Logged In Successfully");
+                return RedirectWithMessage(model, "Logged in successfully.");
             }
             //if (result.RequiresTwoFactor)
             //{
@@ -107,7 +107,7 @@ public sealed class HomeController : BaseController
 
         if (commandResult.Success && model.PasswordResetSuccessfully)
         {
-            return RedirectWithMessage(model, "Password Reset Successfully");
+            return RedirectWithMessage(model, "Password reset successfully.");
         }
 
         return await RedirectIfLockedOut("ForgotPassword", model);

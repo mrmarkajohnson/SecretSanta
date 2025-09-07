@@ -31,7 +31,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
 
         var recipient = new EmailRecipient
         {
-            Forename = "Test",
+            Forename = "Test Recipient",
             Surname="Recipient",
             Email = Item.RecipientEmailAddress,
             IdentificationHashed = false,

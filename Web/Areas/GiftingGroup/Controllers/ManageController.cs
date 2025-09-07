@@ -61,13 +61,13 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
 
-        string saved = model.GiftingGroupKey > 0 ? "Updated" : "Created";
+        string saved = model.GiftingGroupKey > 0 ? "updated" : "created";
 
         var commandResult = await Send(new SaveGiftingGroupCommand<EditGiftingGroupVm>(model), new EditGiftingGroupVmValidator());
 
         if (commandResult.Success)
         {
-            return RedirectWithMessage(model, $"Gifting Group {saved} Successfully");
+            return RedirectWithMessage(model, $"Gifting group {saved} successfully");
         }
 
         model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create";
@@ -181,8 +181,8 @@ public sealed class ManageController : BaseController
                 model.ReturnUrl = string.Empty;
             }
 
-            string processed = model.Accepted ? "Accepted" : "Rejected";
-            return RedirectWithMessage(model, $"Application {processed} Successfully");
+            string processed = model.Accepted ? "accepted" : "rejected";
+            return RedirectWithMessage(model, $"Application {processed} successfully.");
         }
 
         return View(model);
@@ -210,7 +210,7 @@ public sealed class ManageController : BaseController
 
         if (commandResult.Success)
         {
-            return RedirectWithMessage(model, $"Saved Successfully");
+            return RedirectWithMessage(model, $"Saved successfully");
         }
 
         return View(model);
