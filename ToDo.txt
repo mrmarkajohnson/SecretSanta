@@ -1,11 +1,12 @@
 IMMEDIATE
-Finish front end for e-mail preferences - handle lack of e-mail confirmation
-Add warning on main page (and some others?) if e-mail not confirmed yet, with resend link
+Finish front end for e-mail preferences - make it reactive to whether the e-mail address can be used yet
+Advise users when a confirmation e-mail has been sent?
+Add warning on main page if e-mail not confirmed yet, with resend link
 
 Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?
 Add bug reporting
-Add e-mails
+Add reporting abuse
 
 GENERAL
 Handle index pages etc. in bundles/routing

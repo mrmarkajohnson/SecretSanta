@@ -29,14 +29,14 @@ public sealed class JoinGiftingGroupVm : BaseFormVm, IJoinGiftingGroup
 
     public override string SubmitButtonText { get; set; } = "Join";
     public override string SubmitButtonIcon { get; set; } = "fa-handshake";
+}
 
-    public sealed class JoinGiftingGroupVmValidator : AbstractValidator<JoinGiftingGroupVm>
+public sealed class JoinGiftingGroupVmValidator : AbstractValidator<JoinGiftingGroupVm>
+{
+    public JoinGiftingGroupVmValidator()
     {
-        public JoinGiftingGroupVmValidator()
-        {
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.JoinerToken).NotEmpty();
-            RuleFor(x => x.Message).MaximumLength(GiftingGroupVal.JoinerMessage.MaxLength);
-        }
+        RuleFor(x => x.Name).NotEmpty();
+        RuleFor(x => x.JoinerToken).NotEmpty();
+        RuleFor(x => x.Message).MaximumLength(GiftingGroupVal.JoinerMessage.MaxLength);
     }
 }

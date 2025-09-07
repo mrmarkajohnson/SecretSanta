@@ -4,8 +4,6 @@ using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Microsoft.AspNetCore.Authorization;
-using Account = Web.Areas.Account.Controllers;
-using static Application.Areas.GiftingGroup.ViewModels.JoinGiftingGroupVm;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
@@ -105,7 +103,7 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken] // this has some problems due to using GetGroupDetailsForJoiner with submitFormViaFetch
     public async Task<IActionResult> JoinGiftingGroup(JoinGiftingGroupVm model)
     {
         ModelState.Clear();
