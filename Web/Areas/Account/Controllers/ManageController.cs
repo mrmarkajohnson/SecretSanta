@@ -119,7 +119,7 @@ public sealed class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return RedirectWithMessage(model, "Security Questions Set Successfully");
+                return RedirectWithMessage(model, "Security questions set successfully.");
             }
         }
 
@@ -165,7 +165,7 @@ public sealed class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return RedirectWithMessage(model, "Details Updated Successfully");
+                return RedirectWithMessage(model, "Details updated successfully.");
             }
         }
 
@@ -217,7 +217,7 @@ public sealed class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return RedirectWithMessage(model, "Details Updated Successfully");
+                return RedirectWithMessage(model, "Password changed successfully.");
             }
         }
 
@@ -229,7 +229,7 @@ public sealed class ManageController : BaseController
     public async Task<IActionResult> SendEmailConfirmation()
     {
         await Send(new SendEmailConfirmationCommand(), null);
-        return Ok();
+        return Ok("Confirmation request sent successfully.");
     }
 
     [HttpGet]
