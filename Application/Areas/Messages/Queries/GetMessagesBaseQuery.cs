@@ -87,7 +87,8 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     {
         IEnumerable<Santa_User> dbPossibleRecipients = recipientType switch // may include the current user, who is removed below
         {
-            MessageRecipientType.SystemAdmins => [], // TODO: Add System Admins once they exist
+            MessageRecipientType.SystemAdmins 
+                => GetSystemAdmins(dbSender),
             MessageRecipientType.GroupAdmins
                 => GetGroupAdmins(dbSender, dbGiftingGroupYear),
             MessageRecipientType.GiftRecipient
@@ -123,6 +124,11 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     {
         return GetPossibleRecipients(dbMessage.GiftingGroupYear, dbMessage.Sender, dbMessage.ReplyToMessage?.MessageKey,
             dbMessage.RecipientType, dbMessage.Recipients.FirstOrDefault()?.RecipientSantaUserKey, false);
+    }
+
+    private IEnumerable<Santa_User> GetSystemAdmins(Santa_User dbSender)
+    {
+        return DbContext.Santa_Users.Where(x => x.SantaUserKey != dbSender.SantaUserKey && x.GlobalUser.SystemAdmin);
     }
 
     private static IEnumerable<Santa_User> GetGroupAdmins(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
