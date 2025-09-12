@@ -2,11 +2,13 @@
 using Data.Entities.Santa;
 using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Shared;
+using Global.Settings;
 using Global.Validation;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Global.Settings.GlobalSettings;
 using static Global.Settings.IdentitySettings;
+using static Global.Settings.MessageSettings;
 
 namespace Data.Entities.Shared;
 
@@ -14,7 +16,7 @@ namespace Data.Entities.Shared;
 /// Allows expansion using the same database and users
 /// </summary>
 [Table("Global_User")]
-public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions,
+public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestions, IUserEmailDetails,
     IAuditableEntity<Global_User_Audit, Global_User_AuditChange>
 {
     public Global_User()
@@ -73,7 +75,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
 
     public virtual ICollection<Global_User_Audit> AuditTrail { get; set; }
 
-    #region For the IGlobalUser interface
+    #region For interfaces
 
     [NotMapped, NotAudited]
     public bool IdentificationHashed // can't use explicit implemention as it doesn't map correctly, and it must have a setter
@@ -95,13 +97,16 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
         set { }
     }
 
-    #endregion For the IGlobalUser interface
+    [NotMapped, NotAudited]
+    string IUserAllNames.UserDisplayName => this.DisplayName(false);
+
+    EmailPreference IEmailPreferences.ReceiveEmails => SantaUser?.ReceiveEmails ?? EmailPreference.None;
+    bool IEmailPreferences.DetailedEmails => SantaUser?.DetailedEmails == true;
+
+    #endregion For interfaces
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
     {
         this.AddNewAuditEntry<Global_User, Global_User_Audit, Global_User_AuditChange>(auditTrail, changes);
     }
-
-    [NotMapped, NotAudited]
-    string IUserAllNames.UserDisplayName => this.DisplayName(false);
 }
