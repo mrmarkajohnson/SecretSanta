@@ -1,7 +1,5 @@
 IMMEDIATE
-Finish front end for e-mail preferences - make it reactive to whether the e-mail address can be used yet
 Advise users when a confirmation e-mail has been sent?
-Add warning on main page if e-mail not confirmed yet, with resend link
 
 Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?
@@ -9,10 +7,9 @@ Add bug reporting
 Add reporting abuse
 
 GENERAL
-Handle index pages etc. in bundles/routing
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
+Handle index pages etc. in bundles/routing
 Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
-Add testing and production configuration
 Add back buttons to relevant pages?
 Add more auditing and make audit trails visible
 Ensure all deletions and archives are handled

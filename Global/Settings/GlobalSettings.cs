@@ -43,4 +43,5 @@ public static class GlobalSettings
     public const string StandardFormGroup = $"form-group-ib {StandardGroupWidth} mb-3";
     public const string StandardFullWidthGridContainer = "ps-4 pe-4 col-12 col-lg-11 mb-2";
     public const string StandardCardWidth = "col-12 col-md-6 col-lg-4";
+    public const string StandardAlertWidth = "col-xl-9 col-lg-10 col-md-11 col-12";
 }

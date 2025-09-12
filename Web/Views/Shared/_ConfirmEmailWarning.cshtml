@@ -3,11 +3,16 @@
 
 @model IHasEmailConfirmed
 
+<div class="collapse">
+    <input type="hidden" asp-for="EmailConfirmed" />
+</div>
+
 @if (!Model.EmailConfirmed && Model.Email.IsNotEmpty())
 {
-    string emailNotConfirmed = $"<p>Your {UserDisplayNames.EmailLower} has not yet been confirmed. " +
-        "Please check your inbox and any spam/junk folders for an e-mail confirmation request.</p>"
-        + $"<p><a href=\"javascript:void(0);\" class=\"background-link\" data-url=\"{Url.Action(Context, "SendEmailConfirmation", "Manage", "Account")}\">Resend request</a></p>";
+    string emailNotConfirmed = $"<p>Your {UserDisplayNames.EmailLower} has not yet been confirmed. "
+        + "Please check your inbox and any spam/junk folders for an e-mail confirmation request.</p>"
+        + "<p>You won't receive any e-mails until it is confirmed. " 
+        + $"<a href=\"javascript:void(0);\" class=\"background-link\" data-url=\"{Url.Action(Context, "SendEmailConfirmation", "Manage", "Account")}\">Resend request</a></p>";
 
     <partial name="_PageWarning" model="@emailNotConfirmed" />
 }

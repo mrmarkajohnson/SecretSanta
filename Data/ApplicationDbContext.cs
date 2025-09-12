@@ -142,8 +142,6 @@ public class ApplicationDbContext : IdentityDbContext
 
     private void SendMessages()
     {
-        return; // TODO: Remove this once e-mails are safe to send
-        
         MessagesToSend ??= new();
 
         if (EmailClient == null)

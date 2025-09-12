@@ -56,8 +56,6 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
                     await UserManager.ChangeEmailAsync(dbGlobalUser, hashedEmail, token);
                 }
             }
-
-            return; // TODO: Remove this once e-mails are safe to send
             
             unhashedEmail ??= EncryptionHelper.DecryptEmail(hashedEmail);
             SendEmailConfirmation(dbGlobalUser, unhashedEmail);

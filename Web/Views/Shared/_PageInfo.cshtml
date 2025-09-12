@@ -3,7 +3,7 @@
 @model string
 @{
     string text = Model;
-    string icon = "<i class=\"fa fa-triangle-exclamation\" style=\"color: #ff8833\"></i> &nbsp; &nbsp;";
+    string icon = "<i class=\"fa fa-lightbulb\" style=\"color: gold\"></i> &nbsp; &nbsp;";
 
     if (text.StartsWith("<p"))
     {
@@ -16,7 +16,7 @@
 }
 
 <div class="col-12">
-    <div class="alert alert-warning p-2 mt-3 mb-2">
+    <div class="alert alert-info p-2 mt-3 mb-2">
         @text.ToRawHtml()
     </div>
 </div>

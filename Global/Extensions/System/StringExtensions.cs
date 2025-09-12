@@ -112,4 +112,21 @@ public static class StringExtensions
 
         return false;
     }
+
+    public static string ReplaceFirst(this string? text, string find, string replace = "")
+    {
+        if (text == null)
+            return text ?? "";
+        
+        int index = text.IndexOf(find);
+
+        if (index >= 0)
+        {
+            return text[..index] + replace + text[(index + find.Length)..];
+        }
+        else
+        {
+            return text;
+        }            
+    }
 }
