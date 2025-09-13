@@ -21,25 +21,41 @@ public class BaseActionFilter : IAsyncActionFilter
 
     private static async Task MarkMessageRead(ActionExecutingContext context, BaseController myController)
     {
-        var actionArguments = context.ActionArguments;
-
-        if (actionArguments.ContainsKey(MessageSettings.FromMessageParameter)
-            && actionArguments.ContainsKey(MessageSettings.FromRecipientParameter))
+        try
         {
-            try
-            {
-                int? messageKey = (int?)actionArguments[MessageSettings.FromMessageParameter];
-                int? recipientKey = (int?)actionArguments[MessageSettings.FromRecipientParameter];
+            int? messageKey = GetIntegerParameter(context, MessageSettings.FromMessageParameter);
 
-                if (messageKey > 0 && recipientKey > 0)
-                {
-                    await myController.MarkMessageRead(messageKey.Value, recipientKey);
-                }
-            }
-            catch
+            if (messageKey > 0)
             {
-                // just continue
+                int? recipientKey = GetIntegerParameter(context, MessageSettings.FromRecipientParameter);
+                await myController.MarkMessageRead(messageKey.Value, recipientKey);
             }
         }
+        catch { }
+    }
+
+    private static int? GetIntegerParameter(ActionExecutingContext context, string parameter)
+    {
+        try
+        {
+            if (context.HttpContext.Request.Query.ContainsKey(parameter))
+            {
+                if (int.TryParse(context.HttpContext.Request.Query[parameter].ElementAtOrDefault(0), out int result))
+                    return result;
+            }
+        }
+        catch { }
+
+        try
+        {
+            if (context.ActionArguments.ContainsKey(parameter))
+            {
+                if (int.TryParse(context.ActionArguments[parameter]?.ToString(), out int result))
+                    return result;
+            }
+        }
+        catch { }
+
+        return null;
     }
 }

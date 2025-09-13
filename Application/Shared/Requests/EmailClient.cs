@@ -247,9 +247,7 @@ internal class EmailClient : IEmailClient
         string fromRecipient = $"{MessageSettings.FromRecipientParameter}={recipient.MessageRecipientKey}";
 
         messageText = messageText
-            .Replace($"{MessageSettings.FromMessageParameter}=null", fromMessage)
             .Replace($"{MessageSettings.FromMessageParameter}=0", fromMessage)
-            .Replace($"{MessageSettings.FromRecipientParameter}=null", fromRecipient)
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
     }
 
@@ -268,8 +266,8 @@ internal class EmailClient : IEmailClient
     private static string AddMessageReadLink(ref string url, IEmailRecipient? recipient)
     {
         url += UrlHelper.ParameterDelimiter(url) +
-            $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
-            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+            $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey ?? 0}" +
+            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey ?? 0}";
 
         return url;
     }
