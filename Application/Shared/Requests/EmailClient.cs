@@ -210,7 +210,7 @@ internal class EmailClient : IEmailClient
             messageText += $"You cannot reply directly to this e-mail.";
 
             if (viewMessageUrl.IsNotEmpty()) // just in case!
-            {                
+            {
                 messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient, message.IsTestMessage)} to reply.";
             }
         }
@@ -231,8 +231,8 @@ internal class EmailClient : IEmailClient
             messageText += $"<br/><br/><small>You are receiving this message as a user of the Secret Santa system. " +
                 $"To change your e-mail preferences, " +
                 $"{MessageLink(MessageSettings.EmailPreferencesUrl, "click here", false, recipient)}." +
-                (recipient.Greeting.IsNotEmpty() 
-                    ? "<br/><br/>Always check the greeting on messages. If you don't think it matches yours, please don't click on the links." 
+                (recipient.Greeting.IsNotEmpty()
+                    ? "<br/>Always check the greeting on messages. If you don't think it matches yours, please don't click on the links."
                     : "") +
                 $"</small>";
         }

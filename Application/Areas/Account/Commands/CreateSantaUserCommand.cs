@@ -12,8 +12,8 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        string? originalUserName = Item.UserName;
-        string? originalEmail = Item.Email;
+        string? originalUserName = Item.UserName; // get this before it is hashed
+        string? originalEmail = Item.Email = TidyEmail(Item.Email); // ditto
 
         Item.Greeting = Greetings.Messages.Get1FromList();
 
@@ -23,6 +23,7 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
         {
             Forename = Item.Forename.Trim(),            
             Surname = Item.Surname.Trim(),
+            Gender = Item.Gender,
             Email = Item.Email.NullIfEmpty(),
             UserName = Item.UserName.NullIfEmpty(),
             Greeting = Item.Greeting,

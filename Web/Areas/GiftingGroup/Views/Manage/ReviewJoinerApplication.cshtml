@@ -100,15 +100,18 @@
 
                                 @if (Model.CurrentYearCalculated)
                                 {
-                                    <div class="alert alert-warning">
-                                        <text>@Model.DisplayFirstName() <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
-                                    </div>
+                                    string warning = $"<text>{Model.DisplayFirstName()} <span style=\"font-weight: bold; font-style: italic;\">"
+                                        + "won\'t</span> be added to the current year automatically, as givers and recipients have already "
+                                        + "been assigned.</text>";
+
+                                    <partial name="_PageWarning" model="@warning"/>
                                 }
                                 else
                                 {
-                                    <div class="alert alert-info">
-                                        <text>@Model.DisplayFirstName() will be added to the current year automatically. You can remove @Model.Gender.Indirect() by editing the group's settings for @DateTime.Today.Year.</text>
-                                    </div>
+                                    string info = $"<text>{Model.DisplayFirstName()} will be added to the current year automatically. "
+                                        + $"You can remove {Model.Gender.Indirect()} by editing the group's settings for {DateTime.Today.Year}.</text>";
+
+                                    <partial name="_PageInfo" model="@info" />
                                 }
                             </div>
                         </div>
