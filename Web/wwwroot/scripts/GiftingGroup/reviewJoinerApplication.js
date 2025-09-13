@@ -18,7 +18,10 @@ function initReviewApplication() {
 
     if (acceptedOptions.length > 0 && (acceptedSectionExists || rejectedSectionExists)) {
         acceptedOptions.forEach(function (radioOption) {
-            acceptedOptionChanged(radioOption);
+
+            if (radioOption.checked == true) {
+                acceptedOptionChanged(radioOption);
+            }
 
             radioOption.addEventListener('click', function () {
                 acceptedOptionChanged(radioOption);

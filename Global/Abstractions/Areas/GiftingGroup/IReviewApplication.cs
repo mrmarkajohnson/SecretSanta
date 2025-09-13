@@ -5,10 +5,10 @@ namespace Global.Abstractions.Areas.GiftingGroup;
 public interface IReviewApplication : IHashableUser, IUserNamesBase
 {
     int GroupApplicationKey { get; set; }
-
     string GroupName { get; set; }
 
     string ApplicantName { get; set; }
+    string? ApplicantMessage { get; set; }
 
     int PreviousRequestCount { get; set; }
     bool CurrentYearCalculated { get; set; }
