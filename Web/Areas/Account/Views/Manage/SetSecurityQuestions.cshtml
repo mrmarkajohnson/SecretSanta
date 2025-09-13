@@ -3,6 +3,7 @@
     ViewData["Title"] = "Set Security Questions";
     string hintExplanation = "Add a short hint if you might think of more than one answer, or write it differently - but keep it cryptic so only you'll know!";
     string greetingExplanation = "This is the greeting shown when you log in. You can change the greeting if you don't like it.";
+    string rememberThis = "<p>Remember this! You\'ll be asked for it if you forget your password.</p>";
 }
 
 @if (Model.Update)
@@ -55,6 +56,10 @@ else
                 <h2>Your Greeting</h2>
                 <div class="@CenterFlexWrapContainer">
                     <div class="@StandardGroupWidth">
+
+                        <div class="mb-4">
+                            <partial name="_PageWarning" model="@rememberThis" />
+                        </div>
 
                         <div class="mb-3">
                             <label class="w-100 d-flex align-items-center justify-content-between">
@@ -171,11 +176,13 @@ else
 
             <div class="collapse">
                 <datalist id="questionsList">
+                    <option>What's the best gift you ever received?</option>
                     <option>What's the worst gift you ever received?</option>
                     <option>If you had to be an animal, what type would you be?</option>
                     <option>What was the name of the first album you bought?</option>
                     <option>Who would you like to play you in a film?</option>
                     <option>Who was your secret childhood crush?</option>
+                    <option>Who's your secret celebrity crush?</option>
                     <option>Where did you have your first legal drink in a pub or bar?</option>
                     <option>What smell brings back your favourite memories?</option>
                     <option>What would you change your name to, if you could?</option>

@@ -1,7 +1,6 @@
 IMMEDIATE
 Advise users when a confirmation e-mail has been sent?
 
-Greeting - please make a note of this!
 Fix dropdowns in Samsung Internet?
 Add bug reporting
 Add reporting abuse
