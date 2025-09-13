@@ -261,7 +261,12 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
         
-        await Send(new SetEmailPreferencesCommand<UserEmailDetails>(model, _userStore), new EmailDetailsValidator());
+        var commandResult = await Send(new SetEmailPreferencesCommand<UserEmailDetails>(model, _userStore), new EmailDetailsValidator());
+        if (commandResult.Success)
+        {
+            return RedirectWithMessage(model, "Preferences saved successfully.");
+        }
+
         return View(model);
     }
 }

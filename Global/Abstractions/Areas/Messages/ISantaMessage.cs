@@ -16,4 +16,5 @@ public interface ISantaMessage : ISantaMessageShared
     string SenderName { get; }
 
     bool Read { get; set; }
+    bool IsTestMessage => HeaderText == StandardPhrases.TestEmailHeader;
 }

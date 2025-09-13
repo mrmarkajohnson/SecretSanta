@@ -34,7 +34,8 @@ public sealed class MessageMappingProfile : Profile
             .IncludeBase<Santa_User, UserNamesBase>()
             .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.GlobalUser.EmailConfirmed))
             .ForMember(dest => dest.ReceiveEmails, opt => opt.MapFrom(src => src.ReceiveEmails))
-            .ForMember(dest => dest.DetailedEmails, opt => opt.MapFrom(src => src.DetailedEmails));
+            .ForMember(dest => dest.DetailedEmails, opt => opt.MapFrom(src => src.DetailedEmails))
+            .ForMember(dest => dest.Greeting, opt => opt.MapFrom(src => src.GlobalUser.Greeting));
 
         CreateMap<Santa_Message, ReadMessage>()
             .IncludeBase<Santa_Message, SantaMessage>()

@@ -168,6 +168,7 @@ internal class EmailClient : IEmailClient
             : $"{message.Sender.DisplayName(false)} for Secret Santa";
 
         string messageText = $"Dear {recipient.DisplayFirstName()},<br/><br/>" +
+            (recipient.Greeting.IsNotEmpty() ? recipient.Greeting + "! " : "") +
             $"You have a message from {messageFrom}";
 
         if (message.HeaderText == StandardPhrases.ConfirmationEmailHeader)
@@ -177,7 +178,7 @@ internal class EmailClient : IEmailClient
         {
             messageText += ".";
             AddViewDetails(ref messageText, recipient, viewMessageUrl);
-            AddEmailPreferencesFooter(ref messageText);
+            AddEmailPreferencesFooter(ref messageText, recipient);
 
             return messageText;
         }
@@ -185,7 +186,11 @@ internal class EmailClient : IEmailClient
         messageText += $":<br/><br/><i>{message.MessageText}</i><br/><br/>";
         AddViewAndReplyDetails(ref messageText, message, recipient, viewMessageUrl);
         ReplaceEmptyFromMessageKeys(ref messageText, recipient);
-        AddEmailPreferencesFooter(ref messageText);
+
+        if (!message.IsTestMessage)
+        {
+            AddEmailPreferencesFooter(ref messageText, recipient);
+        }
 
         return messageText;
     }
@@ -205,8 +210,8 @@ internal class EmailClient : IEmailClient
             messageText += $"You cannot reply directly to this e-mail.";
 
             if (viewMessageUrl.IsNotEmpty()) // just in case!
-            {
-                messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient)} to reply.";
+            {                
+                messageText += $" Please {MessageLink(viewMessageUrl, "view the message", false, recipient, message.IsTestMessage)} to reply.";
             }
         }
         /* // TODO: Restore this once users can report issues and abuse
@@ -219,12 +224,17 @@ internal class EmailClient : IEmailClient
         */
     }
 
-    private void AddEmailPreferencesFooter(ref string messageText)
+    private void AddEmailPreferencesFooter(ref string messageText, IEmailRecipient recipient)
     {
         if (MessageSettings.EmailPreferencesUrl.IsNotEmpty())
         {
             messageText += $"<br/><br/><small>You are receiving this message as a user of the Secret Santa system. " +
-                $"To change your e-mail preferences, {MessageLink(MessageSettings.EmailPreferencesUrl, "click here", false)}.</small>";
+                $"To change your e-mail preferences, " +
+                $"{MessageLink(MessageSettings.EmailPreferencesUrl, "click here", false, recipient)}." +
+                (recipient.Greeting.IsNotEmpty() 
+                    ? "<br/><br/>Always check the greeting on messages. If you don't think it matches yours, please don't click on the links." 
+                    : "") +
+                $"</small>";
         }
     }
 
@@ -243,16 +253,24 @@ internal class EmailClient : IEmailClient
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
     }
 
-    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null)
+    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool testMessage = false)
     {
-        if (recipient?.MessageKey > 0)
-        {
-            url += UrlHelper.ParameterDelimiter(url) +
-                $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
-                $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}"; // add message IDs to mark the message as read
-        }
+        if (!testMessage)
+            AddMessageReadLink(ref url, recipient);
 
         string quote = addQuotes ? "'" : "";
         return $"<a href=\"{url}\">{quote}{display}{quote}</a>";
+    }
+
+    /// <summary>
+    /// Add message IDs to mark the message as read; the keys can be added later
+    /// </summary>
+    private static string AddMessageReadLink(ref string url, IEmailRecipient? recipient)
+    {
+        url += UrlHelper.ParameterDelimiter(url) +
+            $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey}" +
+            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey}";
+
+        return url;
     }
 }

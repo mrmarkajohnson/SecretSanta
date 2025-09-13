@@ -11,4 +11,6 @@ internal class EmailRecipient : UserNamesBase, IEmailRecipient
     public bool EmailConfirmed { get; set; }
     public MessageSettings.EmailPreference ReceiveEmails { get; set; }
     public bool DetailedEmails { get; set; }
+
+    public string Greeting { get; set; } = string.Empty;
 }
