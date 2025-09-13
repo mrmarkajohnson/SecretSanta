@@ -55,12 +55,16 @@ Add user postal and e-mail address functionality for sending and receiving gifts
 Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
+* Mark messages as important
 * Show the sender's name when replying, and when viewing replies
 * Show actual recipients when viewing, from an 'i' symbol, except when it's the gifter/recipient (or it's obvious)
 Save draft
 Use the modal version for writing messages from the index or sent pages?
 Add other standard messages e.g. 
-- response to invitation to join a group (automatic)
+- SetupGiftingGroupYearCommand to group members if limit (or currency?) changes - important
+- password commands when password changes - important
+- ReviewJoinerApplicationCommand to other group admins (not the approver)? - non-important
+- ParticipateInYearCommand if in/out status changes? - non-important (unless recipients already chosen - shouldn't happen)
 Add automatic message options, e.g.
 - reply to suggestions
 - message group admin

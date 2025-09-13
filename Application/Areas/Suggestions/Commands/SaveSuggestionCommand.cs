@@ -1,14 +1,18 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
-using Application.Shared.Requests;
+using Application.Areas.Messages.BaseModels;
 using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Suggestions.Commands;
 
 public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : class, IManageSuggestion
 {
-    public SaveSuggestionCommand(TItem item) : base(item)
+    private string _yearGroupUrl;
+
+    public SaveSuggestionCommand(TItem item, string yearGroupUrl) : base(item)
     {
+        _yearGroupUrl = yearGroupUrl;
     }
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
@@ -80,16 +84,46 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
                     };
 
                     dbSuggestion.YearGroupUserLinks.Add(dbLink);
+                    MessageGifter(dbSantaUser, dbYearGroupUser);
                 }
             }
             else if (link.ApplyToGroup && dbLink.DateDeleted != null)
             {
                 dbLink.DateDeleted = null;
+                MessageGifter(dbSantaUser, dbLink.YearGroupUser);
             }
             else if (!link.ApplyToGroup)
             {
                 dbLink.DateDeleted ??= DateTime.Now;
+                MessageGifter(dbSantaUser, dbLink.YearGroupUser, true);
             }
+        }
+    }
+
+    private void MessageGifter(Santa_User dbSantaUser, Santa_YearGroupUser dbYearGroupUser, bool deleted = false)
+    {
+        var dbYear = dbYearGroupUser.GiftingGroupYear;
+        var dbGifter = dbYear.Users.FirstOrDefault(x => x.RecipientSantaUserKey == dbSantaUser.SantaUserKey);
+        string yearGroupUrl = _yearGroupUrl.Replace("giftingGroupKey=0", $"giftingGroupKey={dbYear.GiftingGroupKey}");
+
+        if (dbGifter != null)
+        {
+            string text = (deleted ? "A new suggestion has been added for" : "A suggestion has been removed from") +
+                $" the '{dbYear.GiftingGroup.Name}' group. Please review " +
+                (deleted ? "this suggestion" : "your recipient's suggestions") +
+                $" at the {MessageLink(yearGroupUrl, "Gifting Group Year", false)} page.";
+
+            var message = new SendSantaMessage
+            {
+                RecipientType = MessageRecipientType.Gifter,
+                HeaderText = "Your gift recipient has " + (deleted ? "removed a " : "added a new") + " suggestion.",
+                MessageText = text,
+                Important = true,
+                CanReply = false,
+                ShowAsFromSanta = true
+            };
+
+            SendMessage(message, dbSantaUser, dbGifter.SantaUser, dbYearGroupUser.GiftingGroupYear);
         }
     }
 }
