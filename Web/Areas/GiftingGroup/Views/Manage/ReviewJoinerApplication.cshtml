@@ -14,7 +14,7 @@
 <h1>Review Joiner Application</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" 
+    <form asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" 
         asp-route-groupApplicationKey="@Model.GroupApplicationKey" asp-route-singleApplication="@Model.SingleApplication" 
         class="review-application" method="post">
 

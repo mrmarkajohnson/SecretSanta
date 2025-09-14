@@ -7,10 +7,11 @@ using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Messages.Controllers;
 
-[Area("Messages")]
+[Area(AreaNames.Messages)]
 [Authorize]
 public sealed class HomeController : BaseController
 {
@@ -112,7 +113,7 @@ public sealed class HomeController : BaseController
         var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey,
-            AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions"),
+            AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions),
             GiftingGroups = HomeModel.GiftingGroups
         };
 
@@ -284,7 +285,7 @@ public sealed class HomeController : BaseController
         }
 
         model.SetDisplayRecipientType();
-        model.AddSuggestionUrl = GetFullUrl("AddSuggestion", "Home", "Suggestions");        
+        model.AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions);        
 
         if (model.IsModal)
         {

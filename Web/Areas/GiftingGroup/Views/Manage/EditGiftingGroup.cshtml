@@ -17,7 +17,7 @@
 <h1>@heading</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" method="post">
+    <form asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" method="post">
         <partial name="_FormHiddenInputs" />
         
         <div class="row @CenterFlexNoWrapContainer">

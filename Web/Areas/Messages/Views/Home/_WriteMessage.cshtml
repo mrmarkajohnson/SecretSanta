@@ -34,7 +34,7 @@
                     <div class="alert alert-info">
                         You are not replying to the latest message in the conversation. Please see 'Later Messages' below.<br/>
                         <a class="btn-close-modal modal-link" data-bs-dismiss="modal"
-                                data-url="@Url.Action(Context, replyToLatestAction, "Home", "Messages", new { messageKey = Model.LaterMessages[0].MessageKey })">
+                           data-url="@Url.Action(Context, replyToLatestAction, "Home", AreaNames.Messages, new { messageKey = Model.LaterMessages[0].MessageKey })">
                             Reply to latest
                         </a>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="input-group input-info">
                             <select asp-for="GiftingGroupKey" class="form-control gifting-group-select" aria-required="true"
                                 asp-items="Model.GroupSelection"
-                                data-url="@Url.Action(Context, "ChooseMessageRecipient", "Home", "Messages")">
+                                data-url="@Url.Action(Context, "ChooseMessageRecipient", "Home", AreaNames.Messages)">
 
                                 <option value="@null">@StandardPhrases.PleaseSelect</option>
                             </select>

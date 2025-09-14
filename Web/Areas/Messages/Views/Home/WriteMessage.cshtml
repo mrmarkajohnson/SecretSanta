@@ -7,7 +7,7 @@
 <h1>@Model.PageTitle</h1>
 
 <section>
-    <form asp-area="Messages" asp-controller="Home" asp-action="@action" method="post" id="messageForm">
+    <form asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="@action" method="post" id="messageForm">
 
         <partial name="_WriteMessage" />
 

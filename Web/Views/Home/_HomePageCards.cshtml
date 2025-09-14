@@ -17,22 +17,22 @@
                 <h5 class="card-title">Manage your login and account details</h5>
                 @* <p class="card-text">Manage your login and account details</p> *@
                 <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">
+                    <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="UpdateDetails">
                         Update Your Details
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
+                    <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="SetSecurityQuestions">
                         Update Your Security Questions
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="EmailPreferences">
+                    <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="EmailPreferences">
                         Set Your E-mail Preferences
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Account" asp-controller="Manage" asp-action="ChangePassword">
+                    <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="ChangePassword">
                         Change Your Password
                     </a>
                 </p>
@@ -53,12 +53,12 @@
             <div class="card-body">
                 <h5 class="card-title">Avoid Santa selecting your partner to receive a gift</h5>
                 <p>
-                    <a asp-area="Partners" asp-controller="Manage" asp-action="Index">
+                    <a asp-area="@AreaNames.Partners" asp-controller="Manage" asp-action="Index">
                         Manage Your Relationships
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Partners" asp-controller="Manage" asp-action="AddRelationship">
+                    <a asp-area="@AreaNames.Partners" asp-controller="Manage" asp-action="AddRelationship">
                         Add a Relationship
                     </a>
                 </p>
@@ -75,22 +75,22 @@
                 <h5 class="card-title">Manage the groups that you're in</h5>
 
                 <p>
-                    <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
+                    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
                         Create a New Gifting Group
                     </a>
                 </p>
                 <p>
-                    <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
+                    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
                         Apply to Join a Gifting Group
                     </a>
                 </p>
                 <p>
-                    <a asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">
                         Participate for @DateTime.Today.Year
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Suggestions" asp-controller="Home" asp-action="Index">
+                    <a asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="Index">
                         Manage Suggestions
                     </a>
                 </p>
@@ -100,7 +100,7 @@
                     @if (Model?.NewJoinerApplications > 0)
                     {
                         <p>
-                            <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
+                            <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
                                 Review Joiner Applications
                             </a>
                         </p>
@@ -126,17 +126,17 @@
             <div class="card-body">
                 <h5 class="card-title">Read and reply to your messages</h5>
                 <p>
-                    <a asp-area="Messages" asp-controller="Home" asp-action="Index">
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="Index">
                         Read Your Messages
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Messages" asp-controller="Home" asp-action="SentMessages">
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="SentMessages">
                         Sent Messages
                     </a>
                 </p>
                 <p>
-                    <a asp-area="Messages" asp-controller="Home" asp-action="WriteMessage">
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="WriteMessage">
                         Write a Message
                     </a>
                 </p>

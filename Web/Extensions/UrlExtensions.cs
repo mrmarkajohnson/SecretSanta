@@ -1,4 +1,6 @@
-﻿namespace Web.Helpers;
+﻿using System;
+
+namespace Web.Helpers;
 
 public static class UrlExtensions
 {
@@ -10,6 +12,20 @@ public static class UrlExtensions
 
     public static string Action(this IUrlHelper urlHelper, HttpRequest request,
         string action, string controller, string area, object? values = null)
+    {
+        controller = controller.TrimEnd("Controller");
+        object fullValues = GetUrlValues(area, values);
+        return urlHelper.Action(action, controller, fullValues, request.Scheme, request.Host.ToString()) ?? "";
+    }
+
+    public static string Action(this IUrlHelper urlHelper, string action, string controller, string area, object? values = null)
+    {
+        controller = controller.TrimEnd("Controller");
+        object fullValues = GetUrlValues(area, values);
+        return urlHelper.Action(action, controller, fullValues) ?? "";
+    }
+
+    private static object GetUrlValues(string area, object? values)
     {
         object fullValues = new { Area = area };
 
@@ -23,6 +39,6 @@ public static class UrlExtensions
             }
         }
 
-        return urlHelper.Action(action, controller, fullValues, request.Scheme, request.Host.ToString()) ?? "";
+        return fullValues;
     }
 }

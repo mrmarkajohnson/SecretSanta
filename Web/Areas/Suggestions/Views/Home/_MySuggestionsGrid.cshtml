@@ -6,9 +6,9 @@
 @{
     Func<ISuggestion, object> actions =
     @<text>
-        <a class="modal-link" data-url="@Url.Action(Context, "EditSuggestion", "Home", "Suggestions", new { suggestionKey = item.SuggestionKey })"
+        <a class="modal-link" data-url="@Url.Action(Context, "EditSuggestion", "Home", AreaNames.Suggestions, new { suggestionKey = item.SuggestionKey })"
            data-toggle="tooltip" title="Edit Suggestion"><i class="fa fa-pencil"></i></a>
-        <a class="delete-link" data-url="@Url.Action(Context, "DeleteSuggestion", "Home", "Suggestions", new { suggestionKey = item.SuggestionKey })"
+        <a class="delete-link" data-url="@Url.Action(Context, "DeleteSuggestion", "Home", AreaNames.Suggestions, new { suggestionKey = item.SuggestionKey })"
            data-toggle="tooltip" title="Delete Suggestion" 
            data-confirm-title="Delete Suggestion" 
            data-confirm-message="Are you sure you want to delete suggestion '@item.SuggestionText'?"><i class="fa fa-xmark"></i></a>

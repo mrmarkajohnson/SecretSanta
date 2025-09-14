@@ -17,17 +17,17 @@
             @if (giftingGroups.Count > 1)
             {
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">
                         Participate for @DateTime.Today.Year
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-area="Suggestions" asp-controller="Home" asp-action="Index">
+                    <a class="dropdown-item" asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="Index">
                         Manage Suggestions
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-area="Suggestions" asp-controller="Home" asp-action="AddSuggestion">
+                    <a class="dropdown-item" asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="AddSuggestion">
                         Add A Suggestion
                     </a>
                 </li>
@@ -47,14 +47,14 @@
                 @if (giftingGroup.GroupAdmin)
                 {
                     <li>
-                        <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                        <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                             Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
                         </a>
                     </li>
                 }
 
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         View '@giftingGroup.GroupName' for @DateTime.Today.Year
                     </a>
                 </li>

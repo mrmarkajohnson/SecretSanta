@@ -11,7 +11,9 @@ using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authentication;
+using AccountControllers = Web.Areas.Account.Controllers;
 using Web.Helpers;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Controllers;
 
@@ -161,7 +163,7 @@ public class BaseController : Controller
         if (model is ICheckLockout checkLockout && checkLockout.LockedOut)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return RedirectToLocalUrl(Url.Action("LockedOut", "Home", new { Area = "Account" }) ?? string.Empty);
+            return RedirectToLocalUrl(nameof(AccountControllers.HomeController.LockedOut), nameof(AccountControllers.HomeController), AreaNames.Account);
         }
         else
         {
@@ -172,7 +174,16 @@ public class BaseController : Controller
     protected async Task<IActionResult> RedirectToLogin(HttpRequest request)
     {
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
-        return RedirectToLocalUrl(Url.Action("Login", "Home", new { Area = "Account", ReturnUrl = request.Path.ToString(), TimedOut = true }) ?? string.Empty);
+        return RedirectToLocalUrl(nameof(AccountControllers.HomeController.Login), nameof(AccountControllers.HomeController), AreaNames.Account, new { ReturnUrl = request.Path.ToString(), TimedOut = true });
+    }
+
+    /// <summary>
+    /// Avoid annoying null reference errors
+    /// </summary>
+    protected LocalRedirectResult RedirectToLocalUrl(string action, string controller, string area, object? values = null)
+    {
+        string localUrl = GetLocalUrl(action, controller, area, values);
+        return LocalRedirect(localUrl ?? "");
     }
 
     /// <summary>
@@ -210,8 +221,12 @@ public class BaseController : Controller
 
     private string GetFullUrl(HttpRequest request, string action, string controller, string area, object? values = null)
     {
-        controller = controller.TrimEnd("Controller");
         return Url.Action(request, action, controller, area, values);
+    }
+
+    public string GetLocalUrl(string action, string controller, string area, object? values = null)
+    {
+        return Url.Action(action, controller, area, values);
     }
 
     protected bool AjaxRequest()

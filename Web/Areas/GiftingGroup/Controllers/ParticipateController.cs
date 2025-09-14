@@ -6,10 +6,11 @@ using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
 using Global.Abstractions.Areas.Participate;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
-[Area("GiftingGroup")]
+[Area(AreaNames.GiftingGroup)]
 [Authorize]
 public sealed class ParticipateController : BaseController
 {

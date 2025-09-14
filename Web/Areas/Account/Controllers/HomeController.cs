@@ -3,10 +3,11 @@ using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Account.Controllers;
 
-[Area("Account")]
+[Area(AreaNames.Account)]
 public sealed class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
@@ -23,7 +24,7 @@ public sealed class HomeController : BaseController
     {
         if (SignInManager.IsSignedIn(User))
         {
-            return RedirectToLocalUrl(Url.Action("Index", "Home", new { Area = "" }));
+            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
         }
 
         var model = new LoginVm

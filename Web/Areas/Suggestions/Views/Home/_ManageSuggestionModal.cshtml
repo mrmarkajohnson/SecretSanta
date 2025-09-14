@@ -7,7 +7,7 @@
         <div class="modal-content">
             <partial name="Modal/_ModalHeader" />
 
-            <form asp-area="Suggestions" asp-controller="Home" asp-action="SaveSuggestion" method="post">
+            <form asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="SaveSuggestion" method="post">
                 <div class="modal-body">
                     
                     <partial name="_ManageSuggestion" />

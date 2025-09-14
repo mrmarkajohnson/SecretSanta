@@ -16,7 +16,7 @@ else
 }
 
 <section>
-    <form asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
         <partial name="_FormHiddenInputs" />
 
         <div class="collapse">

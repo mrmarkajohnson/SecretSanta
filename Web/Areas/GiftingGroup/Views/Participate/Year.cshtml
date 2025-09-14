@@ -16,7 +16,7 @@
 <h1>View and Participate in '@Model.GiftingGroupName' for @Model.CalendarYear</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
+    <form asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
 
         <partial name="_FormHiddenInputs" />
 
@@ -54,7 +54,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Included" class="control-label"></label>
-                            <div data-url="@Url.Action(Context, "Year", "Participate", "GiftingGroup")" class="control-label fw-normal">
+                            <div data-url="@Url.Action(Context, "Year", "Participate", AreaNames.GiftingGroup)" class="control-label fw-normal">
                                 <span class="text-secondary">No</span> 
                                 <input type="radio" asp-for="Included" value="@false" class="@includedRadioClass" readonly=@radiosReadonly />
                                 &nbsp;
@@ -180,7 +180,7 @@
                 @if (Model.MemberStatus == GroupMemberStatus.Admin)
                 {            
                     <div>
-                        <a asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
                             asp-route-returnUrl="@Context.Request.GetEncodedUrl()">
                             Set Up Group '@Model.GiftingGroupName' for @Model.CalendarYear
                         </a>
@@ -188,13 +188,13 @@
                 }
 
                 <div>
-                    <a asp-area="Suggestions" asp-controller="Home" asp-action="Index">
+                    <a asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="Index">
                         Manage Suggestions
                     </a>
                 </div>
 
                 <div>
-                    <a asp-area="Suggestions" asp-controller="Home" asp-action="AddSuggestion" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
+                    <a asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="AddSuggestion" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
                         Add A Suggestion
                     </a>
                 </div>

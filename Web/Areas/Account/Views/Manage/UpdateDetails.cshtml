@@ -7,7 +7,7 @@
 <h1>Update Your Account Details</h1>
 
 <section>
-    <form asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails" method="post">
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="UpdateDetails" method="post">
         <partial name="_FormHiddenInputs" />
         
         <div class="row @CenterFlexNoWrapContainer">

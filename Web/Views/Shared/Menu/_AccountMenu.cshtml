@@ -5,16 +5,16 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
         <li>
-            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="UpdateDetails">Update Your Details</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="UpdateDetails">Update Your Details</a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions">Update Your Security Questions</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="SetSecurityQuestions">Update Your Security Questions</a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="EmailPreferences">Set Your E-mail Preferences</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="EmailPreferences">Set Your E-mail Preferences</a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="Account" asp-controller="Manage" asp-action="ChangePassword">Change Your Password</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="ChangePassword">Change Your Password</a>
         </li>
         <li>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty, successMessage = "Logged out successfully." })">

@@ -29,12 +29,12 @@
 
         <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
             <div>
-                <a asp-area="Messages" asp-controller="Home" asp-action="SentMessages">
+                <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="SentMessages">
                     Sent Messages
                 </a>
             </div>
             <div>
-                <a asp-area="Messages" asp-controller="Home" asp-action="WriteMessage">
+                <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="WriteMessage">
                     Write a Message
                 </a>
             </div>

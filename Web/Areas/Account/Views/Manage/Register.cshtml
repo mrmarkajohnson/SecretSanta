@@ -7,7 +7,7 @@
 <h1>Welcome to Secret Santa!</h1>
 
 <section>
-    <form asp-area="Account" asp-controller="Manage" asp-action="Register" method="post">
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register" method="post">
         <partial name="_FormHiddenInputs" />
         
         <div class="row @CenterFlexNoWrapContainer">
@@ -39,10 +39,10 @@
 
             <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
                 <div>
-                    <a asp-area="Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Log In">Already have an account?</a>
+                    <a asp-area="@AreaNames.Account" asp-controller="Home" asp-action="Login" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Log In">Already have an account?</a>
                 </div>
                 <div>
-                    <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Reset Your Password">Forgot your password?</a>
+                    <a asp-area="@AreaNames.Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model?.ReturnUrl" data-toggle="tooltip" title="Reset Your Password">Forgot your password?</a>
                 </div>
             </div>
 

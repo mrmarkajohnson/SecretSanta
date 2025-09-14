@@ -5,6 +5,15 @@ namespace Global.Settings;
 
 public static class GlobalSettings
 {
+    public static class AreaNames
+    {
+        public const string Account = "Account";
+        public const string GiftingGroup = "GiftingGroup";
+        public const string Messages = "Messages";
+        public const string Partners = "Partners";
+        public const string Suggestions = "Suggestions";
+    }
+    
     public static readonly IList<CultureInfo> AvailableCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
         .Where(x => x.Name.StartsWith("en"))
         .Where(x => !x.Name.StartsWith("en-0") && !x.Name.StartsWith("en-1"))
