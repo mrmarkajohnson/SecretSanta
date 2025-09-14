@@ -118,15 +118,21 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     #region Messages
 
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroup dbGiftingGroup)
+    {
+        var dbYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
+        return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
+    }
+
     protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroupYear? dbYear = null)
     {
         return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
     }
 
-    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, Santa_User dbRecipient, Santa_GiftingGroup dbGiftingGroup)
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroup dbGiftingGroup)
     {
         var dbYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
-        return SendMessage(messageDetails, dbSender, [dbRecipient], dbYear);
+        return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
     }
 
     protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
@@ -153,18 +159,18 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         }
 
         DbContext.Santa_Messages.Add(dbMessage);
-        return dbMessage;
-    }
 
-    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroup dbGiftingGroup)
-    {
-        var dbYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
-        return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
+        if (dbRecipients.Any(x => x.GlobalUser.CanReceiveEmails()))
+        {
+            DbContext.EmailsToSend.Add(dbMessage);
+        }
+        
+        return dbMessage;
     }
 
     public string MessageLink(string url, string display, bool addQuotes)
     {
-        return DbContext.EmailClient?.MessageLink(url, display, addQuotes) ?? string.Empty;
+        return DbContext.EmailClient?.MessageLink(url, display, addQuotes, null) ?? string.Empty;
     }
 
     #endregion Messages

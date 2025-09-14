@@ -29,9 +29,9 @@ public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TIt
                 else
                 {
                     string? originalUserName = Item.UserName; // get this before it is hashed
-                    string? originalEmail = Item.Email; // ditto;
-                    await Send(new HashUserIdentificationAction(Item)); // now hash it
+                    string? originalEmail = Item.Email = TidyEmail(Item.Email); // ditto;
 
+                    await Send(new HashUserIdentificationAction(Item)); // now hash it
                     await HandleUserName(dbCurrentUser, originalUserName, originalEmail);
                     await HandleEmailAddress(dbCurrentUser, originalUserName, originalEmail);
 
@@ -39,8 +39,8 @@ public sealed class UpdateAccountDetailsCommand<TItem> : IdentityBaseCommand<TIt
                     {
                         dbCurrentUser.Forename = Item.Forename.Tidy();
                         dbCurrentUser.Surname = Item.Surname.Tidy();
-                        dbCurrentUser.Email = Item.Email.NullIfEmpty().Tidy(false);
                         dbCurrentUser.UserName = Item.UserName.NullIfEmpty().Tidy(false);
+                        dbCurrentUser.Gender = Item.Gender;
 
                         SetOtherNames(dbCurrentUser);
 

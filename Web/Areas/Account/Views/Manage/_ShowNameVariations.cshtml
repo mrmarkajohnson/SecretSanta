@@ -8,14 +8,15 @@
     
     if (longDisplay != normalDisplay || fullName != normalDisplay)
     {
-        <div class="mb-3 col-12">
-            <div class="alert alert-info">
-                Your name will normally be shown as "<b>@normalDisplay</b>", and sometimes as "<b>@fullName</b>".
-                @if (longDisplay != normalDisplay && longDisplay != fullName)
-                {
-                    <text>It may occasionally be shown as "<b>@longDisplay</b>"</text>
-                }
-            </div>
+        string text = $"Your name will normally be shown as \"<b>{normalDisplay}</b>\", and sometimes as \"<b>{fullName}</b>\".";
+                    
+        if (longDisplay != normalDisplay && longDisplay != fullName)
+        {
+            text += $" It may occasionally be shown as \"<b>{longDisplay}</b>\".";
+        }
+        
+        <div class="mt-4 mb-3 col-12">
+            <partial name="_PageInfo" model="@text" />
         </div>
     }
 }

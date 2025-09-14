@@ -14,19 +14,23 @@
 <h1>Review Joiner Application</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" class="review-application" method="post">
+    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="ReviewJoinerApplication" 
+        asp-route-groupApplicationKey="@Model.GroupApplicationKey" asp-route-singleApplication="@Model.SingleApplication" 
+        class="review-application" method="post">
+
         <partial name="_FormHiddenInputs" />
 
         <div class="row @CenterFlexNoWrapContainer">
 
             <div class="collapse">
                 <input type="hidden" asp-for="GroupApplicationKey">
-                <input type="hidden" asp-for="ApplicantName">
-                <input type="hidden" asp-for="UserName">
-                <input type="hidden" asp-for="Email">
                 <input type="hidden" asp-for="GroupName">
+                <input type="hidden" asp-for="ApplicantName">
+                <input type="hidden" asp-for="ApplicantMessage">
                 <input type="hidden" asp-for="SingleApplication" />
+                <input type="hidden" asp-for="PreviousRequestCount" />
                 <input type="hidden" asp-for="CurrentYearCalculated" />
+                <partial name="_UserHiddenInputs" />
             </div>
 
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
@@ -55,6 +59,18 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if (Model.ApplicantMessage.IsNotEmpty())
+                        {                                
+                            <div class="mb-3 d-flex">
+                                <div class="form-group-ib col-12">
+                                    <label asp-for="ApplicantMessage" class="control-label"></label>
+                                    <div class="control-label fw-normal">
+                                        @Model.ApplicantMessage
+                                    </div>
+                                </div>
+                            </div>
+                        }
 
                         <div class="mb-3 d-flex">
                             @if (Model.Email.IsNotEmpty())
@@ -100,15 +116,18 @@
 
                                 @if (Model.CurrentYearCalculated)
                                 {
-                                    <div class="alert alert-warning">
-                                        <text>@Model.DisplayFirstName() <span style="font-weight: bold; font-style: italic;">won't</span> be added to the current year automatically, as givers and recipients have already been assigned.</text>
-                                    </div>
+                                    string warning = $"<text>{Model.DisplayFirstName()} <span style=\"font-weight: bold; font-style: italic;\">"
+                                        + "won\'t</span> be added to the current year automatically, as givers and recipients have already "
+                                        + "been assigned.</text>";
+
+                                    <partial name="_PageWarning" model="@warning"/>
                                 }
                                 else
                                 {
-                                    <div class="alert alert-info">
-                                        <text>@Model.DisplayFirstName() will be added to the current year automatically. You can remove @Model.Gender.Indirect() by editing the group's settings for @DateTime.Today.Year.</text>
-                                    </div>
+                                    string info = $"<text>{Model.DisplayFirstName()} will be added to the current year automatically. "
+                                        + $"You can remove {Model.Gender.Indirect()} by editing the group's settings for {DateTime.Today.Year}.</text>";
+
+                                    <partial name="_PageInfo" model="@info" />
                                 }
                             </div>
                         </div>
@@ -119,6 +138,8 @@
                                 <div class="input-group input-info">
                                     <textarea asp-for="RejectionMessage" class="form-control"></textarea>
                                     <partial name="_InputQuestion" model="@rejectionMessageExplanation" />
+                                </div><div>
+                                    <span asp-validation-for="RejectionMessage" class="text-danger"></span>
                                 </div>
                             </div>
 

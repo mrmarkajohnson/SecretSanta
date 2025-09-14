@@ -7,7 +7,7 @@ ALL ENVIRONMENTS
 LOCAL
 
 1. Run the following commands in the PMC, replacing the parts in curly brackets with the desired details 
-(NB: DO NOT change the symmetric key end once used!):
+(NB: DO NOT change the symmetric key end once used! FromAddress and TestAddress must both have realistic domain endings):
 
 dotnet user-secrets set "DatabaseSettings:SecretSantaUserId" "{desired-database-username]" --project "Data"
 dotnet user-secrets set "DatabaseSettings:SecretSantaPassword" "{desired-database-password]" --project "Data"
@@ -42,7 +42,7 @@ DatabaseSettings:SecretSantaPassword
 
 EncryptionSettings:SecretSantaSymmetricKeyEnd
 
-4. Create the following environment variables for e-mail:
+4. Create the following environment variables for e-mail (FromAddress and TestAddress must both have realistic domain endings):
 
 MailSettings:FromAddress
 MailSettings:SmtpHost

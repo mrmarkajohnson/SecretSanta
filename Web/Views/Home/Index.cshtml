@@ -24,23 +24,34 @@
 {
     <h1>@welcomeSignedInUser</h1>
 
-    <div class="mt-2 @CenterFlexNoWrapContainer">
-        @if (mustSetSecurityQuestions)
-        {
+
+    @if (mustSetSecurityQuestions)
+    {
+        <div class="mt-2 @CenterFlexNoWrapContainer">
             <p>
                 Santa has one final task for you before he can accept your wish list. Please set some
                 <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" data-toggle="tooltip" title="Set Your Security Questions">
                     security questions
                 </a> in case you forget your password and need to reset it.
             </p>
-        }
-        else
-        {
+        </div>
+    }
+    else
+    {
+        <div class="mt-2 @CenterFlexNoWrapContainer">
             <div class="col-xl-10 col-lg-11 col-md-12 mt-2">
+
+                @if (Model != null)
+                {
+                    <section style="margin: 0 12px 12px 12px">
+                        <partial name="_ConfirmEmailWarning" model="Model.CurrentUser" />
+                    </section>
+                }
+
                 <partial name="_HomePageCards" />
             </div>
-        }
-    </div>
+        </div>
+    }
 }
 else
 {
@@ -57,7 +68,7 @@ else
             </a>
         </p>
     </div>
-    <br/>
+    <br />
 
     <section class="@CenterFlexWrapContainer">
         <div class="@StandardPageWidth">

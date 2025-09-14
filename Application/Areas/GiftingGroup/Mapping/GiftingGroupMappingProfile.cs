@@ -24,6 +24,7 @@ public sealed class GiftingGroupMappingProfile : Profile
             .IncludeMembers(src => src.SantaUser.GlobalUser)
             .ForMember(dest => dest.GroupApplicationKey, opt => opt.MapFrom(src => src.GroupApplicationKey))
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
+            .ForMember(dest => dest.ApplicantMessage, opt => opt.MapFrom(src => src.Message))
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupKey == src.GiftingGroupKey && x.GroupApplicationKey != src.GroupApplicationKey)
                 .Count()))

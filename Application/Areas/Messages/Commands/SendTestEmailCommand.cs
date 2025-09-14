@@ -37,7 +37,8 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
             IdentificationHashed = false,
             EmailConfirmed = true,
             ReceiveEmails = MessageSettings.EmailPreference.All,
-            DetailedEmails = true
+            DetailedEmails = true,
+            Greeting = "Hello there"
         };
 
         try

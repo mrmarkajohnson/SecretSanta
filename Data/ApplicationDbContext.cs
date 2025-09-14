@@ -27,14 +27,14 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public string? CurrentUserId { get; set; }
-    public List<Santa_Message> MessagesToSend { get; set; } = new();
+    public List<Santa_Message> EmailsToSend { get; set; } = new();
     public IEmailClient? EmailClient { get; set; }
 
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         AddAuditTrails();
         int result = await base.SaveChangesAsync(cancellationToken);
-        SendMessages();
+        SendEmails();
         return result;
     }
 
@@ -42,7 +42,7 @@ public class ApplicationDbContext : IdentityDbContext
     {
         AddAuditTrails();
         int result = base.SaveChanges();
-        SendMessages();
+        SendEmails();
         return result;
     }
 
@@ -140,18 +140,16 @@ public class ApplicationDbContext : IdentityDbContext
         return changes;
     }
 
-    private void SendMessages()
+    private void SendEmails()
     {
-        return; // TODO: Remove this once e-mails are safe to send
-        
-        MessagesToSend ??= new();
+        EmailsToSend ??= new();
 
         if (EmailClient == null)
             return; // TODO: Log failure (or queue the messages)
 
-        if (MessagesToSend.Any())
+        if (EmailsToSend.Any())
         {
-            foreach (var dbMessage in MessagesToSend)
+            foreach (var dbMessage in EmailsToSend)
             {
                 try
                 {
@@ -163,7 +161,7 @@ public class ApplicationDbContext : IdentityDbContext
                 }
             }
 
-            MessagesToSend.Clear();
+            EmailsToSend.Clear();
         }
     }
 

@@ -1,20 +1,10 @@
-﻿using Global.Abstractions.Shared;
-using Global.Settings;
+﻿using Global.Abstractions.Areas.Account;
+using Global.Abstractions.Shared;
 
 namespace Global.Abstractions.Areas.Messages;
 
-public interface IEmailRecipient : IUserNamesBase, IUserEmailDetails
+public interface IEmailRecipient : IUserNamesBase, IUserEmailDetails, IIdentityUser
 {
     int MessageKey { get; }
     int MessageRecipientKey { get; }
-}
-
-public static class EmailRecipientExtensions
-{
-    public static bool CanReceiveEmails(this IEmailRecipient recipient)
-    {
-        return recipient.EmailConfirmed 
-            && recipient.Email.IsNotEmpty() 
-            && recipient.ReceiveEmails != MessageSettings.EmailPreference.None;
-    }
 }

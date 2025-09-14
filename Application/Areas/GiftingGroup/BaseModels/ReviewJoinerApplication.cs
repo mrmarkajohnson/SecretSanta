@@ -11,25 +11,28 @@ public class ReviewJoinerApplication : UserNamesBase, IReviewApplication
     [Display(Name = "Group Name")]
     public string GroupName { get; set; } = string.Empty;
 
-    [Display(Name = $"Applicant {UserDisplayNames.UserName}")]
+    [Display(Name = $"Applicant's {UserDisplayNames.UserName}")]
     public override string? UserName { get; set; } = string.Empty;
 
-    [Display(Name = "Applicant Name")]
+    [Display(Name = "Applicant's Name")]
     public string ApplicantName
     {
         get => UserDisplayName;
         set => UserDisplayName = value;
     }
 
-    [Display(Name = $"Applicant {UserDisplayNames.Email}")]
+    [Display(Name = $"Applicant's {UserDisplayNames.Email}")]
     public override string? Email { get; set; }
+
+    [Display(Name = $"Message from Applicant")]
+    public string? ApplicantMessage { get; set; }
 
     public int PreviousRequestCount { get; set; }
     public bool CurrentYearCalculated { get; set; }
 
     public bool Accepted { get; set; }
 
-    [Display(Name = "Message")]
+    [Display(Name = "Explanation")]
     public string? RejectionMessage { get; set; }
 
     [Display(Name = "Block Future Applications")]

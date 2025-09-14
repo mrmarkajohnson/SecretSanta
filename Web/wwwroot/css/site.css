@@ -185,3 +185,18 @@ div.squashed {
     font-size: 90% !important;
     line-height: 90% !important;
 }
+
+.alert {
+    border-width: 5px !important;
+    border-style: double;
+}
+
+.alert.alert-info {
+    border-color: #88aaff;
+    background-color: #f3faff;
+}
+
+.alert.alert-warning {
+    border-color: orange;
+    background-color: #fffdef;
+}
