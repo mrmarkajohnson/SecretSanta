@@ -20,8 +20,8 @@ public class SetEmailPreferencesCommand<TItem> : UserBaseCommand<TItem> where TI
 
         if (Validation.IsValid)
         {
-            string originalEmail = Item.Email ?? string.Empty; // get this before it is hashed
-            EncryptionHelper.EncryptEmail(originalEmail);
+            string? originalEmail = Item.Email = TidyEmail(Item.Email); // ditto;
+            Item.Email = EncryptionHelper.EncryptEmail(Item.Email);
             await HandleEmailAddress(dbCurrentSantaUser.GlobalUser, originalEmail);
         }
 

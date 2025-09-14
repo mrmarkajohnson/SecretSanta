@@ -25,6 +25,11 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
         return passwordCorrect;
     }
 
+    private protected string? TidyEmail(string? eMail)
+    {
+        return eMail.NullIfEmpty().Tidy(false)?.ToLower();
+    }
+
     private protected IUserEmailStore<IdentityUser> GetEmailStore(IUserStore<IdentityUser> userStore)
     {
         if (!UserManager.SupportsUserEmail)

@@ -18,11 +18,6 @@ public abstract class IdentityBaseCommand<TItem> : UserBaseCommand<TItem> where 
         await UserStore.SetUserNameAsync(dbGlobalUser, Item.UserName, CancellationToken.None);
     }
 
-    private protected string? TidyEmail(string? eMail)
-    {
-        return eMail.NullIfEmpty().Tidy(false)?.ToLower();
-    }
-
     private protected async Task StoreEmailAddress(Global_User dbGlobalUser, string? unhashedEmail) // use this approach so it is thoroughly checked
     {
         await StoreEmailAddress(dbGlobalUser, Item.Email, UserStore, unhashedEmail);
