@@ -1,4 +1,5 @@
 ﻿@using Global.Abstractions.Areas.Participate
+@using Web.Extensions
 @model IQueryable<IUserGiftingGroupYear>
 @{
     Func<IUserGiftingGroupYear, object> actions =
@@ -22,12 +23,12 @@
         @if (item.Included && item.Recipient != null)
         {
             <a href="#" data-user-name="@item.RecipientString" data-group-name="@item.GiftingGroupName"
-                    data-toggle="tooltip" title="Show who you are giving to this year"  data-bs-container="td"onclick="showRecipient(this)">
+                    data-toggle="tooltip" title="Show who you are giving to this year" data-bs-container="td" onclick="showRecipient(this)">
                 Show
             </a>
 
             <span class="user-info-card collapse">
-                <partial name="_UserInfoCard" model="@item.Recipient" />
+                <partial name="_UserInfoCard" model="@item.Recipient" view-data="@ViewData.TooltipContainerVd("div.modal")" />
             </span>
         }
         else

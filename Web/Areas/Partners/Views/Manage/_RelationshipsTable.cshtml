@@ -1,4 +1,5 @@
 ﻿@using Application.Areas.Partners.ViewModels
+@using Web.Extensions
 @model RelationshipsVm
 @{
     string statusExplanation = "Each relationship must be confirmed by both people involved. "
@@ -62,8 +63,8 @@
                                 </span>
 
                                 <span class="nowrap">
-                                    @relationship.Partner.UserDisplayName 
-                                    <partial name="_UserInfoCard" model="@relationship.Partner" />
+                                    @relationship.Partner.UserDisplayName
+                                    <partial name="_UserInfoCard" model="@relationship.Partner" view-data="@ViewData.TooltipContainerVd("td")" />
                                 </span>
                             </td>
                             <td>@relationship.Partner.UserName</td>

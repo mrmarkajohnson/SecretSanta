@@ -32,6 +32,8 @@
 
 @if (info != null)
 {
+    string container = ViewData["data-bs-container"]?.ToString() ?? "body";
+
     <style>
         .tooltip, .tooltip-inner {
             max-width: 100%; /* Max Width of the popover (depending on the container!) */
@@ -40,7 +42,7 @@
         }
     </style>
 
-    <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="body" title="@info"
+    <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="@container" title="@info"
             style="font-size: 13px !important">
         <i class="fa fa-circle-info fa-border" style="font-size: 13px !important"></i>
     </span>

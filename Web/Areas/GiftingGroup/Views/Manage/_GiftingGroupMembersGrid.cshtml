@@ -1,8 +1,9 @@
 ﻿@using Global.Abstractions.Areas.Participate
 @using Global.Abstractions.Shared
+@using Web.Extensions
 
 @model EditGiftingGroupVm
-@{
+@{        
     Func<IGroupMember, object> actions =
     @<text>
         <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup, 
@@ -12,10 +13,10 @@
            data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
     </text>;
 
-    Func<IGroupMember, object> displayName =
+    Func<IUserNamesBase, object> displayName =
     @<text>
-    @item.UserDisplayName
-        <partial name="_UserInfoCard" model="@item" />
+        @item.UserDisplayName
+        <partial name="_UserInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
     </text>;
 
     Func<IGroupMember, object> adminCheckbox =

@@ -1,5 +1,6 @@
 IMMEDIATE
 * Send invitations to e-mail addresses
+* Prevent removing users from group or this year after recipients are chosen (e.g. don't show the options/links)
 Add bug reporting
 Add reporting abuse
 
