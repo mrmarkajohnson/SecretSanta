@@ -32,6 +32,7 @@ public sealed class HomeController : BaseController
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
             ReturnUrl = returnUrl,
             TimedOut = timedOut,
+            RememberMe = true
         };
 
         // Clear the existing external cookie to ensure a clean login process
