@@ -13,26 +13,28 @@ function initThinking() {
     forms.forEach(initSubmitThinking);
 
     function initSubmitThinking(form) {
-        let $form = $(form); // .valid() is a JQuery extension
-        let submitButton = null;        
+        if (!initialised(form, 'thinking')) {
+            let $form = $(form); // .valid() is a JQuery extension
+            let submitButton = null;
 
-        form.addEventListener('submit', function (e) {
-            
-            if (typeof $.fn.valid != 'function' || $form.valid()) {
-                submitButton = e.currentTarget;
-                submitButton.setAttribute('disabled', 'disabled');
-                showThinkingAnimation(thinkingSection, submitButton);
-            }
-        }, { passive: true });
+            form.addEventListener('submit', function (e) {
 
-        $('form').on('invalid-form.validate', function () { // need JQuery to get this
-            clearThinkingElements(thinkingSection, submitButton);            
-        });
+                if (typeof $.fn.valid != 'function' || $form.valid()) {
+                    submitButton = e.currentTarget;
+                    submitButton.setAttribute('disabled', 'disabled');
+                    showThinkingAnimation(thinkingSection, submitButton);
+                }
+            }, { passive: true });
+
+            $('form').on('invalid-form.validate', function () { // need JQuery to get this
+                clearThinkingElements(thinkingSection, submitButton);
+            });
+        }
     }
 }
 
 function showThinkingAnimation(thinkingSection, submitButton) {
-    submitTimer = setTimeout(function() {
+    submitTimer = setTimeout(function () {
         thinkingSection.style.display = "block";
         if (submitButton) {
             submitButton.removeAttribute('disabled');

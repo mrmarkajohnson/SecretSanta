@@ -12,6 +12,7 @@ function initNameVariations() {
     let showNameContainer = document.querySelector('div.name-variations-container');
     if (showNameContainer) {
         let form = showNameContainer.closest('form');
+
         if (form) {
             let containerUrl = showNameContainer.getAttribute('data-url');
             if (!isEmptyValue(containerUrl)) {
@@ -20,8 +21,7 @@ function initNameVariations() {
                 inputs.forEach(initNameVariation);
 
                 function initNameVariation(input) {
-                    if (!input.getAttribute('data-initialised-snv')) {
-                        input.setAttribute('data-initialised-snv', true);
+                    if (!initialised(input, 'snv')) {
                         input.addEventListener('change', showNameVariation);
                     }
                 }
@@ -60,9 +60,7 @@ function initPreferredName() {
             setPreferredName();
 
             preferedNameOptions.forEach(function (option) {
-                if (!option.getAttribute('data-initialised-pf')) {
-                    option.setAttribute('data-initialised-pf', true);
-
+                if (!initialised(option, 'preferred')) {
                     option.addEventListener('click', function () {
                         preferredOptionSelected(option);
                     });

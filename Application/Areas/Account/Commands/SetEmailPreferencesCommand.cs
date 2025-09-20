@@ -21,7 +21,12 @@ public class SetEmailPreferencesCommand<TItem> : UserBaseCommand<TItem> where TI
         if (Validation.IsValid)
         {
             string? originalEmail = Item.Email = TidyEmail(Item.Email); // ditto;
-            Item.Email = EncryptionHelper.EncryptEmail(Item.Email);
+
+            if (Item.Email.IsNotEmpty())
+            {
+                Item.Email = EncryptionHelper.EncryptEmail(Item.Email);
+            }
+
             await HandleEmailAddress(dbCurrentSantaUser.GlobalUser, originalEmail);
         }
 

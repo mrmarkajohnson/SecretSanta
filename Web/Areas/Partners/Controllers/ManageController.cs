@@ -1,16 +1,16 @@
 ﻿using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
-using Application.Shared.Helpers;
+using Application.Areas.Partners.ViewModels;
+using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.Partners;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Application.Shared.ViewModels;
+using static Global.Settings.GlobalSettings;
 using static Global.Settings.PartnerSettings;
-using Application.Areas.Partners.ViewModels;
 
 namespace Web.Areas.Partners.Controllers;
 
-[Area("Partners")]
+[Area(AreaNames.Partners)]
 [Authorize]
 public sealed class ManageController : BaseController
 {
@@ -29,14 +29,14 @@ public sealed class ManageController : BaseController
     [HttpPost]
     public async Task<IActionResult> ChangeRelationshipStatus(int partnerLinkKey, string hashedUserId, RelationshipStatus newStatus)
     {
-        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), AreaNames.Partners);
         var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, newStatus, manageRelationshipsLink);
         var commandResult = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (commandResult.Success)
         {
             if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
-                return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
+                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully");
 
             return Ok("Relationship updated successfully");
         }
@@ -59,7 +59,7 @@ public sealed class ManageController : BaseController
     private async Task<AddRelationshipVm> GetAddRelationshipModel(string hashedUserId = "")
     {
         var possiblePartners = await Send(new GetPossiblePartnersQuery());
-        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), AreaNames.Partners);
 
         var model = new AddRelationshipVm(possiblePartners, hashedUserId, manageRelationshipsLink, nameof(SelectRelationshipUserGrid));
         return model;
@@ -82,7 +82,7 @@ public sealed class ManageController : BaseController
 
         if (result.Success)
         {
-            return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship added successfully");
+            return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship added successfully");
         }
         else
         {
@@ -118,7 +118,7 @@ public sealed class ManageController : BaseController
 
         if (isValid)
         {
-            string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+            string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), AreaNames.Partners);
             var changeModel = new ChangeRelationshipStatusVm(model.PartnerLinkKey ?? 0, model.Partner.HashedUserId, model.Status, manageRelationshipsLink);
             var result = await Send(new ChangeRelationshipStatusCommand(changeModel), null);
 
@@ -135,14 +135,14 @@ public sealed class ManageController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, string hashedUserId)
     {
-        string manageRelationshipsLink = GetFullUrl(nameof(Index), "Manage", "Partners");
+        string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), AreaNames.Partners);
         var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, RelationshipStatus.IgnoreOld, manageRelationshipsLink);
         var result = await Send(new ChangeRelationshipStatusCommand(model), null);
 
         if (result.Success)
         {
             if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
-                return RedirectWithMessage(Url.Action(nameof(Index), "Manage", new { Area = "Partners" }), "Relationship cancelled successfully");
+                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully");
 
             return Ok("Relationship deleted successfully");
         }

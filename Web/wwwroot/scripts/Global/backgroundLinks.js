@@ -4,9 +4,7 @@
 }
 
 function initBackgroundLink(backgroundLink) {
-    if (!backgroundLink.getAttribute('data-initialised')) {
-        backgroundLink.setAttribute('data-initialised', true);
-
+    if (!initialised(backgroundLink, 'background-link')) {
         backgroundLink.addEventListener('click', function () {
             followLink(backgroundLink);
         });

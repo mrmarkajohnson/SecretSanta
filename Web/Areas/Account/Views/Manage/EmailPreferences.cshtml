@@ -11,7 +11,7 @@
 <h1>Set Your E-mail Preferences</h1>
 
 <section>
-    <form asp-area="Account" asp-controller="Manage" asp-action="EmailPreferences" method="post">
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="EmailPreferences" method="post">
         <partial name="_FormHiddenInputs" />
 
         <div class="row @CenterFlexNoWrapContainer">

@@ -23,9 +23,11 @@ function initReviewApplication() {
                 acceptedOptionChanged(radioOption);
             }
 
-            radioOption.addEventListener('click', function () {
-                acceptedOptionChanged(radioOption);
-            });
+            if (!initialised(radioOption, 'change-review')) {
+                radioOption.addEventListener('click', function () {
+                    acceptedOptionChanged(radioOption);
+                });
+            }
         });
 
         function acceptedOptionChanged(radioOption) {

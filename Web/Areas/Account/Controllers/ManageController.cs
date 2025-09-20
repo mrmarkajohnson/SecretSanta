@@ -6,10 +6,11 @@ using Global.Abstractions.Areas.Account;
 using Global.Names;
 using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Account.Controllers;
 
-[Area("Account")]
+[Area(AreaNames.Account)]
 public sealed class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;

@@ -30,7 +30,7 @@
         <div class="mt-2 @CenterFlexNoWrapContainer">
             <p>
                 Santa has one final task for you before he can accept your wish list. Please set some
-                <a asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" data-toggle="tooltip" title="Set Your Security Questions">
+                <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="SetSecurityQuestions" data-toggle="tooltip" title="Set Your Security Questions">
                     security questions
                 </a> in case you forget your password and need to reset it.
             </p>
@@ -58,12 +58,12 @@ else
     <h1>Welcome to Secret Santa!</h1>
     <div class="mt-2">
         <p>
-            Please <a asp-area="Account" asp-controller="Home" asp-action="Login">log in</a> if you have an account,
-            or <a asp-area="Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
+            Please <a asp-area="@AreaNames.Account" asp-controller="Home" asp-action="Login">log in</a> if you have an account,
+            or <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register">register</a> as a new user.
         </p>
         <p>
             If you have an account but have forgotten your password, you can
-            <a asp-area="Account" asp-controller="Home" asp-action="ForgotPassword" data-toggle="tooltip" title="Reset Your Password">
+            <a asp-area="@AreaNames.Account" asp-controller="Home" asp-action="ForgotPassword" data-toggle="tooltip" title="Reset Your Password">
                 reset it here.
             </a>
         </p>

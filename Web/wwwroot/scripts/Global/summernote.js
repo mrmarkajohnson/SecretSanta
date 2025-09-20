@@ -4,8 +4,7 @@ function initSummernote() {
     let summernoteDiv = $('div.summernote');
 
     if (!summernoteDiv.attr('initialised-sn')) {
-
-        summernoteDiv.attr('initialised-sn', true);
+        summernoteDiv.attr('initialised-sn', true); // don't use normal initialised function as it's a jQuery object
 
         let summernoteContainer = summernoteDiv.parent().closest('div');
         let summernoteContentInput = summernoteContainer.find('input.summernote-content');

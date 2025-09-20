@@ -3,10 +3,12 @@ using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
 using Global.Abstractions.Areas.Suggestions;
 using Microsoft.AspNetCore.Authorization;
+using Web.Areas.GiftingGroup.Controllers;
+using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Suggestions.Controllers;
 
-[Area("Suggestions")]
+[Area(AreaNames.Suggestions)]
 [Authorize]
 public class HomeController : BaseController
 {
@@ -58,7 +60,7 @@ public class HomeController : BaseController
         ModelState.Clear();
         bool update = model.SuggestionKey > 0;
 
-        var yearGroupUrl = GetFullUrl("Year", "Participate", "GiftingGroup", new { giftingGroupKey = 0 });
+        var yearGroupUrl = GetFullUrl(nameof(ParticipateController.Year), nameof(ParticipateController), AreaNames.GiftingGroup, new { giftingGroupKey = 0 });
         var commandResult = await Send(new SaveSuggestionCommand<ManageSuggestionVm>(model, yearGroupUrl), new ManageSuggestionVmValidator());
 
         if (commandResult.Success)

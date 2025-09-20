@@ -6,6 +6,9 @@ function initEyeSymbols() {
 }
 
 function initEyeSymbol(eyeSymbol) {
+    if (initialised(eyeSymbol, 'show'))
+        return false;
+
     let inputGroup = eyeSymbol.closest('.input-group');
     if (inputGroup) {
         let input = inputGroup.querySelector('input[type=password], input.' + hideTextClass);
@@ -32,7 +35,12 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             input.addEventListener('focus', function () {
-                if (!isEmptyInput(input) && !showText) {
+                if (isEmptyInput(input)) {
+                    if (!isPassword) {
+                        showText = true;
+                        toggleInputType(input, isPassword, showText);
+                    }
+                } else if (!showText) {
                     eyeSymbol.classList.remove('collapse');
                     if (noEyeSymbol) {
                         noEyeSymbol.classList.add('collapse');

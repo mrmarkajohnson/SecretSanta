@@ -27,7 +27,7 @@ public class UserNamesBase : BaseUser, IUserNamesBase
     [Display(Name = "Surname")]
     public string Surname { get; set; } = string.Empty;
 
-    [Display(Name = "Preferred Gender")]
+    [Display(Name = "Gender")]
     public Gender Gender { get; set; }
 
     public string UserDisplayName

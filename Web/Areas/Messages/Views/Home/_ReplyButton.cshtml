@@ -6,7 +6,7 @@
         data-bs-container="label" title="Reply">
     
         <button type="button" class="btn btn-close-modal modal-link" data-bs-dismiss="modal"
-                data-url="@Url.Action(Context, "Reply", "Home", "Messages", new { messageKey = Model.MessageKey })">
+                data-url="@Url.Action(Context, "Reply", "Home", AreaNames.Messages, new { messageKey = Model.MessageKey })">
             <i class="fa fa-reply"></i> Reply
         </button>
     </div>

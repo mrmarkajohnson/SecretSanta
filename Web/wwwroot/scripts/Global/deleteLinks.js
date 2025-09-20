@@ -4,9 +4,7 @@
 }
 
 function initDeleteLink(deleteLink) {
-    if (!deleteLink.getAttribute('data-initialised')) {
-        deleteLink.setAttribute('data-initialised', true);
-
+    if (!initialised(deleteLink, 'delete')) {
         deleteLink.addEventListener('click', function () {
             confirmAndDelete(deleteLink);
         });

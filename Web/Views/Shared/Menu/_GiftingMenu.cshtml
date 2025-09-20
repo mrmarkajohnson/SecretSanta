@@ -10,17 +10,17 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="giftingDropdown">
         <li>
-            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
+            <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">
                 Create a New Gifting Group
             </a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
+            <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">
                 Apply to Join a Group
             </a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Index">
+            <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">
                 Participate for @DateTime.Today.Year
             </a>
         </li>
@@ -30,7 +30,7 @@
             @if (Model?.HomeModel.NewJoinerApplications > 0)
             {
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">
                         Review Joiner Applications
                     </a>
                 </li>
@@ -41,17 +41,17 @@
                 <li><hr class="dropdown-divider"></li>
 
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="EditGiftingGroup" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         Edit Gifting Group '@giftingGroup.GroupName'
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         View '@giftingGroup.GroupName' for @DateTime.Today.Year
                     </a>
                 </li>
@@ -69,7 +69,7 @@
                 }
 
                 <li>
-                    <a class="dropdown-item" asp-area="GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
+                    <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         View '@giftingGroup.GroupName' for @DateTime.Today.Year
                     </a>
                 </li>

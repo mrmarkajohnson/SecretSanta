@@ -1,7 +1,7 @@
 let isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 let isEdge = navigator.userAgent.toLowerCase().includes('edge');
 
-window.addEventListener('load', function () {
+window.addEventListener('pageshow', function () {
     initAjaxComplete();
     initSuccessMessage();
 });

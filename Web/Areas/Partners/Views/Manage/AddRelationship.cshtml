@@ -20,7 +20,7 @@
     </div>
 
     <div class="@StandardFullWidthGridContainer">
-        <div class="user-grid-container" data-url="@Url.Action(Context, "AddRelationship", "Manage", "Partners")">
+        <div class="user-grid-container" data-url="@Url.Action(Context, "AddRelationship", "Manage", AreaNames.Partners)">
             <partial name="_SelectUserGrid" model="@Model.UserGridModel" />
             @* @Html.AjaxGrid(Url.Action("SelectRelationshipUserGrid"), new { id = "select-user-grid" }) *@
         </div>

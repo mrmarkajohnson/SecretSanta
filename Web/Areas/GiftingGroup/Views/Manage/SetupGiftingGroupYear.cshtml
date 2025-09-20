@@ -15,7 +15,7 @@
 <h1>Set Up '@Model.GiftingGroupName' for @Model.CalendarYear</h1>
 
 <section>
-    <form asp-area="GiftingGroup" asp-controller="Manage" asp-action="SetUpGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
+    <form asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetUpGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey" method="post">
         <partial name="_FormHiddenInputs" />
 
         <div class="row @CenterFlexNoWrapContainer">

@@ -5,13 +5,13 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="partnersDropdown">
         <li>
-            <a class="dropdown-item" asp-area="Messages" asp-controller="Home" asp-action="Index">Read Your Messages</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="Index">Read Your Messages</a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="Messages" asp-controller="Home" asp-action="SentMessages">Sent Messages</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="SentMessages">Sent Messages</a>
         </li>
         <li>
-            <a class="dropdown-item" asp-area="Messages" asp-controller="Home" asp-action="WriteMessage">Write a Message</a>
+            <a class="dropdown-item" asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="WriteMessage">Write a Message</a>
         </li>
     </ul>
 }

@@ -16,7 +16,7 @@ else
 }
 
 <section>
-    <form asp-area="Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="SetSecurityQuestions" method="post">
         <partial name="_FormHiddenInputs" />
 
         <div class="collapse">
@@ -178,6 +178,7 @@ else
                 <datalist id="questionsList">
                     <option>What's the best gift you ever received?</option>
                     <option>What's the worst gift you ever received?</option>
+                    <option>What gift makes you most nostalgic?</option>
                     <option>If you had to be an animal, what type would you be?</option>
                     <option>What was the name of the first album you bought?</option>
                     <option>Who would you like to play you in a film?</option>

@@ -7,8 +7,8 @@
 
 <div class="mvc-grid mvc-grid-excel-mode" data-name=@string.Empty data-filter-mode="Excel" data-url=@string.Empty>
     <div class="mvc-grid-table relationships-table" 
-        data-change-url="@Url.Action("ChangeRelationshipStatus", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())"        
-        data-delete-url="@Url.Action("DeleteRelationship", "Manage", new { Area = "Partners" }, Context.Request.Scheme, Context.Request.Host.ToString())">
+        data-change-url="@Url.Action("ChangeRelationshipStatus", "Manage", new { Area = AreaNames.Partners }, Context.Request.Scheme, Context.Request.Host.ToString())"        
+        data-delete-url="@Url.Action("DeleteRelationship", "Manage", new { Area = AreaNames.Partners }, Context.Request.Scheme, Context.Request.Host.ToString())">
 
         <table>
             <thead>
@@ -41,7 +41,7 @@
                     <tr>
                         <td colspan="4">
                             No relationships have been added yet.
-                            <a asp-area="Partners" asp-controller="Manage" asp-action="AddRelationship">Add a Relationship</a>
+                            <a asp-area="@AreaNames.Partners" asp-controller="Manage" asp-action="AddRelationship">Add a Relationship</a>
                         </td>
                     </tr>
                 }
@@ -88,7 +88,7 @@
                                 {
                                     <a class="edit-relationship-link modal-link"
                                         data-url="@Url.Action("EditRelationship", "Manage", 
-                                                    new { Area = "Partners", PartnerLinkKey = @relationship.PartnerLinkKey, hashedUserId = @relationship.Partner.HashedUserId },
+                                                    new { Area = AreaNames.Partners, partnerLinkKey = @relationship.PartnerLinkKey, hashedUserId = @relationship.Partner.HashedUserId },
                                                 Context.Request.Scheme, Context.Request.Host.ToString())"
                                             data-toggle="tooltip" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
                                 }

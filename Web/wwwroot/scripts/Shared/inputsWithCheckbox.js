@@ -12,9 +12,7 @@ function initInputsWithCheckbox() {
 }
 
 function initInputWithCheckbox(container) {
-    if (!container.getAttribute('data-initialised-ic')) {
-        container.setAttribute('data-initialised-ic', true);
-
+    if (!initialised(container, 'input-checkbox')) {
         let textInput = container.querySelector('input[type=text]');
         let checkbox = container.querySelector('input[type=checkbox]');
 

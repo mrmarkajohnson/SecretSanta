@@ -18,19 +18,21 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
 
     dataListInput.setAttribute('placeholder', defaultPlaceholder);
 
-    ['focus', 'mousedown'].forEach(function (e) {
-        dataListInput.addEventListener(e, function () {            
-            setPlaceholderAndClearValue();
+    if (!initialised(dataListInput, 'list')) {
+        ['focus', 'mousedown'].forEach(function (e) {
+            dataListInput.addEventListener(e, function () {
+                setPlaceholderAndClearValue();
+            });
         });
-    });
 
-    dataListInput.addEventListener('blur', function () {
-        restoreValueAndPlaceholderIfNeeded();
-    });
+        dataListInput.addEventListener('blur', function () {
+            restoreValueAndPlaceholderIfNeeded();
+        });
 
-    dataListInput.addEventListener('input', function () {
-        restoreOriginalPlaceholder();
-    });
+        dataListInput.addEventListener('input', function () {
+            restoreOriginalPlaceholder();
+        });
+    }
 
     function setPlaceholderAndClearValue() {
         if (!isEmptyInput(dataListInput)) {

@@ -4,9 +4,7 @@
 }
 
 function initModalLink(modalLink) {
-    if (!modalLink.getAttribute('data-initialised')) {
-        modalLink.setAttribute('data-initialised', true);
-
+    if (!initialised(modalLink, 'modal-link')) {
         modalLink.addEventListener('click', function () {
             showModal(modalLink);
         });

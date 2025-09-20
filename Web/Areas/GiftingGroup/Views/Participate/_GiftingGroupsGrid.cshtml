@@ -5,12 +5,12 @@
     @<text>
         @if (item.MemberStatus >= GroupMemberStatus.Joined)
         {
-            <a asp-action="Year" asp-controller="Participate" asp-area="GiftingGroup" data-toggle="tooltip" title="View details and participate"
+            <a asp-action="Year" asp-controller="Participate" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="View details and participate"
                asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
 
             @if (item.MemberStatus == GroupMemberStatus.Admin)
             {
-                <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
+                <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
                     data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"><i class="fa fa-pencil"></i></a>
             }
         }
