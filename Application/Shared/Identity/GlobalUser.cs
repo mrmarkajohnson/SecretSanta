@@ -26,7 +26,7 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
     [Display(Name = "Surname"), StringLength(UserVal.Surname.MaxLength, MinimumLength = UserVal.Surname.MinLength)]
     public string Surname { get; set; } = string.Empty;
 
-    [Display(Name = "Preferred Gender")]
+    [Display(Name = "Gender")]
     public Gender Gender { get; set; }
 
     public bool SecurityQuestionsSet { get; set; }

@@ -79,7 +79,7 @@ public static class StringExtensions
 
     public static string Tidy(this string text)
     {
-        return text.Trim().Replace("  ", " ").Replace("  ", " ");
+        return text?.Trim().Replace("  ", " ").Replace("  ", " ") ?? "";
     }
 
     public static string? Tidy(this string? text, bool emptyStringIfNull)

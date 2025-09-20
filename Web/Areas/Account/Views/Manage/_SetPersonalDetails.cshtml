@@ -1,10 +1,12 @@
 ﻿@using static Global.Settings.IdentitySettings
 
-@model SantaUser
+@model PersonalDetailsBaseVm
 @{
     string middleNamesExplanation = "This is optional, but may be helpful if someone else has a similar first name and surname.";
     string preferredNameExplanation = $"If you don't usually use your actual {UserDisplayNames.Forename}, please tell Santa the name you prefer.";
-    string genderExplanation = "What do you prefer to be known as?<br/><br/>Santa doesn't care what you call yourself, he only cares if you've been naughty or nice!";
+    string genderExplanation = "What do you prefer to be known as?" 
+        + "<br/><br/>Only needed so Santa doesn't have to keep repeating your name in sentences."
+        + "<br/><br/>Santa doesn't care what you call yourself, only if you've been naughty or nice!";
 }
 
 <div class="@CenterFlexWrapContainer">
@@ -94,18 +96,11 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Gender" class="control-label"></label>
+            <label asp-for="SelectGender" class="control-label required"></label>
             <div class="control-label fw-normal">
-                <span>Other (They)</span>
-                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
-                       value="@Gender.Other" />
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
 
                 <span>Female (She)</span>
-                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
+                <input type="radio" asp-for="SelectGender" class="form-check-input" autocomplete="off" aria-required="false"
                        value="@Gender.Female" />
                 &nbsp;
                 &nbsp;
@@ -113,14 +108,25 @@
                 &nbsp;
 
                 <span>Male (He)</span>
-                <input type="radio" asp-for="Gender" class="form-check-input" autocomplete="off" aria-required="false"
+                <input type="radio" asp-for="SelectGender" class="form-check-input" autocomplete="off" aria-required="false"
                        value="@Gender.Male" />
                 &nbsp;
                 &nbsp;
                 &nbsp;
                 &nbsp;
 
+                <span>Other/Prefer not to say (They)</span>
+                <input type="radio" asp-for="SelectGender" class="form-check-input" autocomplete="off" aria-required="false"
+                       value="@Gender.Other" />
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
                 <partial name="_FormInlineQuestion" model="@genderExplanation" />
+            </div>
+            <div>
+                <span asp-validation-for="SelectGender" class="text-danger"></span>
             </div>
         </div>
     </div>
