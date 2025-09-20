@@ -6,12 +6,13 @@
         @if (item.MemberStatus >= GroupMemberStatus.Joined)
         {
             <a asp-action="Year" asp-controller="Participate" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="View details and participate"
-               asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
+               data-bs-container="td" asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
 
             @if (item.MemberStatus == GroupMemberStatus.Admin)
             {
                 <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
-                    data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"><i class="fa fa-pencil"></i></a>
+                    data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"
+                   data-bs-container="td"><i class="fa fa-pencil"></i></a>
             }
         }
     </text>;
@@ -21,7 +22,7 @@
         @if (item.Included && item.Recipient != null)
         {
             <a href="#" data-user-name="@item.RecipientString" data-group-name="@item.GiftingGroupName"
-                    data-toggle="tooltip" title="Show who you are giving to this year" onclick="showRecipient(this)">
+                    data-toggle="tooltip" title="Show who you are giving to this year"  data-bs-container="td"onclick="showRecipient(this)">
                 Show
             </a>
 

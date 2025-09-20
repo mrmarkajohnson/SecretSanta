@@ -4,16 +4,18 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IEnumerable<IGroupMember>>
+public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGroupMember>>
 {
     private readonly int _giftingGroupKey;
+    private readonly bool _otherMembersOnly;
 
-    public GetGiftingGroupMembersQuery(int giftingGroupKey)
+    public GetGiftingGroupMembersQuery(int giftingGroupKey, bool otherMembersOnly)
     {
         _giftingGroupKey = giftingGroupKey;
+        _otherMembersOnly = otherMembersOnly;
     }
 
-    protected async override Task<IEnumerable<IGroupMember>> Handle()
+    protected async override Task<IQueryable<IGroupMember>> Handle()
     {
         if (_giftingGroupKey == 0)
         {
@@ -23,9 +25,30 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IEnumerable<IGr
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, false);
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
-        return dbGiftingGroup.Members
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+        var groupMembers = dbGiftingGroup.Members
+            .Where(x => x.DateDeleted == null && x.DateArchived == null);
+
+        if (_otherMembersOnly)
+        {
+            Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
+            groupMembers = groupMembers.Where(x => x.SantaUserKey != dbCurrentSantaUser.SantaUserKey).ToList();
+        }
+
+        var result = groupMembers
             .AsQueryable()
-            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider);
+            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider)
+            .ToList();
+
+        foreach (var member in result)
+        {
+            member.UnHash();
+
+            if (dbGiftingGroupLink.GroupAdmin)
+            {
+                member.ShowEmail = true;
+            }
+        }
+
+        return result.AsQueryable();
     }
 }

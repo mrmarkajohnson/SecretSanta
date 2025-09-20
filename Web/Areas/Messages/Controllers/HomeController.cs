@@ -145,7 +145,7 @@ public sealed class HomeController : BaseController
     {
         if (model.GiftingGroupKey > 0)
         {
-            var groupMembers = await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value));
+            var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, false))).ToList();
             model.OtherGroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
             
             model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.GroupAdmin == true;

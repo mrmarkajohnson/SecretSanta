@@ -49,6 +49,8 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
 
     public IList<StandardSelectable> FirstYears => GetFirstYearSelection();
 
+    public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
+
     public virtual string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";
