@@ -11,7 +11,7 @@ function initJoinGiftingGroup() {
     let groupNameInput = form.querySelector('input.gifting-group-name');
     let joinerTokenInput = form.querySelector('input.joiner-token');
 
-    if (!!groupNameInput && !!joinerTokenInput) {
+    if (!!groupNameInput && !initialised(groupNameInput, 'join-group') && !!joinerTokenInput && !initialised(joinerTokenInput, 'join-group')) {
         groupNameInput.addEventListener('change', getGroupDetails);
         joinerTokenInput.addEventListener('change', getGroupDetails);
     }

@@ -16,7 +16,7 @@ async function relationshipModalOpening(e) {
 function relationshipModalOpened(modal) {
     let nowOptionsSection = modal.querySelector('.now-options-section');
 
-    if (nowOptionsSection) {
+    if (nowOptionsSection && !initialised(nowOptionsSection, 'now-options')) {
         manageNowOptions(modal, nowOptionsSection);
     }
 }

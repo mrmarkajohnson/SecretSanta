@@ -9,14 +9,13 @@ $(document).on('ajaxComplete', function () { // this is very difficult without J
 function initIncludedRadios() {
     let includedRadios = document.querySelectorAll('input.included-radio');
 
-    includedRadios.forEach(function (x) {
-        x.setAttribute('data-original-value', x.checked);
+    includedRadios.forEach(function (radio) {
+        radio.setAttribute('data-original-value', radio.checked);
 
-        if (!x.getAttribute('data-initialised')) {
-            x.setAttribute('data-initialised', true);
+        if (!initialised(radio, 'participate-option')) {
 
-            x.addEventListener('click', function (e) {
-                let included = isTrueValue(x.value);
+            radio.addEventListener('click', function () {
+                let included = isTrueValue(radio.value);
                 let title = included ? 'Confirm participation' : 'Don\'t participate';
                 let message = 'Are you sure you ' + (included ? '' : 'DON\'T ') + 'want to participate this year?'
 
@@ -36,7 +35,7 @@ function initIncludedRadios() {
                     callback: function (result) {
                         bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
                         if (result) {
-                            statusChanged(x);
+                            statusChanged(radio);
                         } else {
                             resetIncludedRadios();
                         }

@@ -16,7 +16,7 @@ function initSendMessage() {
         let groupSelect = form.querySelector('select.gifting-group-select');
         let recipientSection = form.querySelector('.message-recipient-section');
 
-        if (groupSelect && recipientSection) {
+        if (groupSelect && recipientSection && !initialised(groupSelect, 'recipient')) {
             groupSelect.addEventListener('change', function () {
                 groupChanged(groupSelect, recipientSection);
             });

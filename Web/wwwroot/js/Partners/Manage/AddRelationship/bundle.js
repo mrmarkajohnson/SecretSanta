@@ -11,12 +11,11 @@ function initStatusSelect() {
     let selectUrl = document.querySelector('div.user-grid-container').getAttribute('data-url');
     let url = new URL(selectUrl);
 
-    selectRadios.forEach(function (x) {
-        if (!x.getAttribute('data-initialised')) {
-            x.setAttribute('data-initialised', true);
+    selectRadios.forEach(function (radio) {
+        if (!initialised(radio, 'status-select')) {
 
-            x.addEventListener('click', function (e) {
-                let name = x.getAttribute('data-name');
+            radio.addEventListener('click', function (e) {
+                let name = radio.getAttribute('data-name');
                 addRelationship(e.currentTarget,
                     url,
                     'Add relationship',

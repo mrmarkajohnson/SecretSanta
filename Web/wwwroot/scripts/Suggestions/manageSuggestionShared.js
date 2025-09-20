@@ -6,9 +6,7 @@
     });
 
     function initialiseGroupCheckbox(checkbox) {
-        if (!checkbox.getAttribute('data-initialised')) {
-            checkbox.setAttribute('data-initialised', true);
-
+        if (!initialised(checkbox, 'participate')) {
             checkbox.addEventListener('click', function (e) {
                 groupCheckboxClicked(checkbox);
             });

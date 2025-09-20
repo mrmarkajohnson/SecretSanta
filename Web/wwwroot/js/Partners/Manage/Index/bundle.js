@@ -1,28 +1,27 @@
 window.addEventListener('load', function () {
-    initRelatinoshipStatusSelects();
+    initRelationshipStatusSelects();
     initDeleteRelationshipLinks();
 });
 
-function initRelatinoshipStatusSelects() {
+function initRelationshipStatusSelects() {
     let statusSelects = document.querySelectorAll('select.relationship-status-select');
     let selectUrl = document.querySelector('div.relationships-table').getAttribute('data-change-url');
     let url = new URL(selectUrl);
 
-    statusSelects.forEach(function (x) {
-        x.setAttribute('data-original-value', x.value);
+    statusSelects.forEach(function (select) {
+        select.setAttribute('data-original-value', select.value);
 
-        if (!x.getAttribute('data-initialised')) {
-            x.setAttribute('data-initialised', true);
+        if (!initialised(select, 'status-select')) {
 
-            x.addEventListener('change', function (e) {
-                let originalValue = x.getAttribute('data-original-value');
+            select.addEventListener('change', function (e) {
+                let originalValue = select.getAttribute('data-original-value');
 
-                if (x.value != originalValue) {
-                    let name = x.getAttribute('data-name');
+                if (select.value != originalValue) {
+                    let name = select.getAttribute('data-name');
                     let headerText = 'Change relationship status';
                     let messageText = 'Are you sure you want to change the status of your relationship with ' + name + '?';
 
-                    if (x.value == 'NotRelationship') { // TODO: More specific wording for other values
+                    if (select.value == 'NotRelationship') { // TODO: More specific wording for other values
                         headerText = 'Deny suggesteed relationship'
                         messageText = 'You\'re NOT in a relationship with ' + name + ', is that correct?';
                     }
@@ -42,13 +41,12 @@ function initDeleteRelationshipLinks() {
     let deleteUrl = document.querySelector('div.relationships-table').getAttribute('data-delete-url');
     let url = new URL(deleteUrl);
 
-    deleteLinks.forEach(function (x) {
-        if (!x.getAttribute('data-initialised')) {
-            x.setAttribute('data-initialised', true);
-            x.setAttribute('data-original-value', 'null'); // avoid breaking the relationshipStatusChanged method
+    deleteLinks.forEach(function (deleteLink) {
+        if (!initialised(deleteLink, 'delete-relationship')) {
+            deleteLink.setAttribute('data-original-value', 'null'); // avoid breaking the relationshipStatusChanged method
 
-            x.addEventListener('click', function (e) {
-                let name = x.getAttribute('data-name');
+            deleteLink.addEventListener('click', function (e) {
+                let name = deleteLink.getAttribute('data-name');
                 let headerText = 'Delete relationship';
                 let messageText = 'Are you sure you want to delete your proposed relationship with ' + name + '?';
 
@@ -144,7 +142,7 @@ async function relationshipModalOpening(e) {
 function relationshipModalOpened(modal) {
     let nowOptionsSection = modal.querySelector('.now-options-section');
 
-    if (nowOptionsSection) {
+    if (nowOptionsSection && !initialised(nowOptionsSection, 'now-options')) {
         manageNowOptions(modal, nowOptionsSection);
     }
 }

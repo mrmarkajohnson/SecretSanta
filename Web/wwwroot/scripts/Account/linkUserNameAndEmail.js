@@ -4,6 +4,10 @@ window.addEventListener('load', function () {
 
 function initLinkUserNameAndEmail() {
     let emailInput = document.querySelector('input.email-input');
+
+    if (initialised(emailInput, 'user-name'))
+        return;
+
     let userNameContainer = document.querySelector('div.username-container');
     let userNameInput = userNameContainer.querySelector('input.username-input');
     let useEmailCheckboxContainer = document.querySelector('div.use-email-checkbox-container');

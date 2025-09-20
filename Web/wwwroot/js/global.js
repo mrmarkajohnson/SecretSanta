@@ -4,9 +4,7 @@ function initBackgroundLinks() {
 }
 
 function initBackgroundLink(backgroundLink) {
-    if (!backgroundLink.getAttribute('data-initialised')) {
-        backgroundLink.setAttribute('data-initialised', true);
-
+    if (!initialised(backgroundLink, 'background-link')) {
         backgroundLink.addEventListener('click', function () {
             followLink(backgroundLink);
         });
@@ -58,19 +56,21 @@ function handleDataListIssues(dataListInput) { // ensure the full list is shown 
 
     dataListInput.setAttribute('placeholder', defaultPlaceholder);
 
-    ['focus', 'mousedown'].forEach(function (e) {
-        dataListInput.addEventListener(e, function () {            
-            setPlaceholderAndClearValue();
+    if (!initialised(dataListInput, 'list')) {
+        ['focus', 'mousedown'].forEach(function (e) {
+            dataListInput.addEventListener(e, function () {
+                setPlaceholderAndClearValue();
+            });
         });
-    });
 
-    dataListInput.addEventListener('blur', function () {
-        restoreValueAndPlaceholderIfNeeded();
-    });
+        dataListInput.addEventListener('blur', function () {
+            restoreValueAndPlaceholderIfNeeded();
+        });
 
-    dataListInput.addEventListener('input', function () {
-        restoreOriginalPlaceholder();
-    });
+        dataListInput.addEventListener('input', function () {
+            restoreOriginalPlaceholder();
+        });
+    }
 
     function setPlaceholderAndClearValue() {
         if (!isEmptyInput(dataListInput)) {
@@ -100,9 +100,7 @@ function initDeleteLinks() {
 }
 
 function initDeleteLink(deleteLink) {
-    if (!deleteLink.getAttribute('data-initialised')) {
-        deleteLink.setAttribute('data-initialised', true);
-
+    if (!initialised(deleteLink, 'delete')) {
         deleteLink.addEventListener('click', function () {
             confirmAndDelete(deleteLink);
         });
@@ -267,9 +265,7 @@ function initModalLinks() {
 }
 
 function initModalLink(modalLink) {
-    if (!modalLink.getAttribute('data-initialised')) {
-        modalLink.setAttribute('data-initialised', true);
-
+    if (!initialised(modalLink, 'modal-link')) {
         modalLink.addEventListener('click', function () {
             showModal(modalLink);
         });
@@ -374,7 +370,7 @@ async function saveModalForm(modal, modalObject) {
 let isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 let isEdge = navigator.userAgent.toLowerCase().includes('edge');
 
-window.addEventListener('load', function () {
+window.addEventListener('pageshow', function () {
     initAjaxComplete();
     initSuccessMessage();
 });
@@ -509,8 +505,7 @@ function initSummernote() {
     let summernoteDiv = $('div.summernote');
 
     if (!summernoteDiv.attr('initialised-sn')) {
-
-        summernoteDiv.attr('initialised-sn', true);
+        summernoteDiv.attr('initialised-sn', true); // don't use normal initialised function as it's a jQuery object
 
         let summernoteContainer = summernoteDiv.parent().closest('div');
         let summernoteContentInput = summernoteContainer.find('input.summernote-content');
@@ -558,26 +553,28 @@ function initThinking() {
     forms.forEach(initSubmitThinking);
 
     function initSubmitThinking(form) {
-        let $form = $(form); // .valid() is a JQuery extension
-        let submitButton = null;        
+        if (!initialised(form, 'thinking')) {
+            let $form = $(form); // .valid() is a JQuery extension
+            let submitButton = null;
 
-        form.addEventListener('submit', function (e) {
-            
-            if (typeof $.fn.valid != 'function' || $form.valid()) {
-                submitButton = e.currentTarget;
-                submitButton.setAttribute('disabled', 'disabled');
-                showThinkingAnimation(thinkingSection, submitButton);
-            }
-        }, { passive: true });
+            form.addEventListener('submit', function (e) {
 
-        $('form').on('invalid-form.validate', function () { // need JQuery to get this
-            clearThinkingElements(thinkingSection, submitButton);            
-        });
+                if (typeof $.fn.valid != 'function' || $form.valid()) {
+                    submitButton = e.currentTarget;
+                    submitButton.setAttribute('disabled', 'disabled');
+                    showThinkingAnimation(thinkingSection, submitButton);
+                }
+            }, { passive: true });
+
+            $('form').on('invalid-form.validate', function () { // need JQuery to get this
+                clearThinkingElements(thinkingSection, submitButton);
+            });
+        }
     }
 }
 
 function showThinkingAnimation(thinkingSection, submitButton) {
-    submitTimer = setTimeout(function() {
+    submitTimer = setTimeout(function () {
         thinkingSection.style.display = "block";
         if (submitButton) {
             submitButton.removeAttribute('disabled');
@@ -628,6 +625,9 @@ function initEyeSymbols() {
 }
 
 function initEyeSymbol(eyeSymbol) {
+    if (initialised(eyeSymbol, 'show'))
+        return false;
+
     let inputGroup = eyeSymbol.closest('.input-group');
     if (inputGroup) {
         let input = inputGroup.querySelector('input[type=password], input.' + hideTextClass);

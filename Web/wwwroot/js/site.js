@@ -72,3 +72,22 @@ async function getResponseText(response) {
 
     return responseText;
 }
+
+/**
+ * If already initialised, returns true, otherwise sets the initialised 'flag' for next time
+ */
+function initialised(element, functionName) {
+
+    if (!element)
+        return true; // this will be ignored
+
+    let initialisedAttribute = 'data-initialised-' + functionName;
+
+    if (element.getAttribute(initialisedAttribute)) {
+        return true;
+    }
+    else {
+        element.setAttribute(initialisedAttribute, true);
+        return false;
+    }
+}

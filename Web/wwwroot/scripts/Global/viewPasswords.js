@@ -6,6 +6,9 @@ function initEyeSymbols() {
 }
 
 function initEyeSymbol(eyeSymbol) {
+    if (initialised(eyeSymbol, 'show'))
+        return false;
+
     let inputGroup = eyeSymbol.closest('.input-group');
     if (inputGroup) {
         let input = inputGroup.querySelector('input[type=password], input.' + hideTextClass);
