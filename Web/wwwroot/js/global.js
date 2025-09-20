@@ -1,12 +1,47 @@
 function initBackgroundLinks() {
-    let backgroundLinks = document.querySelectorAll('a.background-link');
+    let backgroundLinks = document.querySelectorAll('.background-link');
     backgroundLinks.forEach(initBackgroundLink);
 }
 
 function initBackgroundLink(backgroundLink) {
     if (!initialised(backgroundLink, 'background-link')) {
         backgroundLink.addEventListener('click', function () {
-            followLink(backgroundLink);
+            confirmAndFollow(backgroundLink);
+        });
+    }
+}
+
+function confirmAndFollow(backgroundLink) {
+    let message = backgroundLink.getAttribute('data-confirm-message');
+
+    if (isEmptyValue(message)) {
+        followLink(backgroundLink);
+    }
+    else {
+        let title = backgroundLink.getAttribute('data-confirm-title');
+
+        bootbox.confirm({
+            title: title,
+            message: message,
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-no'
+                }
+            },
+            callback: function (result) {
+                bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+
+                if (result) {
+                    followLink(backgroundLink);
+                } else if (backgroundLink.tagName == 'INPUT' && (backgroundLink.type == 'checkbox' || backgroundLink.type == 'radio')) {
+                    backgroundLink.checked = !backgroundLink.checked;
+                }
+            }
         });
     }
 }
@@ -35,6 +70,10 @@ async function followLink(backgroundLink) {
             showErrorMessage(responseText);
         }
     }
+
+    try {
+        reloadGrid();
+    } catch { }
 }
 let dataListStandardPlaceholder = 'Please type or select a value';
 
@@ -152,7 +191,9 @@ function confirmAndDelete(deleteLink) {
             window.location.href = response.url;
         }
         else if (response.ok) {
-            reloadGrid();
+            try {
+                reloadGrid();
+            } catch { }
         }
 
         if (!response.redirected && responseText != null && responseText != '') {

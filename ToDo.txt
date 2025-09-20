@@ -1,7 +1,5 @@
 IMMEDIATE
-Advise users when a confirmation e-mail has been sent?
-
-Fix dropdowns in Samsung Internet?
+* Send invitations to e-mail addresses
 Add bug reporting
 Add reporting abuse
 
@@ -32,9 +30,6 @@ GIFTING GROUPS
 * Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names
 * Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
-Show admins who is in the group, and
-	- allow setting other users as admins
-	- allow removing users from group
 Tidy up available locations and currencies - add missing countries
 Invite users to group via/using e-mail
 Invite users without an e-mail address in the system to join using a unique token on the user, similar to the JoinerToken on groups, used only for that

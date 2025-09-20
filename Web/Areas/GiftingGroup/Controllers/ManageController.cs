@@ -1,4 +1,5 @@
 ﻿using Application.Areas.GiftingGroup.Actions;
+using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
@@ -30,7 +31,7 @@ public sealed class ManageController : BaseController
             JoinerToken = await Send(new GetUniqueJoinerTokenQuery())
         };
 
-        return ShowEditGiftingGroup(model);
+        return await ShowEditGiftingGroup(model);
     }
 
     [HttpGet]
@@ -48,12 +49,25 @@ public sealed class ManageController : BaseController
             Mapper.Map(groupDetails, model);
         }
 
-        return ShowEditGiftingGroup(model);
+        return await ShowEditGiftingGroup(model);
     }
 
-    private IActionResult ShowEditGiftingGroup(EditGiftingGroupVm model)
+    private async Task<IActionResult> ShowEditGiftingGroup(EditGiftingGroupVm model)
     {
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey);
         return View("EditGiftingGroup", model);
+    }
+
+    private async Task<IEnumerable<IGroupMember>> GetOtherGroupMembers(int giftingGroupKey)
+    {
+        if (giftingGroupKey > 0)
+        {
+            return await Send(new GetGiftingGroupMembersQuery(giftingGroupKey, true));
+        }
+        else
+        {
+            return new List<IGroupMember>();
+        }
     }
 
     [HttpPost]
@@ -72,7 +86,32 @@ public sealed class ManageController : BaseController
         }
 
         model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create";
-        return ShowEditGiftingGroup(model);
+        return await ShowEditGiftingGroup(model);
+    }
+
+    public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey)
+    {
+        var model = new EditGiftingGroupVm
+        {
+            GiftingGroupKey = giftingGroupKey
+        };
+
+        model.OtherGroupMembers = await GetOtherGroupMembers(giftingGroupKey);
+        return PartialView("_GiftingGroupMembersGrid", model);
+    }
+
+    public async Task<IActionResult> RemoveGroupUser(int giftingGroupKey, int santaUserKey)
+    {
+        var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
+        await Send(new RemoveUserFromGroupCommand(model), null);
+        return Ok();
+    }
+
+    public async Task<IActionResult> ToggleGroupAdmin(int giftingGroupKey, int santaUserKey)
+    {
+        var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
+        await Send(new ToggleUserAdminStatusCommand(model), null);
+        return Ok();
     }
 
     [HttpGet]
@@ -110,7 +149,7 @@ public sealed class ManageController : BaseController
         ModelState.Clear();
 
         string joinerApplicationsUrl = GetFullUrl(nameof(JoinerApplications), nameof(ManageController), AreaNames.GiftingGroup);
-        var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model, joinerApplicationsUrl), 
+        var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model, joinerApplicationsUrl),
             new JoinGiftingGroupVmValidator());
 
         if (commandResult.Success)
@@ -172,7 +211,7 @@ public sealed class ManageController : BaseController
     {
         string participateUrl = GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
 
-        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, participateUrl), 
+        var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, participateUrl),
             new ReviewJoinerApplicationVmValidator());
 
         if (commandResult.Success)

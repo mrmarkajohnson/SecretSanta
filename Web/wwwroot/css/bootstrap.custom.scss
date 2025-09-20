@@ -484,7 +484,7 @@ th .fa.fa-circle-question.fa-border {
     --bs-tooltip-border-width: 1px;
     --bs-tooltip-border-color: #{$purple};
     --bs-tooltip-border-radius: var(--bs-border-radius);
-    --bs-tooltip-opacity: 0.9;
+    --bs-tooltip-opacity: 1;
     --bs-tooltip-arrow-width: 0.8rem;
     --bs-tooltip-arrow-height: 0.4rem;
     z-index: 50000;
@@ -505,6 +505,24 @@ th .fa.fa-circle-question.fa-border {
 .bs-tooltip-top .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
     top: 0px;
     border-top-color: $purple;
+    z-index: 50000;
+}
+
+.bs-tooltip-right .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before {
+    right: 0px;
+    border-right-color: $purple;
+    z-index: 50000;
+}
+
+.bs-tooltip-bottom .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before {
+    bottom: 0px;
+    border-bottom-color: $purple;
+    z-index: 50000;
+}
+
+.bs-tooltip-left .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before {
+    left: 0px;
+    border-left-color: $purple;
     z-index: 50000;
 }
 

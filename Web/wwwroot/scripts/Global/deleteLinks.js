@@ -56,7 +56,9 @@ function confirmAndDelete(deleteLink) {
             window.location.href = response.url;
         }
         else if (response.ok) {
-            reloadGrid();
+            try {
+                reloadGrid();
+            } catch { }
         }
 
         if (!response.redirected && responseText != null && responseText != '') {
