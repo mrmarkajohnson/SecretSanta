@@ -654,7 +654,12 @@ function initEyeSymbol(eyeSymbol) {
             });
 
             input.addEventListener('focus', function () {
-                if (!isEmptyInput(input) && !showText) {
+                if (isEmptyInput(input)) {
+                    if (!isPassword) {
+                        showText = true;
+                        toggleInputType(input, isPassword, showText);
+                    }
+                } else if (!showText) {
                     eyeSymbol.classList.remove('collapse');
                     if (noEyeSymbol) {
                         noEyeSymbol.classList.add('collapse');
