@@ -1,6 +1,8 @@
 ﻿using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
+using Application.Areas.GiftingGroup.Commands;
+using Application.Areas.GiftingGroup.Queries;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using static Global.Settings.GlobalSettings;
@@ -8,11 +10,12 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class HomeController : BaseController
+public sealed class HomeController : AccountBaseController
 {
-    public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) : base(services, signInManager)
+    public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) 
+        : base(services, signInManager)
     {
-    }
+    }    
 
     public IActionResult Index()
     {
@@ -53,7 +56,9 @@ public sealed class HomeController : BaseController
 
             if (result.Succeeded)
             {
-                return RedirectWithMessage(model, "Logged in successfully.");
+                string? invitationMessage = await HandleInvitation();
+                string message = "Logged in successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
+                return RedirectWithMessage(model, message);
             }
             //if (result.RequiresTwoFactor)
             //{
@@ -124,5 +129,35 @@ public sealed class HomeController : BaseController
         }
 
         return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AcceptInvitation(string id)
+    {
+        TempData[InvitationId] = id;
+
+        if (SignInManager.IsSignedIn(User))
+        {
+            string? message = await HandleInvitation(true);
+            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "", new { successMessage = message });
+        }
+        else
+        {
+            var invitation = await Send(new GetInvitationQuery(id));
+
+            if (invitation == null)
+            {
+                TempData.Remove(InvitationId);
+            }
+
+            if (invitation.ToSantaUserKey == null)
+            {
+                return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+            }
+            else
+            {
+                return RedirectToLocalUrl(nameof(Login), nameof(HomeController), "");
+            }
+        }
     }
 }

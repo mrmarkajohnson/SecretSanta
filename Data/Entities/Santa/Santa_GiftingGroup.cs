@@ -15,6 +15,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
         Years = new HashSet<Santa_GiftingGroupYear>();
         MemberApplications = new HashSet<Santa_GiftingGroupApplication>();
         AuditTrail = new HashSet<Santa_GiftingGroup_Audit>();
+        Invitations = new HashSet<Santa_Invitation>();
     }
 
     [Key]
@@ -44,6 +45,7 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     public virtual ICollection<Santa_GiftingGroupYear> Years { get; set; }
     public virtual ICollection<Santa_GiftingGroupApplication> MemberApplications { get; set; }
     public virtual ICollection<Santa_GiftingGroup_Audit> AuditTrail { get; set; }
+    public virtual ICollection<Santa_Invitation> Invitations { get; internal set; }
 
     public CultureInfo? GetCultureInfo() => GlobalSettings.AvailableCultures.FirstOrDefault(x => x.Name == CultureInfo);
     public string GetCurrencyCode() => CurrencyCodeOverride ?? GetCultureInfo()?.CultureLocation()?.CurrencyString ?? "GBP";

@@ -1,12 +1,11 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> where TItem : IReviewApplication
+public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : IReviewApplication
 {
     private string _participateUrl;
 
@@ -53,53 +52,14 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : BaseCommand<TItem> w
 
             if (Item.Accepted)
             {
-                AddToGiftingGroup(dbApplication);
-                AddToCurrentYear(dbApplication);
+                AddToGiftingGroup(dbApplication.GiftingGroup, dbApplication.SantaUser);
             }
 
             SendMessage(dbCurrentSantaUser, dbApplication);
-
             return await SaveAndReturnSuccess();
         }
 
         return await Result();
-    }
-
-    private static void AddToGiftingGroup(Santa_GiftingGroupApplication dbApplication)
-    {
-        dbApplication.GiftingGroup.Members.Add(new Santa_GiftingGroupUser
-        {
-            GiftingGroup = dbApplication.GiftingGroup,
-            GiftingGroupKey = dbApplication.GiftingGroupKey,
-            SantaUser = dbApplication.SantaUser,
-            SantaUserKey = dbApplication.SantaUserKey,
-        });
-    }
-
-    private void AddToCurrentYear(Santa_GiftingGroupApplication dbApplication)
-    {
-        bool alreadyCalculated = Item.CurrentYearCalculated;
-        var dbGiftingGroupYear = dbApplication.GiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == DateTime.Today.Year);
-
-        if (!alreadyCalculated) // just in case
-        {
-            if (dbGiftingGroupYear != null)
-            {
-                alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.RecipientSantaUserKey != null);
-            }
-        }
-
-        if (!alreadyCalculated && dbGiftingGroupYear != null)
-        {
-            dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
-            {
-                GiftingGroupYearKey = dbGiftingGroupYear.CalendarYear,
-                GiftingGroupYear = dbGiftingGroupYear,
-                SantaUserKey = dbApplication.SantaUserKey,
-                SantaUser = dbApplication.SantaUser,
-                Included = true
-            });
-        }
     }
 
     private void SendMessage(Santa_User dbCurrentSantaUser, Santa_GiftingGroupApplication dbApplication)

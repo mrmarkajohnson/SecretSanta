@@ -20,7 +20,7 @@ public static class EncryptionHelper
 
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    public static string OneWayEncrypt(string? value, IIdentityUser identityUser, bool alphanumericOnly = false)
+    public static string OneWayEncrypt(string? value, IHashableUser identityUser, bool alphanumericOnly = false)
     {
         return OneWayEncrypt(value, identityUser.GlobalUserId, alphanumericOnly);
     }

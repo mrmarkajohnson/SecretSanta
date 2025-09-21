@@ -101,6 +101,27 @@ internal static class ModelHelper
             .WithOne(e => e.Audit)
             .HasForeignKey(e => e.AuditKey);
 
+        modelBuilder.Entity<Santa_Invitation>()
+            .HasOne(e => e.FromSantaUser)
+            .WithMany(e => e.SentInvitations)
+            .HasForeignKey(e => e.FromSantaUserKey)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Santa_Invitation>()
+            .HasOne(e => e.ToSantaUser)
+            .WithMany(e => e.ReceivedInvitations)
+            .HasForeignKey(e => e.ToSantaUserKey)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Santa_Invitation>()
+            .HasOne(e => e.GiftingGroup)
+            .WithMany(e => e.Invitations)
+            .HasForeignKey(e => e.GiftingGroupKey)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<Santa_PartnerLink>()
             .HasOne(e => e.SuggestedBySantaUser)
             .WithMany(e => e.SuggestedRelationships)

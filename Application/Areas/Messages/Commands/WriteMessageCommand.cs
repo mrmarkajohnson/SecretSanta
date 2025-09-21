@@ -1,5 +1,5 @@
 ﻿using Application.Areas.GiftingGroup.Commands;
-using Application.Areas.Messages.Queries.Internals;
+using Application.Areas.Messages.Queries.Internal;
 using Global.Abstractions.Areas.Messages;
 using static Global.Settings.MessageSettings;
 

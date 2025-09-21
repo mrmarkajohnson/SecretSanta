@@ -49,4 +49,9 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
     {
         this.AddNewAuditEntry<Santa_GiftingGroupYear, Santa_GiftingGroupYear_Audit, Santa_GiftingGroupYear_AuditChange>(auditTrail, changes);
     }
+
+    public bool Calculated()
+    {
+        return ParticipatingMembers().Any(x => x.RecipientSantaUserKey != null);
+    }
 }

@@ -1,7 +1,7 @@
 ﻿using Global.Abstractions.Areas.Messages;
 using static Global.Settings.MessageSettings;
 
-namespace Application.Areas.Messages.Queries.Internals;
+namespace Application.Areas.Messages.Queries.Internal;
 
 public sealed class GetPossibleMessageRecipientsQuery : GetMessagesBaseQuery<IList<Santa_User>>
 {

@@ -11,9 +11,10 @@ using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authentication;
-using AccountControllers = Web.Areas.Account.Controllers;
+using Web.Areas.GiftingGroup.Controllers;
 using Web.Helpers;
 using static Global.Settings.GlobalSettings;
+using AccountControllers = Web.Areas.Account.Controllers;
 
 namespace Web.Controllers;
 
@@ -246,5 +247,10 @@ public class BaseController : Controller
         }
 
         return Ok();
+    }
+
+    protected string GetParticipateUrl()
+    {
+        return GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
     }
 }
