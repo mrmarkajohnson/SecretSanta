@@ -1,11 +1,9 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Shared.Requests;
-using Global.Abstractions.Areas.Account;
 using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetInvitationQuery : BaseQuery<IGiftingGroupInvitation?>
+public class GetInvitationQuery : BaseQuery<IAcceptGroupInvitation?>
 {
     private readonly string _invitationId;
 
@@ -14,14 +12,14 @@ public class GetInvitationQuery : BaseQuery<IGiftingGroupInvitation?>
         _invitationId = invitationId;
     }
 
-    protected async override Task<IGiftingGroupInvitation?> Handle()
+    protected async override Task<IAcceptGroupInvitation?> Handle()
     {
         Santa_Invitation? dbInvitation = await Send(new Internal.GetInvitationEntityQuery(_invitationId));
 
         if (dbInvitation == null)
             return null;
 
-        return new GiftingGroupInvitation
+        return new AcceptGroupInvitation
         {
             InvitationGuid = dbInvitation.InvitationGuid,
             ToSantaUserKey = dbInvitation.ToSantaUserKey,

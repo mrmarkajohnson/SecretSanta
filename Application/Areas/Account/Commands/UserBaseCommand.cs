@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Shared.Requests;
 using FluentValidation;
 using Global.Abstractions.Areas.Account;
 using Global.Extensions.Exceptions;

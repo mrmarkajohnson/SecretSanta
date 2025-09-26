@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Partners.BaseModels;
-using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Partners;
 
@@ -9,19 +8,19 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
 {
     protected override Task<IRelationships> Handle()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GlobalUser,
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GlobalUser,
             g => g.SuggestedRelationships, g => g.ConfirmingRelationships);
 
-        IEnumerable<IRelationship> suggestedRelationships = dbSantaUser.SuggestedRelationships
+        IEnumerable<IRelationship> suggestedRelationships = dbCurrentSantaUser.SuggestedRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null
                 && (x.SuggestedByIgnoreOld == false || x.Confirmed == true)) // exclude unconfirmed ignored relationships
             .AsQueryable()
-            .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() });
+            .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 
-        IEnumerable<IRelationship> confirmingRelationships = dbSantaUser.ConfirmingRelationships
+        IEnumerable<IRelationship> confirmingRelationships = dbCurrentSantaUser.ConfirmingRelationships
             .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Confirmed != false)
             .AsQueryable()
-            .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbSantaUser.UserKeysForVisibleEmail() });
+            .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 
         IRelationships relationships = new Relationships
         {

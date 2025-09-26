@@ -1,0 +1,21 @@
+﻿@model SendGroupInvitationVm
+
+<div class="modal santa-modal" tabindex="-1" id="sendInvitationModal">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <partial name="Modal/_ModalHeader" />
+
+            <form asp-area="@AreaNames.GiftingGroup" asp-controller="Home" asp-action="SendGroupInvitation" method="post">
+                <div class="modal-body">
+
+                    <partial name="_SendGroupInvitation" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                </div>
+
+                <partial name="Modal/_ModalFooter" />
+            </form>
+        </div>
+    </div>
+</div>

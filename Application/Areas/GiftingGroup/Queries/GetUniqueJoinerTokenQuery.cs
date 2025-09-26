@@ -1,6 +1,4 @@
-﻿using Application.Shared.Requests;
-
-namespace Application.Areas.GiftingGroup.Queries;
+﻿namespace Application.Areas.GiftingGroup.Queries;
 
 public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
 {

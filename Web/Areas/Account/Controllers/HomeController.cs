@@ -60,10 +60,12 @@ public sealed class HomeController : AccountBaseController
                 string message = "Logged in successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
                 return RedirectWithMessage(model, message);
             }
+
             //if (result.RequiresTwoFactor)
             //{
             //    return RedirectToPage("./LoginWith2fa", new { model.ReturnUrl,model.RememberMe });
             //}
+
             if (result.IsLockedOut)
             {
                 model.LockedOut = true;
@@ -150,7 +152,7 @@ public sealed class HomeController : AccountBaseController
                 TempData.Remove(InvitationId);
             }
 
-            if (invitation.ToSantaUserKey == null)
+            if (invitation?.ToSantaUserKey == null)
             {
                 return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
             }

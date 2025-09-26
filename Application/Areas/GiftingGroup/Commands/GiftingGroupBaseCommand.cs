@@ -1,6 +1,4 @@
-﻿using Application.Shared.Requests;
-
-namespace Application.Areas.GiftingGroup.Commands;
+﻿namespace Application.Areas.GiftingGroup.Commands;
 
 public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
 {

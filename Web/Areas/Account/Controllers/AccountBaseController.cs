@@ -10,14 +10,14 @@ public abstract class AccountBaseController : BaseController
     {
     }
 
-    protected async Task<string?> HandleInvitation(bool keepIfNotSuccessful = false)
+    protected async Task<string?> HandleInvitation(bool keepIfNotSuccessful = false, bool ignoreName = false)
     {
         string? invitationId = TempData.Peek(InvitationId)?.ToString();
 
         if (invitationId.IsNotEmpty())
         {
             string participateUrl = GetParticipateUrl();
-            var commandResult = await Send(new AcceptInvitationCommand(invitationId, participateUrl), null);
+            var commandResult = await Send(new AcceptInvitationCommand(invitationId, participateUrl, ignoreName), null);
 
             if (commandResult.Success || !keepIfNotSuccessful)
             {

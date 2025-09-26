@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using Application.Areas.Messages.ViewModels;
-using Application.Shared.Requests;
 using FluentValidation;
 using Global.Extensions.Exceptions;
 

@@ -1,5 +1,4 @@
 ﻿using Application.Areas.GiftingGroup.Queries;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 

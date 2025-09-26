@@ -11,13 +11,13 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        Santa_YearGroupUser dbYearGroupUser = AddOrUpdateUserGroupYear(dbSantaUser, Item.GiftingGroupKey, Item.GiftingGroupName, Item.Included);
+        Santa_YearGroupUser dbYearGroupUser = AddOrUpdateUserGroupYear(dbCurrentSantaUser, Item.GiftingGroupKey, Item.GiftingGroupName, Item.Included);
         Santa_GiftingGroup dbGiftingGroup = dbYearGroupUser.GiftingGroupYear.GiftingGroup;
 
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.CalendarYear - 1);
-        SetPreviousYearRecipient(dbSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.CalendarYear - 2);
+        SetPreviousYearRecipient(dbCurrentSantaUser, dbGiftingGroup, Item.LastRecipientUserId, Item.CalendarYear - 1);
+        SetPreviousYearRecipient(dbCurrentSantaUser, dbGiftingGroup, Item.PreviousRecipientUserId, Item.CalendarYear - 2);
 
         return await SaveAndReturnSuccess();
     }

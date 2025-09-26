@@ -1,0 +1,37 @@
+﻿@model SendGroupInvitationVm
+
+<partial name="_FormHiddenInputs" />
+
+<div class="row @CenterFlexNoWrapContainer">
+
+    <div class="collapse">
+        <input type="hidden" asp-for="GiftingGroupKey" />
+        <input type="hidden" asp-for="GiftingGroupName" />
+    </div>
+
+    <div class="mb-5">
+
+        <h2>Invite someone else to join the group</h2>
+
+        <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
+            <p>
+                Here you can invite other people to join group '@Model.GiftingGroupName'
+            </p>
+        </div>
+
+        <div class="@CenterFlexWrapContainer">
+            <div class="@ModalGroupWidth">
+
+
+
+
+            </div>
+        </div>
+
+        <br />
+        <div class="col-md-12">
+            <partial name="_SubmitButton" />
+        </div>
+    </div>
+
+</div>

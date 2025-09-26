@@ -3,7 +3,7 @@ using Global.Abstractions.Shared;
 
 namespace Data.Entities.Santa;
 
-public class Santa_Invitation : ArchivableBaseEntity, IGiftingGroupInvitation
+public class Santa_Invitation : ArchivableBaseEntity, IAcceptGroupInvitation, ISendGroupInvitation
 {
     [Key]
     public int InvitationKey { get; set; }
@@ -19,8 +19,8 @@ public class Santa_Invitation : ArchivableBaseEntity, IGiftingGroupInvitation
     public int GiftingGroupKey { get; set; }
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
-    public required string ToName { get; set; }
+    public string? ToName { get; set; }
     public string? ToEmailAddress { get; set; }
 
-    IHashableUser IGiftingGroupInvitation.FromUser => FromSantaUser.GlobalUser;
+    IHashableUser IAcceptGroupInvitation.FromUser => FromSantaUser.GlobalUser;
 }

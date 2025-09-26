@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Participate.Mapping;
-using Application.Shared.Requests;
 using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Participate;
 
@@ -9,19 +8,19 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
 {
     protected override Task<IQueryable<IUserGiftingGroupYear>> Handle()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
         IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
 
-        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbSantaUser.GiftingGroupLinks;
+        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
 
         if (dbGroupLinks?.Any() == true)
         {
             var dbActiveLinks = dbGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
 
-            userGroups = GetYearsWithMemberSet(dbSantaUser, dbActiveLinks)
-                .Union(GetYearsWithMemberNotSet(dbSantaUser, dbActiveLinks))
-                .Union(GetJoinerRequests(dbSantaUser, dbActiveLinks));
+            userGroups = GetYearsWithMemberSet(dbCurrentSantaUser, dbActiveLinks)
+                .Union(GetYearsWithMemberNotSet(dbCurrentSantaUser, dbActiveLinks))
+                .Union(GetJoinerRequests(dbCurrentSantaUser, dbActiveLinks));
         }
 
         return Result(userGroups);

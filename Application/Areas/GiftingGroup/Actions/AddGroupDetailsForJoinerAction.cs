@@ -1,5 +1,4 @@
-﻿using Application.Shared.Requests;
-using Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Actions;
 

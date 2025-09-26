@@ -6,12 +6,14 @@ namespace Application.Areas.GiftingGroup.Commands;
 
 public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
 {
-    public AcceptInvitationCommand(string invitationId, string participateUrl) : base(invitationId)
+    private readonly string _participateUrl;
+    private readonly bool _ignoreName; 
+    
+    public AcceptInvitationCommand(string invitationId, string participateUrl, bool ignoreName) : base(invitationId)
     {
         _participateUrl = participateUrl;
+        _ignoreName = ignoreName;
     }
-
-    private readonly string _participateUrl;
 
     protected async override Task<ICommandResult<string>> HandlePostValidation()
     {
@@ -25,20 +27,27 @@ public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
             if (!SignInManager.IsSignedIn(ClaimsUser))
                 return await Result();
 
-            Santa_User dbSantaUser = GetCurrentSantaUser();
+            Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
 
             if (dbInvitation.ToSantaUserKey > 0)
             {
-                if (dbSantaUser != null && dbSantaUser.SantaUserKey == dbInvitation.ToSantaUserKey) // otherwise it's for someone else
+                if (dbCurrentSantaUser != null && dbCurrentSantaUser.SantaUserKey == dbInvitation.ToSantaUserKey) // otherwise it's for someone else
                 {
-                    return await AcceptInvitation(dbInvitation, dbSantaUser);
+                    return await AcceptInvitation(dbInvitation, dbCurrentSantaUser);
                 }
             }
-            else if (dbSantaUser.GlobalUser.Email.IsNotEmpty())
+            else if (dbCurrentSantaUser.GlobalUser.Email.IsNotEmpty())
             {
-                if (dbSantaUser.GlobalUser.Email == dbInvitation.ToEmailAddress)
+                if (NameMustMatch(dbInvitation) && !NameMatches(dbInvitation.ToName, dbCurrentSantaUser))
                 {
-                    return await AcceptInvitation(dbInvitation, dbSantaUser);
+                    AddGeneralValidationError($"This invitation is to name {dbInvitation.ToName}. " +
+                        $"Do you still wish to accept it?");
+                }
+
+                if (dbCurrentSantaUser.GlobalUser.Email == dbInvitation.ToEmailAddress)
+                {
+                    dbInvitation.ToSantaUser = dbCurrentSantaUser;
+                    return await AcceptInvitation(dbInvitation, dbCurrentSantaUser);
                 }
             }
         }
@@ -49,9 +58,21 @@ public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
         return await Result();
     }
 
+    private bool NameMatches(string? toName, Santa_User dbSantaUser)
+    {
+        return string.Equals(toName, dbSantaUser.GlobalUser.Forename, StringComparison.InvariantCultureIgnoreCase)
+            || string.Equals(toName, dbSantaUser.GlobalUser.PreferredFirstName, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    private bool NameMustMatch(Santa_Invitation dbInvitation)
+    {
+        return !_ignoreName && dbInvitation.ToName.IsNotEmpty();
+    }
+
     private async Task<ICommandResult<string>> AcceptInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
     {
         AddToGiftingGroup(dbInvitation.GiftingGroup, dbSantaUser);
+        dbInvitation.DateArchived = DateTime.Now;
         SendWelcomMessage(dbInvitation);
         SendAcceptedMessage(dbInvitation);
 

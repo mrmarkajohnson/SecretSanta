@@ -1,5 +1,4 @@
-﻿using Application.Shared.Requests;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
 namespace Application.Areas.Suggestions.Queries;
@@ -17,9 +16,9 @@ public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase
 
     protected override Task<IQueryable<ISuggestionBase>> Handle()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupYears);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupYears);
 
-        Santa_GiftingGroup dbGroup = dbSantaUser.GiftingGroupLinks
+        Santa_GiftingGroup dbGroup = dbCurrentSantaUser.GiftingGroupLinks
             .Where(x => x.DateDeleted == null && x.DateArchived == null)
             .Select(x => x.GiftingGroup)
             .Where(y => y.DateDeleted == null && y.DateArchived == null)

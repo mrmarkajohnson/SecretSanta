@@ -1,5 +1,4 @@
-﻿using Application.Shared.Requests;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 
 namespace Application.Areas.Partners.Queries;
 

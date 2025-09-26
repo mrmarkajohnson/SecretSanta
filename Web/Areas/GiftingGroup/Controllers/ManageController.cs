@@ -4,7 +4,9 @@ using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.Intrinsics.Arm;
 using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.GiftingGroup.Controllers;
@@ -89,6 +91,7 @@ public sealed class ManageController : BaseController
         return await ShowEditGiftingGroup(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey)
     {
         var model = new EditGiftingGroupVm
@@ -100,6 +103,52 @@ public sealed class ManageController : BaseController
         return PartialView("_GiftingGroupMembersGrid", model);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> SendGroupInvitation(int giftingGroupKey)
+    {
+        string groupName = HomeModel.GiftingGroups
+            .Where(x => x.GroupAdmin)
+            .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey)?.GroupName
+                ?? throw new AccessDeniedException("You do not have administrator access to this group.");
+
+        var model = new SendGroupInvitationVm
+        {
+            GiftingGroupKey = giftingGroupKey,
+            GiftingGroupName = groupName
+        };
+
+        await AddOtherGroupMembers(model);
+        return PartialView("_SendInvitationModal", model);
+    }
+
+    private async Task AddOtherGroupMembers(SendGroupInvitationVm model)
+    {
+        var otherGroups = HomeModel.GiftingGroups
+            .Where(x => x.GiftingGroupKey != model.GiftingGroupKey);
+
+        if (otherGroups.Any())
+        {
+            model.OtherGroupMembers = await Send(new GetPossibleInviteesQuery(model.GiftingGroupKey));
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SendGroupInvitation(SendGroupInvitationVm model)
+    {
+        ModelState.Clear();
+
+        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model), new SendGroupInvitationVmValidator());
+
+        if (commandResult.Success)
+        {
+            return Ok("Invitation sent successfully");
+        }
+
+        await AddOtherGroupMembers(model);
+        return PartialView("_SendInvitationModal", model);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> RemoveGroupUser(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
@@ -107,6 +156,7 @@ public sealed class ManageController : BaseController
         return Ok();
     }
 
+    [HttpPost]
     public async Task<IActionResult> ToggleGroupAdmin(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);

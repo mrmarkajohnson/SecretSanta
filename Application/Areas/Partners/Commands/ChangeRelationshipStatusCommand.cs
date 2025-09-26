@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Partners.Commands.Internal;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.Partners;
 using Global.Extensions.Exceptions;
 

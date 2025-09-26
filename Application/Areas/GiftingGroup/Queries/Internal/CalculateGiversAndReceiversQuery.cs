@@ -1,5 +1,4 @@
 ﻿using Application.Areas.GiftingGroup.BaseModels;
-using Application.Shared.Requests;
 
 namespace Application.Areas.GiftingGroup.Queries.Internal;
 

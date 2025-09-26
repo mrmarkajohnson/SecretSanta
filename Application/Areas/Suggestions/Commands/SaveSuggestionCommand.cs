@@ -17,22 +17,22 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.Suggestions);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.Suggestions);
         Santa_Suggestion? dbSuggestion = null;
 
         if (Item.SuggestionKey > 0)
         {
-            dbSuggestion = dbSantaUser.Suggestions.FirstOrDefault(x => x.SuggestionKey == Item.SuggestionKey);
+            dbSuggestion = dbCurrentSantaUser.Suggestions.FirstOrDefault(x => x.SuggestionKey == Item.SuggestionKey);
         }
         else
         {
             dbSuggestion = new Santa_Suggestion
             {
-                SantaUserKey = dbSantaUser.SantaUserKey,
-                SantaUser = dbSantaUser
+                SantaUserKey = dbCurrentSantaUser.SantaUserKey,
+                SantaUser = dbCurrentSantaUser
             };
 
-            dbSantaUser.Suggestions.Add(dbSuggestion);
+            dbCurrentSantaUser.Suggestions.Add(dbSuggestion);
         }
 
         if (dbSuggestion == null)
@@ -44,7 +44,7 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
         dbSuggestion.OtherNotes = Item.OtherNotes;
         dbSuggestion.Priority = Item.Priority;
 
-        HandleGroupLinks(dbSantaUser, dbSuggestion);
+        HandleGroupLinks(dbCurrentSantaUser, dbSuggestion);
 
         var result = await SaveAndReturnSuccess();
         Mapper.Map(dbSuggestion, Item); // get any new keys
