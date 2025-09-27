@@ -23,7 +23,7 @@
         columns.Add(x => x.UserDisplayName).RenderedAs(displayName).Titled("Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
         columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
-        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
+        columns.Add().RenderedAs(actions).Titled("Select").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>
     {

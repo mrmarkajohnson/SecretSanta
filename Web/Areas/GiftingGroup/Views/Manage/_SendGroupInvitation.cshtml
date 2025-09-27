@@ -1,4 +1,9 @@
 ﻿@model SendGroupInvitationVm
+@{
+    string nameExplanation = "This must match the person's first name or preferred name in the system, if they're an existing user or when they register.";
+    string emailExplanation = "The e-mail address that the invitation will be sent to.";
+    string emailInvite = "If they're an existing user, they'll get an invitation message.  If not (or if their e-mail isn't set) they'll get an e-mail.";
+}
 
 <partial name="_FormHiddenInputs" />
 
@@ -7,6 +12,7 @@
     <div class="collapse">
         <input type="hidden" asp-for="GiftingGroupKey" />
         <input type="hidden" asp-for="GiftingGroupName" />
+        <input type="hidden" asp-for="UserGridAction" />
     </div>
 
     <div class="mb-5">
@@ -15,22 +21,84 @@
 
         <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
             <p>
-                Here you can invite other people to join group '@Model.GiftingGroupName'
+                Here you can invite other people to join group '@Model.GiftingGroupName'.
             </p>
         </div>
+
+        @if (Model.OtherGroupMembers.Any())
+        {
+            <div class="@CenterFlexWrapContainer">
+                <div class="@ModalGroupWidth">
+                    <h3>Invite someone from another group</h3>
+
+                    <p class="mb-3">
+                        You can pick someone from another group you are in, and invite them to this group.
+                    </p>
+                </div>
+
+                <div class="@StandardFullWidthGridContainer mb-4">
+                    <partial name="_SelectUserGrid" model="@Model.OtherMembersGridModel" />
+                </div>
+
+                <div class="@ModalGroupWidth">
+                    <h3>Invite someone by name and e-mail</h3>
+
+                    <div class="mb-2">
+                        <p>
+                            Alternatively, enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
+                        </p>
+                        <p>
+                            @emailInvite
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="@ModalGroupWidth">
+                <h3>Invite someone by name and e-mail</h3>
+
+                <div class="mb-2">
+                    <p>
+                        Enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
+                    </p>
+                    <p>
+                        @emailInvite
+                    </p>
+                </div>
+            </div>
+        }
 
         <div class="@CenterFlexWrapContainer">
             <div class="@ModalGroupWidth">
 
+                <div class="mb-3 d-flex">
+                    <div class="form-group-ib col-sm-12 username-container">
+                        <label asp-for="ToName" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <input asp-for="ToName" class="form-control" autocomplete="off" aria-required="false"
+                                   placeholder="Enter the person's first name" />
+                            <partial name="_InputQuestion" model="@nameExplanation" />
+                        </div>
+                        <div>
+                            <span asp-validation-for="ToName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
 
-
-
+                <div class="mb-3">
+                    <label asp-for="ToEmailAddress" class="control-label"></label>
+                    <div class="input-group input-info">
+                        <input asp-for="ToEmailAddress" class="form-control" autocomplete="off" aria-required="false"
+                               placeholder="name@example.com (optional)" />
+                        <partial name="_InputQuestion" model="@emailExplanation" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="ToEmailAddress" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <br />
-        <div class="col-md-12">
-            <partial name="_SubmitButton" />
         </div>
     </div>
 

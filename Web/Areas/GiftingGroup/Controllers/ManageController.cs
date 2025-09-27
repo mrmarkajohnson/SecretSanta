@@ -3,6 +3,7 @@ using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
+using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -111,13 +112,14 @@ public sealed class ManageController : BaseController
             .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey)?.GroupName
                 ?? throw new AccessDeniedException("You do not have administrator access to this group.");
 
-        var model = new SendGroupInvitationVm
+        var potentialInvitees = await GetPossibleInvitationUsers(giftingGroupKey);
+
+        var model = new SendGroupInvitationVm(potentialInvitees, nameof(GetPossibleInvitationUsers))
         {
             GiftingGroupKey = giftingGroupKey,
             GiftingGroupName = groupName
         };
 
-        await AddOtherGroupMembers(model);
         return PartialView("_SendInvitationModal", model);
     }
 
@@ -128,8 +130,15 @@ public sealed class ManageController : BaseController
 
         if (otherGroups.Any())
         {
-            model.OtherGroupMembers = await Send(new GetPossibleInviteesQuery(model.GiftingGroupKey));
+            model.OtherGroupMembers = await GetPossibleInvitationUsers(model.GiftingGroupKey);
         }
+
+        model.OtherMembersGridModel = new UserGridVm(model.OtherGroupMembers, nameof(GetPossibleInvitationUsers));
+    }
+
+    public async Task<IQueryable<IVisibleUser>> GetPossibleInvitationUsers(int giftingGroupKey)
+    {
+        return await Send(new GetPossibleInviteesQuery(giftingGroupKey));
     }
 
     [HttpPost]

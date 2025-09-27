@@ -1,4 +1,6 @@
-﻿namespace Application.Areas.GiftingGroup.Queries;
+﻿using AutoMapper.QueryableExtensions;
+
+namespace Application.Areas.GiftingGroup.Queries;
 
 public class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
@@ -14,7 +16,6 @@ public class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbOtherGroupMembers = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.GiftingGroupKey == _giftingGroupKey)
             .Select(x => x.GiftingGroup)
             .SelectMany(y => y.Members)
             .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey);
@@ -24,8 +25,17 @@ public class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
             .Select(x => x.SantaUserKey)
             .ToList();
 
-        return dbOtherGroupMembers
+        var visibleUsers = dbOtherGroupMembers
             .Where(x => x.GiftingGroupKey != _giftingGroupKey)
-            .Where(x => !groupMemberKeys.Contains(x.SantaUserKey);
+            .Where(x => !groupMemberKeys.Contains(x.SantaUserKey))
+            .Select(x => x.SantaUser.GlobalUser)
+            .AsQueryable()
+            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
+                new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
+            .ToList();
+
+        visibleUsers.ForEach(x => x.UnHash());
+
+        return Result(visibleUsers.AsQueryable());
     }
 }

@@ -150,11 +150,14 @@
                     </p>
                     <br />
 
-                    <div class="col-md-12 @CenterFlexNoWrapContainer">
+                    <div class="col-md-12 mb-3 @CenterFlexNoWrapContainer">
                         <div class="@StandardFullWidthGridContainer">
                             <partial name="_GiftingGroupMembersGrid" />
-                        </div>
+                        </div>                        
                     </div>
+                    
+                    <a class="modal-link" href="javascript: void" data-url="@Url.Action(Context, "SendGroupInvitation", "Manage", AreaNames.GiftingGroup,
+                        new { giftingGroupKey = Model.GiftingGroupKey })" data-toggle="tooltip" title="Invite someone to join the group">Invite a group member</a>
                 </div>
             </div>
         </div>
