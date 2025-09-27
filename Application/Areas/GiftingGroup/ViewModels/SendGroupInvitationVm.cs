@@ -49,15 +49,12 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
 {
     public SendGroupInvitationVmValidator()
     {
-        When (x => string.IsNullOrWhiteSpace(x.ToHashedUserId), () => 
+        When (x => x.ToHashedUserId.IsNotEmpty(), () => 
         {
-            RuleFor(x => x.ToName)
-                .NotEmpty();
+            RuleFor(x => x.ToHashedUserId)
+                .Must((root, x) => root.OtherGroupMembers.Any(y => y.HashedUserId == x))
+                .WithMessage("The user selected is not available.");
 
-            RuleFor(x => x.ToEmailAddress)
-                .NotEmpty();
-        }).Otherwise(() => 
-        {
             RuleFor(x => x.ToName)
                 .Empty()
                 .WithMessage(x => x.ToEmailAddress.IsNotEmpty()
@@ -67,6 +64,14 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
             RuleFor(x => x.ToEmailAddress)
                 .Empty()
                 .WithMessage($"You've selected a user and entered an {UserDisplayNames.Email}. Please choose one or the other.");
+        })
+            .Otherwise(() => 
+        {
+            RuleFor(x => x.ToName)
+                .NotEmpty();
+
+            RuleFor(x => x.ToEmailAddress)
+                .NotEmpty();
         });
     }
 }

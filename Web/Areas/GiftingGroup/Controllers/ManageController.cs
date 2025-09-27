@@ -158,6 +158,7 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
 
+        await AddOtherGroupMembers(model);
         var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model), new SendGroupInvitationVmValidator());
 
         if (commandResult.Success)
@@ -165,7 +166,6 @@ public sealed class ManageController : BaseController
             return Ok("Invitation sent successfully");
         }
 
-        await AddOtherGroupMembers(model);
         return PartialView("_SendInvitationModal", model);
     }
 

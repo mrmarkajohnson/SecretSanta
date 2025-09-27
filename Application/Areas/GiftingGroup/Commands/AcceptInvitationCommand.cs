@@ -58,7 +58,7 @@ public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
         return await Result();
     }
 
-    private bool NameMatches(string? toName, Santa_User dbSantaUser)
+    protected bool NameMatches(string? toName, Santa_User dbSantaUser)
     {
         return string.Equals(toName, dbSantaUser.GlobalUser.Forename, StringComparison.InvariantCultureIgnoreCase)
             || string.Equals(toName, dbSantaUser.GlobalUser.PreferredFirstName, StringComparison.InvariantCultureIgnoreCase);
