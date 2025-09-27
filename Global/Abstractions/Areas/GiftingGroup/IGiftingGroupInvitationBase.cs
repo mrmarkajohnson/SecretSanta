@@ -5,7 +5,6 @@ namespace Global.Abstractions.Areas.GiftingGroup;
 public interface IGiftingGroupInvitationBase
 {
     Guid InvitationGuid { get; }
-    int? ToSantaUserKey { get; }
 }
 
 public static class GiftingGroupInvitationBasweExtensions

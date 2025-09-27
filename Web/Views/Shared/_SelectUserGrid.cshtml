@@ -4,9 +4,18 @@
 
 @model UserGridVm
 @{
+    string[] action = Model.UserGridAction.Split('?');
+    string urlAction = Url.Action(action[0]) ?? "";
+
+    if (action.Length > 0)
+    {
+        urlAction += "?" + action[1];
+    }
+
     Func<IVisibleUser, object> actions =
     @<text>
-        <input type="radio" class="user-select" name="UserSelect" data-hashed-user-id="@item.HashedUserId" data-name="@item.UserDisplayName" data-toggle="tooltip" title="Select" />
+        <input type="radio" class="user-select" name="UserSelect" data-hashed-user-id="@item.HashedUserId" 
+            data-name="@item.UserDisplayName" data-toggle="tooltip" data-bs-container="td" title="Select" />
     </text>;
 
     Func<IVisibleUser, object> displayName =
@@ -30,7 +39,7 @@
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action(Model.UserGridAction) ?? "")
+    .UsingUrl(@urlAction)
     .Empty("Nobody found")
     .Id("select-user-grid")
     .Filterable()

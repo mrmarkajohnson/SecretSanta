@@ -7,7 +7,6 @@ using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
-using System.Runtime.Intrinsics.Arm;
 using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.GiftingGroup.Controllers;
@@ -114,13 +113,18 @@ public sealed class ManageController : BaseController
 
         var potentialInvitees = await GetPossibleInvitationUsers(giftingGroupKey);
 
-        var model = new SendGroupInvitationVm(potentialInvitees, nameof(GetPossibleInvitationUsers))
+        var model = new SendGroupInvitationVm(potentialInvitees, GetInviteesGridUrl(giftingGroupKey))
         {
             GiftingGroupKey = giftingGroupKey,
             GiftingGroupName = groupName
         };
 
         return PartialView("_SendInvitationModal", model);
+    }
+
+    private static string GetInviteesGridUrl(int giftingGroupKey)
+    {
+        return $"{nameof(InvitationUsersGrid)}?giftingGroupKey={giftingGroupKey}";
     }
 
     private async Task AddOtherGroupMembers(SendGroupInvitationVm model)
@@ -133,12 +137,20 @@ public sealed class ManageController : BaseController
             model.OtherGroupMembers = await GetPossibleInvitationUsers(model.GiftingGroupKey);
         }
 
-        model.OtherMembersGridModel = new UserGridVm(model.OtherGroupMembers, nameof(GetPossibleInvitationUsers));
+        model.OtherMembersGridModel = new UserGridVm(model.OtherGroupMembers, GetInviteesGridUrl(model.GiftingGroupKey));
     }
 
     public async Task<IQueryable<IVisibleUser>> GetPossibleInvitationUsers(int giftingGroupKey)
     {
         return await Send(new GetPossibleInviteesQuery(giftingGroupKey));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> InvitationUsersGrid(int giftingGroupKey)
+    {
+        var potentialInvitees = await GetPossibleInvitationUsers(giftingGroupKey);
+        var model = new UserGridVm(potentialInvitees, GetInviteesGridUrl(giftingGroupKey));
+        return PartialView("_SelectUserGrid", model);
     }
 
     [HttpPost]

@@ -19,7 +19,7 @@ public class SendInvitationCommand<TItem> : BaseCommand<TItem> where TItem : ISe
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
-        throw new NotImplementedException();
+        
 
 
     }

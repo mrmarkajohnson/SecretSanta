@@ -2,7 +2,8 @@
 
 public interface ISendGroupInvitation : IGiftingGroupInvitationBase
 {
-    public int GiftingGroupKey { get; }
-    public string? ToName { get; }
-    public string? ToEmailAddress { get; }
+    int GiftingGroupKey { get; }
+    string? ToName { get; }
+    string? ToEmailAddress { get; }
+    string? ToHashedUserId { get; }
 }

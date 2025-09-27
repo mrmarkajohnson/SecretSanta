@@ -5,6 +5,7 @@ namespace Global.Abstractions.Areas.GiftingGroup;
 public interface IAcceptGroupInvitation : IGiftingGroupInvitationBase
 {    
     IHashableUser FromUser { get; }
+    int? ToSantaUserKey { get; }
 }
 
 public static class GiftingGroupInvitationExtensions

@@ -78,7 +78,8 @@
   {
     "outputFileName": "wwwroot/js/GiftingGroup/Manage/EditGiftingGroup/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/GiftingGroup/editGiftingGroup.js"
+      "wwwroot/scripts/GiftingGroup/editGiftingGroup.js",
+      "wwwroot/scripts/GiftingGroup/sendInvitation.js"
     ],
     "minify": {
       "enabled": true,

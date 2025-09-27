@@ -23,4 +23,5 @@ public class Santa_Invitation : ArchivableBaseEntity, IAcceptGroupInvitation, IS
     public string? ToEmailAddress { get; set; }
 
     IHashableUser IAcceptGroupInvitation.FromUser => FromSantaUser.GlobalUser;
+    string? ISendGroupInvitation.ToHashedUserId => ToSantaUser?.GlobalUserId;
 }

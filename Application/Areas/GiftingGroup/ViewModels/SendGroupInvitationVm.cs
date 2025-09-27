@@ -30,9 +30,9 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
     [Display(Name = UserDisplayNames.Email)]
     public string? ToEmailAddress { get; set; }
     
-    public int? ToSantaUserKey { get; set; }
+    public string? ToHashedUserId { get; set; }
 
-    public string ModalTitle => "Send an Invitation";
+    public string ModalTitle => "Send a Group Invitation";
     public bool ShowSaveButton => true;
     public string? AdditionalFooterButtonPartial { get; }
 
@@ -40,19 +40,33 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
 
     public string UserGridAction { get; set; } = ""; // no action needed
     public UserGridVm OtherMembersGridModel { get; set; }
+
+    public override string SubmitButtonText { get; set; } = "Send";
+    public override string SubmitButtonIcon { get; set; } = "fa-paper-plane";
 }
 
 public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitationVm>
 {
     public SendGroupInvitationVmValidator()
     {
-        When (x => x.ToSantaUserKey == null || x.ToSantaUserKey == 0, () => 
+        When (x => string.IsNullOrWhiteSpace(x.ToHashedUserId), () => 
         {
             RuleFor(x => x.ToName)
                 .NotEmpty();
 
             RuleFor(x => x.ToEmailAddress)
                 .NotEmpty();
+        }).Otherwise(() => 
+        {
+            RuleFor(x => x.ToName)
+                .Empty()
+                .WithMessage(x => x.ToEmailAddress.IsNotEmpty()
+                    ? $"You've selected a user and entered a {UserDisplayNames.Forename}. Please choose one or the other."
+                    : $"You've selected a user, and also entered a {UserDisplayNames.Forename} and {UserDisplayNames.Email}. Please choose one or the other.");
+
+            RuleFor(x => x.ToEmailAddress)
+                .Empty()
+                .WithMessage($"You've selected a user and entered an {UserDisplayNames.Email}. Please choose one or the other.");
         });
     }
 }

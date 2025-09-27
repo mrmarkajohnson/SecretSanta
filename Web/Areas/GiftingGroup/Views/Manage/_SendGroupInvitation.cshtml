@@ -2,7 +2,8 @@
 @{
     string nameExplanation = "This must match the person's first name or preferred name in the system, if they're an existing user or when they register.";
     string emailExplanation = "The e-mail address that the invitation will be sent to.";
-    string emailInvite = "If they're an existing user, they'll get an invitation message.  If not (or if their e-mail isn't set) they'll get an e-mail.";
+    string emailInvite1 = "If they're an existing user, they'll get an invitation message.";
+    string emailInvite2 = "If not (or their e-mail isn't set) Santa will send the invitation to the e-mail address you enter below.";
 }
 
 <partial name="_FormHiddenInputs" />
@@ -13,15 +14,16 @@
         <input type="hidden" asp-for="GiftingGroupKey" />
         <input type="hidden" asp-for="GiftingGroupName" />
         <input type="hidden" asp-for="UserGridAction" />
+        <input type="hidden" asp-for="ToHashedUserId" id="toHashedUserId" />
     </div>
 
     <div class="mb-5">
 
-        <h2>Invite someone else to join the group</h2>
+        <h2>Invite someone to join the group</h2>
 
         <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
             <p>
-                Here you can invite other people to join group '@Model.GiftingGroupName'.
+                Here you can invite someone else to join group '@Model.GiftingGroupName'.
             </p>
         </div>
 
@@ -31,8 +33,8 @@
                 <div class="@ModalGroupWidth">
                     <h3>Invite someone from another group</h3>
 
-                    <p class="mb-3">
-                        You can pick someone from another group you are in, and invite them to this group.
+                    <p class="mb-4">
+                        You can pick someone from any other group you are in.
                     </p>
                 </div>
 
@@ -43,12 +45,15 @@
                 <div class="@ModalGroupWidth">
                     <h3>Invite someone by name and e-mail</h3>
 
-                    <div class="mb-2">
+                    <div class="mb-4">
                         <p>
                             Alternatively, enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
                         </p>
                         <p>
-                            @emailInvite
+                            @emailInvite1
+                        </p>
+                        <p>
+                            @emailInvite2
                         </p>
                     </div>
                 </div>
@@ -59,12 +64,15 @@
             <div class="@ModalGroupWidth">
                 <h3>Invite someone by name and e-mail</h3>
 
-                <div class="mb-2">
+                <div class="mb-4">
                     <p>
                         Enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
                     </p>
                     <p>
-                        @emailInvite
+                        @emailInvite1
+                    </p>
+                    <p>
+                        @emailInvite2
                     </p>
                 </div>
             </div>

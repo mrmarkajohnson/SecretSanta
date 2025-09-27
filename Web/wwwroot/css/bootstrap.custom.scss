@@ -309,6 +309,7 @@ a:hover {
 .modal.santa-modal .modal-body {
     max-height: 70vh !important;
     overflow-y: auto !important;
+    padding-top: 24px !important;
 }
 
 .modal.santa-modal .modal-header.santa-modal-header {
@@ -316,8 +317,9 @@ a:hover {
     color: $white;
 }
 
-.modal.santa-modal .modal-header.santa-modal-header modal-title.h4 {
+.modal.santa-modal .modal-header.santa-modal-header h4.modal-title {
     color: $white;
+    text-shadow: $red-text-shadow !important;
 }
 
 .modal.santa-modal .modal-header.santa-modal-header .btn-close-override {
@@ -334,6 +336,10 @@ a:hover {
     box-shadow: $purple-box-shadow;
     color: $purple;
     border: 1px solid $purple !important;
+}
+
+.modal.santa-modal .modal-body h3 {
+    color: $secondary !important;
 }
 
 .modal.santa-modal .modal-footer.santa-modal-footer {
@@ -681,3 +687,27 @@ $snow-3: "";
 }
 
 //endregion snow
+
+@media (min-width: 576px) {
+    .modal-xl {
+        --bs-modal-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-xl {
+        --bs-modal-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-xl {
+        --bs-modal-width: 935px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-xl {
+        --bs-modal-width: 1140px;
+    }
+}
