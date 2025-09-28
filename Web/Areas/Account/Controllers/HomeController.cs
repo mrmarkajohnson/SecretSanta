@@ -1,7 +1,6 @@
 ﻿using Application.Areas.Account.Commands;
 using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
-using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;

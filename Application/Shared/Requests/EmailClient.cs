@@ -251,9 +251,9 @@ internal class EmailClient : IEmailClient
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
     }
 
-    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool testMessage = false)
+    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool skipReadLink = false)
     {
-        if (!testMessage)
+        if (!skipReadLink)
             AddMessageReadLink(ref url, recipient);
 
         string quote = addQuotes ? "'" : "";

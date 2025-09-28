@@ -8,6 +8,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using static Global.Settings.GlobalSettings;
+using AccountControllers = Web.Areas.Account.Controllers;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
@@ -159,7 +160,9 @@ public sealed class ManageController : BaseController
         ModelState.Clear();
 
         await AddOtherGroupMembers(model);
-        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model), new SendGroupInvitationVmValidator());
+
+        string acceptUrl = GetFullUrl(nameof(AccountControllers.HomeController.AcceptInvitation), nameof(AccountControllers.HomeController), AreaNames.Account);
+        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, acceptUrl), new SendGroupInvitationVmValidator());
 
         if (commandResult.Success)
         {

@@ -217,12 +217,7 @@ public class BaseController : Controller
 
     protected string GetFullUrl(string action, string controller, string area, object? values = null)
     {
-        return GetFullUrl(Request, action, controller, area, values);
-    }
-
-    private string GetFullUrl(HttpRequest request, string action, string controller, string area, object? values = null)
-    {
-        return Url.Action(request, action, controller, area, values);
+        return Url.Action(Request, action, controller, area, values);
     }
 
     public string GetLocalUrl(string action, string controller, string area, object? values = null)
