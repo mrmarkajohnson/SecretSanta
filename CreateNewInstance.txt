@@ -1,8 +1,12 @@
 ALL ENVIRONMENTS
 
 1. Edit IdentitySettings and change SymmetricKeyStart (so that it's unique)
-2. Follow the steps below for the relevant environment - see ConfigurationSettings for explanations of the settings
-3. Run the application and register yourself, so that you become the system admin (the first user registered is the initial sysadmin)
+2. Go to Extensions and install BundlerMinifier2022+ and WebCompiler2022+
+3. Close Visual Studio, allow the extensions to install, reopen VS and build
+4. Follow the steps below for the relevant environment - see ConfigurationSettings for explanations of the settings
+5. Run the application and register yourself, so that you become the system admin (the first user registered is the initial sysadmin)
+
+If you get compilation errors for bundlerminifier, try commenting out the PrepareForBuildDependsOn entry from Web.csproj, and adding it back later.
 
 LOCAL
 
