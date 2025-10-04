@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+window.addEventListener('pageshow', function () {
     let messageKey = document.getElementById('messageKey').value;
     let recipientKey = document.getElementById('messageRecipientKey').value;
 

@@ -160,7 +160,7 @@ internal class EmailClient : IEmailClient
     private string GetMessageText(ISantaMessage message, IEmailRecipient recipient)
     {
         string? viewMessageUrl = MessageSettings.ViewMessageUrl.IsNotEmpty() && recipient.MessageKey > 0
-            ? $"?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
+            ? $"{MessageSettings.ViewMessageUrl}?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
             : null;
 
         string messageFrom = message.ShowAsFromSanta || message.Sender == null

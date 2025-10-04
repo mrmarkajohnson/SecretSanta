@@ -58,24 +58,27 @@
                         <partial name="_SelectUserGrid" model="@Model.OtherMembersGridModel" />
                     </div>
 
-                    <div class="@ModalGroupWidth">
-                        <h3>Invite someone by name and e-mail</h3>
+                    @if (Model.EmailConfirmed)
+                    {
+                        <div class="@ModalGroupWidth">
+                            <h3>Invite someone by name and e-mail</h3>
 
-                        <div class="mb-4">
-                            <p>
-                                Alternatively, enter the person's @UserDisplayNames.Forename.ToLower() and @email.
-                            </p>
-                            <p>
-                                @emailInvite1
-                            </p>
-                            <p>
-                                @emailInvite2
-                            </p>
+                            <div class="mb-4">
+                                <p>
+                                    Alternatively, enter the person's @UserDisplayNames.Forename.ToLower() and @email.
+                                </p>
+                                <p>
+                                    @emailInvite1
+                                </p>
+                                <p>
+                                    @emailInvite2
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             }
-            else
+            else if (Model.EmailConfirmed)
             {
                 <div class="@CenterFlexWrapContainer">
                     <div class="@ModalGroupWidth">
@@ -96,40 +99,43 @@
                 </div>
             }
 
-            <div class="@CenterFlexWrapContainer">
-                <div class="@ModalGroupWidth">
+            @if (Model.EmailConfirmed)
+            {
+                <div class="@CenterFlexWrapContainer">
+                    <div class="@ModalGroupWidth">
 
-                    <div class="mb-4">
-                        <partial name="_PageWarning" model="@emailWarning" />
-                    </div>
+                        <div class="mb-4">
+                            <partial name="_PageWarning" model="@emailWarning" />
+                        </div>
 
-                    <div class="mb-3 d-flex">
-                        <div class="form-group-ib col-sm-12 username-container">
-                            <label asp-for="ToName" class="control-label"></label>
+                        <div class="mb-3 d-flex">
+                            <div class="form-group-ib col-sm-12 username-container">
+                                <label asp-for="ToName" class="control-label"></label>
+                                <div class="input-group input-info">
+                                    <input asp-for="ToName" class="form-control" autocomplete="off" aria-required="false"
+                                           placeholder="Enter the person's first name" />
+                                    <partial name="_InputQuestion" model="@nameExplanation" />
+                                </div>
+                                <div>
+                                    <span asp-validation-for="ToName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ToEmailAddress" class="control-label"></label>
                             <div class="input-group input-info">
-                                <input asp-for="ToName" class="form-control" autocomplete="off" aria-required="false"
-                                       placeholder="Enter the person's first name" />
-                                <partial name="_InputQuestion" model="@nameExplanation" />
+                                <input asp-for="ToEmailAddress" class="form-control" autocomplete="off" aria-required="false"
+                                       placeholder="name@example.com (optional)" />
+                                <partial name="_InputQuestion" model="@emailExplanation" />
                             </div>
                             <div>
-                                <span asp-validation-for="ToName" class="text-danger"></span>
+                                <span asp-validation-for="ToEmailAddress" class="text-danger"></span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="ToEmailAddress" class="control-label"></label>
-                        <div class="input-group input-info">
-                            <input asp-for="ToEmailAddress" class="form-control" autocomplete="off" aria-required="false"
-                                   placeholder="name@example.com (optional)" />
-                            <partial name="_InputQuestion" model="@emailExplanation" />
-                        </div>
-                        <div>
-                            <span asp-validation-for="ToEmailAddress" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
 
             <div class="@CenterFlexWrapContainer">
                 <div class="@ModalGroupWidth">
@@ -140,6 +146,13 @@
                         <p>
                             Write a message to the person you're inviting. This can help to reassure them that it's really from you.
                         </p>
+
+                        @if (Model.EmailConfirmed && Model.OtherGroupMembers.Any())
+                        {
+                            <p>
+                                You can add a message for either invitation method.
+                            </p>
+                        }
                     </div>
 
                     <div class="mb-3 d-flex">

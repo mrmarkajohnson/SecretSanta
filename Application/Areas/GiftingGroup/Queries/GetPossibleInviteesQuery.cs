@@ -29,6 +29,7 @@ public class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
             .Where(x => x.GiftingGroupKey != _giftingGroupKey)
             .Where(x => !groupMemberKeys.Contains(x.SantaUserKey))
             .Select(x => x.SantaUser.GlobalUser)
+            .DistinctBy(x => x.Id)
             .AsQueryable()
             .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
                 new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
