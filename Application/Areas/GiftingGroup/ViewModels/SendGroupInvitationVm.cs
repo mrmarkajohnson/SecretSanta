@@ -46,6 +46,7 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
 
     public override string SubmitButtonText { get; set; } = "Send";
     public override string SubmitButtonIcon { get; set; } = "fa-paper-plane";
+    public bool EmailConfirmed { get; set; }
 }
 
 public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitationVm>
@@ -75,6 +76,11 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
 
             RuleFor(x => x.ToEmailAddress)
                 .NotEmpty();
+
+            RuleFor(x => x.EmailConfirmed)
+                .Equal(true)
+                .WithMessage("Sorry, you can only use this method to invite people to a group if you have set and " +
+                    $"confirmed your {UserDisplayNames.EmailLower} in the system.");
         });
 
         RuleFor(x => x.Message).MaximumLength(GiftingGroupVal.InvitationMessage.MaxLength);

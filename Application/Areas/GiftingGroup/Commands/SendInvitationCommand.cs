@@ -57,10 +57,20 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             AddGeneralValidationError("No matching user found.");
             return await Result();
         }
+        else if (IsAGroupMember(dbToSantaUser))
+        {
+            AddGeneralValidationError($"{dbToSantaUser.GlobalUser.DisplayName()} is already a member of the group.");
+            return await Result();
+        }
         else
         {
             return await SendUserInvitation(dbGiftingGroupLink, dbToSantaUser);
         }
+    }
+
+    private bool IsAGroupMember(Santa_User dbToSantaUser)
+    {
+        return dbToSantaUser.GiftingGroupLinks.Where(x => x.DateArchived == null && x.DateDeleted == null).Any(x => x.GiftingGroupKey == Item.GiftingGroupKey);
     }
 
     private async Task<ICommandResult<TItem>> ProcessEmailAddress(Santa_User dbCurrentSantaUser, Santa_GiftingGroupUser dbGiftingGroupLink)
@@ -94,6 +104,11 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
                 return await SendEmailInvitation(dbGiftingGroupLink, tidiedName);
             }
         }
+        else if (IsAGroupMember(dbToSantaUser))
+        {
+            AddGeneralValidationError($"{Item.ToName} is already a member of the group.");
+            return await Result();
+        }
         else
         {
             return await SendUserInvitation(dbGiftingGroupLink, dbToSantaUser);
@@ -110,7 +125,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToSantaUser = dbToSantaUser,
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message
+            Message = Item.Message ?? ""
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -126,7 +141,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToEmailAddress = Item.ToEmailAddress,
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message
+            Message = Item.Message ?? ""
         };
 
         return await SaveAndSendInvitation(dbInvitation);

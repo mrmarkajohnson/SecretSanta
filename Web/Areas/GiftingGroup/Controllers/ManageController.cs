@@ -117,7 +117,8 @@ public sealed class ManageController : BaseController
         var model = new SendGroupInvitationVm(potentialInvitees, GetInviteesGridUrl(giftingGroupKey))
         {
             GiftingGroupKey = giftingGroupKey,
-            GiftingGroupName = groupName
+            GiftingGroupName = groupName,
+            EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true
         };
 
         return PartialView("_SendInvitationModal", model);
@@ -160,6 +161,7 @@ public sealed class ManageController : BaseController
         ModelState.Clear();
 
         await AddOtherGroupMembers(model);
+        model.EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true;
 
         string acceptUrl = GetFullUrl(nameof(AccountControllers.HomeController.AcceptInvitation), nameof(AccountControllers.HomeController), AreaNames.Account);
         var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, acceptUrl), new SendGroupInvitationVmValidator());
