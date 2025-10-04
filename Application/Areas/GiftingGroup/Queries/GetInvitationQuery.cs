@@ -23,7 +23,8 @@ public class GetInvitationQuery : BaseQuery<IAcceptGroupInvitation?>
         {
             InvitationGuid = dbInvitation.InvitationGuid,
             ToSantaUserKey = dbInvitation.ToSantaUserKey,
-            FromUser = Mapper.Map<IHashableUser>(dbInvitation.FromSantaUser.GlobalUser)
+            FromUser = Mapper.Map<IHashableUser>(dbInvitation.FromSantaUser.GlobalUser),
+            Message = dbInvitation.Message
         };
     }
 }

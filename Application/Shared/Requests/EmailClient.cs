@@ -226,7 +226,7 @@ internal class EmailClient : IEmailClient
 
     private void AddEmailPreferencesFooter(ref string messageText, IEmailRecipient recipient)
     {
-        if (MessageSettings.EmailPreferencesUrl.IsNotEmpty())
+        if (!recipient.SkipPreferencesFooter && MessageSettings.EmailPreferencesUrl.IsNotEmpty())
         {
             messageText += $"<br/><br/><small>You are receiving this message as a user of the Secret Santa system. " +
                 $"To change your e-mail preferences, " +

@@ -1,5 +1,6 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Shared;
+using Global.Validation;
 
 namespace Data.Entities.Santa;
 
@@ -21,6 +22,9 @@ public class Santa_Invitation : ArchivableBaseEntity, IAcceptGroupInvitation, IS
 
     public string? ToName { get; set; }
     public string? ToEmailAddress { get; set; }
+
+    [MaxLength(GiftingGroupVal.InvitationMessage.MaxLength)]
+    public string Message { get; set; } = string.Empty;
 
     IHashableUser IAcceptGroupInvitation.FromUser => FromSantaUser.GlobalUser;
     string? ISendGroupInvitation.ToHashedUserId => ToSantaUser?.GlobalUserId;

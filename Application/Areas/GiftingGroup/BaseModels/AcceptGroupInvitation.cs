@@ -7,4 +7,5 @@ public class AcceptGroupInvitation : IAcceptGroupInvitation
     public Guid InvitationGuid { get; set; }
     public int? ToSantaUserKey { get; set; }
     public required IHashableUser FromUser { get; set; }
+    public string Message { get; set; } = string.Empty;
 }

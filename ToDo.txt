@@ -1,8 +1,18 @@
 IMMEDIATE
-* Send invitations to e-mail addresses
 * Prevent removing users from group or this year after recipients are chosen (e.g. don't show the options/links)
 Add bug reporting
 Add reporting abuse
+
+SENDING INVITATIONS
+Only allow sending via e-mail if the person has set and confirmed their e-mail address
+Warn that the e-mail address will be sent with the message
+
+ACCEPTING INVITATIONS
+If the name doesn't match, show a message saying so and advising to contact the sender
+Otherwise, open up the invitation for review when the user goes to the home screen and is logged in
+Allow accepting, rejecting or coming back later
+Link the invitation to the user if not already done, and the details match
+Show a link for reviewing invitations if the user has any
 
 GENERAL
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.

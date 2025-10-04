@@ -61,19 +61,21 @@
         }
         else
         {
-            <div class="@ModalGroupWidth">
-                <h3>Invite someone by name and e-mail</h3>
+            <div class="@CenterFlexWrapContainer">
+                <div class="@ModalGroupWidth">
+                    <h3>Invite someone by name and e-mail</h3>
 
-                <div class="mb-4">
-                    <p>
-                        Enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
-                    </p>
-                    <p>
-                        @emailInvite1
-                    </p>
-                    <p>
-                        @emailInvite2
-                    </p>
+                    <div class="mb-4">
+                        <p>
+                            Enter the person's @UserDisplayNames.Forename.ToLower() and @UserDisplayNames.EmailLower.
+                        </p>
+                        <p>
+                            @emailInvite1
+                        </p>
+                        <p>
+                            @emailInvite2
+                        </p>
+                    </div>
                 </div>
             </div>
         }
@@ -104,6 +106,31 @@
                     </div>
                     <div>
                         <span asp-validation-for="ToEmailAddress" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="@CenterFlexWrapContainer">
+            <div class="@ModalGroupWidth">
+
+                <h3>Write a message</h3>
+
+                <div class="mb-4">
+                    <p>
+                        Write a message to the person you're inviting. This can help to reassure them that it's really from you.
+                    </p>
+                </div>
+
+                <div class="mb-3 d-flex">
+                    <div class="form-group-ib col-sm-12 username-container">
+                        <label asp-for="Message" class="control-label"></label>
+                        <div class="input-group input-info">
+                            <textarea asp-for="Message" class="form-control" autocomplete="off" aria-required="false"></textarea>
+                        </div>
+                        <div>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
             </div>

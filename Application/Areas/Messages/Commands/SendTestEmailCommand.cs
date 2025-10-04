@@ -36,7 +36,8 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
             EmailConfirmed = true,
             ReceiveEmails = MessageSettings.EmailPreference.All,
             DetailedEmails = true,
-            Greeting = "Hello there"
+            Greeting = "Hello there",
+            SkipPreferencesFooter = true
         };
 
         try

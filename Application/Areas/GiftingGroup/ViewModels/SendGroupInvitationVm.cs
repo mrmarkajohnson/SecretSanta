@@ -29,7 +29,10 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
 
     [Display(Name = UserDisplayNames.Email)]
     public string? ToEmailAddress { get; set; }
-    
+
+    [MaxLength(GiftingGroupVal.InvitationMessage.MaxLength)]
+    public string Message { get; set; } = string.Empty;
+
     public string? ToHashedUserId { get; set; }
 
     public string ModalTitle => "Send a Group Invitation";
@@ -65,7 +68,7 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
                 .Empty()
                 .WithMessage($"You've selected a user and entered an {UserDisplayNames.Email}. Please choose one or the other.");
         })
-            .Otherwise(() => 
+        .Otherwise(() => 
         {
             RuleFor(x => x.ToName)
                 .NotEmpty();
@@ -73,5 +76,7 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
             RuleFor(x => x.ToEmailAddress)
                 .NotEmpty();
         });
+
+        RuleFor(x => x.Message).MaximumLength(GiftingGroupVal.InvitationMessage.MaxLength);
     }
 }

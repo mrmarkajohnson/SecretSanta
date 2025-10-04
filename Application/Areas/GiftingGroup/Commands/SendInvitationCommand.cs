@@ -109,7 +109,8 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToSantaUserKey = dbToSantaUser.SantaUserKey,
             ToSantaUser = dbToSantaUser,
             GiftingGroupKey = Item.GiftingGroupKey,
-            GiftingGroup = dbGiftingGroupLink.GiftingGroup
+            GiftingGroup = dbGiftingGroupLink.GiftingGroup,
+            Message = Item.Message
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -124,7 +125,8 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToName = tidiedName,
             ToEmailAddress = Item.ToEmailAddress,
             GiftingGroupKey = Item.GiftingGroupKey,
-            GiftingGroup = dbGiftingGroupLink.GiftingGroup
+            GiftingGroup = dbGiftingGroupLink.GiftingGroup,
+            Message = Item.Message
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -143,7 +145,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         else
         {
             return await SendToEmail(dbInvitation, acceptUrl);
-        }      
+        }
     }
 
     private void SendToSantaUser(Santa_Invitation dbInvitation, string acceptUrl)
@@ -151,17 +153,14 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         if (dbInvitation.ToSantaUser == null)
             throw new ArgumentException("A user must be selected."); // for the compiler
 
-        string messageText = $"{dbInvitation.FromSantaUser.GlobalUser.DisplayName()} has invited you to join the group '{dbInvitation.GiftingGroup.Name}'." +
-            $"<br><br>Click {MessageLink(acceptUrl, "here", false)} to accept the invitation.";
-
         var message = new SendSantaMessage
         {
             RecipientType = MessageRecipientType.SingleNonGroupMember,
             HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-            MessageText = messageText,
+            MessageText = GetMessageText(dbInvitation, acceptUrl, true),
             Important = true,
             CanReply = true,
-            ShowAsFromSanta = false
+            ShowAsFromSanta = true
         };
 
         SendMessage(message, dbInvitation.FromSantaUser, dbInvitation.ToSantaUser, dbInvitation.GiftingGroup);
@@ -179,20 +178,14 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
 
         if (result.Success)
         {
-            string baseUrl = ConfigurationSettings.BaseUrl ?? "";
-
-            string messageText = $"{dbInvitation.FromSantaUser.GlobalUser.DisplayName()} has invited you to join the group '{dbInvitation.GiftingGroup.Name}'." +
-                $"<br><br>Click {MessageLink(acceptUrl, "here", false, true)} to accept the invitation." +
-                $"<br><br>If you don't already use Secret Santa, click {MessageLink(baseUrl, "here", false, true)} to find out more.";
-
             var message = new SantaMessage
             {
                 RecipientType = MessageRecipientType.SingleNonGroupMember,
                 HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-                MessageText = messageText,
+                MessageText = GetMessageText(dbInvitation, acceptUrl, false),
                 Important = true,
                 CanReply = true,
-                ShowAsFromSanta = false
+                ShowAsFromSanta = true
             };
 
             var recipient = new EmailRecipient
@@ -202,12 +195,57 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
                 IdentificationHashed = false,
                 EmailConfirmed = true,
                 ReceiveEmails = EmailPreference.All,
-                DetailedEmails = true
+                DetailedEmails = true,
+                SkipPreferencesFooter = true
             };
-            
+
             DbContext.EmailClient.SendMessage(message, [recipient]);
         }
 
         return result;
+    }
+
+    private string GetMessageText(Santa_Invitation dbInvitation, string acceptUrl, bool forExistingUser)
+    {
+        bool skipReadLink = !forExistingUser;
+
+        string from = dbInvitation.FromSantaUser.GlobalUser.DisplayName();
+
+        if (!forExistingUser)
+        {
+            string fromEmail = EncryptionHelper.DecryptEmail(dbInvitation.FromSantaUser.GlobalUser.Email);
+
+            if (fromEmail.IsNotEmpty())
+            {
+                from += $" ({fromEmail})";
+            }
+        }
+
+        string messageText = $"{from} has invited you to join the group '{dbInvitation.GiftingGroup.Name}'.<br><br>";
+
+        if (dbInvitation.Message.IsNotEmpty())
+        {
+            messageText += $"{dbInvitation.FromSantaUser.GlobalUser.Gender.Direct(true)} said: \"{dbInvitation.Message.Trim()}\"<br><br>";
+        }
+
+        if (!forExistingUser)
+        {
+            messageText += $"If you're not sure this is genuine, please contact {dbInvitation.FromSantaUser.GlobalUser.DisplayFirstName()} directly. " +
+                $"Otherwise, click {MessageLink(acceptUrl, "here", false, skipReadLink)} to review the invitation.";
+
+            string? baseUrl = ConfigurationSettings.BaseUrl;
+
+            if (baseUrl.IsNotEmpty())
+            {
+                messageText += $"<br><br>If you don't already use Secret Santa, click " +
+                    $"{MessageLink(baseUrl, "here", false, skipReadLink)} to find out more.";
+            }
+        }
+        else
+        {
+            messageText += $"Click {MessageLink(acceptUrl, "here", false, skipReadLink)} to review the invitation.";
+        }
+
+        return messageText;
     }
 }

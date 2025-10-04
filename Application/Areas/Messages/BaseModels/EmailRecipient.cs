@@ -13,4 +13,5 @@ internal class EmailRecipient : UserNamesBase, IEmailRecipient
     public bool DetailedEmails { get; set; }
 
     public string Greeting { get; set; } = string.Empty;
+    public bool SkipPreferencesFooter { get; set; }
 }
