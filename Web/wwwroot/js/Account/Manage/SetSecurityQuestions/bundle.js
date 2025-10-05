@@ -5,8 +5,8 @@ function changeGreeting() {
     let optionFound = false;
     let newGreeting = currentGreeting;    
 
-    for (const x of greetingOptions) {
-        let optionText = x.value;
+    for (let option of greetingOptions) {
+        let optionText = option.value;
         if (optionFound) {
             newGreeting = optionText;            
             break;
@@ -22,7 +22,7 @@ function changeGreeting() {
     greetingTextInput.value = newGreeting;
 
     let greetingTextLabels = document.querySelectorAll('label.greeting-text');
-    greetingTextLabels.forEach(function (x) {
-        x.innerText = newGreeting;
+    greetingTextLabels.forEach(function (label) {
+        label.innerText = newGreeting;
     });
 }
