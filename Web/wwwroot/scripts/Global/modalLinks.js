@@ -50,14 +50,18 @@ function showModalResponse(responseText) {
     modalContainer.addEventListener('hidden.bs.modal', modalClosed);
     document.dispatchEvent(new CustomEvent('modalOpening', { detail: { modal: modal } }));
 
+    initSaveButton(modal, modalObject);
+
+    modalObject.show();
+}
+
+function initSaveButton(modal, modalObject) {
     let saveButton = modal.querySelector('.btn-save-close-modal');
-    if (!!saveButton) {
-        saveButton.addEventListener('click', function () {
+    if (!!saveButton && !initialised(saveButton)) {
+        saveButton.addEventListener('click', function() {
             saveModalForm(modal, modalObject);
         });
     }
-
-    modalObject.show();
 }
 
 function modalClosed(e) {
@@ -86,6 +90,8 @@ async function saveModalForm(modal, modalObject) {
 
             if (!isEmptyValue(successMessage)) {
                 handleSuccessfulSave(successMessage);
+            } else {
+                initSaveButton(modal, modalObject);
             }
         }
         else {

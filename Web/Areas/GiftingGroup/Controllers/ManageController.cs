@@ -3,9 +3,12 @@ using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Commands;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.GiftingGroup.ViewModels;
+using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using static Global.Settings.GlobalSettings;
+using AccountControllers = Web.Areas.Account.Controllers;
 
 namespace Web.Areas.GiftingGroup.Controllers;
 
@@ -89,6 +92,7 @@ public sealed class ManageController : BaseController
         return await ShowEditGiftingGroup(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey)
     {
         var model = new EditGiftingGroupVm
@@ -100,6 +104,77 @@ public sealed class ManageController : BaseController
         return PartialView("_GiftingGroupMembersGrid", model);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> SendGroupInvitation(int giftingGroupKey)
+    {
+        string groupName = HomeModel.GiftingGroups
+            .Where(x => x.GroupAdmin)
+            .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey)?.GroupName
+                ?? throw new AccessDeniedException("You do not have administrator access to this group.");
+
+        var potentialInvitees = await GetPossibleInvitationUsers(giftingGroupKey);
+
+        var model = new SendGroupInvitationVm(potentialInvitees, GetInviteesGridUrl(giftingGroupKey))
+        {
+            GiftingGroupKey = giftingGroupKey,
+            GiftingGroupName = groupName,
+            EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true
+        };
+
+        return PartialView("_SendInvitationModal", model);
+    }
+
+    private static string GetInviteesGridUrl(int giftingGroupKey)
+    {
+        return $"{nameof(InvitationUsersGrid)}?giftingGroupKey={giftingGroupKey}";
+    }
+
+    private async Task AddOtherGroupMembers(SendGroupInvitationVm model)
+    {
+        var otherGroups = HomeModel.GiftingGroups
+            .Where(x => x.GiftingGroupKey != model.GiftingGroupKey);
+
+        if (otherGroups.Any())
+        {
+            model.OtherGroupMembers = await GetPossibleInvitationUsers(model.GiftingGroupKey);
+        }
+
+        model.OtherMembersGridModel = new UserGridVm(model.OtherGroupMembers, GetInviteesGridUrl(model.GiftingGroupKey));
+    }
+
+    public async Task<IQueryable<IVisibleUser>> GetPossibleInvitationUsers(int giftingGroupKey)
+    {
+        return await Send(new GetPossibleInviteesQuery(giftingGroupKey));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> InvitationUsersGrid(int giftingGroupKey)
+    {
+        var potentialInvitees = await GetPossibleInvitationUsers(giftingGroupKey);
+        var model = new UserGridVm(potentialInvitees, GetInviteesGridUrl(giftingGroupKey));
+        return PartialView("_SelectUserGrid", model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SendGroupInvitation(SendGroupInvitationVm model)
+    {
+        ModelState.Clear();
+
+        await AddOtherGroupMembers(model);
+        model.EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true;
+
+        string reviewUrl = GetFullUrl(nameof(AccountControllers.HomeController.ReviewApplication), nameof(AccountControllers.HomeController), AreaNames.Account);
+        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, reviewUrl), new SendGroupInvitationVmValidator());
+
+        if (commandResult.Success)
+        {
+            return Ok("Invitation sent successfully");
+        }
+
+        return PartialView("_SendInvitationModal", model);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> RemoveGroupUser(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
@@ -107,6 +182,7 @@ public sealed class ManageController : BaseController
         return Ok();
     }
 
+    [HttpPost]
     public async Task<IActionResult> ToggleGroupAdmin(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
@@ -209,7 +285,7 @@ public sealed class ManageController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReviewJoinerApplication(ReviewJoinerApplicationVm model)
     {
-        string participateUrl = GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
+        string participateUrl = GetParticipateUrl();
 
         var commandResult = await Send(new ReviewJoinerApplicationCommand<ReviewJoinerApplicationVm>(model, participateUrl),
             new ReviewJoinerApplicationVmValidator());

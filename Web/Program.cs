@@ -82,7 +82,7 @@ FluentValidationConfiguration.SetFluentValidationOptions();
 app.UseMiddleware(typeof(GlobalRequestProcessor));
 
 app.Start();
-ConfigurationSettings.BaseUrl = app.Urls.FirstOrDefault();
+ConfigurationSettings.BaseUrl = app.Urls.FirstOrDefault()?.Trim().Trim('/');
 app.WaitForShutdown();
 
 static void MapControllerRoutes(WebApplication app)

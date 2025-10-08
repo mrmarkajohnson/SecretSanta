@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.Partners;
 using Global.Extensions.Exceptions;
 using static Global.Settings.MessageSettings;

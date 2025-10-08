@@ -18,6 +18,8 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferenc
         SentMessages = new HashSet<Santa_Message>();
         ReceivedMessages = new HashSet<Santa_MessageRecipient>();
         Suggestions = new HashSet<Santa_Suggestion>();
+        SentInvitations = new HashSet<Santa_Invitation>();
+        ReceivedInvitations = new HashSet<Santa_Invitation>();
     }
 
     [Key]
@@ -48,6 +50,8 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferenc
     public virtual ICollection<Santa_Message> SentMessages { get; set; }
     public virtual ICollection<Santa_MessageRecipient> ReceivedMessages { get; set; }
     public virtual ICollection<Santa_Suggestion> Suggestions { get; set; }
+    public virtual ICollection<Santa_Invitation> SentInvitations { get; set; }
+    public virtual ICollection<Santa_Invitation> ReceivedInvitations { get; set; }
 
     public IList<string> GroupNames() => GiftingGroupLinks
         .Where(x => x.DateArchived == null && x.DateDeleted == null)

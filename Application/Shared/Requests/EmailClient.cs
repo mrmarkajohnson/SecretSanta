@@ -160,7 +160,7 @@ internal class EmailClient : IEmailClient
     private string GetMessageText(ISantaMessage message, IEmailRecipient recipient)
     {
         string? viewMessageUrl = MessageSettings.ViewMessageUrl.IsNotEmpty() && recipient.MessageKey > 0
-            ? $"?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
+            ? $"{MessageSettings.ViewMessageUrl}?messageKey={recipient.MessageKey}&messageRecipientKey={recipient.MessageRecipientKey}"
             : null;
 
         string messageFrom = message.ShowAsFromSanta || message.Sender == null
@@ -226,7 +226,7 @@ internal class EmailClient : IEmailClient
 
     private void AddEmailPreferencesFooter(ref string messageText, IEmailRecipient recipient)
     {
-        if (MessageSettings.EmailPreferencesUrl.IsNotEmpty())
+        if (!recipient.SkipPreferencesFooter && MessageSettings.EmailPreferencesUrl.IsNotEmpty())
         {
             messageText += $"<br/><br/><small>You are receiving this message as a user of the Secret Santa system. " +
                 $"To change your e-mail preferences, " +
@@ -251,9 +251,9 @@ internal class EmailClient : IEmailClient
             .Replace($"{MessageSettings.FromRecipientParameter}=0", fromRecipient);
     }
 
-    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool testMessage = false)
+    public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool skipReadLink = false)
     {
-        if (!testMessage)
+        if (!skipReadLink)
             AddMessageReadLink(ref url, recipient);
 
         string quote = addQuotes ? "'" : "";

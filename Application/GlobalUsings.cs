@@ -1,4 +1,5 @@
 ﻿global using Application.Shared.Helpers;
+global using Application.Shared.Requests;
 
 global using Data.Entities.Santa;
 global using Data.Entities.Shared;

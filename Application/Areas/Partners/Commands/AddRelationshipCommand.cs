@@ -1,10 +1,7 @@
 ﻿using Application.Areas.Messages.BaseModels;
-using Application.Areas.Partners.BaseModels;
 using Application.Areas.Partners.Queries;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.Partners;
 using Global.Extensions.Exceptions;
-using System;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Partners.Commands;

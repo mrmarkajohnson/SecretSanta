@@ -7,4 +7,5 @@ public interface IEmailRecipient : IUserNamesBase, IUserEmailDetails, IIdentityU
 {
     int MessageKey { get; }
     int MessageRecipientKey { get; }
+    bool SkipPreferencesFooter { get; }
 }

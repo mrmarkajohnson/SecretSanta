@@ -1,0 +1,175 @@
+﻿@model SendGroupInvitationVm
+@{
+    string email = UserDisplayNames.EmailLower;
+    string nameExplanation = "This must match the person's first name or preferred name in the system, if they're an existing user or when they register.";
+    string emailExplanation = $"The {email} that the invitation will be sent to. This must match the one they register with (if they enter one).";
+    string emailInvite1 = "If they're an existing user, they'll get an invitation message.";
+    string emailInvite2 = $"If not (or their e-mail isn't set) Santa will send the invitation to the {email} you enter below.";
+    string emailWarning = $"Using this method, your {email} will be sent to the person you invite, so they know it's really from you.";
+}
+
+<partial name="_FormHiddenInputs" />
+
+<div class="row @CenterFlexNoWrapContainer">
+
+    <div class="collapse">
+        <input type="hidden" asp-for="GiftingGroupKey" />
+        <input type="hidden" asp-for="GiftingGroupName" />
+        <input type="hidden" asp-for="UserGridAction" />
+        <input type="hidden" asp-for="ToHashedUserId" id="toHashedUserId" />
+        <input type="hidden" asp-for="EmailConfirmed" />
+    </div>
+
+    <div class="mb-5">
+
+        <h2>Invite someone to join the group</h2>
+
+        @if (!Model.EmailConfirmed && !Model.OtherGroupMembers.Any())
+        {
+            <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
+                <p>
+                    Sorry, you can only send invitations via the system if you're in more than one group,
+                    or you have set and confirmed your @email in the system.
+
+                    However, you can send the Group Name and Joiner Token to people (outside the system) to invite to apply to join.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="mt-2 mb-4 align-items-center justify-content-center align-content-center">
+                <p>
+                    Here you can invite someone else to join group '@Model.GiftingGroupName'.
+                </p>
+            </div>
+
+            @if (Model.OtherGroupMembers.Any())
+            {
+                <div class="@CenterFlexWrapContainer">
+                    <div class="@ModalGroupWidth">
+                        <h3>Invite someone from another group</h3>
+
+                        <p class="mb-4">
+                            You can pick someone from any other group you are in.
+                        </p>
+                    </div>
+
+                    <div class="@StandardFullWidthGridContainer mb-4">
+                        <partial name="_SelectUserGrid" model="@Model.OtherMembersGridModel" />
+                    </div>
+
+                    @if (Model.EmailConfirmed)
+                    {
+                        <div class="@ModalGroupWidth">
+                            <h3>Invite someone by name and e-mail</h3>
+
+                            <div class="mb-4">
+                                <p>
+                                    Alternatively, enter the person's @UserDisplayNames.Forename.ToLower() and @email.
+                                </p>
+                                <p>
+                                    @emailInvite1
+                                </p>
+                                <p>
+                                    @emailInvite2
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else if (Model.EmailConfirmed)
+            {
+                <div class="@CenterFlexWrapContainer">
+                    <div class="@ModalGroupWidth">
+                        <h3>Invite someone by name and e-mail</h3>
+
+                        <div class="mb-4">
+                            <p>
+                                Enter the person's @UserDisplayNames.Forename.ToLower() and @email.
+                            </p>
+                            <p>
+                                @emailInvite1
+                            </p>
+                            <p>
+                                @emailInvite2
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.EmailConfirmed)
+            {
+                <div class="@CenterFlexWrapContainer">
+                    <div class="@ModalGroupWidth">
+
+                        <div class="mb-4">
+                            <partial name="_PageWarning" model="@emailWarning" />
+                        </div>
+
+                        <div class="mb-3 d-flex">
+                            <div class="form-group-ib col-sm-12 username-container">
+                                <label asp-for="ToName" class="control-label"></label>
+                                <div class="input-group input-info">
+                                    <input asp-for="ToName" class="form-control" autocomplete="off" aria-required="false"
+                                           placeholder="Enter the person's first name" />
+                                    <partial name="_InputQuestion" model="@nameExplanation" />
+                                </div>
+                                <div>
+                                    <span asp-validation-for="ToName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ToEmailAddress" class="control-label"></label>
+                            <div class="input-group input-info">
+                                <input asp-for="ToEmailAddress" class="form-control" autocomplete="off" aria-required="false"
+                                       placeholder="name@example.com (optional)" />
+                                <partial name="_InputQuestion" model="@emailExplanation" />
+                            </div>
+                            <div>
+                                <span asp-validation-for="ToEmailAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="@CenterFlexWrapContainer">
+                <div class="@ModalGroupWidth">
+
+                    <h3>Write a message</h3>
+
+                    <div class="mb-4">
+                        <p>
+                            Write a message to the person you're inviting. This can help to reassure them that it's really from you.
+                        </p>
+
+                        @if (Model.EmailConfirmed && Model.OtherGroupMembers.Any())
+                        {
+                            <p>
+                                You can add a message for either invitation method.
+                            </p>
+                        }
+                    </div>
+
+                    <div class="mb-3 d-flex">
+                        <div class="form-group-ib col-sm-12 username-container">
+                            <label asp-for="Message" class="control-label"></label>
+                            <div class="input-group input-info">
+                                <textarea asp-for="Message" class="form-control" autocomplete="off" aria-required="false"></textarea>
+                            </div>
+                            <div>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

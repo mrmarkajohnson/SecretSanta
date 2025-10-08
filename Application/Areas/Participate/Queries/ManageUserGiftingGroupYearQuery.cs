@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Participate.BaseModels;
 using Application.Areas.Participate.Mapping;
-using Application.Shared.Requests;
 using Global.Abstractions.Areas.Participate;
 using Global.Extensions.Exceptions;
 using static Global.Settings.GiftingGroupSettings;
@@ -20,10 +19,10 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
 
     protected override Task<IManageUserGiftingGroupYear> Handle()
     {
-        Santa_User dbSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
         IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
 
-        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbSantaUser.GiftingGroupLinks;
+        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
 
         if (dbGroupLinks?.Any() != true)
             throw new NotFoundException("Gifting Group");
@@ -31,7 +30,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
         var dbActiveLinks = dbGroupLinks
                 .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
 
-        Santa_GiftingGroupUser? dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
+        Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
             .FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey);
 
         if (dbGiftingGroupLink == null)
@@ -43,7 +42,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
             .Where(x => x.CalendarYear == CalendarYear)
             .FirstOrDefault();
 
-        Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbSantaUser.SantaUserKey);
+        Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbCurrentSantaUser.SantaUserKey);
 
         IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
 
@@ -60,7 +59,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
                 CalendarYear = CalendarYear
             };
 
-            ParticipateManualMappings.SetPreviousYearDetails(manageYear, dbSantaUser, dbGiftingGroup, Mapper);
+            ParticipateManualMappings.SetPreviousYearDetails(manageYear, dbCurrentSantaUser, dbGiftingGroup, Mapper);
         }
 
         return Result(manageYear);

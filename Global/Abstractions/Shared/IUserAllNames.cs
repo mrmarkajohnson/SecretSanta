@@ -19,9 +19,7 @@ public static class UserAllNamesExtensions
 {
     public static string DisplayName(this IUserAllNames user, bool includeMiddleNames = true)
     {
-        string fullName = string.IsNullOrWhiteSpace(user.PreferredFirstName) 
-            ? user.Forename.Tidy() 
-            : user.PreferredFirstName.Tidy();
+        string fullName = user.DisplayFirstName();
 
         string? middleNames = user.MiddleNames.Tidy(false);
 
@@ -33,7 +31,7 @@ public static class UserAllNamesExtensions
             {
                 middleNames = middleNames.Replace(fullName + " ", "").Replace(" " + fullName, ""); // avoid repeating preferred name
             }
-            
+
             fullName += " " + middleNames.Tidy(true);
         }
 
@@ -87,6 +85,8 @@ public static class UserAllNamesExtensions
 
     public static string DisplayFirstName(this IUserAllNames user)
     {
-        return string.IsNullOrWhiteSpace(user.PreferredFirstName) ? user.Forename : user.PreferredFirstName;
+        return string.IsNullOrWhiteSpace(user.PreferredFirstName)
+            ? user.Forename.Tidy()
+            : user.PreferredFirstName.Tidy(); // NB: If the middle name option is chosen, this is set to the (first) middle name
     }
 }

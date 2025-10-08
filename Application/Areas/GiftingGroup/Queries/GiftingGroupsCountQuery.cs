@@ -1,6 +1,4 @@
-﻿using Application.Shared.Requests;
-
-namespace Application.Areas.GiftingGroup.Queries;
+﻿namespace Application.Areas.GiftingGroup.Queries;
 
 public class GiftingGroupsCountQuery : BaseQuery<int>
 {

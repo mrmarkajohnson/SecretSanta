@@ -20,7 +20,7 @@ public static class EncryptionHelper
 
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    public static string OneWayEncrypt(string? value, IIdentityUser identityUser, bool alphanumericOnly = false)
+    public static string OneWayEncrypt(string? value, IHashableUser identityUser, bool alphanumericOnly = false)
     {
         return OneWayEncrypt(value, identityUser.GlobalUserId, alphanumericOnly);
     }
@@ -197,7 +197,7 @@ public static class EncryptionHelper
 
     public static string EncryptEmail(string unhashedEmail)
     {
-        return TwoWayEncrypt(unhashedEmail, true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
+        return TwoWayEncrypt(unhashedEmail.Tidy(), true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
     }
 
     public static string GetEmailConfirmationId(string unhashedEmail, IIdentityUser identityUser)
@@ -207,6 +207,6 @@ public static class EncryptionHelper
 
     public static string DecryptEmail(string? email)
     {
-        return email.IsNotEmpty() ? Decrypt(email.TrimEnd(IdentitySettings.StandardEmailEnd), true) : string.Empty;
+        return email.IsNotEmpty() ? Decrypt(email.TrimEnd(IdentitySettings.StandardEmailEnd), true).Tidy() : string.Empty;
     }
 }

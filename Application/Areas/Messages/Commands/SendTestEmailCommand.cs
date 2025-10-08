@@ -1,6 +1,5 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using Application.Areas.Messages.ViewModels;
-using Application.Shared.Requests;
 using FluentValidation;
 using Global.Extensions.Exceptions;
 
@@ -32,13 +31,13 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
         var recipient = new EmailRecipient
         {
             Forename = "Test Recipient",
-            Surname="Recipient",
             Email = Item.RecipientEmailAddress,
             IdentificationHashed = false,
             EmailConfirmed = true,
             ReceiveEmails = MessageSettings.EmailPreference.All,
             DetailedEmails = true,
-            Greeting = "Hello there"
+            Greeting = "Hello there",
+            SkipPreferencesFooter = true
         };
 
         try

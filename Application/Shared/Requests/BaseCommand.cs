@@ -45,7 +45,8 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
     /// Save changes on the main context, set success and return a success command result
     /// If using this to save new entities, you may need to update the Item with the new keys before returning
     /// </summary>
-    protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess(bool ignoreValidationResult = false)
+    protected async Task<ICommandResult<TItem>> SaveAndReturnSuccess(string? successMessage = null, 
+        bool ignoreValidationResult = false)
     {
         if (Validation.IsValid || ignoreValidationResult)
         {
@@ -57,22 +58,24 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
             Success = false;
         }
 
-        return await Result();
+        return await Result(successMessage);
     }
 
-    protected async Task<ICommandResult<TItem>> SuccessResult(bool ignoreValidationResult = false)
+    protected async Task<ICommandResult<TItem>> SuccessResult(string? successMessage = null,
+        bool ignoreValidationResult = false)
     {
         Success = Validation.IsValid || ignoreValidationResult;
-        return await Result();
+        return await Result(successMessage);
     }
 
-    protected async Task<ICommandResult<TItem>> Result()
+    protected async Task<ICommandResult<TItem>> Result(string? successMessage = null)
     {
         var result = new CommandResult<TItem>
         {
             Item = Item,
             Success = Success,
-            Validation = Validation
+            Validation = Validation,
+            SuccessMessage = successMessage
         };
 
         return await Task.FromResult(result);
@@ -168,9 +171,9 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return dbMessage;
     }
 
-    public string MessageLink(string url, string display, bool addQuotes)
+    public string MessageLink(string url, string display, bool addQuotes, bool skipReadLink = false)
     {
-        return DbContext.EmailClient?.MessageLink(url, display, addQuotes, null) ?? string.Empty;
+        return DbContext.EmailClient?.MessageLink(url, display, addQuotes, null, skipReadLink) ?? string.Empty;
     }
 
     #endregion Messages

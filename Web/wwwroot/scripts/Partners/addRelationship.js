@@ -1,12 +1,12 @@
 ﻿window.addEventListener('load', function () {
-    initStatusSelect();
+    initUserSelect();
 });
 
 document.addEventListener('reloadend', function (e) {
-    initStatusSelect();
+    initUserSelect();
 });
 
-function initStatusSelect() {
+function initUserSelect() {
     let selectRadios = document.querySelectorAll('input.user-select');
     let selectUrl = document.querySelector('div.user-grid-container').getAttribute('data-url');
     let url = new URL(selectUrl);

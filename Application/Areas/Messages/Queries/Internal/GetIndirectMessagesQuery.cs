@@ -1,4 +1,4 @@
-﻿namespace Application.Areas.Messages.Queries.Internals;
+﻿namespace Application.Areas.Messages.Queries.Internal;
 
 internal sealed class GetIndirectMessagesQuery : GetMessagesBaseQuery<IEnumerable<Santa_Message>>
 {

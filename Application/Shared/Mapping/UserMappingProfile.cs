@@ -23,6 +23,7 @@ public sealed class UserMappingProfile : Profile
                 && UserKeysForVisibleEmail.Contains(src.SantaUser.SantaUserKey)));
 
         CreateMap<Global_User, IUserNamesBase>().As<UserNamesBase>();
+        CreateMap<Global_User, IHashableUser>().As<UserNamesBase>();
 
         CreateMap<Global_User, IUserAllNames>().As<UserNamesBase>();
 

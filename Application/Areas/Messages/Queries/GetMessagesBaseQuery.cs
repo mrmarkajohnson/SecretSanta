@@ -1,5 +1,4 @@
-﻿using Application.Shared.Requests;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using static Global.Settings.MessageSettings;

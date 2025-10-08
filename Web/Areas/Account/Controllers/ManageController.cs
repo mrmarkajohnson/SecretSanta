@@ -11,7 +11,7 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class ManageController : BaseController
+public sealed class ManageController : AccountBaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
@@ -48,12 +48,14 @@ public sealed class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, "Registered Successfully");
+                string? invitationMessage = await HandleInvitation();
+                string message = "Registered successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
+                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, message);
             }
         }
 
         return View(model);
-    }
+    }    
 
     [HttpGet]
     [Authorize]

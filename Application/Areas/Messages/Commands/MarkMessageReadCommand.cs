@@ -1,5 +1,4 @@
-﻿using Application.Areas.Messages.Queries.Internals;
-using Application.Shared.Requests;
+﻿using Application.Areas.Messages.Queries.Internal;
 
 namespace Application.Areas.Messages.Commands;
 

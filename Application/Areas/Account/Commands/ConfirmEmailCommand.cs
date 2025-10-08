@@ -1,6 +1,4 @@
-﻿using Application.Shared.Requests;
-
-namespace Application.Areas.Account.Commands;
+﻿namespace Application.Areas.Account.Commands;
 
 public class ConfirmEmailCommand : BaseCommand<string>
 {

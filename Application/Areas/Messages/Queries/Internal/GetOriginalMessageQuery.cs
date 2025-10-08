@@ -1,4 +1,4 @@
-﻿namespace Application.Areas.Messages.Queries.Internals;
+﻿namespace Application.Areas.Messages.Queries.Internal;
 
 internal class GetOriginalMessageQuery : GetMessagesBaseQuery<Santa_Message>
 {

@@ -331,6 +331,54 @@ namespace Data.Migrations
                     b.ToTable("Santa_GiftingGroup_AuditChanges");
                 });
 
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Invitation", b =>
+                {
+                    b.Property<int>("InvitationKey")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvitationKey"));
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FromSantaUserKey")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GiftingGroupKey")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("InvitationGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("ToEmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ToSantaUserKey")
+                        .HasColumnType("int");
+
+                    b.HasKey("InvitationKey");
+
+                    b.HasIndex("FromSantaUserKey");
+
+                    b.HasIndex("GiftingGroupKey");
+
+                    b.HasIndex("ToSantaUserKey");
+
+                    b.ToTable("Santa_Invitations");
+                });
+
             modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
                     b.Property<int>("MessageKey")
@@ -1242,6 +1290,32 @@ namespace Data.Migrations
                     b.Navigation("Audit");
                 });
 
+            modelBuilder.Entity("Data.Entities.Santa.Santa_Invitation", b =>
+                {
+                    b.HasOne("Data.Entities.Santa.Santa_User", "FromSantaUser")
+                        .WithMany("SentInvitations")
+                        .HasForeignKey("FromSantaUserKey")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.Santa.Santa_GiftingGroup", "GiftingGroup")
+                        .WithMany("Invitations")
+                        .HasForeignKey("GiftingGroupKey")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.Santa.Santa_User", "ToSantaUser")
+                        .WithMany("ReceivedInvitations")
+                        .HasForeignKey("ToSantaUserKey")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("FromSantaUser");
+
+                    b.Navigation("GiftingGroup");
+
+                    b.Navigation("ToSantaUser");
+                });
+
             modelBuilder.Entity("Data.Entities.Santa.Santa_Message", b =>
                 {
                     b.HasOne("Data.Entities.Santa.Santa_GiftingGroupYear", "GiftingGroupYear")
@@ -1553,6 +1627,8 @@ namespace Data.Migrations
                 {
                     b.Navigation("AuditTrail");
 
+                    b.Navigation("Invitations");
+
                     b.Navigation("MemberApplications");
 
                     b.Navigation("Members");
@@ -1622,9 +1698,13 @@ namespace Data.Migrations
 
                     b.Navigation("GiftingGroupYears");
 
+                    b.Navigation("ReceivedInvitations");
+
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("RecipientYears");
+
+                    b.Navigation("SentInvitations");
 
                     b.Navigation("SentMessages");
 

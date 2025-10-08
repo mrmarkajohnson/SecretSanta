@@ -11,9 +11,10 @@ using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authentication;
-using AccountControllers = Web.Areas.Account.Controllers;
+using Web.Areas.GiftingGroup.Controllers;
 using Web.Helpers;
 using static Global.Settings.GlobalSettings;
+using AccountControllers = Web.Areas.Account.Controllers;
 
 namespace Web.Controllers;
 
@@ -216,12 +217,7 @@ public class BaseController : Controller
 
     protected string GetFullUrl(string action, string controller, string area, object? values = null)
     {
-        return GetFullUrl(Request, action, controller, area, values);
-    }
-
-    private string GetFullUrl(HttpRequest request, string action, string controller, string area, object? values = null)
-    {
-        return Url.Action(request, action, controller, area, values);
+        return Url.Action(Request, action, controller, area, values);
     }
 
     public string GetLocalUrl(string action, string controller, string area, object? values = null)
@@ -246,5 +242,10 @@ public class BaseController : Controller
         }
 
         return Ok();
+    }
+
+    protected string GetParticipateUrl()
+    {
+        return GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
     }
 }
