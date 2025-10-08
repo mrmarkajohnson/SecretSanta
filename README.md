@@ -9,11 +9,11 @@ This project was designed for various purposes:
 2. To show some of my existing coding skills and knowledge
 3. To try new or more up-to-date tools, packages and libraries
 4. To experiment with different solution approaches, structures, patterns etc.
-5. To make sure I can actually create a new solution from scratch
+5. To practice creating a new solution etc. from scratch
 
 # How To Use Secret Santa
 
-This section needs to be completed...
+See the CreateNewInstance.txt file.
 
 # Decisions I Made
 
