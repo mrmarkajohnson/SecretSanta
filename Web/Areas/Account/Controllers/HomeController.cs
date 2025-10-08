@@ -133,7 +133,7 @@ public sealed class HomeController : AccountBaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> AcceptInvitation(string id)
+    public async Task<IActionResult> ReviewApplication(string id)
     {
         TempData[InvitationId] = id;
 

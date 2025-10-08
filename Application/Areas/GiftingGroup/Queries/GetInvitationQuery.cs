@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetInvitationQuery : BaseQuery<IAcceptGroupInvitation?>
+public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation?>
 {
     private readonly string _invitationId;
 
@@ -12,14 +12,14 @@ public class GetInvitationQuery : BaseQuery<IAcceptGroupInvitation?>
         _invitationId = invitationId;
     }
 
-    protected async override Task<IAcceptGroupInvitation?> Handle()
+    protected async override Task<IReviewGroupInvitation?> Handle()
     {
         Santa_Invitation? dbInvitation = await Send(new Internal.GetInvitationEntityQuery(_invitationId));
 
         if (dbInvitation == null)
             return null;
 
-        return new AcceptGroupInvitation
+        return new ReviewGroupInvitation
         {
             InvitationGuid = dbInvitation.InvitationGuid,
             ToSantaUserKey = dbInvitation.ToSantaUserKey,

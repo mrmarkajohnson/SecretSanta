@@ -163,8 +163,8 @@ public sealed class ManageController : BaseController
         await AddOtherGroupMembers(model);
         model.EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true;
 
-        string acceptUrl = GetFullUrl(nameof(AccountControllers.HomeController.AcceptInvitation), nameof(AccountControllers.HomeController), AreaNames.Account);
-        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, acceptUrl), new SendGroupInvitationVmValidator());
+        string reviewUrl = GetFullUrl(nameof(AccountControllers.HomeController.ReviewApplication), nameof(AccountControllers.HomeController), AreaNames.Account);
+        var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, reviewUrl), new SendGroupInvitationVmValidator());
 
         if (commandResult.Success)
         {

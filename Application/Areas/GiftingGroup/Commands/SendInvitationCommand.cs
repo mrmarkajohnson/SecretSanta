@@ -7,12 +7,12 @@ namespace Application.Areas.GiftingGroup.Commands;
 
 public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : ISendGroupInvitation
 {
-    public SendInvitationCommand(TItem item, string acceptUrl) : base(item)
+    public SendInvitationCommand(TItem item, string reviewUrl) : base(item)
     {
-        _acceptUrl = acceptUrl;
+        _reviewUrl = reviewUrl;
     }
 
-    private readonly string _acceptUrl;
+    private readonly string _reviewUrl;
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
@@ -150,20 +150,20 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
     private async Task<ICommandResult<TItem>> SaveAndSendInvitation(Santa_Invitation dbInvitation)
     {
         DbContext.Santa_Invitations.Add(dbInvitation);
-        string acceptUrl = $"{_acceptUrl}?id={dbInvitation.GetInvitationId()}";
+        string reviewUrl = $"{_reviewUrl}?id={dbInvitation.GetInvitationId()}";
 
         if (dbInvitation.ToSantaUser != null)
         {
-            SendToSantaUser(dbInvitation, acceptUrl);
+            SendToSantaUser(dbInvitation, reviewUrl);
             return await SaveAndReturnSuccess();
         }
         else
         {
-            return await SendToEmail(dbInvitation, acceptUrl);
+            return await SendToEmail(dbInvitation, reviewUrl);
         }
     }
 
-    private void SendToSantaUser(Santa_Invitation dbInvitation, string acceptUrl)
+    private void SendToSantaUser(Santa_Invitation dbInvitation, string reviewUrl)
     {
         if (dbInvitation.ToSantaUser == null)
             throw new ArgumentException("A user must be selected."); // for the compiler
@@ -172,7 +172,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         {
             RecipientType = MessageRecipientType.SingleNonGroupMember,
             HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-            MessageText = GetMessageText(dbInvitation, acceptUrl, true),
+            MessageText = GetMessageText(dbInvitation, reviewUrl, true),
             Important = true,
             CanReply = true,
             ShowAsFromSanta = true
@@ -181,7 +181,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         SendMessage(message, dbInvitation.FromSantaUser, dbInvitation.ToSantaUser, dbInvitation.GiftingGroup);
     }
 
-    private async Task<ICommandResult<TItem>> SendToEmail(Santa_Invitation dbInvitation, string acceptUrl)
+    private async Task<ICommandResult<TItem>> SendToEmail(Santa_Invitation dbInvitation, string reviewUrl)
     {
         if (DbContext.EmailClient == null || dbInvitation.ToEmailAddress == null || dbInvitation.ToName == null)
         {
@@ -197,7 +197,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             {
                 RecipientType = MessageRecipientType.SingleNonGroupMember,
                 HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-                MessageText = GetMessageText(dbInvitation, acceptUrl, false),
+                MessageText = GetMessageText(dbInvitation, reviewUrl, false),
                 Important = true,
                 CanReply = true,
                 ShowAsFromSanta = true
@@ -220,7 +220,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         return result;
     }
 
-    private string GetMessageText(Santa_Invitation dbInvitation, string acceptUrl, bool forExistingUser)
+    private string GetMessageText(Santa_Invitation dbInvitation, string reviewUrl, bool forExistingUser)
     {
         bool skipReadLink = !forExistingUser;
 
@@ -246,7 +246,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         if (!forExistingUser)
         {
             messageText += $"If you're not sure this is genuine, please contact {dbInvitation.FromSantaUser.GlobalUser.DisplayFirstName()} directly. " +
-                $"Otherwise, click {MessageLink(acceptUrl, "here", false, skipReadLink)} to review the invitation.";
+                $"Otherwise, click {MessageLink(reviewUrl, "here", false, skipReadLink)} to review the invitation.";
 
             string? baseUrl = ConfigurationSettings.BaseUrl;
 
@@ -258,7 +258,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         }
         else
         {
-            messageText += $"Click {MessageLink(acceptUrl, "here", false, skipReadLink)} to review the invitation.";
+            messageText += $"Click {MessageLink(reviewUrl, "here", false, skipReadLink)} to review the invitation.";
         }
 
         return messageText;

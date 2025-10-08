@@ -4,15 +4,13 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
+public class ReviewInvitationCommand : GiftingGroupBaseCommand<string>
 {
     private readonly string _participateUrl;
-    private readonly bool _ignoreName; 
     
-    public AcceptInvitationCommand(string invitationId, string participateUrl, bool ignoreName) : base(invitationId)
+    public ReviewInvitationCommand(string invitationId, string participateUrl) : base(invitationId)
     {
         _participateUrl = participateUrl;
-        _ignoreName = ignoreName;
     }
 
     protected async override Task<ICommandResult<string>> HandlePostValidation()
@@ -38,13 +36,17 @@ public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
             }
             else if (dbCurrentSantaUser.GlobalUser.Email.IsNotEmpty())
             {
-                if (NameMustMatch(dbInvitation) && !NameMatches(dbInvitation.ToName, dbCurrentSantaUser))
+                if (!NameMatches(dbInvitation.ToName, dbCurrentSantaUser))
                 {
-                    AddGeneralValidationError($"This invitation is to name {dbInvitation.ToName}. " +
-                        $"Do you still wish to accept it?");
+                    AddGeneralValidationError($"This invitation is for a different {UserDisplayNames.Forename.ToLower()}." +
+                        $"If it should have been for you, please ask the person who sent it to resend it.");
                 }
-
-                if (dbCurrentSantaUser.GlobalUser.Email == dbInvitation.ToEmailAddress)
+                else if (dbCurrentSantaUser.GlobalUser.Email.Tidy() != dbInvitation.ToEmailAddress?.Tidy())
+                {
+                    AddGeneralValidationError($"This invitation is for a different {UserDisplayNames.EmailLower}." +
+                        $"If it should have been for you, please ask the person who sent it to resend it.");
+                }
+                else
                 {
                     dbInvitation.ToSantaUser = dbCurrentSantaUser;
                     return await AcceptInvitation(dbInvitation, dbCurrentSantaUser);
@@ -62,11 +64,6 @@ public class AcceptInvitationCommand : GiftingGroupBaseCommand<string>
     {
         return string.Equals(toName, dbSantaUser.GlobalUser.Forename, StringComparison.InvariantCultureIgnoreCase)
             || string.Equals(toName, dbSantaUser.GlobalUser.PreferredFirstName, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private bool NameMustMatch(Santa_Invitation dbInvitation)
-    {
-        return !_ignoreName && dbInvitation.ToName.IsNotEmpty();
     }
 
     private async Task<ICommandResult<string>> AcceptInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
