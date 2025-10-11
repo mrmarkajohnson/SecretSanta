@@ -50,7 +50,7 @@ public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
                 AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in this year's 'draw'. " +
                     $"Please first go to " +
                     $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {DateTime.Today.Year}", true)} " +
-                    $"to remove {dbGlobalUser.Gender.Direct()} from this year, and recalculate givers and receivers.");
+                    $"to remove {dbGlobalUser.Gender.Indirect()} from this year, and recalculate givers and receivers.");
             }
             else
             {                

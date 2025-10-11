@@ -18,7 +18,7 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
             .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 
         IEnumerable<IRelationship> confirmingRelationships = dbCurrentSantaUser.ConfirmingRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Confirmed != false)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null && (x.Confirmed != false || !x.ConfirmingUserIgnore))
             .AsQueryable()
             .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 

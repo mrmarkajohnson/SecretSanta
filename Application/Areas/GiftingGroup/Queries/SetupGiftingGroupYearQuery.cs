@@ -27,10 +27,8 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
         Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == _year);
 
         GiftingGroupYear giftingGroupYear = new();
-        DateTime firstDayOfNextYear = new DateTime(_year + 1, 1, 1);
-
-        var validGroupMembers = dbGiftingGroup.Members
-                .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));
+        DateTime firstDayOfNextYear = DateHelper.FirstDayOfNextYear(_year);
+        var validGroupMembers = dbGiftingGroup.ActiveMembers(firstDayOfNextYear);
 
         if (dbGiftingGroupYear != null)
         {
@@ -43,7 +41,6 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
 
             if (missingGroupMembers.Any())
             {
-                //missingGroupMembers.ForEach(x => x.Included = true);
                 giftingGroupYear.GroupMembers.AddRange(missingGroupMembers);
             }
         }

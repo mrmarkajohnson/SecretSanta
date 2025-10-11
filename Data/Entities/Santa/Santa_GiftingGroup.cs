@@ -74,8 +74,10 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
         return ActiveMembers().Where(x => dbExcludingUser == null || x.SantaUserKey != dbExcludingUser.SantaUserKey);
     }
 
-    public IEnumerable<Santa_GiftingGroupUser> ActiveMembers()
+    public IEnumerable<Santa_GiftingGroupUser> ActiveMembers(DateTime? archivedAfter = null)
     {
-        return Members.Where(x => x.DateDeleted == null && x.DateArchived == null);
+        return Members.Where(x => x.DateDeleted == null 
+                && (x.DateArchived == null || (archivedAfter != null && x.DateArchived > archivedAfter)))
+            .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null);
     }
 }

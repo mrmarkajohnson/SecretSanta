@@ -1,4 +1,5 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
+using Global.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
@@ -34,10 +35,8 @@ public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase
 
     public IEnumerable<Santa_GiftingGroupUser> ValidGroupMembers()
     {
-        DateTime firstDayOfNextYear = new DateTime(CalendarYear + 1, 1, 1);
-
-        return GiftingGroup.Members
-            .Where(x => x.DateDeleted == null && (x.DateArchived == null || x.DateArchived < firstDayOfNextYear));
+        DateTime firstDayOfNextYear = DateHelper.FirstDayOfNextYear(CalendarYear);
+        return GiftingGroup.ActiveMembers(firstDayOfNextYear);
     }
 
     public List<Santa_YearGroupUser> ParticipatingMembers() => Users

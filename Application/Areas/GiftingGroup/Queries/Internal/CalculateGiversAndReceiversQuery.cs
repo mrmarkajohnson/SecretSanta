@@ -238,11 +238,17 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         {
             return null;
         }
+        else if (recipientSantaUserKeys.Count == 1)
+        {
+            return new GiverAndReceiverCombination { GiverSantaUserKey = giverSantaUserKey, RecipientSantaUserKey = recipientSantaUserKeys[0] };
+        }
+        else
+        {
+            Random random = new Random();
+            int recipientPosition = random.Next(0, recipientSantaUserKeys.Count - 1);
+            int recipientSantaUserKey = recipientSantaUserKeys[recipientPosition];
 
-        Random random = new Random();
-        int recipientPosition = random.Next(0, recipientSantaUserKeys.Count - 1);
-        int recipientSantaUserKey = recipientSantaUserKeys[recipientPosition];
-
-        return new GiverAndReceiverCombination { GiverSantaUserKey = giverSantaUserKey, RecipientSantaUserKey = recipientSantaUserKey };
+            return new GiverAndReceiverCombination { GiverSantaUserKey = giverSantaUserKey, RecipientSantaUserKey = recipientSantaUserKey };
+        }
     }
 }
