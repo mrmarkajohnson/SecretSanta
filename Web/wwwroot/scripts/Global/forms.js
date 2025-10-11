@@ -15,7 +15,7 @@
     let responseClone = response.clone(); // this allows us to use response.text() on the return result; it can only be called once
 
     if (response.status > 400) {
-        showErrorMessage('Unknown error, please contact an administrator');
+        showErrorMessage('Unknown error, please contact an administrator.');
     }
     else if (response.redirected) {
         window.location.href = response.url;

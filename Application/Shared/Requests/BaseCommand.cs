@@ -173,7 +173,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     public string MessageLink(string url, string display, bool addQuotes, bool skipReadLink = false)
     {
-        return DbContext.EmailClient?.MessageLink(url, display, addQuotes, null, skipReadLink) ?? string.Empty;
+        return LinkHelper.MessageLink(url, display, addQuotes, null, skipReadLink);
     }
 
     #endregion Messages

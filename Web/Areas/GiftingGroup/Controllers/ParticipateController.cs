@@ -79,7 +79,7 @@ public sealed class ParticipateController : BaseController
         if (commandResult.Success)
         {
             string changed = model.Included ? "Included" : "Excluded";
-            string message = $"{changed} Successfully";
+            string message = $"{changed} successfully.";
 
             if (!string.IsNullOrEmpty(model.ReturnUrl))
             {

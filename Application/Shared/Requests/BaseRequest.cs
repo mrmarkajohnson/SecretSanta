@@ -207,4 +207,9 @@ public abstract class BaseRequest<TResult>
 
         return false;
     }
+
+    protected static string DisplayLink(string url, string display, bool addQuotes)
+    {
+        return LinkHelper.DisplayLink(url, display, addQuotes);
+    }
 }

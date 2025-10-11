@@ -216,8 +216,8 @@ function showErrorMessage(message) {
         "onclick": null,
         "showDuration": 1000,
         "hideDuration": 1000,
-        "timeOut": 2000,
-        "extendedTimeOut": 100,
+        "timeOut": 3000,
+        "extendedTimeOut": 200,
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
@@ -243,7 +243,7 @@ async function submitFormViaFetch(form, url) {
     let responseClone = response.clone(); // this allows us to use response.text() on the return result; it can only be called once
 
     if (response.status > 400) {
-        showErrorMessage('Unknown error, please contact an administrator');
+        showErrorMessage('Unknown error, please contact an administrator.');
     }
     else if (response.redirected) {
         window.location.href = response.url;
@@ -535,8 +535,8 @@ function showSuccessMessage(message) {
         "onclick": null,
         "showDuration": 1000,
         "hideDuration": 1000,
-        "timeOut": 2000,
-        "extendedTimeOut": 100,
+        "timeOut": 3000,
+        "extendedTimeOut": 200,
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",

@@ -253,22 +253,6 @@ internal class EmailClient : IEmailClient
 
     public string MessageLink(string url, string display, bool addQuotes, IEmailRecipient? recipient = null, bool skipReadLink = false)
     {
-        if (!skipReadLink)
-            AddMessageReadLink(ref url, recipient);
-
-        string quote = addQuotes ? "'" : "";
-        return $"<a href=\"{url}\">{quote}{display}{quote}</a>";
-    }
-
-    /// <summary>
-    /// Add message IDs to mark the message as read; the keys can be added later
-    /// </summary>
-    private static string AddMessageReadLink(ref string url, IEmailRecipient? recipient)
-    {
-        url += UrlHelper.ParameterDelimiter(url) +
-            $"{MessageSettings.FromMessageParameter}={recipient?.MessageKey ?? 0}" +
-            $"&{MessageSettings.FromRecipientParameter}={recipient?.MessageRecipientKey ?? 0}";
-
-        return url;
+        return LinkHelper.MessageLink(url, display, addQuotes, recipient, skipReadLink);
     }
 }
