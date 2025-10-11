@@ -85,7 +85,7 @@ public sealed class ManageController : BaseController
 
         if (commandResult.Success)
         {
-            return RedirectWithMessage(model, $"Gifting group {saved} successfully");
+            return RedirectWithMessage(model, $"Gifting group {saved} successfully.");
         }
 
         model.SubmitButtonText = model.GiftingGroupKey > 0 ? "Save Changes" : "Create";
@@ -168,7 +168,7 @@ public sealed class ManageController : BaseController
 
         if (commandResult.Success)
         {
-            return Ok("Invitation sent successfully");
+            return Ok("Invitation sent successfully.");
         }
 
         return PartialView("_SendInvitationModal", model);
@@ -178,16 +178,18 @@ public sealed class ManageController : BaseController
     public async Task<IActionResult> RemoveGroupUser(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
-        await Send(new RemoveUserFromGroupCommand(model), null);
-        return Ok();
+        string participateUrl = GetParticipateUrl();
+
+        var commandResult = await Send(new RemoveUserFromGroupCommand(model, participateUrl), null);
+        return SuccessOrFailureMessage(commandResult, "Group member removed successfully.");
     }
 
     [HttpPost]
     public async Task<IActionResult> ToggleGroupAdmin(int giftingGroupKey, int santaUserKey)
     {
         var model = new ChangeGroupMemberStatus(giftingGroupKey, santaUserKey);
-        await Send(new ToggleUserAdminStatusCommand(model), null);
-        return Ok();
+        var commandResult = await Send(new ToggleUserAdminStatusCommand(model), null);
+        return SuccessOrFailureMessage(commandResult, "Administrator status changed successfully.");
     }
 
     [HttpGet]
@@ -326,7 +328,7 @@ public sealed class ManageController : BaseController
 
         if (commandResult.Success)
         {
-            return RedirectWithMessage(model, $"Saved successfully");
+            return RedirectWithMessage(model, $"Saved successfully.");
         }
 
         return View(model);

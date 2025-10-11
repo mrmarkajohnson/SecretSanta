@@ -13,8 +13,17 @@ public class ToggleUserAdminStatusCommand : BaseCommand<ChangeGroupMemberStatus>
     {
         Santa_GiftingGroupUser dbGiftingGroupLink = await Send(new GetGiftingGroupUserLinkQuery(Item.GiftingGroupKey, true));
 
-        if (dbGiftingGroupLink == null || !dbGiftingGroupLink.GroupAdmin)
+        if (dbGiftingGroupLink == null)
+        {
+            AddGeneralValidationError("Group not found.");
             return await Result();
+        }
+
+        if (!dbGiftingGroupLink.GroupAdmin)
+        {
+            AddGeneralValidationError("Only group administrators can change the status of another group member.");
+            return await Result();
+        }
 
         var dbMemberLink = dbGiftingGroupLink.GiftingGroup.Members
             .Where(x => x.DateDeleted == null && x.DateArchived == null)
@@ -23,9 +32,13 @@ public class ToggleUserAdminStatusCommand : BaseCommand<ChangeGroupMemberStatus>
         if (dbMemberLink != null)
         {
             dbMemberLink.GroupAdmin = !dbMemberLink.GroupAdmin;
-            DbContext.SaveChanges();
+            string changed = dbMemberLink.GroupAdmin ? "set" : "removed";
+            return await SaveAndReturnSuccess($"Administrator status {changed} successfully.");
         }
-
-        return await Result();
+        else
+        {
+            AddGeneralValidationError("Group member not found.");
+            return await Result();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Areas.Account.Queries;
+using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.Home.ViewModels;
 using Application.Areas.Messages.Commands;
@@ -145,6 +146,18 @@ public class BaseController : Controller
         foreach (var error in validationResult.Errors)
         {
             ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+    }
+
+    protected IActionResult SuccessOrFailureMessage<T>(ICommandResult<T> commandResult, string fallbackSuccessMessage)
+    {
+        if (commandResult.Success)
+        {
+            return Ok(commandResult.SuccessMessage ?? fallbackSuccessMessage);
+        }
+        else
+        {
+            return FirstValidationError(commandResult);
         }
     }
 

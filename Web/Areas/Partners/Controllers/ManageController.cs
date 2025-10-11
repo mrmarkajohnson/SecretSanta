@@ -1,6 +1,7 @@
 ﻿using Application.Areas.Partners.Commands;
 using Application.Areas.Partners.Queries;
 using Application.Areas.Partners.ViewModels;
+using Application.Shared.Requests;
 using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.Partners;
 using Global.Helpers;
@@ -36,9 +37,9 @@ public sealed class ManageController : BaseController
         if (commandResult.Success)
         {
             if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
-                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully");
+                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully.");
 
-            return Ok("Relationship updated successfully");
+            return Ok("Relationship updated successfully.");
         }
         else
         {
@@ -78,15 +79,15 @@ public sealed class ManageController : BaseController
         var model = await GetAddRelationshipModel(hashedUserId);
         model.IsActive = active;
 
-        var result = await Send(new AddRelationshipCommand(model), null);
+        var commandResult = await Send(new AddRelationshipCommand(model), null);
 
-        if (result.Success)
+        if (commandResult.Success)
         {
-            return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship added successfully");
+            return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship added successfully.");
         }
         else
         {
-            return StatusCode(StatusCodes.Status422UnprocessableEntity, result.Validation.Errors[0].ErrorMessage);
+            return FirstValidationError(commandResult);
         }
     }
 
@@ -124,7 +125,7 @@ public sealed class ManageController : BaseController
 
             if (result.Success)
             {
-                return Ok("Relationship updated successfully");
+                return Ok("Relationship updated successfully.");
             }
         }
 
@@ -137,18 +138,18 @@ public sealed class ManageController : BaseController
     {
         string manageRelationshipsLink = GetFullUrl(nameof(Index), nameof(ManageController), AreaNames.Partners);
         var model = new ChangeRelationshipStatusVm(partnerLinkKey, hashedUserId, RelationshipStatus.IgnoreOld, manageRelationshipsLink);
-        var result = await Send(new ChangeRelationshipStatusCommand(model), null);
+        var commandResult = await Send(new ChangeRelationshipStatusCommand(model), null);
 
-        if (result.Success)
+        if (commandResult.Success)
         {
             if (model.NewStatus == RelationshipStatus.IgnoreNonRelationship)
-                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully");
+                return RedirectWithMessage(GetLocalUrl(nameof(Index), nameof(ManageController), AreaNames.Partners), "Relationship cancelled successfully.");
 
-            return Ok("Relationship deleted successfully");
+            return Ok("Relationship deleted successfully.");
         }
         else
         {
-            return FirstValidationError(result);
+            return FirstValidationError(commandResult);
         }
     }
 }

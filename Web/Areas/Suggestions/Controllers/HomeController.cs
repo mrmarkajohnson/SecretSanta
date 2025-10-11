@@ -66,7 +66,7 @@ public class HomeController : BaseController
         if (commandResult.Success)
         {
             string changed = update ? "updated" : "added";
-            string message = $"Suggestion {changed} successfully";
+            string message = $"Suggestion {changed} successfully.";
 
             if (string.IsNullOrEmpty(model.ReturnUrl))
             {
@@ -95,14 +95,6 @@ public class HomeController : BaseController
     public async Task<IActionResult> DeleteSuggestion(int suggestionKey)
     {
         var commandResult = await Send(new DeleteSuggestionCommand(suggestionKey), null);
-
-        if (commandResult.Success)
-        {
-            return Ok("Suggestion deleted succesfully");
-        }
-        else
-        {
-            return FirstValidationError(commandResult);
-        }
+        return SuccessOrFailureMessage(commandResult, "Suggestion deleted succesfully.");
     }
 }

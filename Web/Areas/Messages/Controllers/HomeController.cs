@@ -257,7 +257,7 @@ public sealed class HomeController : BaseController
 
         if (commandResult.Success)
         {
-            string message = "Message sent successfully";
+            string message = "Message sent successfully.";
 
             if (string.IsNullOrEmpty(model.ReturnUrl))
             {
