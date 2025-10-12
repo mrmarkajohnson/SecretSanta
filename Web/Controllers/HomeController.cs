@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
-using Application.Shared.ViewModels;
+﻿using Application.Shared.ViewModels;
+using Global.Settings;
+using System.Diagnostics;
 
 namespace Web.Controllers;
 
@@ -12,6 +13,8 @@ public sealed class HomeController : BaseController
     public IActionResult Index(string? successMessage = null)
     {
         HomeModel.SuccessMessage = successMessage;
+        HomeModel.InvitationError = TempData[TempDataNames.InvitationError]?.ToString();
+        TempData.Remove(TempDataNames.InvitationError); // just in case
         return View(HomeModel);
     }
 

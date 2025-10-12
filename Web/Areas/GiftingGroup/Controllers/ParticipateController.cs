@@ -6,6 +6,7 @@ using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Participate;
+using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
 using static Global.Settings.GlobalSettings;
 
@@ -105,6 +106,11 @@ public sealed class ParticipateController : BaseController
     public async Task<IActionResult> ReviewInvitation(string invitationId)
     {
         IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationId));
+
+        TempData.Remove(TempDataNames.InvitationId);
+        TempData.Remove(TempDataNames.InvitationWaitMessage);
+        TempData.Remove(TempDataNames.InvitationError);
+
         var model = Mapper.Map<ReviewGroupInvitationVm>(invitation);
         return View(model);
     }

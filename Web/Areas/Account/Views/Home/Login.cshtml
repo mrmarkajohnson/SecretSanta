@@ -26,6 +26,11 @@
                         <br/>
                     }
 
+                    if (Model.InvitationWaitMessage.IsNotEmpty())
+                    {
+                        <partial name="_PageInfo" model="Model.InvitationWaitMessage" />
+                    }
+
                     <div class="@CenterFlexWrapContainer">
                         <div class="@StandardGroupWidth">
 

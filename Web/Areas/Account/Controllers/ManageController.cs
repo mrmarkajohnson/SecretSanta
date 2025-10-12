@@ -30,6 +30,7 @@ public sealed class ManageController : BaseController
         {
             ReturnUrl = returnUrl,
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            InvitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString()
         };
 
         return View(model);
@@ -86,7 +87,8 @@ public sealed class ManageController : BaseController
             var model = new SetSecurityQuestionsVm
             {
                 Greetings = greetings,
-                Greeting = currentGreeting
+                Greeting = currentGreeting,
+                InvitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString()
             };
 
             if (currentSecurityQuestions != null)

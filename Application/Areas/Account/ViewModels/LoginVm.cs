@@ -24,4 +24,5 @@ public sealed class LoginVm : BaseFormVm, ILogin, IFormVm
 
     public override string SubmitButtonText { get; set; } = "Log in";
     public override string SubmitButtonIcon { get; set; } = "fa-key";
+    public string? InvitationWaitMessage { get; set; }
 }

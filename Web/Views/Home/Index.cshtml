@@ -24,6 +24,9 @@
 {
     <h1>@welcomeSignedInUser</h1>
 
+    <div class="collapse">
+        <input type="hidden" asp-for="InvitationError" class="invitation-error" />
+    </div>
 
     @if (mustSetSecurityQuestions)
     {
