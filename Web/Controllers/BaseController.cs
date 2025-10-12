@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Account.Queries;
-using Application.Areas.GiftingGroup.BaseModels;
 using Application.Areas.GiftingGroup.Queries;
 using Application.Areas.Home.ViewModels;
 using Application.Areas.Messages.Commands;
@@ -11,6 +10,7 @@ using Global.Abstractions.Areas.Account;
 using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
+using Global.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Web.Areas.GiftingGroup.Controllers;
 using Web.Helpers;
@@ -228,6 +228,11 @@ public class BaseController : Controller
         return View("NotFound", message);
     }
 
+    protected IActionResult RedirectHome()
+    {
+        return RedirectToLocalUrl(nameof(HomeController.Index), nameof(HomeController), "");
+    }
+
     protected string GetFullUrl(string action, string controller, string area, object? values = null)
     {
         return Url.Action(Request, action, controller, area, values);
@@ -260,5 +265,20 @@ public class BaseController : Controller
     protected string GetParticipateUrl()
     {
         return GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
+    }
+
+    protected void HandleInvitation(IFormVm model)
+    {
+        string? invitationId = TempData.Peek(TempDataNames.InvitationId)?.ToString();
+
+        if (invitationId != null)
+        {
+            model.ReturnUrl = GetReviewInvitationUrl(invitationId);
+        }
+    }
+
+    protected string GetReviewInvitationUrl(string invitationId)
+    {
+        return GetFullUrl(nameof(ParticipateController.ReviewInvitation), nameof(ParticipateController), AreaNames.GiftingGroup, new { invitationId });
     }
 }

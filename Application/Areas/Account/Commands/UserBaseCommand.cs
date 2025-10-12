@@ -90,10 +90,10 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
     protected void SendEmailConfirmation(Global_User dbGlobalUser, string unhashedEmail)
     {
         if (DbContext.EmailClient == null)
-            throw new NotFoundException("The e-mail client has not been configured.");
+            throw new ArgumentException("The e-mail client has not been configured.");
 
         if (string.IsNullOrWhiteSpace(MessageSettings.ConfirmEmailUrl))
-            throw new NotFoundException("The e-mail confirmation URL has not been set.");
+            throw new ArgumentException("The e-mail confirmation URL has not been set.");
 
         string confirmationId = EncryptionHelper.GetEmailConfirmationId(unhashedEmail, dbGlobalUser);
         string? confirmUrl = $"{MessageSettings.ConfirmEmailUrl}?id={confirmationId}";

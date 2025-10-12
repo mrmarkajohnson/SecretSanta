@@ -11,7 +11,7 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class ManageController : AccountBaseController
+public sealed class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
@@ -48,9 +48,7 @@ public sealed class ManageController : AccountBaseController
 
             if (commandResult.Success)
             {
-                string? invitationMessage = await HandleInvitation();
-                string message = "Registered successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
-                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, message);
+                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, "Registered successfully.");
             }
         }
 
@@ -122,6 +120,7 @@ public sealed class ManageController : AccountBaseController
 
             if (commandResult.Success)
             {
+                HandleInvitation(model);
                 return RedirectWithMessage(model, "Security questions set successfully.");
             }
         }

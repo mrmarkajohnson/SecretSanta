@@ -116,7 +116,7 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
             var message = new SendSantaMessage
             {
                 RecipientType = MessageRecipientType.Gifter,
-                HeaderText = "Your gift recipient has " + (deleted ? "removed a " : "added a new") + " suggestion.",
+                HeaderText = "Your gift recipient has " + (deleted ? "removed a " : "added a new") + " suggestion",
                 MessageText = text,
                 Important = true,
                 CanReply = false,

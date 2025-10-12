@@ -81,6 +81,13 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return await Task.FromResult(result);
     }
 
+    protected async Task<ICommandResult<TItem>> ReturnGeneralError(string message)
+    {
+        AddGeneralValidationError(message);
+        Success = false;
+        return await Result();
+    }
+
     protected async Task<ICommandResult<TExtraItem>> Send<TExtraItem>(BaseCommand<TExtraItem> subCommand, AbstractValidator<TExtraItem>? validator)
     {
         if (validator != null)

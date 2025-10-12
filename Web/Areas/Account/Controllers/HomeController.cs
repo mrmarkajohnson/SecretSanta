@@ -2,6 +2,9 @@
 using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
 using Application.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
+using Global.Settings;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using static Global.Settings.GlobalSettings;
@@ -9,24 +12,19 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class HomeController : AccountBaseController
+public sealed class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) 
         : base(services, signInManager)
     {
     }    
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
     [HttpGet]
     public async Task<IActionResult> Login(string? returnUrl = null, bool timedOut = false)
     {
         if (SignInManager.IsSignedIn(User))
         {
-            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+            return RedirectHome();
         }
 
         var model = new LoginVm
@@ -55,9 +53,8 @@ public sealed class HomeController : AccountBaseController
 
             if (result.Succeeded)
             {
-                string? invitationMessage = await HandleInvitation();
-                string message = "Logged in successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
-                return RedirectWithMessage(model, message);
+                HandleInvitation(model);
+                return RedirectWithMessage(model, "Logged in successfully.");
             }
 
             //if (result.RequiresTwoFactor)
@@ -133,32 +130,61 @@ public sealed class HomeController : AccountBaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewApplication(string id)
+    public async Task<IActionResult> ReviewInvitation(string id)
     {
-        TempData[InvitationId] = id;
-
-        if (SignInManager.IsSignedIn(User))
+        try
         {
-            string? message = await HandleInvitation(true);
-            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "", new { successMessage = message });
-        }
-        else
-        {
-            var invitation = await Send(new GetInvitationQuery(id));
+            IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(id));
+            TempData[TempDataNames.InvitationId] = id;
 
-            if (invitation == null)
+            if (SignInManager.IsSignedIn(User))
             {
-                TempData.Remove(InvitationId);
-            }
-
-            if (invitation?.ToSantaUserKey == null)
-            {
-                return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+                if (HomeModel.CurrentUser?.SecurityQuestionsSet == false)
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectHome(); // this will force the user to set their security questions
+                }
+                else
+                {
+                    return LocalRedirect(GetReviewInvitationUrl(id));
+                }
             }
             else
             {
-                return RedirectToLocalUrl(nameof(Login), nameof(HomeController), "");
+                if (invitation.ToSantaUserKey == null)
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+                }
+                else
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectHome();
+                }
             }
         }
+        catch (NotFoundException nfx)
+        {
+            HandleInvitationError(nfx);
+            return RedirectHome();
+        }
+        catch (AccessDeniedException adx)
+        {
+            HandleInvitationError(adx);
+            return RedirectHome();
+        }        
+    }
+
+    private void SetInvitationWaitMessage(IReviewGroupInvitation invitation)
+    {
+        TempData.Remove(TempDataNames.InvitationError);
+        TempData[TempDataNames.InvitationWaitMessage] = $"You have a group invitation from {invitation.FromUser.DisplayName(false)}.";
+    }
+
+    private void HandleInvitationError(Exception ex)
+    {
+        TempData.Remove(TempDataNames.InvitationId);
+        TempData.Remove(TempDataNames.InvitationWaitMessage);
+        TempData[TempDataNames.InvitationError] = ex.Message;
     }
 }

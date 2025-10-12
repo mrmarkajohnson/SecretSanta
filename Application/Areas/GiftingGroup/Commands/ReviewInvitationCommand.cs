@@ -1,82 +1,106 @@
 ﻿using Application.Areas.GiftingGroup.Queries.Internal;
 using Application.Areas.Messages.BaseModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ReviewInvitationCommand : GiftingGroupBaseCommand<string>
+public class ReviewInvitationCommand : GiftingGroupBaseCommand<IReviewGroupInvitation>
 {
     private readonly string _participateUrl;
-    
-    public ReviewInvitationCommand(string invitationId, string participateUrl) : base(invitationId)
+
+    public ReviewInvitationCommand(IReviewGroupInvitation item, string participateUrl) : base(item)
     {
         _participateUrl = participateUrl;
     }
 
-    protected async override Task<ICommandResult<string>> HandlePostValidation()
+    protected async override Task<ICommandResult<IReviewGroupInvitation>> HandlePostValidation()
     {
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
+        Santa_Invitation? dbInvitation = null;
+
         try
         {
-            Santa_Invitation? dbInvitation = await Send(new GetInvitationEntityQuery(Item));
-
-            if (dbInvitation == null)
-                return await Result();
-
-            if (!SignInManager.IsSignedIn(ClaimsUser))
-                return await Result();
-
-            Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
-
-            if (dbInvitation.ToSantaUserKey > 0)
-            {
-                if (dbCurrentSantaUser != null && dbCurrentSantaUser.SantaUserKey == dbInvitation.ToSantaUserKey) // otherwise it's for someone else
-                {
-                    return await AcceptInvitation(dbInvitation, dbCurrentSantaUser);
-                }
-            }
-            else if (dbCurrentSantaUser.GlobalUser.Email.IsNotEmpty())
-            {
-                if (!NameMatches(dbInvitation.ToName, dbCurrentSantaUser))
-                {
-                    AddGeneralValidationError($"This invitation is for a different {UserDisplayNames.Forename.ToLower()}." +
-                        $"If it should have been for you, please ask the person who sent it to resend it.");
-                }
-                else if (dbCurrentSantaUser.GlobalUser.Email.Tidy() != dbInvitation.ToEmailAddress?.Tidy())
-                {
-                    AddGeneralValidationError($"This invitation is for a different {UserDisplayNames.EmailLower}." +
-                        $"If it should have been for you, please ask the person who sent it to resend it.");
-                }
-                else
-                {
-                    dbInvitation.ToSantaUser = dbCurrentSantaUser;
-                    return await AcceptInvitation(dbInvitation, dbCurrentSantaUser);
-                }
-            }
+            await Send(new GetInvitationEntityQuery(Item.InvitationGuid));
         }
-        catch
-        {            
+        catch (Exception ex)
+        {
+            return await ReturnGeneralError(ex.Message);
         }
 
-        return await Result();
+        if (dbInvitation == null)
+        {
+            return await ReturnGeneralError("This invitation could not be found.");
+        }
+
+        if (dbInvitation.ToSantaUserKey == null)
+        {
+            dbInvitation.ToSantaUserKey = dbCurrentSantaUser.SantaUserKey;
+            dbInvitation.ToSantaUser = dbCurrentSantaUser;
+        }
+        else if (dbInvitation.ToSantaUserKey != dbCurrentSantaUser.SantaUserKey) // this should have been caught already, but just in case
+        {
+            return await ReturnGeneralError("This invitation is for a different user.");
+        }
+
+        if (Item.Accept == true)
+        {
+            AcceptInvitation(dbInvitation, dbCurrentSantaUser);
+            return await SaveAndReturnSuccess($"You've now joined group '{dbInvitation.GiftingGroup.Name}'.");
+        }
+        else if (Item.Accept == false)
+        {
+            RejectInvitation(dbInvitation, dbCurrentSantaUser);
+            return await SaveAndReturnSuccess(); // save the ToSantaUserKey
+        }
+        else
+        {
+            return await SaveAndReturnSuccess(); // save the ToSantaUserKey
+        }
     }
 
-    protected bool NameMatches(string? toName, Santa_User dbSantaUser)
+    private void RejectInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
     {
-        return string.Equals(toName, dbSantaUser.GlobalUser.Forename, StringComparison.InvariantCultureIgnoreCase)
-            || string.Equals(toName, dbSantaUser.GlobalUser.PreferredFirstName, StringComparison.InvariantCultureIgnoreCase);
+        dbInvitation.DateArchived = DateTime.Now;
+        SendRejectedMessage(dbInvitation, dbSantaUser);
     }
 
-    private async Task<ICommandResult<string>> AcceptInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
+    private void SendRejectedMessage(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
+    {
+        if (dbInvitation.ToSantaUser == null)
+            return; // for the compiler
+
+        string messageText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} rejected your invitation " +
+                $"to join group '{dbInvitation.GiftingGroup.Name}'.";
+
+        if (Item.RejectionMessage.IsNotEmpty())
+        {
+            messageText += $"<br><br>{dbSantaUser.GlobalUser.Gender.Direct(true)} said: \"{dbInvitation.Message.Trim()}\"";
+        }
+
+        var message = new SendSantaMessage
+        {
+            RecipientType = MessageRecipientType.SingleGroupMember,
+            HeaderText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has " +
+                $"not joined '{dbInvitation.GiftingGroup.Name}'",
+            MessageText = messageText,
+            Important = false,
+            CanReply = false,
+            ShowAsFromSanta = true
+        };
+
+        SendMessage(message, dbInvitation.ToSantaUser, dbInvitation.FromSantaUser, dbInvitation.GiftingGroup);
+    }
+
+    private void AcceptInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
     {
         AddToGiftingGroup(dbInvitation.GiftingGroup, dbSantaUser);
         dbInvitation.DateArchived = DateTime.Now;
-        SendWelcomMessage(dbInvitation);
+        SendWelcomeMessage(dbInvitation);
         SendAcceptedMessage(dbInvitation);
-
-        return await SaveAndReturnSuccess($"You've now joined group '{dbInvitation.GiftingGroup.Name}'.");
     }
 
-    private void SendWelcomMessage(Santa_Invitation dbInvitation)
+    private void SendWelcomeMessage(Santa_Invitation dbInvitation)
     {
         if (dbInvitation.ToSantaUser == null)
             return; // for the compiler
@@ -102,10 +126,9 @@ public class ReviewInvitationCommand : GiftingGroupBaseCommand<string>
         var message = new SendSantaMessage
         {
             RecipientType = MessageRecipientType.SingleGroupMember,
-            HeaderText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has " +
-                $"joined '{dbInvitation.GiftingGroup.Name}'.",
+            HeaderText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has joined '{dbInvitation.GiftingGroup.Name}'",
             MessageText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has accepted your invitation " +
-                $"to join group '{dbInvitation.GiftingGroup.Name}'.",
+                $"to join group '{dbInvitation.GiftingGroup.Name}'",
             Important = false,
             CanReply = false,
             ShowAsFromSanta = true

@@ -82,7 +82,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
         }
         else
         {
-            message.HeaderText = $"Your application for '{dbApplication.GiftingGroup.Name}' was not accepted.";
+            message.HeaderText = $"Your application for '{dbApplication.GiftingGroup.Name}' was not accepted";
             message.MessageText = $"Sorry, you haven't been accepted into group '{dbApplication.GiftingGroup.Name}'.";
 
             if (Item.RejectionMessage.IsNotEmpty())

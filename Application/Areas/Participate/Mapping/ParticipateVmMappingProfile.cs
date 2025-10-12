@@ -1,5 +1,6 @@
 ﻿using Application.Areas.Participate.ViewModels;
 using AutoMapper;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Participate;
 
 namespace Application.Areas.Participate.Mapping;
@@ -10,5 +11,6 @@ public sealed class ParticipateVmMappingProfile : Profile
     {
         CreateMap<IManageUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
         CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
+        CreateMap<IReviewApplication, ReviewGroupInvitationVm>();
     }
 }
