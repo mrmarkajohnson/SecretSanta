@@ -1,15 +1,11 @@
 IMMEDIATE
-* Prevent removing users from group or this year after recipients are chosen (e.g. don't show the options/links)
-Add bug reporting
-Add reporting abuse
+** Add bug reporting
+** Add reporting abuse
 
 ACCEPTING INVITATIONS
-If the name doesn't match, show a message saying so and advising to contact the sender
-Otherwise, open up the invitation for review when the user goes to the home screen and is logged in
-Allow accepting, rejecting or coming back later
-Link the invitation to the user on registration, or when the e-mail is confirmed, if not already done and if the details match
+*** Show a link for reviewing invitations, if the user has any
+** Link the invitation to the user as soon as possible (e.g. on registration, or when the e-mail is confirmed) if not already done and if the details match
 Confirm the e-mail automatically if it matches?
-Show a link for reviewing invitations if the user has any
 
 GENERAL
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
@@ -35,15 +31,15 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
-* Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names
-* Allow updating the currency for the current year, if the group currency has changed
+*** Show invited members and joiner applications in the members list (always?)
+*** Show invited-to groups in the groups list (for 'participate')
+Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names?
+Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
 Tidy up available locations and currencies - add missing countries
-Invite users to group via/using e-mail
-Invite users without an e-mail address in the system to join using a unique token on the user, similar to the JoinerToken on groups, used only for that
-Allow admins to set up the whole gifting group etc. and invite users using the methods above
 Close (archive) a group?
 Allow years to continue into January, just in case
+Allow leaving a group
 
 RELATIONSHIPS
 * End-to-end relationship test
