@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Areas.Suggestions;
 
-public interface IManageSuggestion : ISuggestionBase, IHasCalendarYear
+public interface IManageSuggestion : ISuggestionBase, IHaveACalendarYear
 {
     IEnumerable<IManageSuggestionLink> YearGroupUserLinks { get; }
 }

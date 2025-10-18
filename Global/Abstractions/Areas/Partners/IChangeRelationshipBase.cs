@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Areas.Partners;
 
-public interface IChangeRelationshipBase : IHasHashedUserId
+public interface IChangeRelationshipBase : IHaveAHashedUserId
 {
     string ManageRelationshipsLink { get; }
 }

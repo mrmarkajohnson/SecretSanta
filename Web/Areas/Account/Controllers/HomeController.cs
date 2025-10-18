@@ -27,13 +27,20 @@ public sealed class HomeController : BaseController
             return RedirectHome();
         }
 
+        string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+        if (invitationWaitMessage.IsNotEmpty())
+        {
+            invitationWaitMessage += " You can review it after logging in.";
+        }
+
         var model = new LoginVm
         {
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
             ReturnUrl = returnUrl,
             TimedOut = timedOut,
             RememberMe = true,
-            InvitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString()
+            InvitationWaitMessage = invitationWaitMessage
         };
 
         // Clear the existing external cookie to ensure a clean login process

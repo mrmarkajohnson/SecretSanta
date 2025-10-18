@@ -40,7 +40,7 @@ internal class GetInvitationEntityQuery : BaseQuery<Santa_Invitation?>
             throw new NotFoundException("invitation");
         }
 
-        if (!SignInManager.IsSignedIn(ClaimsUser))
+        if (!SignedIn())
             return Result(dbInvitation); // just return it, we can't tell if it's for the current user at this stage
 
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();

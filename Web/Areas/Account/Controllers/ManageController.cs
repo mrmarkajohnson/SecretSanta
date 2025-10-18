@@ -26,11 +26,18 @@ public sealed class ManageController : BaseController
     {
         returnUrl ??= Url.Action(nameof(SetSecurityQuestions));
 
+        string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+        if (invitationWaitMessage.IsNotEmpty())
+        {
+            invitationWaitMessage += " You can review it after registering and setting your security questions.";
+        }
+
         var model = new RegisterVm
         {
             ReturnUrl = returnUrl,
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
-            InvitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString()
+            InvitationWaitMessage = invitationWaitMessage
         };
 
         return View(model);
@@ -84,11 +91,18 @@ public sealed class ManageController : BaseController
                 greetings.AddRange(Greetings.Messages.Where(x => x != currentGreeting).ToList().GetNFromList(2)); // add 2 others to choose from
             }
 
+            string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+            if (invitationWaitMessage.IsNotEmpty())
+            {
+                invitationWaitMessage += " You can review it after setting your security questions.";
+            }
+
             var model = new SetSecurityQuestionsVm
             {
                 Greetings = greetings,
                 Greeting = currentGreeting,
-                InvitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString()
+                InvitationWaitMessage = invitationWaitMessage
             };
 
             if (currentSecurityQuestions != null)

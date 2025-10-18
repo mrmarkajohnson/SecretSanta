@@ -22,9 +22,12 @@ public class Santa_Invitation : ArchivableBaseEntity, ISendGroupInvitation
     public string? ToName { get; set; }
     public string? ToEmailAddress { get; set; }
 
-    [MaxLength(GiftingGroupVal.InvitationMessage.MaxLength)]
-    public string Message { get; set; } = string.Empty;
-    
+    [MaxLength(GiftingGroupVal.SendInvitationMessage.MaxLength)]
+    public string? InvitationMessage { get; set; }
+
+    [MaxLength(GiftingGroupVal.RejectInvitationMessage.MaxLength)]
+    public string? RejectionMessage { get; set; }
+
     string? ISendGroupInvitation.ToHashedUserId => ToSantaUser?.GlobalUserId;
 
     public string GetInvitationId()

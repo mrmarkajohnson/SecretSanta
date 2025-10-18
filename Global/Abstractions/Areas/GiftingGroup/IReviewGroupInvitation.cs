@@ -1,16 +1,22 @@
 ﻿using Global.Abstractions.Shared;
+using static Global.Settings.GlobalSettings;
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
 public interface IReviewGroupInvitation : IGiftingGroupInvitationBase
-{
-    IUserNamesBase FromUser { get; }
+{    
+    int GiftingGroupKey { get; set; }
     int? ToSantaUserKey { get; }
-    
+
+    string GroupName { get; }
+    string GroupDescription { get; }
+
+    IUserNamesBase FromUser { get; }
+
     /// <summary>
-    /// Null means come back to later
+    /// Not sure means come back to later
     /// </summary>
-    bool? Accept { get; }
+    YesNoNotSure? Accept { get; }
 
     string? RejectionMessage { get; }
 }

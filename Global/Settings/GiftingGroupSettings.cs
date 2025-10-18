@@ -35,4 +35,11 @@ public static class GiftingGroupSettings
         [Display(Name = "Administrator")]
         Admin
     }
+
+    public enum OtherGroupMembersType
+    {
+        EditGroup,
+        ReviewInvitation,
+        MessageRecipients
+    }
 }

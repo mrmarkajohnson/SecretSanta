@@ -79,7 +79,7 @@ public abstract class UserBaseCommand<TItem> : BaseCommand<TItem>
             message = message.Replace(hasUserName.UserName, originalUserName);
         }
 
-        if (Item is IHasEmail iHasEmail && iHasEmail.Email.IsNotEmpty())
+        if (Item is IHaveAnEmail iHasEmail && iHasEmail.Email.IsNotEmpty())
         {
             message = message.Replace(iHasEmail.Email, originalEmail);
         }

@@ -3,7 +3,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> where TItem : IHasCalendarYear
+public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> where TItem : IHaveACalendarYear
 {
     protected GiftingGroupYearBaseCommand(TItem item) : base(item)
     {

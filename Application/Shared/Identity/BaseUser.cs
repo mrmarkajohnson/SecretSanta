@@ -1,6 +1,6 @@
 ﻿namespace Application.Shared.Identity;
 
-public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHasHashedUserId
+public abstract class BaseUser : UserIdentificationBase, IHashableUser, IHaveAHashedUserId
 {
     private string? _globalUserId;
     private string? _hashedUserId;

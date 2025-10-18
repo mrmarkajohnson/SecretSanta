@@ -2,14 +2,14 @@
 
 namespace Global.Abstractions.Shared;
 
-public interface IHasHashedUserId
+public interface IHaveAHashedUserId
 {
     string HashedUserId { get; }
 }
 
-public static class HasHashedUserIdExtensions
+public static class HaveAHashedUserIdExtensions
 {
-    public static Guid? GetGlobalUserId(this IHasHashedUserId user)
+    public static Guid? GetGlobalUserId(this IHaveAHashedUserId user)
     {
         try
         {
@@ -21,7 +21,7 @@ public static class HasHashedUserIdExtensions
         }
     }
 
-    public static string? GetStringUserId(this IHasHashedUserId user)
+    public static string? GetStringUserId(this IHaveAHashedUserId user)
     {
         return user.GetGlobalUserId()?.ToString();
     }

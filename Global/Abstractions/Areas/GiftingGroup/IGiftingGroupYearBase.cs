@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
-public interface IGiftingGroupYearBase : IHasCalendarYear
+public interface IGiftingGroupYearBase : IHaveACalendarYear
 {
     int GiftingGroupKey { get; set; }
 

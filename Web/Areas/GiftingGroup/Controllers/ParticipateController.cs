@@ -101,17 +101,4 @@ public sealed class ParticipateController : BaseController
             return FirstValidationError(commandResult);
         }
     }
-
-    [HttpGet]
-    public async Task<IActionResult> ReviewInvitation(string invitationId)
-    {
-        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationId));
-
-        TempData.Remove(TempDataNames.InvitationId);
-        TempData.Remove(TempDataNames.InvitationWaitMessage);
-        TempData.Remove(TempDataNames.InvitationError);
-
-        var model = Mapper.Map<ReviewGroupInvitationVm>(invitation);
-        return View(model);
-    }
 }

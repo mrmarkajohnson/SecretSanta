@@ -1,20 +1,21 @@
 ﻿using Application.Areas.GiftingGroup.Queries.Internal;
 using Application.Areas.Messages.BaseModels;
 using Global.Abstractions.Areas.GiftingGroup;
+using static Global.Settings.GlobalSettings;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ReviewInvitationCommand : GiftingGroupBaseCommand<IReviewGroupInvitation>
+public class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : IReviewGroupInvitation
 {
     private readonly string _participateUrl;
 
-    public ReviewInvitationCommand(IReviewGroupInvitation item, string participateUrl) : base(item)
+    public ReviewInvitationCommand(TItem item, string participateUrl) : base(item)
     {
         _participateUrl = participateUrl;
     }
 
-    protected async override Task<ICommandResult<IReviewGroupInvitation>> HandlePostValidation()
+    protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
         Santa_Invitation? dbInvitation = null;
@@ -43,12 +44,12 @@ public class ReviewInvitationCommand : GiftingGroupBaseCommand<IReviewGroupInvit
             return await ReturnGeneralError("This invitation is for a different user.");
         }
 
-        if (Item.Accept == true)
+        if (Item.Accept == YesNoNotSure.Yes)
         {
             AcceptInvitation(dbInvitation, dbCurrentSantaUser);
             return await SaveAndReturnSuccess($"You've now joined group '{dbInvitation.GiftingGroup.Name}'.");
         }
-        else if (Item.Accept == false)
+        else if (Item.Accept == YesNoNotSure.No)
         {
             RejectInvitation(dbInvitation, dbCurrentSantaUser);
             return await SaveAndReturnSuccess(); // save the ToSantaUserKey
@@ -62,6 +63,7 @@ public class ReviewInvitationCommand : GiftingGroupBaseCommand<IReviewGroupInvit
     private void RejectInvitation(Santa_Invitation dbInvitation, Santa_User dbSantaUser)
     {
         dbInvitation.DateArchived = DateTime.Now;
+        dbInvitation.RejectionMessage = Item.RejectionMessage;
         SendRejectedMessage(dbInvitation, dbSantaUser);
     }
 
@@ -75,7 +77,7 @@ public class ReviewInvitationCommand : GiftingGroupBaseCommand<IReviewGroupInvit
 
         if (Item.RejectionMessage.IsNotEmpty())
         {
-            messageText += $"<br><br>{dbSantaUser.GlobalUser.Gender.Direct(true)} said: \"{dbInvitation.Message.Trim()}\"";
+            messageText += $"<br><br>{dbSantaUser.GlobalUser.Gender.Direct(true)} said: \"{Item.RejectionMessage.Trim()}\"";
         }
 
         var message = new SendSantaMessage

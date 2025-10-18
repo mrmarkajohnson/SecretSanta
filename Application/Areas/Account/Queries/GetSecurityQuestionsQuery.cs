@@ -21,7 +21,7 @@ public sealed class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
         ISecurityQuestions? securityQuestions = null;
         Global_User? dbCurrentUser = null;
 
-        if (ClaimsUser != null && SignInManager.IsSignedIn(ClaimsUser)) // first constructor
+        if (ClaimsUser != null && SignedIn()) // first constructor
         {
             string? globalUserId = GetCurrentUserId();
             if (globalUserId != null)

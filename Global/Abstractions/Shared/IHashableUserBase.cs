@@ -1,6 +1,6 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IHashableUserBase : IHasEmail
+public interface IHashableUserBase : IHaveAnEmail
 {
     string? UserName { get; set; }
 }

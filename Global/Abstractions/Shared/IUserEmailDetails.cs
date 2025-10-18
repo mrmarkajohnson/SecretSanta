@@ -2,7 +2,7 @@
 
 namespace Global.Abstractions.Shared;
 
-public interface IUserEmailDetails : IEmailPreferences, IHasEmail, IHasEmailConfirmed
+public interface IUserEmailDetails : IEmailPreferences, IHaveAnEmail, IHaveEmailConfirmed
 {
 }
 

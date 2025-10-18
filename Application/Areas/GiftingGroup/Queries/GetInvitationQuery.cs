@@ -1,5 +1,4 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Queries;
@@ -22,12 +21,6 @@ public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
             throw new NotFoundException("invitation");
         }
 
-        return new ReviewGroupInvitation
-        {
-            InvitationGuid = dbInvitation.InvitationGuid,
-            ToSantaUserKey = dbInvitation.ToSantaUserKey,
-            FromUser = Mapper.Map<IUserNamesBase>(dbInvitation.FromSantaUser),
-            Message = dbInvitation.Message
-        };
+        return Mapper.Map<IReviewGroupInvitation>(dbInvitation);
     }
 }

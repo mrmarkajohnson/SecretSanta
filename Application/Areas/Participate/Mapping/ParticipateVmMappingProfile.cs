@@ -1,4 +1,5 @@
-﻿using Application.Areas.Participate.ViewModels;
+﻿using Application.Areas.GiftingGroup.ViewModels;
+using Application.Areas.Participate.ViewModels;
 using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Participate;

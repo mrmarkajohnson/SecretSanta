@@ -7,6 +7,7 @@ using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Messages.Controllers;
@@ -145,7 +146,7 @@ public sealed class HomeController : BaseController
     {
         if (model.GiftingGroupKey > 0)
         {
-            var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, false))).ToList();
+            var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, OtherGroupMembersType.MessageRecipients))).ToList();
             model.OtherGroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
             
             model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.GroupAdmin == true;

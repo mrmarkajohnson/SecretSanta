@@ -12,10 +12,10 @@ using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Global.Settings;
 using Microsoft.AspNetCore.Authentication;
-using Web.Areas.GiftingGroup.Controllers;
 using Web.Helpers;
 using static Global.Settings.GlobalSettings;
 using AccountControllers = Web.Areas.Account.Controllers;
+using GroupControllers = Web.Areas.GiftingGroup.Controllers;
 
 namespace Web.Controllers;
 
@@ -264,7 +264,7 @@ public class BaseController : Controller
 
     protected string GetParticipateUrl()
     {
-        return GetFullUrl(nameof(ParticipateController.Index), nameof(ParticipateController), AreaNames.GiftingGroup);
+        return GetFullUrl(nameof(GroupControllers.ParticipateController.Index), nameof(GroupControllers.ParticipateController), AreaNames.GiftingGroup);
     }
 
     protected void HandleInvitation(IFormVm model)
@@ -279,6 +279,6 @@ public class BaseController : Controller
 
     protected string GetReviewInvitationUrl(string invitationId)
     {
-        return GetFullUrl(nameof(ParticipateController.ReviewInvitation), nameof(ParticipateController), AreaNames.GiftingGroup, new { invitationId });
+        return GetFullUrl(nameof(GroupControllers.ManageController.ReviewInvitation), nameof(GroupControllers.ManageController), AreaNames.GiftingGroup, new { invitationId });
     }
 }

@@ -143,6 +143,17 @@
     "sourceMap": true
   },
   {
+    "outputFileName": "wwwroot/js/GiftingGroup/Manage/ReviewInvitation/bundle.js",
+    "inputFiles": [
+      "wwwroot/scripts/GiftingGroup/reviewInvitation.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
     "outputFileName": "wwwroot/js/GiftingGroup/Manage/ReviewJoinerApplication/bundle.js",
     "inputFiles": [
       "wwwroot/scripts/GiftingGroup/reviewJoinerApplication.js"

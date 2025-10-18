@@ -1,0 +1,136 @@
+﻿@using Application.Areas.GiftingGroup.ViewModels
+
+@model ReviewGroupInvitationVm
+@{
+    ViewData["Title"] = "Review Group Invitation";
+}
+
+<h1>Review Group Invitation</h1>
+
+<section>
+    <form asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="ReviewInvitation" method="post" class="review-invitation">
+
+        <partial name="_FormHiddenInputs" />
+        <partial name="_UserHiddenInputs" model="@Model.FromUser" />
+
+        <div class="row @CenterFlexNoWrapContainer">
+
+            <div class="collapse">
+                <input type="hidden" asp-for="InvitationGuid">
+                <input type="hidden" asp-for="InvitationMessage">
+
+                <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
+                    <p>
+                        @Model.FromUser.DisplayName(false) has invited to join group '@Model.GroupName'. Would you like to join?
+                    </p>
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <br />
+
+                    <div class="@CenterFlexWrapContainer">
+                        
+                        <div class="@StandardGroupWidth">
+                            <h2>Invitation details</h2>
+                            
+                            <div class="mb-3 d-flex">
+                                <div class="form-group-ib col-6">
+                                    <label asp-for="FromUser" class="control-label"></label>
+                                    <div class="control-label fw-normal">
+                                        @Model.FromUser.DisplayName(true)
+                                        <partial name="_UserInfoCard" model="@Model.FromUser" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group-ib col-6">
+                                    <label asp-for="GroupName" class="control-label"></label>
+                                    <div class="control-label fw-normal">
+                                        @Model.GroupName
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="GroupDescription" class="control-label required"></label>
+                                <div class="control-label fw-normal">
+                                    @Model.GroupDescription
+                                </div>
+                            </div>
+
+                            @if (Model.InvitationMessage.IsNotEmpty())
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="InvitationMessage" class="control-label required"></label>
+                                    <div class="control-label fw-normal">
+                                        @Model.InvitationMessage
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-5 mt-5 align-items-center justify-content-center align-content-center">
+                            <h2>Group members</h2>
+                            <p>
+                                These are the current members of the group.
+                            </p>
+                            <br />
+
+                            <div class="col-md-12 mb-3 @CenterFlexNoWrapContainer">
+                                <div class="@StandardFullWidthGridContainer">
+                                    <partial name="_GiftingGroupMembersGrid" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="@StandardGroupWidth">
+                            <h2>Invitation details</h2>
+
+                            <div class="mb-3 review-section">
+                                <label asp-for="Accept" class="control-label required"></label>
+                                <div class="control-label fw-normal">
+                                    <div class="control-label fw-normal">
+                                        <span class="text-secondary">No</span>
+                                        <input type="radio" asp-for="Accept" class="form-check-input radio-no" autocomplete="off" aria-required="false"
+                                               value="@YesNoNotSure.No" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        <span class="text-primary">Yes</span>
+                                        <input type="radio" asp-for="Accept" class="form-check-input radio-yes" autocomplete="off" aria-required="false"
+                                               value="@YesNoNotSure.Yes" />
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+
+                                        <span>Not sure</span>
+                                        <input type="radio" asp-for="Accept" class="form-check-input radio-not-sure" autocomplete="off" aria-required="false"
+                                                value="@YesNoNotSure.NotSure" />
+                                        <text>
+                                            &nbsp;
+                                            &nbsp;
+                                            &nbsp;
+                                            &nbsp;
+                                        </text>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 collapse reject-section">
+                                <label asp-for="RejectionMessage" class="control-label"></label>
+                                <div class="control-label fw-normal">
+                                    <textarea asp-for="RejectionMessage" class="form-control" autocomplete="off" aria-required="false"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</section>

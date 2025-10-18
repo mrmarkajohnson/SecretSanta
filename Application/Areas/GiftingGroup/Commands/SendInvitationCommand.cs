@@ -125,7 +125,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToSantaUser = dbToSantaUser,
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message ?? ""
+            InvitationMessage = Item.InvitationMessage
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -141,7 +141,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToEmailAddress = Item.ToEmailAddress,
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message ?? ""
+            InvitationMessage = Item.InvitationMessage
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -238,9 +238,9 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
 
         string messageText = $"{from} has invited you to join the group '{dbInvitation.GiftingGroup.Name}'.<br><br>";
 
-        if (dbInvitation.Message.IsNotEmpty())
+        if (Item.InvitationMessage.IsNotEmpty())
         {
-            messageText += $"{dbInvitation.FromSantaUser.GlobalUser.Gender.Direct(true)} said: \"{dbInvitation.Message.Trim()}\"<br><br>";
+            messageText += $"{dbInvitation.FromSantaUser.GlobalUser.Gender.Direct(true)} said: \"{Item.InvitationMessage.Trim()}\"<br><br>";
         }
 
         if (!forExistingUser)

@@ -6,7 +6,9 @@ using Application.Areas.GiftingGroup.ViewModels;
 using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 using AccountControllers = Web.Areas.Account.Controllers;
 
@@ -57,15 +59,15 @@ public sealed class ManageController : BaseController
 
     private async Task<IActionResult> ShowEditGiftingGroup(EditGiftingGroupVm model)
     {
-        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey);
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.EditGroup);
         return View("EditGiftingGroup", model);
     }
 
-    private async Task<IEnumerable<IGroupMember>> GetOtherGroupMembers(int giftingGroupKey)
+    private async Task<IEnumerable<IGroupMember>> GetOtherGroupMembers(int giftingGroupKey, OtherGroupMembersType memberListType, Guid? invitationGuid = null)
     {
         if (giftingGroupKey > 0)
         {
-            return await Send(new GetGiftingGroupMembersQuery(giftingGroupKey, true));
+            return await Send(new GetGiftingGroupMembersQuery(giftingGroupKey, memberListType, invitationGuid));
         }
         else
         {
@@ -93,14 +95,18 @@ public sealed class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey)
+    public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey, OtherGroupMembersType memberListType, Guid? invitationGuid = null)
     {
-        var model = new EditGiftingGroupVm
+        var otherGroupMembers = await GetOtherGroupMembers(giftingGroupKey, memberListType, invitationGuid);
+
+        var model = new GiftingGroupMembersVm
         {
-            GiftingGroupKey = giftingGroupKey
+            GiftingGroupKey = giftingGroupKey,
+            MemberListType = memberListType,
+            InvitationGuid = invitationGuid,
+            OtherGroupMembers = otherGroupMembers
         };
 
-        model.OtherGroupMembers = await GetOtherGroupMembers(giftingGroupKey);
         return PartialView("_GiftingGroupMembersGrid", model);
     }
 
@@ -331,6 +337,40 @@ public sealed class ManageController : BaseController
             return RedirectWithMessage(model, $"Saved successfully.");
         }
 
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ReviewInvitation(string invitationId)
+    {
+        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationId));
+
+        TempData.Remove(TempDataNames.InvitationId);
+        TempData.Remove(TempDataNames.InvitationWaitMessage);
+        TempData.Remove(TempDataNames.InvitationError);
+
+        var model = Mapper.Map<ReviewGroupInvitationVm>(invitation);
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, invitation.InvitationGuid);
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReviewInvitation(ReviewGroupInvitationVm model)
+    {
+        ModelState.Clear();
+
+        string participateUrl = GetParticipateUrl();
+
+        var commandResult = await Send(new ReviewInvitationCommand<ReviewGroupInvitationVm>(model, participateUrl),
+            new ReviewGroupInvitationVmValidator());
+
+        if (commandResult.Success)
+        {
+            return RedirectWithMessage(model, $"Application sent. A group administrator will check your details and allow you to join.");
+        }
+
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, model.InvitationGuid);
         return View(model);
     }
 }

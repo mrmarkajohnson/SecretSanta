@@ -1,8 +1,9 @@
-﻿namespace Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Shared;
 
-public interface ISendGroupInvitation : IGiftingGroupInvitationBase
+namespace Global.Abstractions.Areas.GiftingGroup;
+
+public interface ISendGroupInvitation : IGiftingGroupInvitationBase, IHaveAGroupKey
 {
-    int GiftingGroupKey { get; }
     string? ToName { get; }
     string? ToEmailAddress { get; }
     string? ToHashedUserId { get; }
