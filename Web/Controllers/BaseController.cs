@@ -55,31 +55,25 @@ public class BaseController : Controller
         catch (AccessDeniedException) { }
     }
 
-    public IActionResult RedirectWithMessage(IFormVm model, string successMessage)
-    {
-        return RedirectWithMessage(model.ReturnUrl ?? Url.Content("~/"), successMessage);
-    }
-
-    public IActionResult RedirectWithMessage(string? url, string successMessage)
-    {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            url = Url.Content("~/");
-        }
-
-        if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
-        {
-            url = url.TrimEnd("Controller") + "/Index";
-        }
-
-        string addQuery = UrlHelper.ParameterDelimiter(url);
-        return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
-    }
-
     protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)
     {
         return await Send(new GetCurrentUserQuery(unHashIdentification));
     }
+
+    protected void EnsureSignedIn()
+    {
+        if (!SignedIn())
+        {
+            throw new NotSignedInException();
+        }
+    }
+
+    public bool SignedIn()
+    {
+        return SignInManager.IsSignedIn(User);
+    }
+
+    #region Send requests
 
     protected async Task<TItem> Send<TItem>(BaseQuery<TItem> query)
     {
@@ -116,6 +110,10 @@ public class BaseController : Controller
             };
         }
     }
+
+    #endregion Send requests
+
+    #region Validation and ModelState
 
     private ValidationResult Validate<TItem>(TItem item, AbstractValidator<TItem>? validator)
     {
@@ -172,12 +170,37 @@ public class BaseController : Controller
         return StatusCode(StatusCodes.Status422UnprocessableEntity, message);
     }
 
+    #endregion Validation and ModelState
+
+    #region Redirection and URLs
+
+    public IActionResult RedirectWithMessage(IFormVm model, string successMessage)
+    {
+        return RedirectWithMessage(model.ReturnUrl ?? Url.Content("~/"), successMessage);
+    }
+
+    public IActionResult RedirectWithMessage(string? url, string successMessage)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            url = Url.Content("~/");
+        }
+
+        if (url.EndsWith("Controller") && !url.EndsWith("/Controller"))
+        {
+            url = url.TrimEnd("Controller") + "/Index";
+        }
+
+        string addQuery = UrlHelper.ParameterDelimiter(url);
+        return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
+    }
+
     protected async Task<IActionResult> RedirectIfLockedOut(string viewName, ICheckLockout model)
     {
         if (model is ICheckLockout checkLockout && checkLockout.LockedOut)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return RedirectToLocalUrl(nameof(AccountControllers.HomeController.LockedOut), nameof(AccountControllers.HomeController), AreaNames.Account);
+            return RedirectToLocalUrl<AccountControllers.HomeController>(nameof(AccountControllers.HomeController.LockedOut), AreaNames.Account);
         }
         else
         {
@@ -188,16 +211,16 @@ public class BaseController : Controller
     protected async Task<IActionResult> RedirectToLogin(HttpRequest request)
     {
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // just in case
-        return RedirectToLocalUrl(nameof(AccountControllers.HomeController.Login), nameof(AccountControllers.HomeController), AreaNames.Account, new { ReturnUrl = request.Path.ToString(), TimedOut = true });
+        return RedirectToLocalUrl<AccountControllers.HomeController>(nameof(AccountControllers.HomeController.Login), AreaNames.Account, new { ReturnUrl = request.Path.ToString(), TimedOut = true });
     }
 
     /// <summary>
     /// Avoid annoying null reference errors
     /// </summary>
-    protected LocalRedirectResult RedirectToLocalUrl(string action, string controller, string area, object? values = null)
+    protected LocalRedirectResult RedirectToLocalUrl<TController>(string action, string area, object? values = null) where TController : BaseController
     {
-        string localUrl = GetLocalUrl(action, controller, area, values);
-        return LocalRedirect(localUrl ?? "");
+        string localUrl = GetLocalUrl<TController>(action, area, values);
+        return RedirectToLocalUrl(localUrl);
     }
 
     /// <summary>
@@ -206,14 +229,6 @@ public class BaseController : Controller
     protected LocalRedirectResult RedirectToLocalUrl(string? localUrl)
     {
         return LocalRedirect(localUrl ?? "");
-    }
-
-    protected void EnsureSignedIn()
-    {
-        if (!SignInManager.IsSignedIn(User))
-        {
-            throw new NotSignedInException();
-        }
     }
 
     [HttpGet]
@@ -230,18 +245,30 @@ public class BaseController : Controller
 
     protected IActionResult RedirectHome()
     {
-        return RedirectToLocalUrl(nameof(HomeController.Index), nameof(HomeController), "");
+        return RedirectToLocalUrl<HomeController>(nameof(HomeController.Index), AreaNames.None);
     }
 
-    protected string GetFullUrl(string action, string controller, string area, object? values = null)
+    protected string GetFullUrl<TController>(string action, string area, object? values = null) where TController : BaseController
     {
-        return Url.Action(Request, action, controller, area, values);
+        return Url.Action(Request, action, typeof(TController).Name, area, values);
     }
 
-    public string GetLocalUrl(string action, string controller, string area, object? values = null)
+    public string GetLocalUrl<TController>(string action, string area, object? values = null) where TController : BaseController
     {
-        return Url.Action(action, controller, area, values);
+        return Url.Action(action, typeof(TController).Name, area, values);
     }
+
+    protected string GetParticipateUrl()
+    {
+        return GetFullUrl<GroupControllers.ParticipateController>(nameof(GroupControllers.ParticipateController.Index), AreaNames.GiftingGroup);
+    }
+
+    protected string GetReviewInvitationUrl(string invitationId)
+    {
+        return GetFullUrl<GroupControllers.ManageController>(nameof(GroupControllers.ManageController.ReviewInvitation), AreaNames.GiftingGroup, new { invitationId });
+    }
+
+    #endregion Redirection and URLs
 
     protected bool AjaxRequest()
     {
@@ -262,11 +289,6 @@ public class BaseController : Controller
         return Ok();
     }
 
-    protected string GetParticipateUrl()
-    {
-        return GetFullUrl(nameof(GroupControllers.ParticipateController.Index), nameof(GroupControllers.ParticipateController), AreaNames.GiftingGroup);
-    }
-
     protected void HandleInvitation(IFormVm model)
     {
         string? invitationId = TempData.Peek(TempDataNames.InvitationId)?.ToString();
@@ -275,10 +297,5 @@ public class BaseController : Controller
         {
             model.ReturnUrl = GetReviewInvitationUrl(invitationId);
         }
-    }
-
-    protected string GetReviewInvitationUrl(string invitationId)
-    {
-        return GetFullUrl(nameof(GroupControllers.ManageController.ReviewInvitation), nameof(GroupControllers.ManageController), AreaNames.GiftingGroup, new { invitationId });
     }
 }

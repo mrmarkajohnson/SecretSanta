@@ -169,7 +169,7 @@ public sealed class ManageController : BaseController
         await AddOtherGroupMembers(model);
         model.EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true;
 
-        string reviewUrl = GetFullUrl(nameof(AccountControllers.HomeController.ReviewInvitation), nameof(AccountControllers.HomeController), AreaNames.Account);
+        string reviewUrl = GetFullUrl<AccountControllers.HomeController>(nameof(AccountControllers.HomeController.ReviewInvitation), AreaNames.Account);
         var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, reviewUrl), new SendGroupInvitationVmValidator());
 
         if (commandResult.Success)
@@ -232,7 +232,7 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
 
-        string joinerApplicationsUrl = GetFullUrl(nameof(JoinerApplications), nameof(ManageController), AreaNames.GiftingGroup);
+        string joinerApplicationsUrl = GetFullUrl<ManageController>(nameof(JoinerApplications), AreaNames.GiftingGroup);
         var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model, joinerApplicationsUrl),
             new JoinGiftingGroupVmValidator());
 

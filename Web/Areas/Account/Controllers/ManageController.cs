@@ -67,7 +67,7 @@ public sealed class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> SetSecurityQuestions()
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());
             string? currentGreeting = currentSecurityQuestions?.Greeting;
@@ -148,7 +148,7 @@ public sealed class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> UpdateDetails(string? returnUrl = null)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             var currentUser = await GetCurrentUser(true);
 
@@ -201,7 +201,7 @@ public sealed class ManageController : BaseController
     [Authorize]
     public async Task<IActionResult> ChangePassword(string? returnUrl = null)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             var currentUser = await GetCurrentUser(true);
 

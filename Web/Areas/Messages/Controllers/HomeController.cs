@@ -114,7 +114,7 @@ public sealed class HomeController : BaseController
         var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey,
-            AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions),
+            AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions),
             GiftingGroups = HomeModel.GiftingGroups
         };
 
@@ -286,7 +286,7 @@ public sealed class HomeController : BaseController
         }
 
         model.SetDisplayRecipientType();
-        model.AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions);        
+        model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);        
 
         if (model.IsModal)
         {

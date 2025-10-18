@@ -22,7 +22,7 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> Login(string? returnUrl = null, bool timedOut = false)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             return RedirectHome();
         }
@@ -129,7 +129,7 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public async Task<IActionResult> LockedOut()
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             await SignInManager.SignOutAsync(); // just in case
         }
@@ -145,7 +145,7 @@ public sealed class HomeController : BaseController
             IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(id));
             TempData[TempDataNames.InvitationId] = id;
 
-            if (SignInManager.IsSignedIn(User))
+            if (SignedIn())
             {
                 if (HomeModel.CurrentUser?.SecurityQuestionsSet == false)
                 {
@@ -162,7 +162,7 @@ public sealed class HomeController : BaseController
                 if (invitation.ToSantaUserKey == null)
                 {
                     SetInvitationWaitMessage(invitation);
-                    return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+                    return RedirectToLocalUrl<HomeController>(nameof(Index), AreaNames.None);
                 }
                 else
                 {

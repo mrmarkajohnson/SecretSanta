@@ -7,6 +7,7 @@ public static class GlobalSettings
 {
     public static class AreaNames
     {
+        public const string None = "";
         public const string Account = "Account";
         public const string GiftingGroup = "GiftingGroup";
         public const string Messages = "Messages";
