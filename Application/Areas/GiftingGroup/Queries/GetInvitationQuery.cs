@@ -25,6 +25,8 @@ public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
             throw new NotFoundException("invitation");
         }
 
-        return Mapper.Map<IReviewGroupInvitation>(dbInvitation);
+        var invitation = Mapper.Map<IReviewGroupInvitation>(dbInvitation);
+        invitation.FromUser.UnHash();
+        return invitation;
     }
 }

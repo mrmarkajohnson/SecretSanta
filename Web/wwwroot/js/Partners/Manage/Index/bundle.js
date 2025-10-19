@@ -128,10 +128,6 @@ document.addEventListener('modalOpening', function (e) {
     relationshipModalOpening(e);
 });
 
-document.addEventListener('modalSaved', function (e) {
-    relationshipModalSaved(e);
-});
-
 async function relationshipModalOpening(e) {
     let modal = e.detail.modal;
     if (modal.id == 'manageRelationshipModal') {
@@ -281,12 +277,5 @@ function showSection(section) {
 function hideSection(section) {
     if (!section.classList.contains('collapse')) {
         section.classList.add('collapse');
-    }
-}
-
-async function relationshipModalSaved(e) {
-    let modal = e.detail.modal;
-    if (modal.id == 'manageRelationshipModal') {
-        reloadGrid();
     }
 }

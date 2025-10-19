@@ -1,5 +1,7 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
+using Global.Helpers;
 using Global.Validation;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Entities.Santa;
 
@@ -32,6 +34,6 @@ public class Santa_Invitation : ArchivableBaseEntity, ISendGroupInvitation
 
     public string GetInvitationId()
     {
-        return this.GetInvitationId(FromSantaUser.GlobalUserId);
+        return EncryptionHelper.OneWayEncrypt(InvitationGuid.ToString(), FromSantaUser.GlobalUserId, true);
     }
 }

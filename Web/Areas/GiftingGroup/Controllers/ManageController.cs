@@ -413,7 +413,6 @@ public sealed class ManageController : BaseController
             return RedirectWithMessage(model, commandResult.SuccessMessage ?? "Saved successfully");
         }
 
-        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, model.InvitationGuid);
-        return View(model);
+        return await ReviewInvitation(model.InvitationGuid, model.SingleInvitation);
     }
 }

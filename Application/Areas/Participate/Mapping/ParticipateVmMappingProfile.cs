@@ -12,6 +12,6 @@ public sealed class ParticipateVmMappingProfile : Profile
     {
         CreateMap<IManageUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
         CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYearVm>();
-        CreateMap<IReviewApplication, ReviewGroupInvitationVm>();
+        CreateMap<IReviewGroupInvitation, ReviewGroupInvitationVm>();
     }
 }

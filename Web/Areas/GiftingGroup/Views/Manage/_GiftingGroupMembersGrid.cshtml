@@ -28,13 +28,13 @@
                         new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"    
                     data-toggle="tooltip" title="@title?" data-bs-container="td"
                     data-confirm-title="@title" data-confirm-message="@confirm"/>
-            }
             
-            <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup,
-                new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
-               data-toggle="tooltip" title="Remove Group Member" data-bs-container="td"
-               data-confirm-title="Remove Group Member"
-               data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
+                <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup,
+                        new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
+                    data-toggle="tooltip" title="Remove Group Member" data-bs-container="td"
+                    data-confirm-title="Remove Group Member"
+                    data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
+            }
         }
     </text>;
 

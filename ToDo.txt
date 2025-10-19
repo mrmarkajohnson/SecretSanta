@@ -1,10 +1,9 @@
 IMMEDIATE
-*** Fix 'Remove Group Member' link when the member hasn't joined yet, instead allow invitations to be archived (rescinded) from _GiftingGroupUsersGrid
+** Allow invitations to be archived (rescinded) from _GiftingGroupUsersGrid
 ** Allow reviewing invitations from the gifting groups grid, when invited (i.e. add a link to review)
 ** Link to the review application page from _GiftingGroupUsersGrid for 'users' who have applied to join (with a warning to save any changes first)
 ** Add bug reporting
 ** Add reporting abuse
-** Archive all invitations and applications when a user joins a group
 
 ACCEPTING INVITATIONS
 ** Allow a preview before registering
