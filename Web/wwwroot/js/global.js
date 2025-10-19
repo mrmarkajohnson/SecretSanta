@@ -389,7 +389,11 @@ async function saveModalForm(modal, modalObject) {
     function handleSuccessfulSave(message) {
         showSuccessMessage(message);
         modalObject.hide();
-        document.dispatchEvent(new CustomEvent('modalSaved', { detail: { modal: modal } }));
+        //document.dispatchEvent(new CustomEvent('modalSaved', { detail: { modal: modal } }));
+
+        try {
+            reloadGrid();
+        } catch { }
     }
 }
 

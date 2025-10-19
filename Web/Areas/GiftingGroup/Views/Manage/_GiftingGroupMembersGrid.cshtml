@@ -38,7 +38,10 @@
         }
     </text>;
 
-    static string RowClass(IGroupMember item) => item.MemberStatus == GroupMemberStatus.Admin ? "bold" : "";
+    static string RowClass(IGroupMember item) =>
+        item.MemberStatus == GroupMemberStatus.Admin
+        ? "bold"
+        : (item.MemberStatus <= GroupMemberStatus.Rejected ? "text-grey" : "");
 }
 
 @(

@@ -30,6 +30,7 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
     [Display(Name = UserDisplayNames.Email)]
     public string? ToEmailAddress { get; set; }
 
+    [Display(Name = "Message")]
     [MaxLength(GiftingGroupVal.SendInvitationMessage.MaxLength)]
     public string? InvitationMessage { get; set; }
 
