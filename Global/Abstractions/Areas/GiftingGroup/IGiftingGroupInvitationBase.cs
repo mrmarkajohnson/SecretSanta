@@ -8,7 +8,7 @@ public interface IGiftingGroupInvitationBase
     string? InvitationMessage { get; }
 }
 
-public static class GiftingGroupInvitationBasweExtensions
+public static class GiftingGroupInvitationBaseExtensions
 {
     public static string GetInvitationId(this IGiftingGroupInvitationBase invitation, string fromUserId)
     {

@@ -50,6 +50,7 @@ public class BaseController : Controller
         {
             HomeModel.CurrentUser = await GetCurrentUser(true);
             HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
+            HomeModel.GroupInvitations = await Send(new GetGroupInvitationsCountQuery());
         }
         catch (NotSignedInException) { }
         catch (AccessDeniedException) { }
@@ -263,9 +264,9 @@ public class BaseController : Controller
         return GetFullUrl<GroupControllers.ParticipateController>(nameof(GroupControllers.ParticipateController.Index), AreaNames.GiftingGroup);
     }
 
-    protected string GetReviewInvitationUrl(string invitationId)
+    protected string GetReviewInvitationUrl(Guid invitationGuid)
     {
-        return GetFullUrl<GroupControllers.ManageController>(nameof(GroupControllers.ManageController.ReviewInvitation), AreaNames.GiftingGroup, new { invitationId });
+        return GetFullUrl<GroupControllers.ManageController>(nameof(GroupControllers.ManageController.ReviewInvitation), AreaNames.GiftingGroup, new { invitationGuid });
     }
 
     #endregion Redirection and URLs
@@ -291,11 +292,16 @@ public class BaseController : Controller
 
     protected void HandleInvitation(IFormVm model)
     {
-        string? invitationId = TempData.Peek(TempDataNames.InvitationId)?.ToString();
+        string? guidString = TempData.Peek(TempDataNames.InvitationGuid)?.ToString();
 
-        if (invitationId != null)
+        if (guidString != null)
         {
-            model.ReturnUrl = GetReviewInvitationUrl(invitationId);
+            bool actualGuid = Guid.TryParse(guidString, out Guid invitationGuid); 
+
+            if (actualGuid && invitationGuid != Guid.Empty)
+            {
+                model.ReturnUrl = GetReviewInvitationUrl(invitationGuid);
+            }
         }
     }
 }

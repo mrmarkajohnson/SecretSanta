@@ -2,14 +2,17 @@
 
 namespace Application.Areas.GiftingGroup.Queries.Internal;
 
-internal class GetInvitationEntityQuery : BaseQuery<Santa_Invitation?>
+/// <summary>
+/// This query can save changes; it sets Santa_Invitation.ToSantaUserKey when appropriate
+/// </summary>
+internal class GetInvitationEntitySavingQuery : BaseQuery<Santa_Invitation?>
 {
-    public GetInvitationEntityQuery(string invitationId)
+    public GetInvitationEntitySavingQuery(string invitationId)
     {
         _invitationId = invitationId;
     }
 
-    public GetInvitationEntityQuery(Guid invitationGuid)
+    public GetInvitationEntitySavingQuery(Guid invitationGuid)
     {
         _invitationGuid = invitationGuid;
     }
@@ -18,7 +21,7 @@ internal class GetInvitationEntityQuery : BaseQuery<Santa_Invitation?>
     private readonly Guid? _invitationGuid;
     private const string _askToResend = "If it should have been for you, please ask the person who sent it to send another, with the correct details.";
 
-    protected override Task<Santa_Invitation?> Handle()
+    protected override async Task<Santa_Invitation?> Handle()
     {
         var dbOpenInvitations = DbContext.Santa_Invitations
             .Where(x => x.DateArchived == null)
@@ -41,7 +44,7 @@ internal class GetInvitationEntityQuery : BaseQuery<Santa_Invitation?>
         }
 
         if (!SignedIn())
-            return Result(dbInvitation); // just return it, we can't tell if it's for the current user at this stage
+            return dbInvitation; // just return it, we can't tell if it's for the current user at this stage
 
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
 
@@ -66,7 +69,13 @@ internal class GetInvitationEntityQuery : BaseQuery<Santa_Invitation?>
 
         if (returnInvitation)
         {
-            return Result(dbInvitation);
+            if (dbInvitation.ToSantaUserKey > 0 == false)
+            {
+                dbInvitation.ToSantaUserKey = dbCurrentSantaUser.SantaUserKey;
+                await DbContext.SaveChangesAsync();
+            }
+
+            return dbInvitation;
         }
         else // shouldn't happen, as each method will throw an exception if not returning true
         {

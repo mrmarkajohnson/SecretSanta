@@ -265,6 +265,7 @@ public sealed class ManageController : BaseController
         return View(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> JoinerApplicationsGrid()
     {
         var model = new JoinerApplicationsVm();
@@ -341,16 +342,53 @@ public sealed class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewInvitation(string invitationId)
+    public async Task<IActionResult> GroupInvitations()
     {
-        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationId));
+        if (AjaxRequest())
+            return await GroupInvitationsGrid();
 
-        TempData.Remove(TempDataNames.InvitationId);
+        var invitations = await Send(new GetGroupInvitationsQuery());
+
+        if (invitations.Count() == 1)
+        {
+            return RedirectToLocalUrl(Url.Action(nameof(ReviewInvitation),
+                new { invitationGuid = invitations.First().InvitationGuid, singleInvitation = true }));
+        }
+
+        var model = new GroupInvitationsVm
+        {
+            Invitations = invitations
+        };
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GroupInvitationsGrid()
+    {
+        var model = new GroupInvitationsVm();
+        model.Invitations = await Send(new GetGroupInvitationsQuery());
+        return PartialView("_GroupInvitationsGrid", model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ReviewInvitation(Guid invitationGuid, bool singleInvitation = false)
+    {
+        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(string.Empty, invitationGuid));
+
+        TempData.Remove(TempDataNames.InvitationGuid);
         TempData.Remove(TempDataNames.InvitationWaitMessage);
         TempData.Remove(TempDataNames.InvitationError);
 
         var model = Mapper.Map<ReviewGroupInvitationVm>(invitation);
         model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, invitation.InvitationGuid);
+
+        model.SingleInvitation = singleInvitation;
+        if (!singleInvitation)
+        {
+            model.ReturnUrl = Url.Action(nameof(GroupInvitations));
+        }
+
         return View(model);
     }
 
@@ -367,7 +405,12 @@ public sealed class ManageController : BaseController
 
         if (commandResult.Success)
         {
-            return RedirectWithMessage(model, $"Application sent. A group administrator will check your details and allow you to join.");
+            if (model.SingleInvitation && model.ReturnUrl?.Contains(nameof(GroupInvitations)) == true)
+            {
+                model.ReturnUrl = string.Empty;
+            }
+
+            return RedirectWithMessage(model, commandResult.SuccessMessage ?? "Saved successfully");
         }
 
         model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, model.InvitationGuid);

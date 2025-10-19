@@ -2,6 +2,7 @@
 using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -89,8 +90,18 @@ public sealed class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupUser, GroupMember>()
             .IncludeMembers(src => src.SantaUser)
-            .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin));
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => src.GroupAdmin ? GroupMemberStatus.Admin : GroupMemberStatus.Joined));
         CreateMap<Santa_GiftingGroupUser, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_Invitation, GroupMember>()
+            .IncludeMembers(src => src.ToSantaUser)
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Invited));
+        CreateMap<Santa_Invitation, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_GiftingGroupApplication, GroupMember>()
+            .IncludeMembers(src => src.SantaUser)
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Applied));
+        CreateMap<Santa_GiftingGroupApplication, IGroupMember>().As<GroupMember>();
 
         CreateMap<Santa_User, GroupMember>()
             .IncludeBase<Santa_User, UserNamesBase>()

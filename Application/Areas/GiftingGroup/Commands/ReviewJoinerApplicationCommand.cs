@@ -49,6 +49,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
             dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
             dbApplication.ResponseBySantaUserKey = dbCurrentSantaUser.SantaUserKey;
+            dbApplication.DateArchived = DateTime.Now;
 
             if (Item.Accepted)
             {

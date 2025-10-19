@@ -22,7 +22,7 @@ public class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> whe
 
         try
         {
-            await Send(new GetInvitationEntityQuery(Item.InvitationGuid));
+            await Send(new GetInvitationEntitySavingQuery(Item.InvitationGuid));
         }
         catch (Exception ex)
         {

@@ -143,9 +143,9 @@ public sealed class HomeController : BaseController
         try
         {
             IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(id));
-            TempData[TempDataNames.InvitationId] = id;
+            TempData[TempDataNames.InvitationGuid] = invitation.InvitationGuid;
 
-            if (SignedIn())
+            if (SignedIn()) // the invitation must be OK at this point, otherwise it would throw an error
             {
                 if (HomeModel.CurrentUser?.SecurityQuestionsSet == false)
                 {
@@ -154,7 +154,7 @@ public sealed class HomeController : BaseController
                 }
                 else
                 {
-                    return LocalRedirect(GetReviewInvitationUrl(id));
+                    return LocalRedirect(GetReviewInvitationUrl(invitation.InvitationGuid));
                 }
             }
             else
@@ -191,7 +191,7 @@ public sealed class HomeController : BaseController
 
     private void HandleInvitationError(Exception ex)
     {
-        TempData.Remove(TempDataNames.InvitationId);
+        TempData.Remove(TempDataNames.InvitationGuid);
         TempData.Remove(TempDataNames.InvitationWaitMessage);
         TempData[TempDataNames.InvitationError] = ex.Message;
     }

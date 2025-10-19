@@ -1,4 +1,5 @@
-﻿@using static Global.Settings.MessageSettings
+﻿@using static Global.Settings.GiftingGroupSettings
+@using static Global.Settings.MessageSettings
 
 @model ChooseMessageRecipientVm
 @{
@@ -8,7 +9,7 @@
     string futureMembersExplanation = "Allow group members who fit this category in future (but not now) to view this message.";
 
     bool recipientTypeDisabled = Model.GiftingGroupKey > 0 == false;
-    bool otherAdmins = Model.OtherGroupMembers.Any(x => x.GroupAdmin);
+    bool otherAdmins = Model.OtherGroupMembers.Any(x => x.MemberStatus == GroupMemberStatus.Admin);
 }
 
 <div class="mb-3 d-flex">

@@ -8,16 +8,16 @@ namespace Application.Areas.GiftingGroup.ViewModels;
 
 public class ReviewGroupInvitationVm : ReviewGroupInvitation, IReviewGroupInvitation, IFormVm, IGroupMembersGridVm
 {
+    public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
+    public bool SingleInvitation { get; set; }
+
+    Guid? IGroupMembersGridVm.InvitationGuid => InvitationGuid; 
     public OtherGroupMembersType MemberListType => OtherGroupMembersType.ReviewInvitation;
 
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";
     public string? SuccessMessage { get; set; }
-
-    public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
-
-    Guid? IGroupMembersGridVm.InvitationGuid => InvitationGuid;
 }
 
 public class ReviewGroupInvitationVmValidator : AbstractValidator<ReviewGroupInvitationVm>

@@ -33,7 +33,9 @@ public static class GiftingGroupSettings
         Joined,
 
         [Display(Name = "Administrator")]
-        Admin
+        Admin,
+
+        Invited
     }
 
     public enum OtherGroupMembersType

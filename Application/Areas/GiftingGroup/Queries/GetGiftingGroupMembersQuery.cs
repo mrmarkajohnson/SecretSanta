@@ -47,23 +47,48 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
         if (SignedIn())
         {
             Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
-            groupMembers = groupMembers.Where(x => x.SantaUserKey != dbCurrentSantaUser.SantaUserKey).ToList();
+
+            if (_memberListType != OtherGroupMembersType.MessageRecipients) // for messages this is stripped out later, as it uses the information on the current user, too
+            {
+                groupMembers = groupMembers.Where(x => x.SantaUserKey != dbCurrentSantaUser.SantaUserKey).ToList();
+            }
+
             userKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail();
         }
 
         if (_memberListType == OtherGroupMembersType.ReviewInvitation && _invitationGuid != null)
         {
-            var dbInvitation = await Send(new GetInvitationEntityQuery(_invitationGuid.Value));
+            var dbInvitation = await Send(new GetInvitationEntitySavingQuery(_invitationGuid.Value));
             if (dbInvitation != null)
             {
                 userKeysForVisibleEmail.Add(dbInvitation.FromSantaUserKey);
             }
         }
 
+        object parameters = new { UserKeysForVisibleEmail = userKeysForVisibleEmail };
+
         var result = groupMembers
             .AsQueryable()
-            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = userKeysForVisibleEmail })
+            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
             .ToList();
+
+        List<int> santaUserKeys = result.Select(x => x.SantaUserKey).ToList();
+
+        var invitees = dbGiftingGroup.Invitations
+            .Where(x => x.DateArchived == null)
+            .Where(x => x.ToSantaUserKey != null && !santaUserKeys.Contains(x.ToSantaUserKey.Value))
+            .AsQueryable()
+            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
+            .ToList();
+
+        var applicants = dbGiftingGroup.MemberApplications
+            .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Accepted == null)
+            .Where(x => !santaUserKeys.Contains(x.SantaUserKey))
+            .AsQueryable()
+            .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
+            .ToList();
+
+        result.AddRange(invitees);
 
         foreach (var member in result)
         {
