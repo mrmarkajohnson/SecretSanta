@@ -44,6 +44,12 @@ public class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> whe
             return await ReturnGeneralError("This invitation is for a different user.");
         }
 
+        if (dbInvitation.ToEmailAddress.IsNotEmpty() && dbCurrentSantaUser.GlobalUser.Email.IsNotEmpty()
+            && dbInvitation.ToEmailAddress.Tidy() == dbCurrentSantaUser.GlobalUser.Email.Tidy())
+        {
+            dbCurrentSantaUser.GlobalUser.EmailConfirmed = true; // must have come from an e-mail link
+        }
+
         if (Item.Accept == YesNoNotSure.Yes)
         {
             AcceptInvitation(dbInvitation, dbCurrentSantaUser);
@@ -130,7 +136,7 @@ public class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> whe
             RecipientType = MessageRecipientType.SingleGroupMember,
             HeaderText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has joined '{dbInvitation.GiftingGroup.Name}'",
             MessageText = $"{dbInvitation.ToSantaUser.GlobalUser.DisplayName()} has accepted your invitation " +
-                $"to join group '{dbInvitation.GiftingGroup.Name}'",
+                $"to join group '{dbInvitation.GiftingGroup.Name}'.",
             Important = false,
             CanReply = false,
             ShowAsFromSanta = true

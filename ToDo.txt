@@ -1,8 +1,6 @@
 IMMEDIATE
-** Show invitations sent to e-mails when in edit mode
-** Set e-mail confirmed if opened from invite link with matching e-mail
+** Show invitations sent to e-mails when in edit mode?
 ** Allow invitations to be archived (rescinded) from _GiftingGroupMembersGrid
-** Link to the review application page from _GiftingGroupMembersGrid for 'users' who have applied to join (with a warning to save any changes first)
 ** Add bug reporting
 ** Add reporting abuse
 

@@ -85,6 +85,8 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
             .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
             .ToList();
 
+        result.AddRange(invitees);
+
         var applicants = dbGiftingGroup.MemberApplications
             .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Accepted == null)
             .Where(x => !santaUserKeys.Contains(x.SantaUserKey))
@@ -92,7 +94,7 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
             .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
             .ToList();
 
-        result.AddRange(invitees);
+        result.AddRange(applicants);
 
         foreach (var member in result)
         {
