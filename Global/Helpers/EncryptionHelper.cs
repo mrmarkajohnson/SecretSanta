@@ -195,9 +195,9 @@ public static class EncryptionHelper
         return result;
     }
 
-    public static string EncryptEmail(string unhashedEmail)
+    public static string EncryptEmail(string? unhashedEmail)
     {
-        return TwoWayEncrypt(unhashedEmail.Tidy(), true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
+        return TwoWayEncrypt(unhashedEmail?.Tidy(), true) + IdentitySettings.StandardEmailEnd; // retain the e-mail format for validation
     }
 
     public static string GetEmailConfirmationId(string unhashedEmail, IIdentityUser identityUser)

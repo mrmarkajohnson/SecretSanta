@@ -78,7 +78,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         if (Item.ToEmailAddress == null || Item.ToName == null)
             return await Result();
 
-        string hashedEmail = EncryptionHelper.EncryptEmail(Item.ToEmailAddress.Tidy());
+        string hashedEmail = Item.GetHashedEmail();
         string tidiedName = Item.ToName.Tidy();
 
         IQueryable<Global_User> dbPossibleToUsers = DbContext.Global_Users
@@ -138,7 +138,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             FromSantaUserKey = dbGiftingGroupLink.SantaUserKey,
             FromSantaUser = dbGiftingGroupLink.SantaUser,
             ToName = tidiedName,
-            ToEmailAddress = Item.ToEmailAddress,
+            ToEmailAddress = Item.GetHashedEmail(), // store as hashed
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
             InvitationMessage = Item.InvitationMessage
@@ -182,7 +182,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
 
     private async Task<ICommandResult<TItem>> SendToEmail(Santa_Invitation dbInvitation)
     {
-        if (DbContext.EmailClient == null || dbInvitation.ToEmailAddress == null || dbInvitation.ToName == null)
+        if (DbContext.EmailClient == null || Item.ToEmailAddress == null || dbInvitation.ToName == null)
         {
             AddGeneralValidationError("The invitation cannot be sent, due to an issue with e-mails.");
             return await Result();
@@ -205,7 +205,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             var recipient = new EmailRecipient
             {
                 Forename = dbInvitation.ToName.Tidy(),
-                Email = dbInvitation.ToEmailAddress.Tidy(),
+                Email = Item.ToEmailAddress?.Tidy(), // use the Item version, as it's unhashed
                 IdentificationHashed = false,
                 EmailConfirmed = true,
                 ReceiveEmails = EmailPreference.All,

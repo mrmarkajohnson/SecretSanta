@@ -121,7 +121,7 @@ internal class GetInvitationEntitySavingQuery : BaseQuery<Santa_Invitation?>
 
     private bool NameMatchesWithNoEmail(Santa_Invitation dbInvitation)
     {
-        var matchingUser = DbContext.Users.FirstOrDefault(x => x.Email == dbInvitation.ToEmailAddress);
+        var matchingUser = DbContext.Users.FirstOrDefault(x => x.Email == dbInvitation.ToEmailAddress); // both should be hashed
 
         if (matchingUser != null)
         {
@@ -135,7 +135,7 @@ internal class GetInvitationEntitySavingQuery : BaseQuery<Santa_Invitation?>
 
     private static bool EmailMatches(Santa_Invitation dbInvitation, Santa_User dbCurrentSantaUser)
     {
-        return dbCurrentSantaUser.GlobalUser.Email?.Tidy() == dbInvitation.ToEmailAddress?.Tidy();
+        return dbCurrentSantaUser.GlobalUser.Email?.Tidy() == dbInvitation.ToEmailAddress?.Tidy(); // both should be hashed
     }
 
     private bool NameMatches(string? toName, Santa_User dbSantaUser)

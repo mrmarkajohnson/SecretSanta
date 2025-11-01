@@ -1,7 +1,6 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
 using Global.Helpers;
 using Global.Validation;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Entities.Santa;
 
@@ -22,6 +21,10 @@ public class Santa_Invitation : ArchivableBaseEntity, ISendGroupInvitation
     public virtual required Santa_GiftingGroup GiftingGroup { get; set; }
 
     public string? ToName { get; set; }
+
+    /// <summary>
+    /// This should always be hashed
+    /// </summary>
     public string? ToEmailAddress { get; set; }
 
     [MaxLength(GiftingGroupVal.SendInvitationMessage.MaxLength)]
