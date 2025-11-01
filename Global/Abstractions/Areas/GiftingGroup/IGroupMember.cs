@@ -7,4 +7,5 @@ public interface IGroupMember : IUserNamesBase
 {
     int SantaUserKey { get; }
     GroupMemberStatus MemberStatus { get; }
+    int? GroupApplicationKey { get; }
 }

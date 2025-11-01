@@ -1,5 +1,6 @@
 ﻿@using Global.Abstractions.Areas.Participate
 @using Web.Extensions
+
 @model IQueryable<IUserGiftingGroupYear>
 @{
     Func<IUserGiftingGroupYear, object> actions =
@@ -13,8 +14,13 @@
             {
                 <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
                    data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"
-                   data-bs-container="td"><i class="fa fa-pencil"></i></a>
+                   data-bs-container="td"><i class="fa fa-list-check"></i></a>
             }
+        }
+        else if (item.MemberStatus == GroupMemberStatus.Invited)
+        {
+            <a asp-action="ReviewInvitation" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="Review this invitation"
+               data-bs-container="td" asp-route-invitationGuid="@item.InvitationGuid" asp-route-singleInvitation="@true"><i class="fa fa-eye"></i></a>
         }
     </text>;
 

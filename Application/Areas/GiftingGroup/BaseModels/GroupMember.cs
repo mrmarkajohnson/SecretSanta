@@ -11,4 +11,6 @@ public class GroupMember : UserNamesBase, IGroupMember
 
     [Display(Name = GiftingGroupNames.MemberStatus)]
     public GroupMemberStatus MemberStatus { get; set; }
+
+    public int? GroupApplicationKey { get; set; }
 }

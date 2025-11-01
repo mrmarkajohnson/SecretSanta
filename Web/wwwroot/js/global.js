@@ -6,75 +6,129 @@ function initBackgroundLinks() {
 function initBackgroundLink(backgroundLink) {
     if (!initialised(backgroundLink, 'background-link')) {
         backgroundLink.addEventListener('click', function () {
-            confirmAndFollow(backgroundLink);
+            confirmAndFollow();
         });
     }
-}
 
-function confirmAndFollow(backgroundLink) {
-    let message = backgroundLink.getAttribute('data-confirm-message');
+    function confirmAndFollow() {
+        let message = backgroundLink.getAttribute('data-confirm-message');
 
-    if (isEmptyValue(message)) {
-        followLink(backgroundLink);
-    }
-    else {
-        let title = backgroundLink.getAttribute('data-confirm-title');
+        if (isEmptyValue(message)) {
+            followLink(backgroundLink);
+        }
+        else {
+            let title = backgroundLink.getAttribute('data-confirm-title');
 
-        bootbox.confirm({
-            title: title,
-            message: message,
-            buttons: {
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-success'
+            bootbox.confirm({
+                title: title,
+                message: message,
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-no'
+                    }
                 },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-no'
+                callback: function (result) {
+                    bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+
+                    if (result) {
+                        followLink(backgroundLink);
+                    } else if (backgroundLink.tagName == 'INPUT' && (backgroundLink.type == 'checkbox' || backgroundLink.type == 'radio')) {
+                        backgroundLink.checked = !backgroundLink.checked;
+                    }
                 }
-            },
-            callback: function (result) {
-                bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
-
-                if (result) {
-                    followLink(backgroundLink);
-                } else if (backgroundLink.tagName == 'INPUT' && (backgroundLink.type == 'checkbox' || backgroundLink.type == 'radio')) {
-                    backgroundLink.checked = !backgroundLink.checked;
-                }
-            }
-        });
-    }
-}
-
-async function followLink(backgroundLink) {
-    let linkUrl = backgroundLink.getAttribute('data-url');
-
-    if (isEmptyValue(linkUrl))
-        return false;
-
-    let url = new URL(linkUrl);
-
-    let response = await fetch(url.href,
-        {
-            method: "POST"
-        });
-
-    await response;
-    document.dispatchEvent(new Event('ajaxComplete'));
-    let responseText = await response.text();
-
-    if (responseText != null && responseText != '') {
-        if (response.ok) {
-            showSuccessMessage(responseText);
-        } else {
-            showErrorMessage(responseText);
+            });
         }
     }
 
-    try {
-        reloadGrid();
-    } catch { }
+    async function followLink(backgroundLink) {
+        let linkUrl = backgroundLink.getAttribute('data-url');
+
+        if (isEmptyValue(linkUrl))
+            return false;
+
+        let url = new URL(linkUrl);
+
+        let response = await fetch(url.href,
+            {
+                method: "POST"
+            });
+
+        await response;
+        document.dispatchEvent(new Event('ajaxComplete'));
+        let responseText = await response.text();
+
+        if (responseText != null && responseText != '') {
+            if (response.ok) {
+                showSuccessMessage(responseText);
+            } else {
+                showErrorMessage(responseText);
+            }
+        }
+
+        try {
+            reloadGrid();
+        } catch { }
+    }
 }
+function initConfirmLinks() {
+    let confirmLinks = document.querySelectorAll('a[data-confirm-message][data-confirm-title][href]:not([href=""]):not(.background-link):not(.delete-link)');
+    confirmLinks.forEach(initConfirmLink);
+}
+
+function initConfirmLink(confirmLink) {
+    if (!initialised(confirmLink, 'confirm-link')) {
+        confirmLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            confirmAndFollow();
+        });
+    }
+
+    function confirmAndFollow() {
+        let message = confirmLink.getAttribute('data-confirm-message');
+
+        if (isEmptyValue(message)) {
+            followLink(confirmLink);
+        }
+        else {
+            let title = confirmLink.getAttribute('data-confirm-title');
+
+            bootbox.confirm({
+                title: title,
+                message: message,
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-no'
+                    }
+                },
+                callback: function (result) {
+                    bootbox.hideAll(); // avoid issues with the bootbox not closing the second time it's opened
+
+                    if (result) {
+                        followLink(confirmLink);
+                    } else if (confirmLink.tagName == 'INPUT' && (confirmLink.type == 'checkbox' || confirmLink.type == 'radio')) {
+                        confirmLink.checked = !confirmLink.checked;
+                    }
+                }
+            });
+        }
+    }
+
+    function followLink() {
+        window.location.href = confirmLink.href;
+    }
+}
+
+
 let dataListStandardPlaceholder = 'Please type or select a value';
 
 function initDataLists() {

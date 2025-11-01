@@ -47,7 +47,8 @@ public class ParticipateMappingProfile : Profile
             .ForMember(dest => dest.CalendarYear, opt => opt.MapFrom(src => DateTime.Today.Year))
             .ForMember(dest => dest.Limit, opt => opt.MapFrom(src => (decimal?)null))
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => "N/A"))
-            .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => "N/A"));
+            .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => "N/A"))
+            .ForMember(dest => dest.InvitationGuid, opt => opt.MapFrom(src => src.InvitationGuid));
         CreateMap<Santa_Invitation, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
         CreateMap<IUserGiftingGroupYear, ManageUserGiftingGroupYear>();

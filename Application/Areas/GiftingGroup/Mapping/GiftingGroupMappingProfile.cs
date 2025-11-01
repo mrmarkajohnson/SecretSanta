@@ -102,7 +102,8 @@ public sealed class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupApplication, GroupMember>()
             .IncludeMembers(src => src.SantaUser)
-            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Applied));
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Applied))
+            .ForMember(dest => dest.GroupApplicationKey, opt => opt.MapFrom(src => src.GroupApplicationKey));
         CreateMap<Santa_GiftingGroupApplication, IGroupMember>().As<GroupMember>();
 
         CreateMap<Santa_User, GroupMember>()

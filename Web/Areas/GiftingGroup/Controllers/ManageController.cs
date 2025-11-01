@@ -374,7 +374,7 @@ public sealed class ManageController : BaseController
     [HttpGet]
     public async Task<IActionResult> ReviewInvitation(Guid invitationGuid, bool singleInvitation = false)
     {
-        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(string.Empty, invitationGuid));
+        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationGuid));
 
         TempData.Remove(TempDataNames.InvitationGuid);
         TempData.Remove(TempDataNames.InvitationWaitMessage);

@@ -27,13 +27,20 @@
                     data-url="@Url.Action(Context, "ToggleGroupAdmin", "Manage", AreaNames.GiftingGroup, 
                         new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"    
                     data-toggle="tooltip" title="@title?" data-bs-container="td"
-                    data-confirm-title="@title" data-confirm-message="@confirm"/>
+                    data-confirm-title="@title" data-confirm-message="@confirm"><i class="fa fa-pencil"></i></a>
             
                 <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup,
                         new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
                     data-toggle="tooltip" title="Remove Group Member" data-bs-container="td"
                     data-confirm-title="Remove Group Member"
                     data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
+            }
+            else if (item.MemberStatus == GroupMemberStatus.Applied)
+            {
+                <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup"
+                   asp-route-groupApplicationKey="@item.GroupApplicationKey" asp-route-singleApplication="@true"
+                   data-toggle="tooltip" title="Review this application" data-bs-container="td"
+                   data-confirm-title="Leave this page?" data-confirm-message="Have you saved everything?"><i class="fa fa-eye"></i></a>
             }
         }
     </text>;

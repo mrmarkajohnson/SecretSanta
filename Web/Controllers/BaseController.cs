@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Global.Abstractions.Areas.Account;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.ViewModels;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
@@ -193,7 +194,12 @@ public class BaseController : Controller
         }
 
         string addQuery = UrlHelper.ParameterDelimiter(url);
-        return RedirectToLocalUrl($"{url}{addQuery}successMessage={successMessage}");
+        url = $"{url}{addQuery}successMessage={successMessage}";
+
+        if (url != null && url.Contains(':'))
+            return Redirect(url);
+
+        return RedirectToLocalUrl(url);
     }
 
     protected async Task<IActionResult> RedirectIfLockedOut(string viewName, ICheckLockout model)
@@ -290,7 +296,7 @@ public class BaseController : Controller
         return Ok();
     }
 
-    protected void HandleInvitation(IFormVm model)
+    protected async Task HandleInvitation(IFormVm model)
     {
         string? guidString = TempData.Peek(TempDataNames.InvitationGuid)?.ToString();
 
@@ -300,8 +306,41 @@ public class BaseController : Controller
 
             if (actualGuid && invitationGuid != Guid.Empty)
             {
-                model.ReturnUrl = GetReviewInvitationUrl(invitationGuid);
+                try
+                {
+                    IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationGuid));
+                    model.ReturnUrl = GetReviewInvitationUrl(invitationGuid);
+                }
+                catch (NotFoundException nfx)
+                {
+                    HandleInvitationError(nfx);
+                }
+                catch (AccessDeniedException adx)
+                {
+                    HandleInvitationError(adx);
+                }
+                catch
+                {
+                }
             }
         }
+    }
+
+    protected void SetInvitationWaitMessage(IReviewGroupInvitation invitation)
+    {
+        TempData.Remove(TempDataNames.InvitationError);
+        TempData[TempDataNames.InvitationWaitMessage] = GetInvitationWaitMessage(invitation);
+    }
+
+    protected static string GetInvitationWaitMessage(IReviewGroupInvitation invitation)
+    {
+        return $"You have a group invitation from {invitation.FromUser.DisplayName(false)}.";
+    }
+
+    protected void HandleInvitationError(Exception ex)
+    {
+        TempData.Remove(TempDataNames.InvitationGuid);
+        TempData.Remove(TempDataNames.InvitationWaitMessage);
+        TempData[TempDataNames.InvitationError] = ex.Message;
     }
 }

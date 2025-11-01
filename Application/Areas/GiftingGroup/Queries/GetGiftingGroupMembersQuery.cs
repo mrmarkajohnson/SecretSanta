@@ -58,11 +58,15 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
 
         if (_memberListType == OtherGroupMembersType.ReviewInvitation && _invitationGuid != null)
         {
-            var dbInvitation = await Send(new GetInvitationEntitySavingQuery(_invitationGuid.Value));
-            if (dbInvitation != null)
+            try
             {
-                userKeysForVisibleEmail.Add(dbInvitation.FromSantaUserKey);
+                var dbInvitation = await Send(new GetInvitationEntitySavingQuery(_invitationGuid.Value));
+                if (dbInvitation != null)
+                {
+                    userKeysForVisibleEmail.Add(dbInvitation.FromSantaUserKey);
+                }
             }
+            catch { }
         }
 
         object parameters = new { UserKeysForVisibleEmail = userKeysForVisibleEmail };

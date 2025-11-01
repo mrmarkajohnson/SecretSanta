@@ -11,4 +11,5 @@ public interface IUserGiftingGroupYear : IGiftingGroupYearBase, IUserGroupYearSh
 
     string LimitString { get; }
     string RecipientString { get; }
+    Guid? InvitationGuid { get; }
 }

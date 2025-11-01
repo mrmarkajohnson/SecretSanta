@@ -61,7 +61,7 @@ public sealed class HomeController : BaseController
 
             if (result.Succeeded)
             {
-                HandleInvitation(model);
+                await HandleInvitation(model);
                 return RedirectWithMessage(model, "Logged in successfully.");
             }
 
@@ -180,19 +180,6 @@ public sealed class HomeController : BaseController
         {
             HandleInvitationError(adx);
             return RedirectHome();
-        }        
-    }
-
-    private void SetInvitationWaitMessage(IReviewGroupInvitation invitation)
-    {
-        TempData.Remove(TempDataNames.InvitationError);
-        TempData[TempDataNames.InvitationWaitMessage] = $"You have a group invitation from {invitation.FromUser.DisplayName(false)}.";
-    }
-
-    private void HandleInvitationError(Exception ex)
-    {
-        TempData.Remove(TempDataNames.InvitationGuid);
-        TempData.Remove(TempDataNames.InvitationWaitMessage);
-        TempData[TempDataNames.InvitationError] = ex.Message;
+        }
     }
 }

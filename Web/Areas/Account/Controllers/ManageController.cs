@@ -136,7 +136,7 @@ public sealed class ManageController : BaseController
 
             if (commandResult.Success)
             {
-                HandleInvitation(model);
+                await HandleInvitation(model);
                 return RedirectWithMessage(model, "Security questions set successfully.");
             }
         }

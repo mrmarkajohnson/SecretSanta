@@ -5,9 +5,14 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
 {
-    public GetInvitationQuery(string invitationId, Guid? invitationGuid = null)
+    public GetInvitationQuery(string invitationId)
     {
         _invitationId = invitationId;
+    }
+
+    public GetInvitationQuery(Guid? invitationGuid = null)
+    {
+        _invitationId = string.Empty;
         _invitationGuid = invitationGuid;
     }
 
