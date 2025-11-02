@@ -41,7 +41,7 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
         }
 
         dbSuggestion.SuggestionText = Item.SuggestionText;
-        dbSuggestion.OtherNotes = Item.OtherNotes;
+        dbSuggestion.OtherNotes = Item.OtherNotes ?? string.Empty;
         dbSuggestion.Priority = Item.Priority;
 
         HandleGroupLinks(dbCurrentSantaUser, dbSuggestion);

@@ -27,6 +27,11 @@ public static class MessageHelper
 
     public static string SenderToDescription(this MessageRecipientType recipientType, string? groupName, string? recipientName)
     {
+        if (recipientType is MessageRecipientType.SingleGroupMember or MessageRecipientType.SingleNonGroupMember && recipientName.IsNotEmpty())
+        {
+            return recipientName;
+        }
+        
         string description = TypeNameWithGroup(recipientType, groupName);
 
         if (recipientName.IsNotEmpty())

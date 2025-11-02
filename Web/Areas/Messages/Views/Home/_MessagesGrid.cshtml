@@ -7,12 +7,12 @@
     @<text>
         <a class="modal-link view-message-link" data-message-key="@item.MessageKey" data-message-recipient-key="@item.MessageRecipientKey"
             data-url="@Url.Action(Context, "ViewMessage", "Home", AreaNames.Messages, new { messageKey=item.MessageKey, messageRecipientKey=item.MessageRecipientKey })"
-            data-toggle="tooltip" title="View Message"><i class="fa fa-eye"></i></a>
+            data-toggle="tooltip" data-bs-container="td" title="View Message"><i class="fa fa-eye"></i></a>
 
         @if (item.CanReply)
         {
             <a class="modal-link" data-url="@Url.Action(Context, "Reply", "Home", AreaNames.Messages, new { messageKey = item.MessageKey })"
-               data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></a>
+               data-toggle="tooltip" data-bs-container="td" title="Reply"><i class="fa fa-reply"></i></a>
         }
     </text>;
 
