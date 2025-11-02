@@ -108,9 +108,9 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
 
         if (dbGifter != null)
         {
-            string text = (deleted ? "A new suggestion has been added for" : "A suggestion has been removed from") +
+            string text = (deleted ? "A suggestion has been removed from" : "A new suggestion has been added for") +
                 $" the '{dbYear.GiftingGroup.Name}' group. Please review " +
-                (deleted ? "this suggestion" : "your recipient's suggestions") +
+                (deleted ? "your recipient's other suggestions" : "this suggestion") +
                 $" at the {MessageLink(yearGroupUrl, "Gifting Group Year", false)} page.";
 
             var message = new SendSantaMessage
