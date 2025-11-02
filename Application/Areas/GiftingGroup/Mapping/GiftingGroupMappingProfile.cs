@@ -2,6 +2,7 @@
 using Application.Shared.BaseModels;
 using AutoMapper;
 using Global.Abstractions.Areas.GiftingGroup;
+using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Mapping;
 
@@ -17,7 +18,9 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src =>
-                src.GroupAdmin ? src.GiftingGroup.MemberApplications.Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0));
+                src.GroupAdmin ? src.GiftingGroup.MemberApplications
+                    .Where(x => x.DateArchived == null && x.DateDeleted == null)
+                    .Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroup>().As<UserGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupApplication, ReviewJoinerApplication>()
@@ -47,7 +50,7 @@ public sealed class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupYear, GiftingGroupYear>()
             .IncludeMembers(src => src.GiftingGroup)
-            .ForMember(src => src.Limit, opt => opt.MapFrom(dest => dest.Limit))
+            .ForMember(dest => dest.Limit, opt => opt.MapFrom(dest => dest.Limit))
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCode))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbol))
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users
@@ -89,12 +92,33 @@ public sealed class GiftingGroupMappingProfile : Profile
 
         CreateMap<Santa_GiftingGroupUser, GroupMember>()
             .IncludeMembers(src => src.SantaUser)
-            .ForMember(src => src.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin));
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => src.GroupAdmin ? GroupMemberStatus.Admin : GroupMemberStatus.Joined));
         CreateMap<Santa_GiftingGroupUser, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_Invitation, GroupMember>()
+            .IncludeMembers(src => src.ToSantaUser)
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Invited));
+        CreateMap<Santa_Invitation, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_GiftingGroupApplication, GroupMember>()
+            .IncludeMembers(src => src.SantaUser)
+            .ForMember(dest => dest.MemberStatus, opt => opt.MapFrom(src => GroupMemberStatus.Applied))
+            .ForMember(dest => dest.GroupApplicationKey, opt => opt.MapFrom(src => src.GroupApplicationKey));
+        CreateMap<Santa_GiftingGroupApplication, IGroupMember>().As<GroupMember>();
 
         CreateMap<Santa_User, GroupMember>()
             .IncludeBase<Santa_User, UserNamesBase>()
-            .ForMember(src => src.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey));
+            .ForMember(dest => dest.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey));
         CreateMap<Santa_GiftingGroupUser, IGroupMember>().As<GroupMember>();
+
+        CreateMap<Santa_Invitation, ReviewGroupInvitation>()
+            .ForMember(dest => dest.InvitationGuid, opt => opt.MapFrom(src => src.InvitationGuid))
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupKey))
+            .ForMember(dest => dest.ToSantaUserKey,opt => opt.MapFrom(src => src.ToSantaUserKey))
+            .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.GiftingGroup.Name))
+            .ForMember(dest => dest.GroupDescription, opt => opt.MapFrom(src => src.GiftingGroup.Description))
+            .ForMember(dest => dest.FromUser, opt => opt.MapFrom(src => src.FromSantaUser))
+            .ForMember(dest => dest.InvitationMessage, opt => opt.MapFrom(src => src.InvitationMessage));
+        CreateMap<Santa_Invitation, IReviewGroupInvitation>().As<ReviewGroupInvitation>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IHasEmailConfirmed : IHasEmail
+public interface IHaveEmailConfirmed : IHaveAnEmail
 {
     bool EmailConfirmed { get; }
 }

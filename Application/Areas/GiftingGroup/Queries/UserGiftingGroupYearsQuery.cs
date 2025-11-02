@@ -20,7 +20,8 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
 
             userGroups = GetYearsWithMemberSet(dbCurrentSantaUser, dbActiveLinks)
                 .Union(GetYearsWithMemberNotSet(dbCurrentSantaUser, dbActiveLinks))
-                .Union(GetJoinerRequests(dbCurrentSantaUser, dbActiveLinks));
+                .Union(GetJoinerRequests(dbCurrentSantaUser, dbActiveLinks))
+                .Union(GetInvites(dbCurrentSantaUser, dbActiveLinks));
         }
 
         return Result(userGroups);
@@ -56,6 +57,17 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
             .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
 
         return dbJoinerRequests
+            .AsQueryable()
+            .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);
+    }
+
+    private IQueryable<IUserGiftingGroupYear> GetInvites(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
+    {
+        IEnumerable<Santa_Invitation> dbGroupInvitations = dbSantaUser.ReceivedInvitations
+            .Where(x => x.DateArchived == null)
+            .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
+
+        return dbGroupInvitations
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);
     }

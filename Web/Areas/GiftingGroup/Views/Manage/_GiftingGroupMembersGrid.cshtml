@@ -2,42 +2,55 @@
 @using Global.Abstractions.Shared
 @using Web.Extensions
 
-@model EditGiftingGroupVm
-@{        
-    Func<IGroupMember, object> actions =
-    @<text>
-        <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup, 
-            new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
-           data-toggle="tooltip" title="Remove Group Member" data-bs-container="td"
-           data-confirm-title="Remove Group Member"
-           data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
-    </text>;
-
+@model IGroupMembersGridVm
+@{
     Func<IUserNamesBase, object> displayName =
     @<text>
         @item.UserDisplayName
         <partial name="_UserInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
     </text>;
-
-    Func<IGroupMember, object> adminCheckbox =
+    
+    Func<IGroupMember, object> actions =
     @<text>
-        @{
-            string title = item.GroupAdmin ? "Remove Administrator status" : "Set as an Administrator";
-            string confirm = item.GroupAdmin 
-                ? $"Are you sure you want to make {@item.DisplayName()} a standard group member?"
-                : $"Are you sure you want to make {item.DisplayName()} an Administrator?";
+        @if (Model.MemberListType == OtherGroupMembersType.EditGroup)
+        {
+            bool groupAdmin = item.MemberStatus == GroupMemberStatus.Admin;
+
+            @if (groupAdmin || item.MemberStatus == GroupMemberStatus.Joined)
+            {
+                string adminIcon = groupAdmin ? "far fa-circle-down" : "fa fa-circle-up";
+                string adminTitle = groupAdmin ? "Remove Administrator status" : "Set as an Administrator";
+
+                string adminConfirm = groupAdmin
+                    ? $"Are you sure you want to make {@item.DisplayName()} a standard group member?"
+                    : $"Are you sure you want to make {item.DisplayName()} an Administrator?";
+
+                <a class="background-link" 
+                    data-url="@Url.Action(Context, "ToggleGroupAdmin", "Manage", AreaNames.GiftingGroup, 
+                        new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"    
+                    data-toggle="tooltip" title="@adminTitle?" data-bs-container="td"
+                    data-confirm-title="@adminTitle" data-confirm-message="@adminConfirm"><i class="@adminIcon"></i></a>
+            
+                <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup,
+                        new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
+                    data-toggle="tooltip" title="Remove Group Member" data-bs-container="td"
+                    data-confirm-title="Remove Group Member"
+                    data-confirm-message="Are you sure you want to remove @item.DisplayName() from the group?"><i class="fa fa-xmark"></i></a>
+            }
+            else if (item.MemberStatus == GroupMemberStatus.Applied)
+            {
+                <a asp-action="ReviewJoinerApplication" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup"
+                   asp-route-groupApplicationKey="@item.GroupApplicationKey" asp-route-singleApplication="@true"
+                   data-toggle="tooltip" title="Review this application" data-bs-container="td"
+                   data-confirm-title="Leave this page?" data-confirm-message="This will navigate to a different page. Have you saved everything?"><i class="fa fa-eye"></i></a>
+            }
         }
+    </text>;
 
-        <input type="checkbox" class="background-link" checked="@item.GroupAdmin" 
-            data-toggle="tooltip" data-bs-container="td" title="@title?"
-            data-url="@Url.Action(Context, "ToggleGroupAdmin", "Manage", AreaNames.GiftingGroup, 
-                new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"            
-           data-confirm-title="@title"
-           data-confirm-message="@confirm"/>
-    </text>
-    ;
-
-    static string RowClass(IGroupMember item) => item.GroupAdmin ? "bold" : "";
+    static string RowClass(IGroupMember item) =>
+        item.MemberStatus == GroupMemberStatus.Admin
+        ? "bold"
+        : (item.MemberStatus <= GroupMemberStatus.Rejected ? "text-grey" : "");
 }
 
 @(
@@ -48,15 +61,19 @@ Html
         columns.Add(x => x.UserDisplayName).RenderedAs(displayName).Titled("Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
         columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
-        columns.Add(x => x.GroupAdmin).RenderedAs(adminCheckbox).Titled("Administrator");
-        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
+        columns.Add(x => x.MemberStatus);
+
+        if (Model.MemberListType == OtherGroupMembersType.EditGroup)
+        {
+            columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
+        }
     })
     .Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("GroupMembersGrid", new { giftingGroupKey = Model.GiftingGroupKey }) ?? "")
+    .UsingUrl(Url.Action("GroupMembersGrid", new { giftingGroupKey = Model.GiftingGroupKey, memberListType = Model.MemberListType, invitationGuid = Model.InvitationGuid }) ?? "")
     .Empty("No other members found")
     .Id("other-members-grid")
     .Filterable()

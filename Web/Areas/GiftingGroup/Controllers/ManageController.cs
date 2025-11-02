@@ -6,7 +6,9 @@ using Application.Areas.GiftingGroup.ViewModels;
 using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 using AccountControllers = Web.Areas.Account.Controllers;
 
@@ -57,15 +59,15 @@ public sealed class ManageController : BaseController
 
     private async Task<IActionResult> ShowEditGiftingGroup(EditGiftingGroupVm model)
     {
-        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey);
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.EditGroup);
         return View("EditGiftingGroup", model);
     }
 
-    private async Task<IEnumerable<IGroupMember>> GetOtherGroupMembers(int giftingGroupKey)
+    private async Task<IEnumerable<IGroupMember>> GetOtherGroupMembers(int giftingGroupKey, OtherGroupMembersType memberListType, Guid? invitationGuid = null)
     {
         if (giftingGroupKey > 0)
         {
-            return await Send(new GetGiftingGroupMembersQuery(giftingGroupKey, true));
+            return await Send(new GetGiftingGroupMembersQuery(giftingGroupKey, memberListType, invitationGuid));
         }
         else
         {
@@ -93,14 +95,18 @@ public sealed class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey)
+    public async Task<IActionResult> GroupMembersGrid(int giftingGroupKey, OtherGroupMembersType memberListType, Guid? invitationGuid = null)
     {
-        var model = new EditGiftingGroupVm
+        var otherGroupMembers = await GetOtherGroupMembers(giftingGroupKey, memberListType, invitationGuid);
+
+        var model = new GiftingGroupMembersVm
         {
-            GiftingGroupKey = giftingGroupKey
+            GiftingGroupKey = giftingGroupKey,
+            MemberListType = memberListType,
+            InvitationGuid = invitationGuid,
+            OtherGroupMembers = otherGroupMembers
         };
 
-        model.OtherGroupMembers = await GetOtherGroupMembers(giftingGroupKey);
         return PartialView("_GiftingGroupMembersGrid", model);
     }
 
@@ -163,7 +169,7 @@ public sealed class ManageController : BaseController
         await AddOtherGroupMembers(model);
         model.EmailConfirmed = HomeModel.CurrentUser?.EmailConfirmed == true;
 
-        string reviewUrl = GetFullUrl(nameof(AccountControllers.HomeController.ReviewApplication), nameof(AccountControllers.HomeController), AreaNames.Account);
+        string reviewUrl = GetFullUrl<AccountControllers.HomeController>(nameof(AccountControllers.HomeController.ReviewInvitation), AreaNames.Account);
         var commandResult = await Send(new SendInvitationCommand<SendGroupInvitationVm>(model, reviewUrl), new SendGroupInvitationVmValidator());
 
         if (commandResult.Success)
@@ -226,7 +232,7 @@ public sealed class ManageController : BaseController
     {
         ModelState.Clear();
 
-        string joinerApplicationsUrl = GetFullUrl(nameof(JoinerApplications), nameof(ManageController), AreaNames.GiftingGroup);
+        string joinerApplicationsUrl = GetFullUrl<ManageController>(nameof(JoinerApplications), AreaNames.GiftingGroup);
         var commandResult = await Send(new JoinGiftingGroupCommand<JoinGiftingGroupVm>(model, joinerApplicationsUrl),
             new JoinGiftingGroupVmValidator());
 
@@ -259,6 +265,7 @@ public sealed class ManageController : BaseController
         return View(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> JoinerApplicationsGrid()
     {
         var model = new JoinerApplicationsVm();
@@ -332,5 +339,80 @@ public sealed class ManageController : BaseController
         }
 
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GroupInvitations()
+    {
+        if (AjaxRequest())
+            return await GroupInvitationsGrid();
+
+        var invitations = await Send(new GetGroupInvitationsQuery());
+
+        if (invitations.Count() == 1)
+        {
+            return RedirectToLocalUrl(Url.Action(nameof(ReviewInvitation),
+                new { invitationGuid = invitations.First().InvitationGuid, singleInvitation = true }));
+        }
+
+        var model = new GroupInvitationsVm
+        {
+            Invitations = invitations
+        };
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GroupInvitationsGrid()
+    {
+        var model = new GroupInvitationsVm();
+        model.Invitations = await Send(new GetGroupInvitationsQuery());
+        return PartialView("_GroupInvitationsGrid", model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ReviewInvitation(Guid invitationGuid, bool singleInvitation = false)
+    {
+        IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(invitationGuid));
+
+        TempData.Remove(TempDataNames.InvitationGuid);
+        TempData.Remove(TempDataNames.InvitationWaitMessage);
+        TempData.Remove(TempDataNames.InvitationError);
+
+        var model = Mapper.Map<ReviewGroupInvitationVm>(invitation);
+        model.OtherGroupMembers = await GetOtherGroupMembers(model.GiftingGroupKey, OtherGroupMembersType.ReviewInvitation, invitation.InvitationGuid);
+
+        model.SingleInvitation = singleInvitation;
+        if (!singleInvitation)
+        {
+            model.ReturnUrl = Url.Action(nameof(GroupInvitations));
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReviewInvitation(ReviewGroupInvitationVm model)
+    {
+        ModelState.Clear();
+
+        string participateUrl = GetParticipateUrl();
+
+        var commandResult = await Send(new ReviewInvitationCommand<ReviewGroupInvitationVm>(model, participateUrl),
+            new ReviewGroupInvitationVmValidator());
+
+        if (commandResult.Success)
+        {
+            if (model.SingleInvitation && model.ReturnUrl?.Contains(nameof(GroupInvitations)) == true)
+            {
+                model.ReturnUrl = string.Empty;
+            }
+
+            return RedirectWithMessage(model, commandResult.SuccessMessage ?? "Saved successfully");
+        }
+
+        return await ReviewInvitation(model.InvitationGuid, model.SingleInvitation);
     }
 }

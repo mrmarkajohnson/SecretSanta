@@ -1,9 +1,9 @@
-﻿namespace Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Shared;
 
-public interface IGiftingGroup : IGiftingGroupBase
+namespace Global.Abstractions.Areas.GiftingGroup;
+
+public interface IGiftingGroup : IGiftingGroupBase, IHaveAGroupKey
 {
-    int GiftingGroupKey { get; }
-
     string CultureInfo { get; }
     string? CurrencyCodeOverride { get; }
     string? CurrencySymbolOverride { get; }

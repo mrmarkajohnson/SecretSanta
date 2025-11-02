@@ -26,4 +26,6 @@ public class UserGiftingGroupYear : GiftingGroupYearBase, IUserGiftingGroupYear
         : (Recipient == null 
             ? "Not yet selected"
             : $"{Recipient.UserDisplayName} ({Recipient.UserName})");
+
+    public Guid? InvitationGuid { get; set; }
 }

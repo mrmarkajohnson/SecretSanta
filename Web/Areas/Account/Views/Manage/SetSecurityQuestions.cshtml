@@ -25,6 +25,14 @@ else
 
 
         <div class="row @CenterFlexNoWrapContainer">
+
+            @if (Model.InvitationWaitMessage.IsNotEmpty())
+            {
+                <div class="mt-4 mb-3 @StandardGroupWidth">
+                    <partial name="_PageInfo" model="Model.InvitationWaitMessage" />
+                </div>
+            }
+
             <div class="mb-5 mt-2 align-items-center justify-content-center align-content-center">
                     
                 @if (!Model.SecurityQuestionsSet)

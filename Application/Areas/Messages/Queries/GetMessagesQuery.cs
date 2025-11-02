@@ -21,8 +21,14 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMes
             .OrderBy(x => x.Read || !x.Important) // show important unread first
             .ThenBy(x => x.Read) // then all other unread
             .ThenByDescending(x => x.Sent) // then by date sent, descending
-            .AsQueryable();
+            .ToList();
 
-        return Result(messages);
+        foreach (var message in messages)
+        {
+            if (message.Sender != null)
+                message.Sender.UnHash();
+        }
+
+        return Result(messages.AsQueryable());
     }
 }

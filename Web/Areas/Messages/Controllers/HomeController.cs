@@ -7,6 +7,7 @@ using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 
 namespace Web.Areas.Messages.Controllers;
@@ -113,7 +114,7 @@ public sealed class HomeController : BaseController
         var model = new WriteMessageVm
         {
             GiftingGroupKey = giftingGroupKey,
-            AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions),
+            AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions),
             GiftingGroups = HomeModel.GiftingGroups
         };
 
@@ -145,10 +146,10 @@ public sealed class HomeController : BaseController
     {
         if (model.GiftingGroupKey > 0)
         {
-            var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, false))).ToList();
+            var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, OtherGroupMembersType.MessageRecipients))).ToList();
             model.OtherGroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
             
-            model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.GroupAdmin == true;
+            model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.MemberStatus == GroupMemberStatus.Admin;
             // TODO: Process group admins label if the current user is an admin, but there are also other admins
         }
         else
@@ -285,7 +286,7 @@ public sealed class HomeController : BaseController
         }
 
         model.SetDisplayRecipientType();
-        model.AddSuggestionUrl = GetFullUrl(nameof(Suggestions.Controllers.HomeController.AddSuggestion), nameof(Suggestions.Controllers.HomeController), AreaNames.Suggestions);        
+        model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);        
 
         if (model.IsModal)
         {

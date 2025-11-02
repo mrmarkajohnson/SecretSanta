@@ -20,6 +20,8 @@ public sealed class SetSecurityQuestionsVm : SecurityQuestions, IFormVm, ISetSec
     public string? SuccessMessage { get; set; }
     public string SubmitButtonText { get; set; } = "Save";
     public string SubmitButtonIcon { get; set; } = "fa-save";
+
+    public string? InvitationWaitMessage { get; set; }
 }
 
 public sealed class SetSecurityQuestionsVmValidator : SetSecurityQuestionsValidator<SetSecurityQuestionsVm>

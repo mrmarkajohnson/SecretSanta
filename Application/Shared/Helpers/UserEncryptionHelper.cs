@@ -36,7 +36,7 @@ public static class UserEncryptionHelper
         string? userName = string.IsNullOrWhiteSpace(hashableUser.UserName)
             ? email
             : hashableUser.IdentificationHashed
-                ? EncryptionHelper.Decrypt(hashableUser.UserName, true)
+                ? EncryptionHelper.DecryptEmail(hashableUser.UserName) // use e-mail decryption to remove the e-mail suffix if necessary
                 : hashableUser.UserName;
 
         string? greeting = null;

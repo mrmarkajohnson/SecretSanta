@@ -9,7 +9,7 @@
         string displayName = Model.DisplayName(false);
         string fullName = Model.FullName();
         string? userName = Model is IHashableUserBase userNamesBase ? userNamesBase.UserName : null;
-        string? eMail = Model is IHasEmail hasEmail && hasEmail.ShowEmail ? hasEmail.Email : null;
+        string? eMail = Model is IHaveAnEmail hasEmail && hasEmail.ShowEmail ? hasEmail.Email : null;
 
         info = Line("Name", displayName);
 

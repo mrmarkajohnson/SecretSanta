@@ -16,7 +16,26 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
             SantaUserKey = dbSantaUser.SantaUserKey,
         });
 
+        ClearOpenInvitationsAndApplications(dbGiftingGroup, dbSantaUser);
+
         AddToCurrentYear(dbGiftingGroup, dbSantaUser);
+    }
+
+    private static void ClearOpenInvitationsAndApplications(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)
+    {
+        var dbOpenInvitations = dbGiftingGroup.Invitations
+            .Where(x => x.DateArchived == null)
+            .Where(x => x.ToSantaUserKey == dbSantaUser.SantaUserKey)
+            .ToList();
+
+        dbOpenInvitations.ForEach(x => x.DateArchived = DateTime.Now);
+
+        var dbOpenApplications = dbGiftingGroup.MemberApplications
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.SantaUserKey == dbSantaUser.SantaUserKey)
+            .ToList();
+
+        dbOpenApplications.ForEach(x => x.DateArchived = DateTime.Now);
     }
 
     private static void AddToCurrentYear(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)

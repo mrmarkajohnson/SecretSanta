@@ -4,12 +4,12 @@
 
 @model UserGridVm
 @{
-    string[] action = Model.UserGridAction.Split('?');
-    string urlAction = Url.Action(action[0]) ?? "";
+    string[] actionArray = Model.UserGridAction.Split('?');
+    string urlAction = Url.Action(actionArray[0]) ?? "";
 
-    if (action.Length > 0)
+    if (actionArray.Length > 1)
     {
-        urlAction += "?" + action[1];
+        urlAction += "?" + actionArray[1];
     }
 
     Func<IVisibleUser, object> actions =

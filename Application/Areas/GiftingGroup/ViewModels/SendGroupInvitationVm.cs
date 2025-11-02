@@ -30,8 +30,9 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
     [Display(Name = UserDisplayNames.Email)]
     public string? ToEmailAddress { get; set; }
 
-    [MaxLength(GiftingGroupVal.InvitationMessage.MaxLength)]
-    public string Message { get; set; } = string.Empty;
+    [Display(Name = "Message")]
+    [MaxLength(GiftingGroupVal.SendInvitationMessage.MaxLength)]
+    public string? InvitationMessage { get; set; }
 
     public string? ToHashedUserId { get; set; }
 
@@ -83,6 +84,6 @@ public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitat
                     $"confirmed your {UserDisplayNames.EmailLower} in the system.");
         });
 
-        RuleFor(x => x.Message).MaximumLength(GiftingGroupVal.InvitationMessage.MaxLength);
+        RuleFor(x => x.InvitationMessage).MaximumLength(GiftingGroupVal.SendInvitationMessage.MaxLength);
     }
 }

@@ -78,7 +78,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         if (Item.ToEmailAddress == null || Item.ToName == null)
             return await Result();
 
-        string hashedEmail = EncryptionHelper.EncryptEmail(Item.ToEmailAddress.Tidy());
+        string hashedEmail = Item.GetHashedEmail();
         string tidiedName = Item.ToName.Tidy();
 
         IQueryable<Global_User> dbPossibleToUsers = DbContext.Global_Users
@@ -125,7 +125,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             ToSantaUser = dbToSantaUser,
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message ?? ""
+            InvitationMessage = Item.InvitationMessage
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -138,10 +138,10 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             FromSantaUserKey = dbGiftingGroupLink.SantaUserKey,
             FromSantaUser = dbGiftingGroupLink.SantaUser,
             ToName = tidiedName,
-            ToEmailAddress = Item.ToEmailAddress,
+            ToEmailAddress = Item.GetHashedEmail(), // store as hashed
             GiftingGroupKey = Item.GiftingGroupKey,
             GiftingGroup = dbGiftingGroupLink.GiftingGroup,
-            Message = Item.Message ?? ""
+            InvitationMessage = Item.InvitationMessage
         };
 
         return await SaveAndSendInvitation(dbInvitation);
@@ -149,21 +149,20 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
 
     private async Task<ICommandResult<TItem>> SaveAndSendInvitation(Santa_Invitation dbInvitation)
     {
-        DbContext.Santa_Invitations.Add(dbInvitation);
-        string reviewUrl = $"{_reviewUrl}?id={dbInvitation.GetInvitationId()}";
+        DbContext.Santa_Invitations.Add(dbInvitation);        
 
         if (dbInvitation.ToSantaUser != null)
         {
-            SendToSantaUser(dbInvitation, reviewUrl);
+            SendToSantaUser(dbInvitation);
             return await SaveAndReturnSuccess();
         }
         else
         {
-            return await SendToEmail(dbInvitation, reviewUrl);
+            return await SendToEmail(dbInvitation);
         }
     }
 
-    private void SendToSantaUser(Santa_Invitation dbInvitation, string reviewUrl)
+    private void SendToSantaUser(Santa_Invitation dbInvitation)
     {
         if (dbInvitation.ToSantaUser == null)
             throw new ArgumentException("A user must be selected."); // for the compiler
@@ -172,7 +171,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         {
             RecipientType = MessageRecipientType.SingleNonGroupMember,
             HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-            MessageText = GetMessageText(dbInvitation, reviewUrl, true),
+            MessageText = GetMessageText(dbInvitation, true),
             Important = true,
             CanReply = true,
             ShowAsFromSanta = true
@@ -181,9 +180,9 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         SendMessage(message, dbInvitation.FromSantaUser, dbInvitation.ToSantaUser, dbInvitation.GiftingGroup);
     }
 
-    private async Task<ICommandResult<TItem>> SendToEmail(Santa_Invitation dbInvitation, string reviewUrl)
+    private async Task<ICommandResult<TItem>> SendToEmail(Santa_Invitation dbInvitation)
     {
-        if (DbContext.EmailClient == null || dbInvitation.ToEmailAddress == null || dbInvitation.ToName == null)
+        if (DbContext.EmailClient == null || Item.ToEmailAddress == null || dbInvitation.ToName == null)
         {
             AddGeneralValidationError("The invitation cannot be sent, due to an issue with e-mails.");
             return await Result();
@@ -197,7 +196,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             {
                 RecipientType = MessageRecipientType.SingleNonGroupMember,
                 HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
-                MessageText = GetMessageText(dbInvitation, reviewUrl, false),
+                MessageText = GetMessageText(dbInvitation, false),
                 Important = true,
                 CanReply = true,
                 ShowAsFromSanta = true
@@ -206,7 +205,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             var recipient = new EmailRecipient
             {
                 Forename = dbInvitation.ToName.Tidy(),
-                Email = dbInvitation.ToEmailAddress.Tidy(),
+                Email = Item.ToEmailAddress?.Tidy(), // use the Item version, as it's unhashed
                 IdentificationHashed = false,
                 EmailConfirmed = true,
                 ReceiveEmails = EmailPreference.All,
@@ -220,7 +219,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
         return result;
     }
 
-    private string GetMessageText(Santa_Invitation dbInvitation, string reviewUrl, bool forExistingUser)
+    private string GetMessageText(Santa_Invitation dbInvitation, bool forExistingUser)
     {
         bool skipReadLink = !forExistingUser;
 
@@ -238,22 +237,25 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
 
         string messageText = $"{from} has invited you to join the group '{dbInvitation.GiftingGroup.Name}'.<br><br>";
 
-        if (dbInvitation.Message.IsNotEmpty())
+        if (Item.InvitationMessage.IsNotEmpty())
         {
-            messageText += $"{dbInvitation.FromSantaUser.GlobalUser.Gender.Direct(true)} said: \"{dbInvitation.Message.Trim()}\"<br><br>";
+            messageText += $"{dbInvitation.FromSantaUser.GlobalUser.Gender.Direct(true)} said: \"{Item.InvitationMessage.Trim()}\"<br><br>";
         }
+
+        string invitationId = dbInvitation.GetInvitationId();
+        string reviewUrl = $"{_reviewUrl}?id={invitationId}";
 
         if (!forExistingUser)
         {
             messageText += $"If you're not sure this is genuine, please contact {dbInvitation.FromSantaUser.GlobalUser.DisplayFirstName()} directly. " +
                 $"Otherwise, click {MessageLink(reviewUrl, "here", false, skipReadLink)} to review the invitation.";
 
-            string? baseUrl = ConfigurationSettings.BaseUrl;
+            string? homeUrl = $"{ConfigurationSettings.BaseUrl}?invitationId={invitationId}";
 
-            if (baseUrl.IsNotEmpty())
+            if (homeUrl.IsNotEmpty())
             {
                 messageText += $"<br><br>If you don't already use Secret Santa, click " +
-                    $"{MessageLink(baseUrl, "here", false, skipReadLink)} to find out more.";
+                    $"{MessageLink(homeUrl, "here", false, skipReadLink)} to find out more.";
             }
         }
         else

@@ -60,7 +60,7 @@ public class HomeController : BaseController
         ModelState.Clear();
         bool update = model.SuggestionKey > 0;
 
-        var yearGroupUrl = GetFullUrl(nameof(ParticipateController.Year), nameof(ParticipateController), AreaNames.GiftingGroup, new { giftingGroupKey = 0 });
+        var yearGroupUrl = GetFullUrl<ParticipateController>(nameof(ParticipateController.Year), AreaNames.GiftingGroup, new { giftingGroupKey = 0 });
         var commandResult = await Send(new SaveSuggestionCommand<ManageSuggestionVm>(model, yearGroupUrl), new ManageSuggestionVmValidator());
 
         if (commandResult.Success)

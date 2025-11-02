@@ -1,6 +1,6 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IHasCalendarYear
+public interface IHaveACalendarYear
 {
     int CalendarYear { get; set; }
 }

@@ -7,6 +7,7 @@ public static class GlobalSettings
 {
     public static class AreaNames
     {
+        public const string None = "";
         public const string Account = "Account";
         public const string GiftingGroup = "GiftingGroup";
         public const string Messages = "Messages";
@@ -42,8 +43,6 @@ public static class GlobalSettings
         [Display(Name = "Not Sure Yet")]
         NotSure = 3
     }
-
-    public const string InvitationId = "InvitationId";
 
     public const string CenterFlexWrapContainer = "d-flex flex-wrap text-center justify-content-center align-content-center";
     public const string CenterFlexNoWrapContainer = "d-flex text-center justify-content-center align-items-center";

@@ -1,8 +1,9 @@
-﻿namespace Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Shared;
 
-public interface IUserGiftingGroup
+namespace Global.Abstractions.Areas.GiftingGroup;
+
+public interface IUserGiftingGroup : IHaveAGroupKey
 {
-    int GiftingGroupKey { get; }
     string GroupName { get; }
     bool GroupAdmin { get; }
     int NewApplications { get; }

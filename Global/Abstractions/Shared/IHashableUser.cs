@@ -1,6 +1,6 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IHashableUser : IHashableUserBase, IHasGlobalUserId
+public interface IHashableUser : IHashableUserBase, IHaveAGlobalUserId
 {
     bool IdentificationHashed { get; set; }
 }

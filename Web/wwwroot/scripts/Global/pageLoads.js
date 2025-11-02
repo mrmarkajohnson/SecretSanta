@@ -28,4 +28,5 @@ function initAlwaysReload() {
     initModalLinks();
     initDeleteLinks();
     initBackgroundLinks();
+    initConfirmLinks();
 }

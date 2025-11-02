@@ -40,7 +40,7 @@ async function addRelationship(radio, url, title, message) {
                 }
             },
             no: {
-                label: 'No, but we were in a relationship',
+                label: 'No, but we were once',
                 className: 'btn-no',
                 callback: async function () {
                     await userSelected(false);

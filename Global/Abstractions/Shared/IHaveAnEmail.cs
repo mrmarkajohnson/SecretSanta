@@ -1,6 +1,6 @@
 ﻿namespace Global.Abstractions.Shared;
 
-public interface IHasEmail
+public interface IHaveAnEmail
 {
     /// <summary>
     /// Only make this visible to the user, potential/actual partners and group admins
@@ -12,9 +12,9 @@ public interface IHasEmail
     string NonNullableEmail => this.EmailForDisplay();
 }
 
-public static class HasEmailExtensions
+public static class HaveAnEmailExtensions
 {
-    public static string EmailForDisplay(this IHasEmail user)
+    public static string EmailForDisplay(this IHaveAnEmail user)
     {
         return user.ShowEmail ? (user.Email ?? string.Empty) : string.Empty;
     }

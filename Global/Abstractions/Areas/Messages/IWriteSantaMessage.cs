@@ -2,6 +2,6 @@
 
 namespace Global.Abstractions.Areas.Messages;
 
-public interface IWriteSantaMessage : ISendSantaMessage, IChooseMessageRecipient, IHasCalendarYear
+public interface IWriteSantaMessage : ISendSantaMessage, IChooseMessageRecipient, IHaveACalendarYear
 {
 }

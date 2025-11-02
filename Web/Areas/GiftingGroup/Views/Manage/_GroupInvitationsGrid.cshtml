@@ -1,0 +1,41 @@
+﻿@using Application.Areas.GiftingGroup.ViewModels
+@using Web.Extensions
+
+@model GroupInvitationsVm
+@{
+    bool singleInvitation = Model.InvitationsCount == 1;
+
+    Func<IReviewGroupInvitation, object> actions =
+    @<text>
+        <a asp-action="ReviewInvitation" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="Review Invitation"
+           asp-route-invitationGuid="@item.InvitationGuid" asp-route-singleInvitation="@singleInvitation">
+            <i class="fa fa-pencil"></i>
+        </a>
+    </text>;
+
+    Func<IReviewGroupInvitation, object> from =
+    @<text>
+        @item.FromUser.DisplayName(false)
+        <partial name="_UserInfoCard" model="@item.FromUser" view-data="@ViewData.TooltipContainerVd("td")" />
+    </text>;
+}
+
+@(Html
+    .Grid(Model.Invitations)
+    .Build(columns =>
+    {
+        columns.Add(x => x.GroupName).Titled("Group Name");
+        columns.Add(x => x.FromUser.DisplayName(false)).RenderedAs(from).Titled("From");
+        columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
+    })
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
+        pager.ShowPageSizes = true;
+    })
+    .UsingUrl(Url.Action("GroupInvitationsGrid") ?? "")
+    .Empty("No active invitations found")
+    .Id("group-invitations-grid")
+    .Filterable()
+    .Sortable()
+)

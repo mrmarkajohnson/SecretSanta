@@ -107,10 +107,15 @@ public abstract class BaseRequest<TResult>
 
     protected void EnsureSignedIn()
     {
-        if (!SignInManager.IsSignedIn(ClaimsUser))
+        if (!SignedIn())
         {
             throw new NotSignedInException();
         }
+    }
+
+    protected bool SignedIn()
+    {
+        return SignInManager.IsSignedIn(ClaimsUser);
     }
 
     protected string? GetCurrentUserId()

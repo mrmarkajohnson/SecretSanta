@@ -11,7 +11,7 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class ManageController : AccountBaseController
+public sealed class ManageController : BaseController
 {
     private readonly IUserStore<IdentityUser> _userStore;
 
@@ -26,10 +26,18 @@ public sealed class ManageController : AccountBaseController
     {
         returnUrl ??= Url.Action(nameof(SetSecurityQuestions));
 
+        string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+        if (invitationWaitMessage.IsNotEmpty())
+        {
+            invitationWaitMessage += " You can review it after registering and setting your security questions.";
+        }
+
         var model = new RegisterVm
         {
             ReturnUrl = returnUrl,
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            InvitationWaitMessage = invitationWaitMessage
         };
 
         return View(model);
@@ -48,9 +56,7 @@ public sealed class ManageController : AccountBaseController
 
             if (commandResult.Success)
             {
-                string? invitationMessage = await HandleInvitation();
-                string message = "Registered successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
-                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, message);
+                return RedirectWithMessage(model.ReturnUrl ?? string.Empty, "Registered successfully.");
             }
         }
 
@@ -61,7 +67,7 @@ public sealed class ManageController : AccountBaseController
     [Authorize]
     public async Task<IActionResult> SetSecurityQuestions()
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             ISecurityQuestions? currentSecurityQuestions = await Send(new GetSecurityQuestionsQuery());
             string? currentGreeting = currentSecurityQuestions?.Greeting;
@@ -85,10 +91,18 @@ public sealed class ManageController : AccountBaseController
                 greetings.AddRange(Greetings.Messages.Where(x => x != currentGreeting).ToList().GetNFromList(2)); // add 2 others to choose from
             }
 
+            string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+            if (invitationWaitMessage.IsNotEmpty())
+            {
+                invitationWaitMessage += " You can review it after setting your security questions.";
+            }
+
             var model = new SetSecurityQuestionsVm
             {
                 Greetings = greetings,
-                Greeting = currentGreeting
+                Greeting = currentGreeting,
+                InvitationWaitMessage = invitationWaitMessage
             };
 
             if (currentSecurityQuestions != null)
@@ -122,6 +136,7 @@ public sealed class ManageController : AccountBaseController
 
             if (commandResult.Success)
             {
+                await HandleInvitation(model);
                 return RedirectWithMessage(model, "Security questions set successfully.");
             }
         }
@@ -133,7 +148,7 @@ public sealed class ManageController : AccountBaseController
     [Authorize]
     public async Task<IActionResult> UpdateDetails(string? returnUrl = null)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             var currentUser = await GetCurrentUser(true);
 
@@ -186,7 +201,7 @@ public sealed class ManageController : AccountBaseController
     [Authorize]
     public async Task<IActionResult> ChangePassword(string? returnUrl = null)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             var currentUser = await GetCurrentUser(true);
 

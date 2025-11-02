@@ -1,9 +1,24 @@
-﻿namespace Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Shared;
+using Global.Helpers;
 
-public interface ISendGroupInvitation : IGiftingGroupInvitationBase
+namespace Global.Abstractions.Areas.GiftingGroup;
+
+public interface ISendGroupInvitation : IGiftingGroupInvitationBase, IHaveAGroupKey
 {
-    int GiftingGroupKey { get; }
     string? ToName { get; }
+
+    /// <summary>
+    /// This may be hashed (always if it's for the entity)
+    /// </summary>
     string? ToEmailAddress { get; }
+
     string? ToHashedUserId { get; }
+}
+
+public static class SendGroupInvitationExtensions
+{
+    public static string GetHashedEmail(this ISendGroupInvitation invitation)
+    {
+        return EncryptionHelper.EncryptEmail(invitation.ToEmailAddress.Tidy(false));
+    }
 }

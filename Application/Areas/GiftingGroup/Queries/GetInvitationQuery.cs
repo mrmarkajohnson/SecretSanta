@@ -1,30 +1,37 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using Global.Abstractions.Areas.GiftingGroup;
+﻿using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation?>
+public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
 {
-    private readonly string _invitationId;
-
     public GetInvitationQuery(string invitationId)
     {
         _invitationId = invitationId;
     }
 
-    protected async override Task<IReviewGroupInvitation?> Handle()
+    public GetInvitationQuery(Guid? invitationGuid = null)
     {
-        Santa_Invitation? dbInvitation = await Send(new Internal.GetInvitationEntityQuery(_invitationId));
+        _invitationId = string.Empty;
+        _invitationGuid = invitationGuid;
+    }
 
-        if (dbInvitation == null)
-            return null;
+    private readonly string _invitationId;
+    private readonly Guid? _invitationGuid;
 
-        return new ReviewGroupInvitation
+    protected async override Task<IReviewGroupInvitation> Handle()
+    {
+        Santa_Invitation? dbInvitation = _invitationGuid != null 
+            ? await Send(new Internal.GetInvitationEntitySavingQuery(_invitationGuid.Value))
+            : await Send(new Internal.GetInvitationEntitySavingQuery(_invitationId));
+
+        if (dbInvitation == null)  // shouldn't happen, as the internal query will throw an exception if not returning the entity
         {
-            InvitationGuid = dbInvitation.InvitationGuid,
-            ToSantaUserKey = dbInvitation.ToSantaUserKey,
-            FromUser = Mapper.Map<IHashableUser>(dbInvitation.FromSantaUser.GlobalUser),
-            Message = dbInvitation.Message
-        };
+            throw new NotFoundException("invitation");
+        }
+
+        var invitation = Mapper.Map<IReviewGroupInvitation>(dbInvitation);
+        invitation.FromUser.UnHash();
+        return invitation;
     }
 }

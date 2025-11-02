@@ -91,7 +91,7 @@ public class Global_User : IdentityUser, IEntity, IGlobalUser, ISecurityQuestion
     public string GlobalUserId => Id; // ditto
 
     [NotMapped, NotAudited]
-    bool IHasEmail.ShowEmail
+    bool IHaveAnEmail.ShowEmail
     {
         get => false;
         set { }

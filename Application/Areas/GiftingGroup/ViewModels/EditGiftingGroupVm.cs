@@ -3,12 +3,14 @@ using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
+public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
 {
+    public OtherGroupMembersType MemberListType => OtherGroupMembersType.EditGroup;
     public bool Exists => GiftingGroupKey > 0;
 
     [Display(Name = "Currency")]
@@ -48,13 +50,14 @@ public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm
         .ToList();
 
     public IList<StandardSelectable> FirstYears => GetFirstYearSelection();
-
     public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
 
     public virtual string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";
     public virtual string SubmitButtonIcon { get; set; } = "fa-save";
+
+    Guid? IGroupMembersGridVm.InvitationGuid => null;
 
     private List<StandardSelectable> GetFirstYearSelection()
     {

@@ -354,8 +354,11 @@ namespace Data.Migrations
                     b.Property<Guid>("InvitationGuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Message")
-                        .IsRequired()
+                    b.Property<string>("InvitationMessage")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("RejectionMessage")
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 

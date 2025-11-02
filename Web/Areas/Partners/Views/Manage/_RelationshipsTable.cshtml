@@ -26,7 +26,7 @@
                     <th>
                         <span class="mvc-grid-title">
                             Status
-                            <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="body" title="@statusExplanation">
+                            <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="td" title="@statusExplanation">
                                 <i class="fa fa-circle-question fa-border"></i>
                             </span>
                         </span>
@@ -91,14 +91,14 @@
                                         data-url="@Url.Action("EditRelationship", "Manage", 
                                                     new { Area = AreaNames.Partners, partnerLinkKey = @relationship.PartnerLinkKey, hashedUserId = @relationship.Partner.HashedUserId },
                                                 Context.Request.Scheme, Context.Request.Host.ToString())"
-                                            data-toggle="tooltip" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
+                                            data-toggle="tooltip" data-bs-container="td" title="Edit this relationship"><i class="fa fa-pencil"></i></a>
                                 }
 
                                 @if (relationship.Status == RelationshipStatus.ToBeConfirmed 
                                     || (relationship.SuggestedByCurrentUser && relationship.AlreadyConfirmed == null))
                                 {
                                     <a class="delete-relationship-link" data-link-id="@relationship.PartnerLinkKey" data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"
-                                        data-toggle="tooltip" title="Delete this relationship"><i class="fa fa-xmark"></i></a>
+                                       data-toggle="tooltip" data-bs-container="td" title="Delete this relationship"><i class="fa fa-xmark"></i></a>
                                 }
                             </td>
                         </tr>

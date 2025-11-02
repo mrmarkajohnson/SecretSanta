@@ -26,6 +26,8 @@ public static class GiftingGroupSettings
         [Display(Name = "Applied to Join")]
         Applied,
 
+        Invited,
+
         [Display(Name = "Application Rejected")]
         Rejected,
 
@@ -34,5 +36,12 @@ public static class GiftingGroupSettings
 
         [Display(Name = "Administrator")]
         Admin
+    }
+
+    public enum OtherGroupMembersType
+    {
+        EditGroup,
+        ReviewInvitation,
+        MessageRecipients
     }
 }

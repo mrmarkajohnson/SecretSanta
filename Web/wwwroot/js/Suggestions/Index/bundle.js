@@ -2,10 +2,6 @@ document.addEventListener('modalOpening', function (e) {
     suggestionsModalOpening(e);
 });
 
-document.addEventListener('modalSaved', function (e) {
-    suggestionsModalSaved(e);
-});
-
 async function suggestionsModalOpening(e) {
     let modal = e.detail.modal;
 
@@ -18,14 +14,6 @@ function suggestionModalOpened(modal) {
     let form = modal.querySelector('form');
     initGroupCheckboxes(form);
     initSummernote();
-}
-
-async function suggestionsModalSaved(e) {
-    let modal = e.detail.modal;
-
-    if (modal.id == 'manageSuggestionModal') {
-        reloadGrid();
-    }
 }
 function initGroupCheckboxes(form) {
     let groupCheckboxes = form.querySelectorAll('input[type=checkbox].apply-group-checkbox');

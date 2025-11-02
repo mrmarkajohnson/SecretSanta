@@ -20,6 +20,7 @@ public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
         if (dbApplication == null)

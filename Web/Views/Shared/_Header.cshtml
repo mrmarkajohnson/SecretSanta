@@ -22,7 +22,7 @@
         <div class="container-fluid align-items-start">
             @if (SignInManager.IsSignedIn(User))
             {
-                <a class="navbar-brand d-none d-xl-block" asp-area=@string.Empty asp-controller="Home" asp-action="Index">Secret Santa</a>
+                <a class="navbar-brand d-none d-xl-block" data-toggle="tooltip" title="Go to home page" asp-area=@string.Empty asp-controller="Home" asp-action="Index">Secret Santa</a>
 
                 @if (mustSetSecurityQuestions)
                 {
@@ -33,7 +33,7 @@
                 {
                     <div class="text-start justify-content-start">
                         <div class="navbar" style="flex-wrap: nowrap !important;">
-                            <a class="nav-link left-menu-item" asp-area=@string.Empty asp-controller="Home" asp-action="Index">
+                            <a class="nav-link left-menu-item" asp-area=@string.Empty asp-controller="Home" asp-action="Index" data-toggle="tooltip" title="Go to home page">
                                 <i class="fa-solid fa-house" style="color: #885533">&nbsp;</i><b>Home</b>
                             </a>
 
@@ -70,12 +70,7 @@
                     <div class="navbar" style="padding: 4px 0 0 8px !important;">
                         <ul class="navbar-nav left-menu-item">
                             <li class="nav-item-dropdown">
-                                <a class="btn btn-outline-primary nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="fa-solid fa-question" style="color: #ffffff">&nbsp;</span>Help
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpDropdown">
-                                    <partial name="Menu/_HelpSubMenu" />
-                                </ul>
+                                <partial name="Menu/_HelpMenu" />
                             </li>
                         </ul>
                     </div>

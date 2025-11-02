@@ -4,9 +4,17 @@ function initPopper() {
 }
 
 function setPopovers() {
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').each(function (i, e) {
+        try {
+            $(e).popover();
+        } catch { }
+    });
 }
 
 function setTooltips() {
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').each(function (i, e) {
+        try {
+            $(e).tooltip();
+        } catch { }
+    });
 }

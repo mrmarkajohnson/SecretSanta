@@ -17,6 +17,7 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .Where(y => y.ResponseBySantaUserKey == null)
             .AsQueryable();
 

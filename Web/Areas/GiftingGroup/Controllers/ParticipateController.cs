@@ -4,7 +4,9 @@ using Application.Areas.Participate.Queries;
 using Application.Areas.Participate.ViewModels;
 using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Participate;
+using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
 using static Global.Settings.GlobalSettings;
 

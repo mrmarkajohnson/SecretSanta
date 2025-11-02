@@ -19,6 +19,8 @@ public sealed class RegisterVm : PersonalDetailsBaseVm, IRegisterSantaUser, IFor
 
     public override string SubmitButtonText { get; set; } = "Register";
     public override string SubmitButtonIcon { get; set; } = "fa-id-card";
+
+    public string? InvitationWaitMessage { get; set; }
 }
 
 public sealed class RegisterVmValidator : RegisterSantaUserValidator<RegisterVm>

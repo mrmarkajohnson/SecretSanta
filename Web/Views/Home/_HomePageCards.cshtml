@@ -84,6 +84,16 @@
                         Apply to Join a Gifting Group
                     </a>
                 </p>
+
+                @if (Model?.GroupInvitations > 0)
+                {
+                    <p>
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">
+                            Review Group Invitations
+                        </a>
+                    </p>
+                }
+
                 <p>
                     <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">
                         Participate for @DateTime.Today.Year

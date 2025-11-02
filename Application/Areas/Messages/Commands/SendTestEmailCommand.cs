@@ -19,7 +19,7 @@ public sealed class SendTestEmailCommand : BaseCommand<SendTestEmailVm>
             throw new AccessDeniedException("Only system administrators can send test e-mails.");
 
         if (DbContext.EmailClient == null)
-            throw new NotFoundException("The e-mail client has not been configured.");
+            throw new ArgumentException("The e-mail client has not been configured.");
 
         var message = new SantaMessage
         {

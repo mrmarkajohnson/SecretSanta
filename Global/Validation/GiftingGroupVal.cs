@@ -41,7 +41,12 @@ public static class GiftingGroupVal
         public const int MaxLength = 400;
     }
 
-    public static class InvitationMessage
+    public static class SendInvitationMessage
+    {
+        public const int MaxLength = 300;
+    }
+
+    public static class RejectInvitationMessage
     {
         public const int MaxLength = 300;
     }

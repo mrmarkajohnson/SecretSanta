@@ -41,7 +41,7 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
         }
 
         dbSuggestion.SuggestionText = Item.SuggestionText;
-        dbSuggestion.OtherNotes = Item.OtherNotes;
+        dbSuggestion.OtherNotes = Item.OtherNotes ?? string.Empty;
         dbSuggestion.Priority = Item.Priority;
 
         HandleGroupLinks(dbCurrentSantaUser, dbSuggestion);
@@ -108,15 +108,15 @@ public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> w
 
         if (dbGifter != null)
         {
-            string text = (deleted ? "A new suggestion has been added for" : "A suggestion has been removed from") +
+            string text = (deleted ? "A suggestion has been removed from" : "A new suggestion has been added for") +
                 $" the '{dbYear.GiftingGroup.Name}' group. Please review " +
-                (deleted ? "this suggestion" : "your recipient's suggestions") +
+                (deleted ? "your recipient's other suggestions" : "this suggestion") +
                 $" at the {MessageLink(yearGroupUrl, "Gifting Group Year", false)} page.";
 
             var message = new SendSantaMessage
             {
                 RecipientType = MessageRecipientType.Gifter,
-                HeaderText = "Your gift recipient has " + (deleted ? "removed a " : "added a new") + " suggestion.",
+                HeaderText = "Your gift recipient has " + (deleted ? "removed a " : "added a new") + " suggestion",
                 MessageText = text,
                 Important = true,
                 CanReply = false,

@@ -2,6 +2,9 @@
 using Application.Areas.Account.Queries;
 using Application.Areas.Account.ViewModels;
 using Application.Areas.GiftingGroup.Queries;
+using Global.Abstractions.Areas.GiftingGroup;
+using Global.Extensions.Exceptions;
+using Global.Settings;
 using Global.Validation;
 using Microsoft.AspNetCore.Authentication;
 using static Global.Settings.GlobalSettings;
@@ -9,24 +12,26 @@ using static Global.Settings.GlobalSettings;
 namespace Web.Areas.Account.Controllers;
 
 [Area(AreaNames.Account)]
-public sealed class HomeController : AccountBaseController
+public sealed class HomeController : BaseController
 {
     public HomeController(IServiceProvider services, SignInManager<IdentityUser> signInManager) 
         : base(services, signInManager)
     {
     }    
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
     [HttpGet]
     public async Task<IActionResult> Login(string? returnUrl = null, bool timedOut = false)
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
-            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+            return RedirectHome();
+        }
+
+        string? invitationWaitMessage = TempData.Peek(TempDataNames.InvitationWaitMessage)?.ToString();
+
+        if (invitationWaitMessage.IsNotEmpty())
+        {
+            invitationWaitMessage += " You can review it after logging in.";
         }
 
         var model = new LoginVm
@@ -34,7 +39,8 @@ public sealed class HomeController : AccountBaseController
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
             ReturnUrl = returnUrl,
             TimedOut = timedOut,
-            RememberMe = true
+            RememberMe = true,
+            InvitationWaitMessage = invitationWaitMessage
         };
 
         // Clear the existing external cookie to ensure a clean login process
@@ -55,9 +61,8 @@ public sealed class HomeController : AccountBaseController
 
             if (result.Succeeded)
             {
-                string? invitationMessage = await HandleInvitation();
-                string message = "Logged in successfully." + (invitationMessage.IsNotEmpty() ? $" {invitationMessage}" : "");
-                return RedirectWithMessage(model, message);
+                await HandleInvitation(model);
+                return RedirectWithMessage(model, "Logged in successfully.");
             }
 
             //if (result.RequiresTwoFactor)
@@ -124,7 +129,7 @@ public sealed class HomeController : AccountBaseController
     [HttpGet]
     public async Task<IActionResult> LockedOut()
     {
-        if (SignInManager.IsSignedIn(User))
+        if (SignedIn())
         {
             await SignInManager.SignOutAsync(); // just in case
         }
@@ -133,32 +138,48 @@ public sealed class HomeController : AccountBaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ReviewApplication(string id)
+    public async Task<IActionResult> ReviewInvitation(string id)
     {
-        TempData[InvitationId] = id;
-
-        if (SignInManager.IsSignedIn(User))
+        try
         {
-            string? message = await HandleInvitation(true);
-            return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "", new { successMessage = message });
-        }
-        else
-        {
-            var invitation = await Send(new GetInvitationQuery(id));
+            IReviewGroupInvitation invitation = await Send(new GetInvitationQuery(id));
+            TempData[TempDataNames.InvitationGuid] = invitation.InvitationGuid;
 
-            if (invitation == null)
+            if (SignedIn()) // the invitation must be OK at this point, otherwise it would throw an error
             {
-                TempData.Remove(InvitationId);
-            }
-
-            if (invitation?.ToSantaUserKey == null)
-            {
-                return RedirectToLocalUrl(nameof(Index), nameof(HomeController), "");
+                if (HomeModel.CurrentUser?.SecurityQuestionsSet == false)
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectHome(); // this will force the user to set their security questions
+                }
+                else
+                {
+                    return LocalRedirect(GetReviewInvitationUrl(invitation.InvitationGuid));
+                }
             }
             else
             {
-                return RedirectToLocalUrl(nameof(Login), nameof(HomeController), "");
+                if (invitation.ToSantaUserKey == null)
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectToLocalUrl<HomeController>(nameof(Index), AreaNames.None);
+                }
+                else
+                {
+                    SetInvitationWaitMessage(invitation);
+                    return RedirectHome();
+                }
             }
+        }
+        catch (NotFoundException nfx)
+        {
+            HandleInvitationError(nfx);
+            return RedirectHome();
+        }
+        catch (AccessDeniedException adx)
+        {
+            HandleInvitationError(adx);
+            return RedirectHome();
         }
     }
 }

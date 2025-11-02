@@ -22,6 +22,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
             .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
             .FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
         if (dbApplication == null)
@@ -49,6 +50,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
             dbApplication.RejectionMessage = Item.Accepted ? null : Item.RejectionMessage;
             dbApplication.Blocked = Item.Accepted ? false : Item.Blocked;
             dbApplication.ResponseBySantaUserKey = dbCurrentSantaUser.SantaUserKey;
+            dbApplication.DateArchived = DateTime.Now;
 
             if (Item.Accepted)
             {
@@ -82,7 +84,7 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
         }
         else
         {
-            message.HeaderText = $"Your application for '{dbApplication.GiftingGroup.Name}' was not accepted.";
+            message.HeaderText = $"Your application for '{dbApplication.GiftingGroup.Name}' was not accepted";
             message.MessageText = $"Sorry, you haven't been accepted into group '{dbApplication.GiftingGroup.Name}'.";
 
             if (Item.RejectionMessage.IsNotEmpty())

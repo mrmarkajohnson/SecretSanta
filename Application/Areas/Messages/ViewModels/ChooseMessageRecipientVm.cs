@@ -2,6 +2,7 @@
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using System.ComponentModel.DataAnnotations;
+using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.ViewModels;
@@ -65,7 +66,7 @@ public class ChooseMessageRecipientVm : BaseFormVm, IForm, IChooseMessageRecipie
     private List<MessageRecipientType> GetOriginalRecipientTypes()
     {
         return OriginalRecipientTypes
-            .Where(x => x != MessageRecipientType.GroupAdmins || !GroupAdmin || OtherGroupMembers.Any(y => y.GroupAdmin))
+            .Where(x => x != MessageRecipientType.GroupAdmins || !GroupAdmin || OtherGroupMembers.Any(y => y.MemberStatus == GroupMemberStatus.Admin))
             .Where(x => !x.SpecificMember() || MemberSelection.Count > 0)
             .ToList();
     }

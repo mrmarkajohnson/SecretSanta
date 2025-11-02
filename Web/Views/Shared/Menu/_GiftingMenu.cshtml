@@ -19,6 +19,16 @@
                 Apply to Join a Group
             </a>
         </li>
+
+        @if (Model?.HomeModel.GroupInvitations > 0)
+        {
+            <li>
+                <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">
+                    Review Group Invitations
+                </a>
+            </li>
+        }
+
         <li>
             <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">
                 Participate for @DateTime.Today.Year

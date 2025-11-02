@@ -69,5 +69,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferenc
             .Where(x => x.GroupAdmin)
             .SelectMany(y => y.GiftingGroup.Members)
             .Select(z => z.SantaUserKey))
+        .Union(ReceivedInvitations
+            .Select(x => x.FromSantaUserKey))
         .ToList();
 }
