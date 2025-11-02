@@ -1,12 +1,11 @@
 IMMEDIATE
-** Show invitations sent to e-mails when in edit mode?
-** Allow invitations to be archived (rescinded) from _GiftingGroupMembersGrid
-** Add bug reporting
-** Add reporting abuse
+* Show invitations sent to e-mails when in edit mode?
+* Allow invitations to be archived (rescinded) from _GiftingGroupMembersGrid
+* Add bug reporting
+* Add reporting abuse
 
 ACCEPTING INVITATIONS
-** Allow a preview before registering
-Confirm the e-mail automatically if it matches?
+* Allow a preview before registering?
 
 GENERAL
 * Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
@@ -52,7 +51,7 @@ Add user postal and e-mail address functionality for sending and receiving gifts
 Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
-* Mark messages as important
+* Mark messages as important when sending
 * Show the sender's name when replying, and when viewing replies
 * Show actual recipients when viewing, from an 'i' symbol, except when it's the gifter/recipient (or it's obvious)
 Save draft

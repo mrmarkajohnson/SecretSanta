@@ -18,16 +18,18 @@
 
             @if (groupAdmin || item.MemberStatus == GroupMemberStatus.Joined)
             {
-                string title = item.MemberStatus == GroupMemberStatus.Admin ? "Remove Administrator status" : "Set as an Administrator";
-                string confirm = item.MemberStatus == GroupMemberStatus.Admin 
+                string adminIcon = groupAdmin ? "far fa-circle-down" : "fa fa-circle-up";
+                string adminTitle = groupAdmin ? "Remove Administrator status" : "Set as an Administrator";
+
+                string adminConfirm = groupAdmin
                     ? $"Are you sure you want to make {@item.DisplayName()} a standard group member?"
                     : $"Are you sure you want to make {item.DisplayName()} an Administrator?";
 
                 <a class="background-link" 
                     data-url="@Url.Action(Context, "ToggleGroupAdmin", "Manage", AreaNames.GiftingGroup, 
                         new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"    
-                    data-toggle="tooltip" title="@title?" data-bs-container="td"
-                    data-confirm-title="@title" data-confirm-message="@confirm"><i class="fa fa-pencil"></i></a>
+                    data-toggle="tooltip" title="@adminTitle?" data-bs-container="td"
+                    data-confirm-title="@adminTitle" data-confirm-message="@adminConfirm"><i class="@adminIcon"></i></a>
             
                 <a class="delete-link" data-url="@Url.Action(Context, "RemoveGroupUser", "Manage", AreaNames.GiftingGroup,
                         new { giftingGroupKey = Model.GiftingGroupKey, santaUserKey = item.SantaUserKey })"
