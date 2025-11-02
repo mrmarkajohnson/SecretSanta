@@ -1,4 +1,5 @@
 IMMEDIATE
+* Show 'Automated' status on messages sent as Santa, e.g. next to 'Sent' (date)
 * Show invitations sent to e-mails when in edit mode?
 * Allow invitations to be archived (rescinded) from _GiftingGroupMembersGrid
 * Add bug reporting
