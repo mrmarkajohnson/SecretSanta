@@ -15,7 +15,9 @@ public class RelationshipVm : RelationshipBase, IRelationship
     private List<SelectListItem> GetAvailableStatusSelect()
     {
         List<RelationshipStatus> availableStatuses = GetAvailableStatuses();
-        return availableStatuses.ToSelectList();
+        var selectList = availableStatuses.ToSelectList();
+        selectList.ForEach(x => x.Text = x.Text.Replace("your partner", Partner.Forename));
+        return selectList;
     }
 
     private List<RelationshipStatus> GetAvailableStatuses()
