@@ -59,24 +59,27 @@ public sealed class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where 
                             SetUpSecurityQuestions(securityQuestions);
                             Item.LockedOut = await AccessFailed(UserManager, user);
                         }
-                        else if (string.IsNullOrEmpty(Item.Password) || string.IsNullOrEmpty(Item.ConfirmPassword))
-                        {
-                            SetUpPasswordReset();
-                            Success = true;
-                        }
-                        else if (Item.ConfirmPassword != Item.Password)
-                        {
-                            AddGeneralValidationError("Passwords did not match.");
-                            SetUpPasswordReset();
-                        }
                         else
                         {
-                            var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user), null);
+                            SetUpPasswordReset();
 
-                            if (commandResult.Success)
+                            if (string.IsNullOrEmpty(Item.Password) || string.IsNullOrEmpty(Item.ConfirmPassword))
                             {
-                                Item.PasswordResetSuccessfully = true;
-                                Success = true;
+                                Success = true; // return initially empty password screen for the user to enter the new password
+                            }
+                            else if (Item.ConfirmPassword != Item.Password)
+                            {
+                                AddGeneralValidationError("Passwords did not match.");
+                            }
+                            else
+                            {
+                                var commandResult = await Send(new ResetPasswordCommand<TItem>(Item, user), null);
+
+                                if (commandResult.Success)
+                                {
+                                    Item.PasswordResetSuccessfully = true;
+                                    Success = true;
+                                }
                             }
                         }
                     }
