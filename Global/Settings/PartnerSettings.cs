@@ -8,19 +8,19 @@ public static class PartnerSettings
     {
         [Display(Name = "Waiting for your partner to confirm")]
         ToBeConfirmed = 0,
-        [Display(Name = "Please confirm if you are in a relationship")]
+        [Display(Name = "Please confirm this relationship")]
         ToConfirm,
         [Display(Name = "We're currently in a relationship")]
         Active,
-        [Display(Name = "We broke up, and I don't want to exchange gifts")]
+        [Display(Name = "We split, I don't want to exchange gifts")]
         Ended,
-        [Display(Name = "The relationship has already ended")]
+        [Display(Name = "The relationship already ended")]
         EndedBeforeConfirmation,
-        [Display(Name = "We broke up, but I'm happy to exchange gifts")]
+        [Display(Name = "We split, I'm happy to exchange gifts")]
         IgnoreOld,
-        [Display(Name = "We've never been together, and I'm happy to exchange gifts")]
+        [Display(Name = "We were never together, I'm happy to exchange gifts")]
         IgnoreNonRelationship,
-        [Display(Name = "We've never been together, but I don't want to exchange gifts")]
+        [Display(Name = "We were never together, I don't want to exchange gifts")]
         Avoid
     }
 }

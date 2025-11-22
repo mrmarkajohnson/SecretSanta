@@ -7,7 +7,7 @@
 }
 
 <div class="mvc-grid mvc-grid-excel-mode" data-name=@string.Empty data-filter-mode="Excel" data-url=@string.Empty>
-    <div class="mvc-grid-table relationships-table" 
+    <div class="mvc-grid-table relationships-table" style="min-width : 600px !important;"
         data-change-url="@Url.Action("ChangeRelationshipStatus", "Manage", new { Area = AreaNames.Partners }, Context.Request.Scheme, Context.Request.Host.ToString())"        
         data-delete-url="@Url.Action("DeleteRelationship", "Manage", new { Area = AreaNames.Partners }, Context.Request.Scheme, Context.Request.Host.ToString())">
 
@@ -81,7 +81,8 @@
                                 {
                                     <select asp-for="PossibleRelationships[i].Status" class="form-control relationship-status-select"
                                         asp-items="@relationship.AvailableStatuses" data-link-id="@relationship.PartnerLinkKey"
-                                        data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"></select>
+                                        data-hashed-user-id="@relationship.Partner.HashedUserId" data-name="@relationship.Partner.UserDisplayName"
+                                        style="min-width: 200px !important"></select>
                                 }
                             </td>
                             <td class="nowrap">

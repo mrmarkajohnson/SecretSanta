@@ -44,6 +44,7 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
                 GiftingGroup = dbGiftingGroup
             };
 
+            DbContext.Santa_GiftingGroupYears.Add(dbOldYear);
             DbContext.ChangeTracker.DetectChanges();
         }
 
@@ -59,6 +60,7 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
                 SantaUser = dbSantaUser
             };
 
+            dbOldYear.Users.Add(dbOldYearUser);
             DbContext.ChangeTracker.DetectChanges();
         }
 
