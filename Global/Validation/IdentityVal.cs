@@ -8,8 +8,8 @@ public static class IdentityVal
     {
         public const int MinLength = 8;
         public const int MaxLength = 100;
-        public const int UniqueChars = 2;
-        public const bool NonAlphanumeric = true;
+        public const int UniqueChars = 3;
+        public const bool NonAlphanumeric = false;
         public const bool Lowercase = false;
         public const bool Uppercase = false;
         public const bool Digit = true;
