@@ -1,5 +1,4 @@
-﻿using Application.Areas.GiftingGroup.BaseModels;
-using FluentValidation;
+﻿using FluentValidation;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class EditGiftingGroupVm : CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
+public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
 {
     public OtherGroupMembersType MemberListType => OtherGroupMembersType.EditGroup;
     public bool Exists => GiftingGroupKey > 0;

@@ -49,9 +49,14 @@
                     <section style="margin: 0 12px 12px 12px">
                         <partial name="_ConfirmEmailWarning" model="Model.CurrentUser" />
                     </section>
-                }
 
-                <partial name="_HomePageCards" />
+                    @if (Model.ShowHighlights)
+                    {
+                        <partial name="_Highlights" />
+                    }
+
+                    <partial name="_HomePageCards" />
+                }
             </div>
         </div>
     }

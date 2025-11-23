@@ -1,7 +1,9 @@
 ﻿using Application.Areas.Account.Queries;
 using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Home.Actions;
 using Application.Areas.Home.ViewModels;
 using Application.Areas.Messages.Commands;
+using Application.Areas.Messages.Queries;
 using Application.Shared.Requests;
 using AutoMapper;
 using FluentValidation;
@@ -51,7 +53,7 @@ public class BaseController : Controller
         {
             HomeModel.CurrentUser = await GetCurrentUser(true);
             HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
-            HomeModel.GroupInvitations = await Send(new GetGroupInvitationsCountQuery());
+            await Send(new AddHighlightsCountsAction(HomeModel));
         }
         catch (NotSignedInException) { }
         catch (AccessDeniedException) { }

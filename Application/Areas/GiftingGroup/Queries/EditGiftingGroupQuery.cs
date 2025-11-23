@@ -16,7 +16,7 @@ public sealed class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
     {
         if (_giftingGroupKey == 0)
         {
-            return new CoreGiftingGroup();
+            return new BaseModels.CoreGiftingGroup();
         }
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);

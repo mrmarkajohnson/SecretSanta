@@ -85,7 +85,7 @@
                     </a>
                 </p>
 
-                @if (Model?.GroupInvitations > 0)
+                @if (Model?.GroupInvitationsCount > 0)
                 {
                     <p>
                         <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">
@@ -107,7 +107,7 @@
 
                 @if (giftingGroups.Any())
                 {
-                    @if (Model?.NewJoinerApplications > 0)
+                    @if (Model?.NewJoinerApplicationsCount > 0)
                     {
                         <p>
                             <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">

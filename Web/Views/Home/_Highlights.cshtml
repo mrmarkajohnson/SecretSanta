@@ -1,0 +1,108 @@
+﻿@model HomeVm
+@{
+    var giftingGroups = Model.GiftingGroups;
+}
+
+<div class="col-12">
+    <div class="alert alert-info p-2" style="margin: 12px 12px 18px 12px; background-color: #fff9dd !important; border: 1px solid #ffdd99 !important;">
+        <div style="margin-bottom: 0; color: #777777">
+
+            @if (Model.UnreadMessagesCount > 0)
+            {
+                string unreadMessages = "message" + (Model.UnreadMessagesCount == 1 ? "" : "s");
+
+                <p>
+                    You have @Model.UnreadMessagesCount <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="Index">unread @unreadMessages</a> 
+                    to review.
+
+                    @if (Model.UnreadImportantMessagesCount > 0)
+                    {
+                        <text>@Model.UnreadImportantMessagesCount are important.</text>
+                    }
+                </p>
+            }
+
+            @if (Model.PartnersAwaitingConfirmationCount > 0)
+            {
+                string relationships = "relationship" + (Model.PartnersAwaitingConfirmationCount == 1 ? "" : "s");
+
+                <p>
+                    You have @Model.PartnersAwaitingConfirmationCount unconfirmed @relationships.
+                    <a asp-area="@AreaNames.Partners" asp-controller="Manage" asp-action="Index">Click here</a> to review them.
+                </p>
+            }
+
+            @if (Model.GiftingGroups.Count == 0)
+            {
+                <p>You have not joined any gifting groups. <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">Click here</a> 
+                    to apply to join a group.</p>
+            }
+            else
+            {
+                if (Model.GroupInvitationsCount > 0)
+                {
+                    string invitations = "group invitation" + (Model.GroupInvitationsCount == 1 ? "" : "s");
+
+                    <p>You have @Model.GroupInvitationsCount <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">@invitations</a> 
+                        to review.</p>
+                }
+
+                if (Model.NewJoinerApplicationsCount > 0)
+                {
+                    string applications = "group application" + (Model.NewJoinerApplicationsCount == 1 ? "" : "s");
+
+                    <p>You have @Model.NewJoinerApplicationsCount <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">@applications</a> 
+                        to review.</p>
+                }
+
+                if (Model.GroupsNotInOrOutCount > 0)
+                {
+                    string groups = "group" + (Model.GroupsNotInOrOutCount == 1 ? "" : "s");
+                    string them = Model.GroupsNotInOrOutCount == 1 ? "it" : "them";
+
+                    <p>
+                        You have @Model.GroupsNotInOrOutCount @groups where you haven't said whether you're participating this year.
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index">Click here</a> to view @them.
+                    </p>
+                }
+
+                if (Model.GroupsWithNoSuggestionsCount > 0)
+                {
+                    string groups = "group" + (Model.GroupsWithNoSuggestionsCount == 1 ? "" : "s");
+
+                    <p>
+                        You have @Model.GroupsWithNoSuggestionsCount @groups with no suggestions for this year.
+                        <a asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="Index">Click here</a> to add some.
+                    </p>
+                }
+
+                if (Model.GroupsRequiringSetupCount > 0)
+                {
+                    string groups = "group" + (Model.GroupsRequiringSetupCount == 1 ? "" : "s");
+
+                    <p>
+                        You have @Model.GroupsRequiringSetupCount @groups whose limit or recipients haven't been set for this year.
+                        Set Up
+
+                        @for (int i = 0; i < Model.GroupsRequiringSetupCount; i++)
+                        {
+                            var group = Model.GroupsRequiringSetup[i];
+
+                            string suffix = i >= Model.GroupsRequiringSetupCount - 1
+                            ? ""
+                            : i == Model.GroupsRequiringSetupCount - 2
+                            ? " and "
+                            : ", ";
+
+                            <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@group.GiftingGroupKey">
+                                '@group.GroupName'</a>@suffix
+                        }
+
+                        for @DateTime.Today.Year.
+                    </p>
+                }
+            }
+
+        </div>
+    </div>
+</div>
