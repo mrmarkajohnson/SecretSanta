@@ -1,7 +1,6 @@
 ﻿using Application.Areas.Messages.BaseModels;
 using FluentValidation;
 using Global.Abstractions.Areas.Account;
-using Global.Extensions.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Areas.Account.Commands;

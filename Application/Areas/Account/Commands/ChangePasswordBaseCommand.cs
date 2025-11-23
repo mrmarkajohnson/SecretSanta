@@ -15,7 +15,7 @@ public abstract class ChangePasswordBaseCommand<TItem> : UserBaseCommand<TItem> 
         var resetUser = await UserManager.FindByIdAsync(dbGlobalUser.Id); // avoid 'cannot be tracked' error
         if (resetUser != null)
         {
-            var result = await UserManager.ResetPasswordAsync(resetUser, token, Item.Password);
+            var result = await UserManager.ResetPasswordAsync(resetUser, token, Item.Password.Trim());
 
             if (result.Succeeded)
             {

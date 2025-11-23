@@ -49,8 +49,8 @@ public sealed class ForgotPasswordCommand<TItem> : UserBaseCommand<TItem> where 
                     }
                     else
                     {
-                        string hashedAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.ToLower() ?? string.Empty, user);
-                        string hashedAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.ToLower() ?? string.Empty, user);
+                        string hashedAnswer1 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer1?.Trim().ToLower() ?? string.Empty, user);
+                        string hashedAnswer2 = EncryptionHelper.OneWayEncrypt(Item.SecurityAnswer2?.Trim().ToLower() ?? string.Empty, user);
 
                         if (hashedAnswer1 != securityQuestions.SecurityAnswer1
                             || hashedAnswer2 != securityQuestions.SecurityAnswer2)

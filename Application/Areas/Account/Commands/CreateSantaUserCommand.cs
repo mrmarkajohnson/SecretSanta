@@ -42,7 +42,7 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
 
         DbContext.ChangeTracker.DetectChanges();
 
-        IdentityResult result = await UserManager.CreateAsync(dbGlobalUser, Item.Password);
+        IdentityResult result = await UserManager.CreateAsync(dbGlobalUser, Item.Password.Trim());
 
         if (result.Succeeded)
         {
