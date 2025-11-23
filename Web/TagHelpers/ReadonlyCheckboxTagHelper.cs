@@ -23,5 +23,6 @@ public class ReadonlyCheckboxTagHelper : TagHelper
         }
 
         output.Attributes.Add("readonly", true);
+        output.Attributes.Add("style", "pointer-events: none");
     }
 }
