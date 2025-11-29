@@ -1,4 +1,4 @@
-﻿@model HomeVm
+﻿@model HomePageVm
 @{
     var giftingGroups = Model.GiftingGroups;
 }
@@ -41,7 +41,7 @@
             {
                 if (Model.GroupInvitationsCount > 0)
                 {
-                    string invitations = "group invitation" + (Model.GroupInvitationsCount == 1 ? "" : "s");
+                    string invitations = "group joiner invitation" + (Model.GroupInvitationsCount == 1 ? "" : "s");
 
                     <p>You have @Model.GroupInvitationsCount <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">@invitations</a> 
                         to review.</p>
@@ -95,7 +95,7 @@
                             : ", ";
 
                             <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@group.GiftingGroupKey">
-                                '@group.GroupName'</a>@suffix
+                                @group.GroupName</a>@suffix
                         }
 
                         for @DateTime.Today.Year.

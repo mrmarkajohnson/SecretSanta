@@ -5,14 +5,14 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.Home.Actions;
 
-public class AddHighlightsCountsAction : BaseAction<HomeVm>
+public class AddHighlightsCountsAction : BaseAction<HomePageVm>
 {
-    public AddHighlightsCountsAction(HomeVm item)
+    public AddHighlightsCountsAction(HomePageVm item)
     {
         _item = item;
     }
 
-    private readonly HomeVm _item;
+    private readonly HomePageVm _item;
 
     protected async override Task<bool> Handle()
     {
@@ -21,16 +21,12 @@ public class AddHighlightsCountsAction : BaseAction<HomeVm>
         _item.UnreadMessagesCount = unreadMessages.Count;
         _item.UnreadImportantMessagesCount = unreadMessages.Where(x => x.Important).Count();
 
-        try
+        if (DateTime.Today.Month >= 11)
         {
-            Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
-
-            _item.GroupInvitationsCount = dbCurrentSantaUser.ReceivedInvitations
-                .Where(x => x.DateArchived == null)
-                .Count();
-
-            if (DateTime.Today.Month >= 11)
+            try
             {
+                Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
+
                 var dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks.Where(x => x.DateDeleted == null && x.DateArchived == null);
                 int currentYear = DateTime.Today.Year;
 
@@ -64,8 +60,8 @@ public class AddHighlightsCountsAction : BaseAction<HomeVm>
                     .Where(x => x.Confirmed == null)
                     .Count();
             }
+            catch { }
         }
-        catch { }
 
         return true;
     }

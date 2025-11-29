@@ -2,7 +2,7 @@
     @if (!SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="@AreaNames.None" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" asp-area="@AreaNames.None" asp-controller="Home" asp-action="Index" data-toggle="tooltip" title="Go to home page">Home</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register" data-toggle="tooltip" title="Join Secret Santa">Register</a>

@@ -1,9 +1,7 @@
 ﻿using Application.Areas.Account.Queries;
 using Application.Areas.GiftingGroup.Queries;
-using Application.Areas.Home.Actions;
 using Application.Areas.Home.ViewModels;
 using Application.Areas.Messages.Commands;
-using Application.Areas.Messages.Queries;
 using Application.Shared.Requests;
 using AutoMapper;
 using FluentValidation;
@@ -49,14 +47,19 @@ public class BaseController : Controller
     {
         HomeModel ??= new HomeVm();
 
-        try
+        if (SignedIn())
         {
-            HomeModel.CurrentUser = await GetCurrentUser(true);
-            HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
-            await Send(new AddHighlightsCountsAction(HomeModel));
+            try
+            {
+                HomeModel.CurrentUser = await GetCurrentUser(true);
+                HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
+
+                var groupInvitations = await Send(new GetGroupInvitationsQuery());
+                HomeModel.GroupInvitationsCount = groupInvitations.Count();
+            }
+            catch (NotSignedInException) { }
+            catch (AccessDeniedException) { }
         }
-        catch (NotSignedInException) { }
-        catch (AccessDeniedException) { }
     }
 
     protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)

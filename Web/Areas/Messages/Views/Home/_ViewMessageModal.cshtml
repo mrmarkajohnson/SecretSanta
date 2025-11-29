@@ -28,8 +28,8 @@
 
                     @if (Model.LaterMessages.Any())
                     {
-                        <div class="col-11">
-                            <h2>Later Messages</h2>
+                        <div class="col-11 mt-4">
+                            <h2 c>Later Messages</h2>
 
                             @foreach (var message in Model.LaterMessages)
                             {
@@ -40,7 +40,7 @@
 
                     @if (Model.PreviousMessages.Any())
                     {
-                        <div class="col-11">
+                        <div class="col-11 mt-4">
                             <h2>Previous Messages</h2>
 
                             @foreach (var message in Model.PreviousMessages)
