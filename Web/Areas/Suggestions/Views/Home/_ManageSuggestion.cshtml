@@ -7,6 +7,20 @@
     string priorityExplanation = $"A sort order between 1 and {PriorityLimit}; items with priority 1 appear first";
 }
 
+<style>
+    datalist#priorityValues {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: right;
+        width: 200px;
+        padding-left: 5px;
+        padding-right: 3px;
+        font-size: 75%;
+        font-family: monospace;
+    }
+</style>
+
 <partial name="_FormHiddenInputs" />
 
 <div class="row @CenterFlexNoWrapContainer">
@@ -35,7 +49,8 @@
                 <div class="mb-3">
                     <label asp-for="OtherNotes" class="control-label"></label>
                     <div class="input-group input-info">
-                        <div class="flex-grow-1"> @* This is needed to handle the flex group *@
+                        <div class="flex-grow-1">
+                            @* This is needed to handle the flex group *@
                             <div class="collapse">
                                 <input type="hidden" asp-for="OtherNotes" class="summernote-content" />
                             </div>
@@ -49,11 +64,38 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 w-100">
                     <label asp-for="Priority" class="control-label required"></label>
-                    <div class="input-group input-info">
-                        <input asp-for="PrioritySetter" type="number" min="1" max="@PriorityLimit" class="form-control" aria-required="false" />
-                        <partial name="_InputQuestion" model="@priorityExplanation" />
+                    <div style="text-align: left">
+                        <div style="text-align: left; display: inline-block;">
+                            <div style="display:inline-block; vertical-align: top !important;">
+                                Lowest &nbsp; &nbsp;
+                            </div>
+                            <div style="display:inline-block">
+                                <input asp-for="PrioritySetter" type="range" min="1" max="@PriorityLimit" list="priorityValues" aria-required="false"
+                                       style="direction: rtl !important; vertical-align: middle; margin-bottom: 3px; width: 200px" />
+                                <br />
+                                <datalist id="priorityValues">
+                                    @for (int i = PriorityLimit; i > 0; i--)
+                                    {
+                                        if (i % 2 == 1)
+                                        {
+                                            <option value="@i" label="@i.ToString()"></option>
+                                        }
+                                        else
+                                        {
+                                            <text>&nbsp;</text>
+                                        }
+                                    }
+                                </datalist>
+                            </div>
+                            <div style="display:inline-block; vertical-align: top !important;">
+                                &nbsp; &nbsp; Highest (top of the list)
+                            </div>
+                        </div>
+                        <div style="display: inline-block; float: inline-end; vertical-align: top !important;">
+                            <partial name="_FormInlineQuestion" model="@priorityExplanation" />
+                        </div>
                     </div>
                     <div>
                         <span asp-validation-for="PrioritySetter" class="text-danger"></span>
@@ -64,7 +106,7 @@
                 {
                     <div class="mb-3">
                         <label asp-for="YearGroupUserLinks" class="control-label required"></label>
-                        
+
                         <div class="d-flex" style="flex-wrap: wrap !important">
                             @for (int i = 0; i < Model.YearGroupUserLinks.Count; i++)
                             {
@@ -84,7 +126,7 @@
                                     <span class="@labelClass">@link.GiftingGroupName</span>
                                     <text>&nbsp;</text>
                                     <input type="checkbox" class="apply-group-checkbox" asp-for="YearGroupUserLinks[i].ApplyToGroup"
-                                        data-included="@link.Included" data-group="@link.GiftingGroupName" />
+                                           data-included="@link.Included" data-group="@link.GiftingGroupName" />
 
                                     @if (i < Model.YearGroupUserLinks.Count - 1)
                                     {
