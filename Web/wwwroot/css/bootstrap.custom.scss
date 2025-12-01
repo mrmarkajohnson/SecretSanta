@@ -28,12 +28,16 @@ $green-gold-glow-solid: #fdfff8;
 $grey-blue-glow: #9999ff10;
 $white-half-opaque: #ffffff99;
 
+$gold-gradient: radial-gradient(ellipse farthest-corner at right bottom, #bb885588 0%, #eeaa5588 8%, #ffcc5588 30%, #ffff6688 50%, transparent 70%), radial-gradient(ellipse farthest-corner at left top, #bb992288 0%, #ccaa3388 8%, #eebb6688 25%, #ffffcc88 55%, #ffffff88 100%);
+
 $btn-box-shadow: $primary-shadow-1 0 2px 4px, $primary-shadow-2 0 5px 9px -3px, $primary 0 -3px 0 inset;
 $purple-box-shadow: $purple-700 0 1px 2px, $purple-500 0 3px 5px -3px, $purple 0 -2px 0 inset;
 $purple-box-shadow-light: $purple-400 0 1px 2px, $purple-200 0 2px 4px -2px, $purple-300 0 -2px 0 inset;
+$gold-box-shadow: $gold-glow 0 2px 4px, $gold 0 3px 6px -2px, $gold-background 0 3px 0;
 
 $gold-text-shadow: -1.5px -1.5px 0 $gold-glow, 1px 0 0 $gold-glow, -1.5px 1.5px 0 $gold-glow, 1px 1px 0 $gold-glow, 
         0.1px 0 $grey, 0 0.1px $grey, -0.1px 0 $grey, 0 -0.1px $grey;
+
 $green-gold-text-shadow: -1px -1px 0 $green-gold-glow, 1px 0 0 $gold-glow, -1px 0 0 $green-gold-glow, 1px 0 0 $green-gold-glow;
 $grey-blue-text-shadow: -1px -1px 0 $grey-blue-glow, 1px 0 0 $grey-blue-glow, -1px 0 0 $grey-blue-glow, 1px 1px 0 $grey-blue-glow;
 $red-text-shadow: 1px 1px $secondary;
@@ -583,6 +587,20 @@ table tr td {
     color: $grey !important;
 }
 
+.card.santa-card {
+    background-color: #ffffff66;
+    border-color: $purple-background;
+    border-width: 0.5px !important;
+    box-shadow: $purple-box-shadow-light;
+}
+
+.card.santa-card .card-header {
+    background: $gold-gradient; 
+    border-color: $purple-background;
+    border-width: 0.5px !important;
+    box-shadow: $purple-box-shadow-light;
+}
+
 .card a {
     color: $blue;
     text-decoration: none !important;
@@ -593,6 +611,17 @@ table tr td {
     font-weight: 400;
     text-shadow: $grey-blue-text-shadow;
     text-decoration: underline !important;
+}
+
+.highlights {
+    margin: 12px 12px 18px 12px;
+    background: $gold-gradient !important;
+    border: 1px double #ffcc77 !important;
+    box-shadow: $gold-box-shadow;
+}
+
+.highlights p {
+    margin: 4px 0 4px 0 !important;
 }
 
 //region snow

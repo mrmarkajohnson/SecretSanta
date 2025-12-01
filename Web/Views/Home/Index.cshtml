@@ -4,7 +4,7 @@
 @inject SignInManager<IdentityUser> _signInManager
 @inject UserManager<IdentityUser> _userManager
 
-@model HomeVm
+@model HomePageVm
 @{
     ViewData["Title"] = "Home Page";
 
@@ -49,9 +49,14 @@
                     <section style="margin: 0 12px 12px 12px">
                         <partial name="_ConfirmEmailWarning" model="Model.CurrentUser" />
                     </section>
-                }
 
-                <partial name="_HomePageCards" />
+                    @if (Model.ShowHighlights)
+                    {
+                        <partial name="_Highlights" />
+                    }
+
+                    <partial name="_HomePageCards" />
+                }
             </div>
         </div>
     }
@@ -84,7 +89,7 @@ else
                 </div>
             }
 
-            <div class="card mt-3">
+            <div class="card santa-card mt-4">
                 <div class="card-header">
                     <h2>About Secret Santa</h2>
                 </div>

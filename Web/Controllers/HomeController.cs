@@ -1,4 +1,6 @@
 ﻿using Application.Areas.GiftingGroup.Queries;
+using Application.Areas.Home.Actions;
+using Application.Areas.Home.ViewModels;
 using Application.Shared.ViewModels;
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
@@ -15,6 +17,13 @@ public sealed class HomeController : BaseController
 
     public async Task<IActionResult> Index(string? successMessage = null, string? invitationId = null)
     {
+        var model = Mapper.Map<HomePageVm>(HomeModel);
+        
+        if (SignedIn())
+        {
+            await Send(new AddHighlightsCountsAction(model));
+        }
+
         string? invitationWaitMessage = null;
 
         if (invitationId.IsNotEmpty())
@@ -47,14 +56,14 @@ public sealed class HomeController : BaseController
         if (invitationWaitMessage.IsNotEmpty())
         {
             invitationWaitMessage += " You can review it after logging in or registering.";
-            HomeModel.InvitationWaitMessage = invitationWaitMessage;
+            model.InvitationWaitMessage = invitationWaitMessage;
         }
 
-        HomeModel.SuccessMessage = successMessage;         
-        HomeModel.InvitationError = TempData[TempDataNames.InvitationError]?.ToString();
+        model.SuccessMessage = successMessage;
+        model.InvitationError = TempData[TempDataNames.InvitationError]?.ToString();
         TempData.Remove(TempDataNames.InvitationError); // just in case
         
-        return View(HomeModel);
+        return View(model);
     }
 
     public IActionResult About()

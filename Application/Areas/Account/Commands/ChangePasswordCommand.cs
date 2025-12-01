@@ -37,6 +37,7 @@ public sealed class ChangePasswordCommand<TItem> : ChangePasswordBaseCommand<TIt
                 else
                 {
                     await ChangePassword(dbCurrentUser);
+                    return await SaveAndReturnSuccess();
                 }
             }
             else

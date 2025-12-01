@@ -36,7 +36,7 @@ public sealed class GetPossibleMessageRecipientsQuery : GetMessagesBaseQuery<ILi
     protected override Task<IList<Santa_User>> Handle()
     {
         IList<Santa_User> dbRecipients = GetPossibleRecipients(_dbGiftingGroupYear, _dbSender, _replyToMessageKey, 
-            _recipientType, _specificGroupMemberKey, true);
+            _recipientType, fromSanta: false, _specificGroupMemberKey, checkReplySecurity: true);
 
         return Result(dbRecipients);
     }

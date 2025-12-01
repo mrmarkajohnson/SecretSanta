@@ -16,7 +16,15 @@ public sealed class LoginQuery : BaseQuery<SignInResult>
     protected async override Task<SignInResult> Handle()
     {
         HashedUser hashedId = await Send(new GetHashedIdQuery(_item.EmailOrUserName, false));
-        SignInResult result = await SignInManager.PasswordSignInAsync(hashedId.UserNameHash, _item.Password, _item.RememberMe, lockoutOnFailure: true);
+
+        bool isEmail = EmailHelper.IsEmail(_item.EmailOrUserName);
+
+        var dbGlobalUser = DbContext.Global_Users.FirstOrDefault(x => hashedId.UserNameHash != null && x.UserName == hashedId.UserNameHash) 
+            ?? DbContext.Global_Users.FirstOrDefault(x => isEmail && x.Email != null && x.Email == hashedId.EmailHash);
+
+        SignInResult result = await SignInManager.PasswordSignInAsync(dbGlobalUser?.NormalizedUserName ?? hashedId.UserNameHash, 
+            _item.Password, _item.RememberMe, lockoutOnFailure: true);
+
         return result;
     }
 }

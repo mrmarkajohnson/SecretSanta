@@ -47,14 +47,19 @@ public class BaseController : Controller
     {
         HomeModel ??= new HomeVm();
 
-        try
+        if (SignedIn())
         {
-            HomeModel.CurrentUser = await GetCurrentUser(true);
-            HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
-            HomeModel.GroupInvitations = await Send(new GetGroupInvitationsCountQuery());
+            try
+            {
+                HomeModel.CurrentUser = await GetCurrentUser(true);
+                HomeModel.GiftingGroups = await Send(new GetUserGiftingGroupsQuery());
+
+                var groupInvitations = await Send(new GetGroupInvitationsQuery());
+                HomeModel.GroupInvitationsCount = groupInvitations.Count();
+            }
+            catch (NotSignedInException) { }
+            catch (AccessDeniedException) { }
         }
-        catch (NotSignedInException) { }
-        catch (AccessDeniedException) { }
     }
 
     protected async Task<ISantaUser> GetCurrentUser(bool unHashIdentification)

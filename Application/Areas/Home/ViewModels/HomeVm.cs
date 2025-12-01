@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.Home.ViewModels;
 
-public sealed class HomeVm : BasePageVm
+public class HomeVm : BasePageVm
 {
     public HomeVm()
     {
@@ -13,8 +13,10 @@ public sealed class HomeVm : BasePageVm
 
     public ISantaUser? CurrentUser { get; set; }
     public IList<IUserGiftingGroup> GiftingGroups { get; set; }
-    public int NewJoinerApplications => GiftingGroups?.Sum(x => x.NewApplications) ?? 0;
-    public int GroupInvitations { get; set; }
+
+    public int NewJoinerApplicationsCount => GiftingGroups?.Sum(x => x.NewApplications) ?? 0;
+    public int GroupInvitationsCount { get; set; }
+    
     public string? InvitationWaitMessage { get; set; }
     public string? InvitationError { get; set; }
 }

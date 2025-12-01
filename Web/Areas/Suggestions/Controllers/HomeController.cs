@@ -41,6 +41,11 @@ public class HomeController : BaseController
     {
         var suggestion = await Send(new ManageSuggestionQuery(null, giftingGroupKey));
         var model = Mapper.Map<ManageSuggestionVm>(suggestion);
+        model.Priority = 3;
+
+        if (model.YearGroupUserLinks.Count == 1)
+            model.YearGroupUserLinks[0].ApplyToGroup = true;
+
         return View("ManageSuggestion", model);
     }
 

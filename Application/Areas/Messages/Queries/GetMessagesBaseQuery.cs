@@ -74,15 +74,15 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 
     protected bool IsIndirectRecipient(Santa_User dbSantaUser, Santa_Message dbOriginalMessage)
     {
-        return dbOriginalMessage.RecipientType.AllowsFutureViewing()
+        return dbOriginalMessage.RecipientType.AllowsFutureViewing(dbOriginalMessage.ShowAsFromSanta)
             && !dbOriginalMessage.Recipients.Any(x => x.RecipientSantaUserKey == dbSantaUser.SantaUserKey)
-            && GetPossibleRecipients(dbOriginalMessage).Any(z => z.SantaUserKey == dbSantaUser.SantaUserKey);
+            && GetPossibleIndirectRecipients(dbOriginalMessage).Any(z => z.SantaUserKey == dbSantaUser.SantaUserKey);
     }
 
     #region Possible recipients
 
     protected IList<Santa_User> GetPossibleRecipients(Santa_GiftingGroupYear? dbGiftingGroupYear, Santa_User dbSender,
-        int? replyToMessageKey, MessageRecipientType recipientType, int? specificSantaUserKey, bool checkReplySecurity)
+        int? replyToMessageKey, MessageRecipientType recipientType, bool fromSanta, int? specificSantaUserKey, bool checkReplySecurity)
     {
         IEnumerable<Santa_User> dbPossibleRecipients = recipientType switch // may include the current user, who is removed below
         {
@@ -91,9 +91,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             MessageRecipientType.GroupAdmins
                 => GetGroupAdmins(dbSender, dbGiftingGroupYear),
             MessageRecipientType.GiftRecipient
-                => GetRecipient(dbSender, dbGiftingGroupYear),
+                => GetRecipient(dbSender, dbGiftingGroupYear, fromSanta),
             MessageRecipientType.Gifter
-                => GetGifter(dbSender, dbGiftingGroupYear),
+                => GetGifter(dbSender, dbGiftingGroupYear, fromSanta),
             MessageRecipientType.YearGroupCurrentMembers or MessageRecipientType.YearGroupAllEverMembers
                 => GetParticipatingSantaUsers(dbGiftingGroupYear),
             MessageRecipientType.GroupCurrentMembers or MessageRecipientType.GroupAllEverMembers
@@ -119,10 +119,10 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         return dbRecipients;
     }
 
-    private IList<Santa_User> GetPossibleRecipients(Santa_Message dbMessage)
+    private IList<Santa_User> GetPossibleIndirectRecipients(Santa_Message dbMessage)
     {
         return GetPossibleRecipients(dbMessage.GiftingGroupYear, dbMessage.Sender, dbMessage.ReplyToMessage?.MessageKey,
-            dbMessage.RecipientType, dbMessage.Recipients.FirstOrDefault()?.RecipientSantaUserKey, false);
+            dbMessage.RecipientType, dbMessage.ShowAsFromSanta, dbMessage.Recipients.FirstOrDefault()?.RecipientSantaUserKey, checkReplySecurity: false);
     }
 
     private IEnumerable<Santa_User> GetSystemAdmins(Santa_User dbSender)
@@ -138,16 +138,22 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             .Select(x => x.SantaUser) ?? [];
     }
 
-    private static IEnumerable<Santa_User> GetRecipient(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetRecipient(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear, bool fromSanta)
     {
+        if (fromSanta)
+            return [];
+
         return GetParticipants(dbGiftingGroupYear)
             .Where(x => x.SantaUserKey == dbSender.SantaUserKey)
             .Where(x => x.RecipientSantaUser != null)
             .Select(x => x.RecipientSantaUser);
     }
 
-    private static IEnumerable<Santa_User> GetGifter(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
+    private static IEnumerable<Santa_User> GetGifter(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear, bool fromSanta)
     {
+        if (fromSanta)
+            return [];
+        
         return GetParticipants(dbGiftingGroupYear)
             .Where(x => x.RecipientSantaUserKey == dbSender.SantaUserKey)
             .Select(x => x.SantaUser);

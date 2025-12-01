@@ -18,6 +18,11 @@ public sealed class ResetPasswordCommand<TItem> : ChangePasswordBaseCommand<TIte
         if (dbGlobalUser != null && Item.Password.IsNotEmpty())
         {
             await ChangePassword(dbGlobalUser);
+
+            if (Success)
+            {
+                return await SaveAndReturnSuccess();
+            }
         }
         else
         {

@@ -81,10 +81,10 @@ public static class MessageHelper
         return recipientType == MessageRecipientType.SingleGroupMember;
     }
 
-    public static bool AllowsFutureViewing(this MessageRecipientType recipientType)
+    public static bool AllowsFutureViewing(this MessageRecipientType recipientType, bool fromSanta)
     {
         return recipientType.ToString().Contains("AllEver")
-            || recipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter;
+            || (!fromSanta && recipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter);
     }
 
     public static string FutureLabel(this MessageRecipientType recipientType, MessageRecipientType? originalType = null)

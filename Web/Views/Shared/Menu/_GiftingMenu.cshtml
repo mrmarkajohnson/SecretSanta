@@ -20,7 +20,7 @@
             </a>
         </li>
 
-        @if (Model?.HomeModel.GroupInvitations > 0)
+        @if (Model?.HomeModel.GroupInvitationsCount > 0)
         {
             <li>
                 <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="GroupInvitations">
@@ -37,7 +37,7 @@
 
         @if (giftingGroups?.Any() == true)
         {
-            @if (Model?.HomeModel.NewJoinerApplications > 0)
+            @if (Model?.HomeModel.NewJoinerApplicationsCount > 0)
             {
                 <li>
                     <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinerApplications">

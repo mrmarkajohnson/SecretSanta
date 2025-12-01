@@ -32,6 +32,7 @@ Add robin and santa images
 Allow users to turn off or change speed of snow
 
 GIFTING GROUPS
+* Allow users to leave a group - e.g. from the year page (participate)
 Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names?
 Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
@@ -52,9 +53,11 @@ Add user postal and e-mail address functionality for sending and receiving gifts
 Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
-* Mark messages as important when sending
-* Show the sender's name when replying, and when viewing replies
+* Allow users to mark messages as important when sending
+* Show the sender's name when replying, and when viewing replies (done??)
 * Show actual recipients when viewing, from an 'i' symbol, except when it's the gifter/recipient (or it's obvious)
+* Allow archiving messages
+* Allow marking as read and archiving from the list
 Save draft
 Use the modal version for writing messages from the index or sent pages?
 Add other standard messages e.g. 
@@ -68,7 +71,7 @@ Add automatic message options, e.g.
 - report bug/issue
 - report abuse
 Link messages to the thing they relate to, so they can be updated or archived when things change using standard templates (at least until read)
-Show if a message has changed, or it's no longer relevant
+Then show if a message has changed, or it's no longer relevant
 Forwarding?
 
 SUGGESTIONS
