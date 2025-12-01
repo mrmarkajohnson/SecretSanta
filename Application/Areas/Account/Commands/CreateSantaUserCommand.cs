@@ -49,6 +49,8 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
             await SetUserName(dbGlobalUser);
             await StoreEmailAddress(dbGlobalUser, originalEmail);
 
+            HandleOpenInvitations(dbGlobalUser, dbSantaUser);
+
             Item.Password = string.Empty;
             await DbContext.SaveChangesAsync();
             Success = true;
@@ -78,5 +80,27 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
         }
 
         return await Result();
+    }
+
+    private void HandleOpenInvitations(Global_User dbGlobalUser, Santa_User dbSantaUser)
+    {
+        if (dbGlobalUser.Email != null)
+        {
+            try
+            {
+                var dbOpenInvitations = DbContext.Santa_Invitations
+                    .Where(x => x.DateArchived == null && x.ToSantaUserKey == null)
+                    .Where(x => x.ToName != null && x.ToEmailAddress != null && (x.ToEmailAddress == dbGlobalUser.Email)) // both e-mail addresses are hashed
+                    .Where(x => x.ToName.Trim().ToLower() == dbGlobalUser.Forename.Trim().ToLower()
+                        || (dbGlobalUser.PreferredFirstName != null && x.ToName.Trim().ToLower() == dbGlobalUser.PreferredFirstName.Trim().ToLower()))
+                    .ToList();
+
+                foreach (Santa_Invitation dbInvitation in dbOpenInvitations)
+                {
+                    dbInvitation.ToSantaUser = dbSantaUser;
+                }
+            }
+            catch { }
+        }
     }
 }
