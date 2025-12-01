@@ -173,7 +173,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
             HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
             MessageText = GetMessageText(dbInvitation, true),
             Important = true,
-            CanReply = true,
+            CanReply = false,
             ShowAsFromSanta = true
         };
 
@@ -198,7 +198,7 @@ public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where
                 HeaderText = $"You have been invited to join '{dbInvitation.GiftingGroup.Name}'",
                 MessageText = GetMessageText(dbInvitation, false),
                 Important = true,
-                CanReply = true,
+                CanReply = false,
                 ShowAsFromSanta = true
             };
 
