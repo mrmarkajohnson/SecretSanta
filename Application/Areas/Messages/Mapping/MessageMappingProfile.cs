@@ -53,6 +53,7 @@ public sealed class MessageMappingProfile : Profile
             .ForMember(dest => dest.MessageKey, opt => opt.MapFrom(src => src.MessageKey))
             .ForMember(dest => dest.Sent, opt => opt.MapFrom(src => src.DateCreated))
             .ForMember(dest => dest.ShowAsFromSanta, opt => opt.MapFrom(src => src.ShowAsFromSanta
+                || src.RecipientType == MessageRecipientType.Gifter
                 || src.RecipientType == MessageRecipientType.GiftRecipient))
             .ForMember(dest => dest.RecipientType, opt => opt.MapFrom(src => src.RecipientType))
             .ForMember(dest => dest.UseSpecificRecipient, opt => opt.MapFrom(src => src.Recipients.Count() == 1

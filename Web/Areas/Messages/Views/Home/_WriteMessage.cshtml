@@ -2,10 +2,11 @@
 @using static Global.Settings.MessageSettings
 
 @model WriteMessageVm
-@{    
+@{
     string selectGroupExplanation = "You can only message members in one of your groups. Please select the group first.";
     string headerExplanation = "Give your message a short subject";
     string textExplanation = "Write the main part of your message here.";
+    string fromSanta = "This message will be shown as from santa, so the recipient won't know who you are. Take care not to give it away!";
 }
 
 <partial name="_FormHiddenInputs" />
@@ -77,6 +78,10 @@
                 
                 <div class="message-recipient-section">
                     <partial name="_ChooseMessageRecipient" />
+                </div>
+
+                <div class="from-santa collapse mb-4">
+                    <partial name="_PageInfo" model="@fromSanta" />
                 </div>
 
                 <div class="mb-3">

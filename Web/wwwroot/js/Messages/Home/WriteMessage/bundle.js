@@ -90,6 +90,15 @@ function initRecipientSection(form) {
                 specificRecipientSection.classList.remove('collapse');
             }
             else {
+                let fromSanta = selectedOption.getAttribute('data-from-santa');
+                let fromSantaSection = form.querySelector('.from-santa');
+
+                if (isTrueValue(fromSanta)) {
+                    fromSantaSection.classList.remove('collapse');
+                } else {
+                    fromSantaSection.classList.add('collapse');
+                }
+
                 toggleFutureMembers();
             }
 

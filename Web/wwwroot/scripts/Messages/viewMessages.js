@@ -1,6 +1,6 @@
 ﻿window.addEventListener('pageshow', function () {
-    let messageKey = document.getElementById('messageKey').value;
-    let recipientKey = document.getElementById('messageRecipientKey').value;
+    let messageKey = document.getElementById('messageKey')?.value;
+    let recipientKey = document.getElementById('messageRecipientKey')?.value;
 
     if (messageKey > 0) {
         let viewMessageSelector = '.view-message-link[data-message-key="' + messageKey + '"]';

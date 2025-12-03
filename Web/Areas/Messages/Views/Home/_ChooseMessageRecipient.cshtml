@@ -24,7 +24,10 @@
 
                     @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
                     {
+                        bool fromSanta = type is MessageRecipientType.Gifter or MessageRecipientType.GiftRecipient;
+
                         <option value="@type" data-specific="@type.SpecificMember()"
+                            data-from-santa="@fromSanta"
                             data-future-label="@type.FutureLabel(Model.OriginalRecipientType)"
                             data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
 

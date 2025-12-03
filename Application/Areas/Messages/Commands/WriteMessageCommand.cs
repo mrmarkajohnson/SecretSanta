@@ -40,15 +40,13 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             }
         }
 
-        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter;
-
         if (!Validation.IsValid)
             return await Result();
 
         Item.SetActualRecipientType();
 
-        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.PotentialPartner 
-            or MessageRecipientType.SingleNonGroupMember;
+        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter or MessageRecipientType.GiftRecipient 
+            or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember;
         
         var dbMessage = SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
 
