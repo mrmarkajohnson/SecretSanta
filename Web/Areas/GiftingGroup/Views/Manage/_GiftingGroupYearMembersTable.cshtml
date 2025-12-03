@@ -16,12 +16,15 @@
                     <th>
                         <span class="mvc-grid-title">Participating</span>
                     </th>
+                    <th>
+                        <span class="mvc-grid-title">Suggestions</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @for (int i = 0; i < Model.GroupMembers.Count; i++)
                 {
-                    YearGroupUserBase user = Model.GroupMembers[i];
+                    YearGroupUser user = Model.GroupMembers[i];
 
                     <tr>
                         <td>
@@ -45,6 +48,7 @@
                             <span class="text-primary">Yes</span> 
                             <input type="radio" asp-for="GroupMembers[i].Included" value="@true" />
                         </td>
+                        <td>@user.Suggestions</td>
                     </tr>
                 }
             </tbody>

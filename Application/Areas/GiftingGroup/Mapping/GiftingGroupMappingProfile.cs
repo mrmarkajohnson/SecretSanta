@@ -69,26 +69,32 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbolOverride));
         CreateMap<Santa_GiftingGroupYear, IGiftingGroupYear>().As<GiftingGroupYear>();
 
-        CreateMap<Santa_YearGroupUser, YearGroupUserBase>()
-            .IncludeMembers(src => src.SantaUser);
-        CreateMap<Santa_YearGroupUser, IYearGroupUserBase>().As<YearGroupUserBase>();
-
-        CreateMap<Santa_GiftingGroupUser, YearGroupUserBase>()
+        CreateMap<Santa_YearGroupUser, YearGroupUser>()
             .IncludeMembers(src => src.SantaUser)
-            .ForMember(dest => dest.Included, opt => opt.Ignore());
-        CreateMap<Santa_GiftingGroupUser, IYearGroupUserBase>().As<YearGroupUserBase>();
+            .ForMember(dest => dest.Included, opt => opt.MapFrom(src => src.Included))
+            .ForMember(dest => dest.Suggestions, opt => opt.MapFrom(src => src.Suggestions
+                .Where(x => x.DateDeleted == null && x.DateArchived == null)
+                .Count()));
+        CreateMap<Santa_YearGroupUser, IYearGroupUser>().As<YearGroupUser>();
 
-        CreateMap<Santa_User, YearGroupUserBase>()
+        CreateMap<Santa_GiftingGroupUser, YearGroupUser>()
+            .IncludeMembers(src => src.SantaUser)
+            .ForMember(dest => dest.Included, opt => opt.Ignore())
+            .ForMember(dest => dest.Suggestions, opt => opt.Ignore());
+        CreateMap<Santa_GiftingGroupUser, IYearGroupUser>().As<YearGroupUser>();
+
+        CreateMap<Santa_User, YearGroupUser>()
             .IncludeMembers(src => src.GlobalUser)
             .ForMember(dest => dest.SantaUserKey, opt => opt.MapFrom(src => src.SantaUserKey))
-            .ForMember(dest => dest.Included, opt => opt.Ignore());
-        CreateMap<Santa_User, IYearGroupUserBase>().As<YearGroupUserBase>();
+            .ForMember(dest => dest.Included, opt => opt.Ignore())
+            .ForMember(dest => dest.Suggestions, opt => opt.Ignore());
+        CreateMap<Santa_User, IYearGroupUser>().As<YearGroupUser>();
 
-        CreateMap<Global_User, YearGroupUserBase>()
+        CreateMap<Global_User, YearGroupUser>()
             .IncludeBase<Global_User, UserNamesBase>();
-        CreateMap<Global_User, IYearGroupUserBase>().As<YearGroupUserBase>();
+        CreateMap<Global_User, IYearGroupUser>().As<YearGroupUser>();
 
-        CreateMap<IYearGroupUserBase, YearGroupUserBase>();
+        CreateMap<IYearGroupUser, YearGroupUser>();
 
         CreateMap<Santa_GiftingGroupUser, GroupMember>()
             .IncludeMembers(src => src.SantaUser)

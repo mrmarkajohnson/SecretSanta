@@ -37,7 +37,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey, true);
         Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
 
-        foreach (IYearGroupUserBase member in Item.GroupMembers)
+        foreach (IYearGroupUser member in Item.GroupMembers)
         {
             AddOrUpdateUserGroupYear(dbGiftingGroupYear, member.Included, member.SantaUserKey, member.UserDisplayName); // must be done before the next stage
         }
@@ -72,7 +72,7 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
             {
                 foreach (var groupMember in missingGroupMembers)
                 {
-                    Item.GroupMembers.Add(Mapper.Map(groupMember, new YearGroupUserBase()));
+                    Item.GroupMembers.Add(Mapper.Map(groupMember, new YearGroupUser()));
                 }
 
                 AddGeneralValidationError("New members have been added to the group. Please try again.");

@@ -3,7 +3,8 @@ using Global.Abstractions.Shared;
 
 namespace Global.Abstractions.Areas.GiftingGroup;
 
-public interface IYearGroupUserBase : IBasicSantaUser, IUserNamesBase
+public interface IYearGroupUser : IBasicSantaUser, IUserNamesBase
 {
-    public bool? Included { get; set; }
+    bool? Included { get; }
+    int Suggestions { get; }
 }

@@ -36,7 +36,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
 
             var missingGroupMembers = validGroupMembers
                 .Where(x => giftingGroupYear.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false)
-                .Select(x => Mapper.Map(x, new YearGroupUserBase()))
+                .Select(x => Mapper.Map(x, new YearGroupUser()))
                 .ToList();
 
             if (missingGroupMembers.Any())
@@ -51,7 +51,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
             giftingGroupYear.CalendarYear = _year;
 
             giftingGroupYear.GroupMembers = validGroupMembers
-                .Select(x => Mapper.Map(x, new YearGroupUserBase()))
+                .Select(x => Mapper.Map(x, new YearGroupUser()))
                 .ToList();
         }
 

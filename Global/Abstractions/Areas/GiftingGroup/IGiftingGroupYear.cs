@@ -11,7 +11,7 @@ public interface IGiftingGroupYear : IGiftingGroupYearBase
     bool RecalculationRequired { get; set; }
     YearCalculationOption CalculationOption { get; set; }
 
-    IList<IYearGroupUserBase> GroupMembers { get; }
+    IList<IYearGroupUser> GroupMembers { get; }
     string? PreviousYearsWarning { get; set; }
 }
 
