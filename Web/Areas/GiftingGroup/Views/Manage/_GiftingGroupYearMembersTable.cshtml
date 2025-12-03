@@ -30,6 +30,7 @@
                         <td>
                             <span class="hidden">
                                 <input type="hidden" asp-for="GroupMembers[i].SantaUserKey" />
+                                <input type="hidden" asp-for="GroupMembers[i].Suggestions" />
                                 <partial name="_UserHiddenInputs" for="GroupMembers[i]" />
                             </span>
                             <span class="nowrap">@user.UserDisplayName <partial name="_UserInfoCard" model="@user" 
