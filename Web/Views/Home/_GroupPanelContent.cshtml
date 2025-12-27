@@ -11,14 +11,14 @@
     </p>
     <p>
         <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
-            Set Up Group '@Model.GroupName' for @DateTime.Today.Year
+            Set Up Group '@Model.GroupName' for @CurrentYear
         </a>
     </p>
 }
 
 <p>
     <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
-        View '@Model.GroupName' for @DateTime.Today.Year
+        View '@Model.GroupName' for @CurrentYear
     </a>
 </p>
 

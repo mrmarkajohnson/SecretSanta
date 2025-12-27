@@ -40,7 +40,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
     public string? AdditionalFooterButtonPartial { get; }
     public string GroupWidth => IsModal ? ModalGroupWidth : StandardGroupWidth;
 
-    public int CalendarYear { get; set; } = DateTime.Today.Year;
+    public int CalendarYear { get; set; } = CurrentYear;
 
     public IList<ISantaMessage> PreviousMessages { get; set; }
     public IList<ISantaMessage> LaterMessages { get; set; }

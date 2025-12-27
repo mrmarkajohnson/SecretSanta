@@ -3,7 +3,6 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GiftingGroupSettings;
-using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
@@ -37,7 +36,7 @@ public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IF
 
     public string? DefaultCurrency => Cultures?.FirstOrDefault(x => x.Name == CultureInfo)?.CurrencyString;
 
-    public IList<LocationSelectable> Cultures => AvailableCultures
+    public IList<LocationSelectable> Cultures => GlobalSettings.AvailableCultures
         .Select(x => x.CultureLocation())
         .OrderBy(x => x.Location)
         .ToList();
@@ -60,26 +59,26 @@ public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IF
 
     private List<StandardSelectable> GetFirstYearSelection()
     {
-        int thisYear = DateTime.Today.Year;
+        int currentYear = FirstYear <= 0 || FirstYear > GlobalSettings.CurrentYear ? DateTime.Today.Year : GlobalSettings.CurrentYear;
 
-        if (FirstYear > 0 && FirstYear <= thisYear - 2)
+        if (FirstYear > 0 && FirstYear <= currentYear - 2)
             return new List<StandardSelectable> { new(FirstYear, FirstYear.ToString()) };
 
-        if (FirstYear == 0 || FirstYear == thisYear)
+        if (FirstYear <= 0 || FirstYear == currentYear)
         {
             return new List<StandardSelectable>
             {
-                new(thisYear, thisYear.ToString()),
-                new(thisYear - 1, (thisYear - 1).ToString()),
-                new(thisYear - 2, $"{thisYear - 2} or before")
+                new(currentYear, currentYear.ToString()),
+                new(currentYear - 1, (currentYear - 1).ToString()),
+                new(currentYear - 2, $"{currentYear - 2} or before")
             };
         }
         else
         {
             return new List<StandardSelectable>
             {
-                new(thisYear - 1, (thisYear - 1).ToString()),
-                new(thisYear - 2, $"{thisYear - 2} or before")
+                new(currentYear - 1, (currentYear - 1).ToString()),
+                new(currentYear - 2, $"{currentYear - 2} or before")
             };
         }
     }

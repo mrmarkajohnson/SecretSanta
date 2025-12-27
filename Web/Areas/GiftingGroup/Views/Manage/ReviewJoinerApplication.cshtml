@@ -125,7 +125,7 @@
                                 else
                                 {
                                     string info = $"<text>{Model.DisplayFirstName()} will be added to the current year automatically. "
-                                        + $"You can remove {Model.Gender.Indirect()} by editing the group's settings for {DateTime.Today.Year}.</text>";
+                                        + $"You can remove {Model.Gender.Indirect()} by editing the group's settings for {GlobalSettings.CurrentYear}.</text>";
 
                                     <partial name="_PageInfo" model="@info" />
                                 }

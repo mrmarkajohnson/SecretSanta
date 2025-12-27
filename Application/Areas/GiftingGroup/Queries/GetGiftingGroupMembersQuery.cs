@@ -21,7 +21,7 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
 
     protected async override Task<IQueryable<IGroupMember>> Handle()
     {
-        if (_giftingGroupKey == 0)
+        if (_giftingGroupKey <= 0)
         {
             throw new NotFoundException("Gifting Group");
         }

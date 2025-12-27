@@ -37,7 +37,7 @@ public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
         if (dbMemberLink != null && dbMemberLink.DateArchived == null)
         {
             Santa_YearGroupUser? dbCalculateYearLink = dbGiftingGroup.Years
-                .Where(x => x.CalendarYear == DateTime.Today.Year)
+                .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .SelectMany(x => x.Users)
                 .Where(y => y.SantaUserKey == Item.SantaUserKey)
                 .Where(y => y.RecipientSantaUserKey > 0)
@@ -49,7 +49,7 @@ public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
             {
                 AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in this year's 'draw'. " +
                     $"Please first go to " +
-                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {DateTime.Today.Year}", true)} " +
+                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {GlobalSettings.CurrentYear}", true)} " +
                     $"to remove {dbGlobalUser.Gender.Indirect()} from this year, and recalculate givers and receivers.");
             }
             else

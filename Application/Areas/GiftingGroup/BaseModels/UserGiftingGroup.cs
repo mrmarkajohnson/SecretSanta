@@ -8,4 +8,5 @@ public class UserGiftingGroup : IUserGiftingGroup
     public string GroupName { get; set; } = string.Empty;
     public bool GroupAdmin { get; set; }
     public int NewApplications { get; set; }
+    public int CurrentYear { get; set; }
 }

@@ -14,7 +14,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
     public ManageUserGiftingGroupYearQuery(int giftingGroupKey, int? calendarYear = null)
     {
         GiftingGroupKey = giftingGroupKey;
-        CalendarYear = calendarYear ?? DateTime.Today.Year;
+        CalendarYear = calendarYear ?? GlobalSettings.CurrentYear;
     }
 
     protected override Task<IManageUserGiftingGroupYear> Handle()

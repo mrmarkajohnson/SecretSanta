@@ -40,18 +40,10 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
 
     private static void AddToCurrentYear(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)
     {        
-        var dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == DateTime.Today.Year);
-        bool alreadyCalculated = dbGiftingGroupYear?.Calculated() ?? false;
+        var dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear >= GlobalSettings.CurrentYear 
+            && x.Users.Any(x => x.SantaUser.DateDeleted == null && x.RecipientSantaUserKey != null));
 
-        if (!alreadyCalculated)
-        {
-            if (dbGiftingGroupYear != null)
-            {
-                alreadyCalculated = dbGiftingGroupYear.Users.Any(x => x.RecipientSantaUserKey != null);
-            }
-        }
-
-        if (!alreadyCalculated && dbGiftingGroupYear != null)
+        if (dbGiftingGroupYear != null)
         {
             dbGiftingGroupYear.Users.Add(new Santa_YearGroupUser
             {

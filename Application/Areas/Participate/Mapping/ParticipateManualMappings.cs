@@ -59,22 +59,22 @@ internal static class ParticipateManualMappings
         manageYear.PreviousRecipientUserId = dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, manageYear.CalendarYear - 2)?.GlobalUserId;
     }
 
-    public static int PreviousYearsRequired(this Santa_User dbSantaUser, Santa_GiftingGroup dbGiftingGroup, int year)
+    public static int PreviousYearsRequired(this Santa_User dbSantaUser, Santa_GiftingGroup dbGiftingGroup, int calendarYear)
     {
         if (dbSantaUser.GiftingGroupYears
-            .Any(x => x.GiftingGroupYear.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey && x.GiftingGroupYear.CalendarYear < year))
+            .Any(x => x.GiftingGroupYear.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey && x.GiftingGroupYear.CalendarYear < calendarYear))
         {
             return 0;
         }
 
-        int maxYears = Math.Max(Math.Min(year - dbGiftingGroup.FirstYear, 2), 0);
+        int maxYears = Math.Max(Math.Min(calendarYear - dbGiftingGroup.FirstYear, 2), 0);
 
-        if (maxYears == 2 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, year - 2) != null)
+        if (maxYears == 2 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, calendarYear - 2) != null)
         {
             maxYears = 1;
         }
 
-        if (maxYears == 1 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, year - 1) != null)
+        if (maxYears == 1 && dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, calendarYear - 1) != null)
         {
             maxYears = 0;
         }

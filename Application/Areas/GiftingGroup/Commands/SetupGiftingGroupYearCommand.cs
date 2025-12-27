@@ -18,24 +18,25 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        if (Item.GiftingGroupKey == 0)
+        if (Item.GiftingGroupKey <= 0)
         {
             throw new NotFoundException($"Gifting Group '{Item.GiftingGroupName}'");
-        }
-
-        if (Item.CalendarYear == 0)
-        {
-            Item.CalendarYear = DateTime.Today.Year;
-        }
-        else if (Item.CalendarYear != DateTime.Today.Year)
-        {
-            throw new ArgumentException($"You cannot set up year {Item.CalendarYear} as it is not the current year."); // TODO: Allow years to continue into January, just in case
         }
 
         _dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser);
 
         Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey, true);
-        Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
+
+        if (Item.CalendarYear <= 0)
+        {
+            Item.CalendarYear = dbGiftingGroup.CurrentYear();
+        }
+        else if (Item.CalendarYear < GlobalSettings.CurrentYear)
+        {
+            throw new ArgumentException($"You cannot set up year {Item.CalendarYear} as it is not the current year.");
+        }
+
+        Santa_GiftingGroupYear? dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup, Item.CalendarYear);
 
         foreach (IYearGroupUser member in Item.GroupMembers)
         {

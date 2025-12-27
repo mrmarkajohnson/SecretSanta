@@ -7,27 +7,27 @@ namespace Application.Areas.GiftingGroup.Queries;
 public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingGroupYear>
 {
     private readonly int _giftingGroupKey;
-    private readonly int _year;
+    private readonly int _calendarYear;
 
-    public SetupGiftingGroupYearQuery(int giftingGroupKey, int? year = null)
+    public SetupGiftingGroupYearQuery(int giftingGroupKey, int? calendarYear = null)
     {
         _giftingGroupKey = giftingGroupKey;
-        _year = year ?? DateTime.Today.Year;
+        _calendarYear = calendarYear ?? GlobalSettings.CurrentYear;
     }
 
     protected async override Task<IGiftingGroupYear> Handle()
     {
-        if (_giftingGroupKey == 0)
+        if (_giftingGroupKey <= 0)
         {
             throw new NotFoundException("Gifting Group");
         }
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == _year);
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == _calendarYear);
 
         GiftingGroupYear giftingGroupYear = new();
-        DateTime firstDayOfNextYear = DateHelper.FirstDayOfNextYear(_year);
+        DateTime firstDayOfNextYear = DateHelper.FirstDayOfNextYear(_calendarYear);
         var validGroupMembers = dbGiftingGroup.ActiveMembers(firstDayOfNextYear);
 
         if (dbGiftingGroupYear != null)
@@ -48,7 +48,7 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
         {
             Mapper.Map(dbGiftingGroup, giftingGroupYear);
 
-            giftingGroupYear.CalendarYear = _year;
+            giftingGroupYear.CalendarYear = _calendarYear;
 
             giftingGroupYear.GroupMembers = validGroupMembers
                 .Select(x => Mapper.Map(x, new YearGroupUser()))

@@ -348,14 +348,14 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
         int groupYearKey = 0;
         int yearGroupUserKey = 0;
 
-        List<int> years = [2022, 2023, 2024];
+        List<int> calendarYears = [2022, 2023, 2024];
 
-        foreach (int year in years)
+        foreach (int calendarYear in calendarYears)
         {
             var giftingYear1 = new Santa_GiftingGroupYear
             {
                 GiftingGroupYearKey = ++groupYearKey,
-                CalendarYear = year,
+                CalendarYear = calendarYear,
                 Limit = 50,
                 GiftingGroupKey = 1,
                 GiftingGroup = giftingGroup1,

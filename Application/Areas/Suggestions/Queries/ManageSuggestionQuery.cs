@@ -1,4 +1,5 @@
 ﻿using Application.Areas.Suggestions.BaseModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
 
@@ -67,7 +68,7 @@ public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
 
     private void AddGroupLink(ManageSuggestion suggestion, Santa_GiftingGroupUser dbGroupUser, bool applyToGroup)
     {
-        int calendarYear = DateTime.Today.Year;
+        int calendarYear = dbGroupUser.GiftingGroup.CurrentYear();
 
         Santa_YearGroupUser? dbYearGroupUser = dbGroupUser.SantaUser.GiftingGroupYears
             .Where(x => x.GiftingGroupYear.DateDeleted == null)

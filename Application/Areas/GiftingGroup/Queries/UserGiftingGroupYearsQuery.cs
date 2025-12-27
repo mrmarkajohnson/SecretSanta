@@ -31,7 +31,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     {
         IEnumerable<Santa_YearGroupUser> dbYearGroupUsers = dbActiveLinks
             .SelectMany(x => x.GiftingGroup.Years
-                .Where(x => x.CalendarYear == DateTime.Today.Year)
+                .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .SelectMany(y => y.Users.Where(u => u.SantaUserKey == dbSantaUser.SantaUserKey)));
 
         return dbYearGroupUsers
@@ -43,7 +43,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberNotSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         return dbActiveLinks
-            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear == DateTime.Today.Year)
+            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);

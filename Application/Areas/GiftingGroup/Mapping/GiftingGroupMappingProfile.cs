@@ -20,7 +20,9 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src =>
                 src.GroupAdmin ? src.GiftingGroup.MemberApplications
                     .Where(x => x.DateArchived == null && x.DateDeleted == null)
-                    .Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0));
+                    .Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0))
+            .ForMember(dest => dest.CurrentYear, opt => opt.MapFrom(src => 
+                src.GiftingGroup.FirstYear > GlobalSettings.CurrentYear ? src.GiftingGroup.FirstYear : GlobalSettings.CurrentYear));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroup>().As<UserGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupApplication, ReviewJoinerApplication>()
@@ -31,8 +33,8 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupKey == src.GiftingGroupKey && x.GroupApplicationKey != src.GroupApplicationKey)
                 .Count()))
-            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.CalendarYear == DateTime.Today.Year)
-                ? src.GiftingGroup.Years.First(x => x.CalendarYear == DateTime.Today.Year).Users.Any(x => x.RecipientSantaUserKey != null)
+            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.CalendarYear >= GlobalSettings.CurrentYear)
+                ? src.GiftingGroup.Years.First(x => x.CalendarYear >= GlobalSettings.CurrentYear).Users.Any(x => x.RecipientSantaUserKey != null)
                 : false))
             .ForMember(dest => dest.Accepted, opt => opt.MapFrom(src => src.Accepted))
             .ForMember(dest => dest.RejectionMessage, opt => opt.MapFrom(src => src.RejectionMessage))

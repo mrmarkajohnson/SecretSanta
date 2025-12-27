@@ -118,14 +118,21 @@ public sealed class HomeController : BaseController
             GiftingGroups = HomeModel.GiftingGroups
         };
 
-        if (model.GiftingGroupKey > 0 && !model.GiftingGroups.Any(x => x.GiftingGroupKey == model.GiftingGroupKey.Value))
+        if (model.GiftingGroupKey > 0)
         {
-            model.GiftingGroupKey = null;
+            if (!model.GiftingGroups.Any(x => x.GiftingGroupKey == model.GiftingGroupKey.Value))
+            {
+                model.GiftingGroupKey = null;
+            }
+            else
+            {
+                model.CalendarYear = model.GiftingGroups.First(x => x.GiftingGroupKey == model.GiftingGroupKey).CurrentYear;
+            }
         }
-
-        if (model.GiftingGroupKey.IsEmpty() && model.GiftingGroups.Count == 1)
+        else if (model.GiftingGroups.Count == 1)
         {
             model.GiftingGroupKey = model.GiftingGroups.First().GiftingGroupKey;
+            model.CalendarYear = model.GiftingGroups.First().CurrentYear;
         }
 
         model.GroupKeyPreset = model.GiftingGroupKey > 0;
@@ -148,7 +155,7 @@ public sealed class HomeController : BaseController
         {
             var groupMembers = (await Send(new GetGiftingGroupMembersQuery(model.GiftingGroupKey.Value, OtherGroupMembersType.MessageRecipients))).ToList();
             model.OtherGroupMembers = groupMembers.Where(x => x.SantaUserKey != HomeModel.CurrentUser?.SantaUserKey).ToList();
-            
+
             model.GroupAdmin = groupMembers.FirstOrDefault(x => x.SantaUserKey == HomeModel.CurrentUser?.SantaUserKey)?.MemberStatus == GroupMemberStatus.Admin;
             // TODO: Process group admins label if the current user is an admin, but there are also other admins
         }
@@ -196,7 +203,7 @@ public sealed class HomeController : BaseController
 
     private async Task SetUpReply(WriteMessageVm model, int replyToMessageKey, bool replyToSentMessage)
     {
-        IReadMessage originalMessage = replyToSentMessage 
+        IReadMessage originalMessage = replyToSentMessage
             ? await Send(new ViewSentMessageQuery(replyToMessageKey))
             : await Send(new ViewMessageQuery(replyToMessageKey));
 
@@ -253,7 +260,7 @@ public sealed class HomeController : BaseController
 
         model.GiftingGroups = HomeModel.GiftingGroups;
         await AddGroupMembers(model);
-        
+
         var commandResult = await Send(new WriteMessageCommand<WriteMessageVm>(model), new WriteMessageVmValidator());
 
         if (commandResult.Success)
@@ -286,7 +293,7 @@ public sealed class HomeController : BaseController
         }
 
         model.SetDisplayRecipientType();
-        model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);        
+        model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);
 
         if (model.IsModal)
         {

@@ -49,7 +49,7 @@ public sealed class ParticipateController : BaseController
 
         if (model.Recipient != null)
         {
-            model.RecipientSuggestions = await GetRecipientSuggestions(giftingGroupKey, model.Recipient.HashedUserId);
+            model.RecipientSuggestions = await GetRecipientSuggestions(giftingGroupKey, model.Recipient.HashedUserId, CurrentYear);
         }
 
         return View("Year", model);
@@ -58,13 +58,13 @@ public sealed class ParticipateController : BaseController
     [HttpGet]
     public async Task<IActionResult> RecipientSuggestionsGrid(int giftingGroupKey, string hashedUserId)
     {
-        RecipientSuggestionsVm model = await GetRecipientSuggestions(giftingGroupKey, hashedUserId);
+        RecipientSuggestionsVm model = await GetRecipientSuggestions(giftingGroupKey, hashedUserId, CurrentYear);
         return PartialView("_RecipientSuggestionsGrid", model);
     }
 
-    private async Task<RecipientSuggestionsVm> GetRecipientSuggestions(int giftingGroupKey, string hashedUserId)
+    private async Task<RecipientSuggestionsVm> GetRecipientSuggestions(int giftingGroupKey, string hashedUserId, int calendarYear)
     {
-        var suggestions = await Send(new GetRecipientSuggestionsQuery(giftingGroupKey, hashedUserId));
+        var suggestions = await Send(new GetRecipientSuggestionsQuery(giftingGroupKey, hashedUserId, calendarYear));
         return new RecipientSuggestionsVm(giftingGroupKey, hashedUserId, suggestions);
     }
 
