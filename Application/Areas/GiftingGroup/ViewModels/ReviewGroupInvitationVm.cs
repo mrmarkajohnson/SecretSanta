@@ -6,7 +6,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class ReviewGroupInvitationVm : ReviewGroupInvitation, IReviewGroupInvitation, IFormVm, IGroupMembersGridVm
+public sealed class ReviewGroupInvitationVm : ReviewGroupInvitation, IReviewGroupInvitation, IFormVm, IGroupMembersGridVm
 {
     public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
     public bool SingleInvitation { get; set; }
@@ -20,7 +20,7 @@ public class ReviewGroupInvitationVm : ReviewGroupInvitation, IReviewGroupInvita
     public string? SuccessMessage { get; set; }
 }
 
-public class ReviewGroupInvitationVmValidator : AbstractValidator<ReviewGroupInvitationVm>
+public sealed class ReviewGroupInvitationVmValidator : AbstractValidator<ReviewGroupInvitationVm>
 {
     public ReviewGroupInvitationVmValidator()
     {

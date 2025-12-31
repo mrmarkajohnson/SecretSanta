@@ -14,6 +14,14 @@
             Set Up Group '@Model.GroupName' for @CurrentYear
         </a>
     </p>
+
+    @if (CurrentYear < DateTime.Today.Year)
+    {
+        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+                asp-route-calendarYear="@DateTime.Today.Year">
+            Set Up Group '@Model.GroupName' for @DateTime.Today.Year
+        </a>
+    }
 }
 
 <p>
@@ -21,6 +29,14 @@
         View '@Model.GroupName' for @CurrentYear
     </a>
 </p>
+
+@if (CurrentYear < DateTime.Today.Year)
+{
+    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+            asp-route-calendarYear="@DateTime.Today.Year">
+        View '@Model.GroupName' for @DateTime.Today.Year
+    </a>
+}
 
 <p>
     <a asp-area="@AreaNames.Suggestions" asp-controller="Home" asp-action="AddSuggestion" asp-route-giftingGroupKey="@Model.GiftingGroupKey">

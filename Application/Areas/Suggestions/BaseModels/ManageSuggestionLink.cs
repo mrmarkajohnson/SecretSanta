@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Suggestions.BaseModels;
 
-public class ManageSuggestionLink : SuggestionYearGroupUserLink, IManageSuggestionLink
+public sealed class ManageSuggestionLink : SuggestionYearGroupUserLink, IManageSuggestionLink
 {
     public int GiftingGroupKey { get; set; }
     public int CalendarYear { get; set; }

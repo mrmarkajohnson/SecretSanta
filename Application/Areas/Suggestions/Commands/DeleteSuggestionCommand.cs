@@ -3,7 +3,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Suggestions.Commands;
 
-public class DeleteSuggestionCommand : BaseCommand<int>
+public sealed class DeleteSuggestionCommand : BaseCommand<int>
 {
     public DeleteSuggestionCommand(int suggestionKey) : base(suggestionKey)
     {

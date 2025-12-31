@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.Suggestions;
 
 namespace Application.Areas.Suggestions.ViewModels;
 
-public class MySuggestionsVm
+public sealed class MySuggestionsVm
 {
     public MySuggestionsVm(IQueryable<ISuggestion> suggestions, IList<IUserGiftingGroup> allGroups)
     {

@@ -20,8 +20,6 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
     protected override Task<IManageUserGiftingGroupYear> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
-        IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
-
         ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
 
         if (dbGroupLinks?.Any() != true)

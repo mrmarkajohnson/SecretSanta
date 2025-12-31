@@ -6,7 +6,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Suggestions.Commands;
 
-public class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : class, IManageSuggestion
+public sealed class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<TItem> where TItem : class, IManageSuggestion
 {
     private string _yearGroupUrl;
 

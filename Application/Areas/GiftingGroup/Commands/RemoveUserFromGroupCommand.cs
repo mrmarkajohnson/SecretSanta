@@ -3,7 +3,7 @@ using Application.Areas.GiftingGroup.Queries.Internal;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
+public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
 {
     public RemoveUserFromGroupCommand(ChangeGroupMemberStatus item, string participateUrl) : base(item)
     {

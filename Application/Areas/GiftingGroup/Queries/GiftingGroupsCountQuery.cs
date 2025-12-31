@@ -1,6 +1,6 @@
 ﻿namespace Application.Areas.GiftingGroup.Queries;
 
-public class GiftingGroupsCountQuery : BaseQuery<int>
+public sealed class GiftingGroupsCountQuery : BaseQuery<int>
 {
     protected override Task<int> Handle()
     {

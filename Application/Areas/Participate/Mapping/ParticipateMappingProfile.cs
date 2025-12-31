@@ -5,7 +5,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.Participate.Mapping;
 
-public class ParticipateMappingProfile : Profile
+public sealed class ParticipateMappingProfile : Profile
 {
 	public ParticipateMappingProfile()
 	{

@@ -20,7 +20,7 @@ using GroupControllers = Web.Areas.GiftingGroup.Controllers;
 
 namespace Web.Controllers;
 
-public class BaseController : Controller
+public abstract class BaseController : Controller
 {
     public BaseController(IServiceProvider services, SignInManager<IdentityUser> signInManager)
     {

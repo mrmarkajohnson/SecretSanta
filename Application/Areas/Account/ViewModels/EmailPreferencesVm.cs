@@ -3,7 +3,7 @@ using Global.Abstractions.ViewModels;
 
 namespace Application.Areas.Account.ViewModels;
 
-public class EmailPreferencesVm : UserEmailDetails, IFormVm
+public sealed class EmailPreferencesVm : UserEmailDetails, IFormVm
 {
     public string? ReturnUrl { get; set; }
     public string SubmitButtonText { get; set; } = "Save";

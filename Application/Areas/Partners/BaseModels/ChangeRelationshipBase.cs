@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Partners.BaseModels;
 
-public class ChangeRelationshipBase : IChangeRelationshipBase
+public abstract class ChangeRelationshipBase : IChangeRelationshipBase
 {
     public ChangeRelationshipBase(string hashedUserId, string manageRelationshipsLink)
     {

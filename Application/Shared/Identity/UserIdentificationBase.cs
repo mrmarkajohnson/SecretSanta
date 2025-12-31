@@ -2,7 +2,7 @@
 
 namespace Application.Shared.Identity;
 
-public class UserIdentificationBase : HasEmailBase, IHashableUserBase
+public abstract class UserIdentificationBase : HasEmailBase, IHashableUserBase
 {
     [Display(Name = UserDisplayNames.UserName)]
     public virtual string? UserName { get; set; }

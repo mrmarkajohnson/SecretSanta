@@ -6,6 +6,13 @@ namespace Application.Areas.GiftingGroup.Queries;
 
 public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGiftingGroupYear>>
 {
+    private readonly int _calendarYear;
+
+    public UserGiftingGroupYearsQuery(int? calendarYear = null)
+    {
+        _calendarYear = calendarYear ?? GlobalSettings.CurrentYear;
+    }
+
     protected override Task<IQueryable<IUserGiftingGroupYear>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
@@ -31,7 +38,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     {
         IEnumerable<Santa_YearGroupUser> dbYearGroupUsers = dbActiveLinks
             .SelectMany(x => x.GiftingGroup.Years
-                .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
+                .Where(x => x.CalendarYear == _calendarYear)
                 .SelectMany(y => y.Users.Where(u => u.SantaUserKey == dbSantaUser.SantaUserKey)));
 
         return dbYearGroupUsers
@@ -43,7 +50,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberNotSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         return dbActiveLinks
-            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
+            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear == _calendarYear)
                 .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider);

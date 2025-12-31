@@ -1,14 +1,15 @@
-﻿@using Global.Abstractions.Areas.Participate
+﻿@using Application.Areas.Participate.ViewModels
+@using Global.Abstractions.Areas.Participate
 @using Web.Extensions
 
-@model IQueryable<IUserGiftingGroupYear>
+@model UserGiftingGroupYearsVm
 @{
     Func<IUserGiftingGroupYear, object> actions =
     @<text>
         @if (item.MemberStatus >= GroupMemberStatus.Joined)
         {
             <a asp-action="Year" asp-controller="Participate" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="View details and participate"
-               data-bs-container="td" asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
+               data-bs-container="td" asp-route-giftingGroupKey="@item.GiftingGroupKey" asp-route-calendarYear="@item.CalendarYear"><i class="fa fa-eye"></i></a>
 
             @if (item.MemberStatus == GroupMemberStatus.Admin)
             {
@@ -55,8 +56,9 @@
         : (item.MemberStatus <= GroupMemberStatus.Rejected ? "text-grey" : "");
 }
 
-@(Html
-    .Grid(Model)
+@(
+Html
+    .Grid(Model.UserGiftingGroupYears)
     .Build(columns =>
     {
         columns.Add(x => x.GiftingGroupName).Titled("Group Name");
@@ -71,7 +73,7 @@
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("GiftingGroupsGrid") ?? "")
+    .UsingUrl(Url.Action("GiftingGroupsGrid", new { calendarYear = Model.CalendarYear }) ?? "")
     .Empty("No active applications found")
     .Id("gifting-groups-grid")
     .Filterable()

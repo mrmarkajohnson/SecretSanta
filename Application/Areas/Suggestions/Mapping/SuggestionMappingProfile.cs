@@ -4,7 +4,7 @@ using Global.Abstractions.Areas.Suggestions;
 
 namespace Application.Areas.Suggestions.Mapping;
 
-public class SuggestionMappingProfile : Profile
+public sealed class SuggestionMappingProfile : Profile
 {
     public SuggestionMappingProfile()
     {
@@ -23,7 +23,9 @@ public class SuggestionMappingProfile : Profile
 
         CreateMap<Santa_Suggestion, ManageSuggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
-            .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks));
+            .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
+                .Where(x => x.DateDeleted == null && x.YearGroupUser.GiftingGroupYear.DateDeleted == null
+                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateDeleted == null)));
         CreateMap<Santa_Suggestion, IManageSuggestion>().As<ManageSuggestion>();
 
         CreateMap<Santa_SuggestionLink, SuggestionYearGroupUserLink>()

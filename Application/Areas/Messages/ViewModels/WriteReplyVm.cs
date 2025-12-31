@@ -3,7 +3,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public class WriteReplyVm : WriteMessageVm
+public sealed class WriteReplyVm : WriteMessageVm
 {
     public WriteReplyVm()
     {

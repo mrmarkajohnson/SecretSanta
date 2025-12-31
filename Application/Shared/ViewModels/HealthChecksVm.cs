@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Shared.ViewModels;
 
-public class HealthChecksVm : IFormVm
+public sealed class HealthChecksVm : IFormVm
 {
     [Display(Name = "Database Server")]
     public string? Server { get; set; }

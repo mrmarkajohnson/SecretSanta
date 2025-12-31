@@ -35,6 +35,16 @@
             </a>
         </li>
 
+        @if (CurrentYear < DateTime.Today.Year)
+        {
+            <li>
+                <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index"
+                        asp-route-calendarYear="@DateTime.Today.Year">
+                    Participate for @CurrentYear
+                </a>
+            </li>
+        }
+
         @if (giftingGroups?.Any() == true)
         {
             @if (Model?.HomeModel.NewJoinerApplicationsCount > 0)
@@ -60,11 +70,32 @@
                         Set Up Group '@giftingGroup.GroupName' for @CurrentYear
                     </a>
                 </li>
+
+                @if (CurrentYear < DateTime.Today.Year)
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey"
+                                asp-route-calendarYear="@DateTime.Today.Year">
+                            Set Up Group '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </li>
+                }
+
                 <li>
                     <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey">
                         View '@giftingGroup.GroupName' for @CurrentYear
                     </a>
                 </li>
+
+                @if (CurrentYear < DateTime.Today.Year)
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey"
+                                asp-route-calendarYear="@DateTime.Today.Year">
+                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </li>
+                }
             }
 
             int position = 0;
@@ -83,6 +114,16 @@
                         View '@giftingGroup.GroupName' for @CurrentYear
                     </a>
                 </li>
+
+                @if (CurrentYear < DateTime.Today.Year)
+                {
+                    <li>
+                        <a class="dropdown-item" asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@giftingGroup.GiftingGroupKey"
+                                asp-route-calendarYear="@DateTime.Today.Year">
+                            View '@giftingGroup.GroupName' for @DateTime.Today.Year
+                        </a>
+                    </li>
+                }
             }
         }
     </ul>

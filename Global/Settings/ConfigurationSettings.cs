@@ -1,6 +1,6 @@
 ﻿namespace Global.Settings;
 
-public class ConfigurationSettings
+public sealed class ConfigurationSettings
 {
     /// <summary>
     /// Server address of the database, relative to the application

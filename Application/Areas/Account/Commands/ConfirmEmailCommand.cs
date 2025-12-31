@@ -1,6 +1,6 @@
 ﻿namespace Application.Areas.Account.Commands;
 
-public class ConfirmEmailCommand : BaseCommand<string>
+public sealed class ConfirmEmailCommand : BaseCommand<string>
 {
     public ConfirmEmailCommand(string item) : base(item)
     {

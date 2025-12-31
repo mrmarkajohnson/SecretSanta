@@ -5,7 +5,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.BaseModels;
 
-public class GroupMember : UserNamesBase, IGroupMember
+public sealed class GroupMember : UserNamesBase, IGroupMember
 {
     public int SantaUserKey { get; set; }
 

@@ -5,7 +5,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : ISendGroupInvitation
+public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : ISendGroupInvitation
 {
     public SendInvitationCommand(TItem item, string reviewUrl) : base(item)
     {

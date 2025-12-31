@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
 namespace Application.Areas.Suggestions.Queries;
 
-public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase>>
+public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase>>
 {
     public int GiftingGroupKey { get; }
     public string HashedUserId { get; }

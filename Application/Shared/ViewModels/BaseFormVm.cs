@@ -2,7 +2,7 @@
 
 namespace Application.Shared.ViewModels;
 
-public class BaseFormVm : BasePageVm, IFormVm
+public abstract class BaseFormVm : BasePageVm, IFormVm
 {
     public virtual string? ReturnUrl { get; set; }
     public virtual string SubmitButtonText { get; set; } = "Save";

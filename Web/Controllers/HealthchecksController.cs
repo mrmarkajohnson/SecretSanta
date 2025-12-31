@@ -11,7 +11,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Web.Controllers;
 
-public class HealthchecksController : BaseController
+public sealed class HealthchecksController : BaseController
 {
     private IConfiguration _configuration;
     private IMailSettings _mailSettings;

@@ -5,7 +5,7 @@ using static Global.Settings.IdentitySettings;
 
 namespace Application.Shared.BaseModels;
 
-public class UserNamesBase : BaseUser, IUserNamesBase
+public class UserNamesBase : BaseUser, IUserNamesBase // can't be abstract as some classes use it as a default
 {
     /// <summary>
     /// Allows middle names or other details to be added when needed, e.g. if two people in a list have the same name

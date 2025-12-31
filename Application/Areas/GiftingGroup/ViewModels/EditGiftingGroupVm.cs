@@ -6,7 +6,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
+public sealed class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
 {
     public OtherGroupMembersType MemberListType => OtherGroupMembersType.EditGroup;
     public bool Exists => GiftingGroupKey > 0;
@@ -50,10 +50,10 @@ public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IF
     public IList<StandardSelectable> FirstYears => GetFirstYearSelection();
     public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
 
-    public virtual string? ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
-    public virtual string SubmitButtonText { get; set; } = "Save";
-    public virtual string SubmitButtonIcon { get; set; } = "fa-save";
+    public string SubmitButtonText { get; set; } = "Save";
+    public string SubmitButtonIcon { get; set; } = "fa-save";
 
     Guid? IGroupMembersGridVm.InvitationGuid => null;
 

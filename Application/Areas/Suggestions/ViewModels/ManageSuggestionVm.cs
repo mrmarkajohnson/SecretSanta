@@ -7,7 +7,7 @@ using static Global.Settings.SuggestionSettings;
 
 namespace Application.Areas.Suggestions.ViewModels;
 
-public class ManageSuggestionVm : ManageSuggestion, IOptionalModalFormVm
+public sealed class ManageSuggestionVm : ManageSuggestion, IOptionalModalFormVm
 {
     [Display(Name = "Priority")]
     public int? PrioritySetter
@@ -50,7 +50,7 @@ public class ManageSuggestionVm : ManageSuggestion, IOptionalModalFormVm
     }
 }
 
-public class ManageSuggestionVmValidator : AbstractValidator<ManageSuggestionVm>
+public sealed class ManageSuggestionVmValidator : AbstractValidator<ManageSuggestionVm>
 {
     public ManageSuggestionVmValidator()
     {

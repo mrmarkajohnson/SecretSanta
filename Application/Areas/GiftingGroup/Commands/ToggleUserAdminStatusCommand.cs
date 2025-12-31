@@ -3,7 +3,7 @@ using Application.Areas.GiftingGroup.Queries.Internal;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ToggleUserAdminStatusCommand : BaseCommand<ChangeGroupMemberStatus>
+public sealed class ToggleUserAdminStatusCommand : BaseCommand<ChangeGroupMemberStatus>
 {
     public ToggleUserAdminStatusCommand(ChangeGroupMemberStatus item) : base(item)
     {

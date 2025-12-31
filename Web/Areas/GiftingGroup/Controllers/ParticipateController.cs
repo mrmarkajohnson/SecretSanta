@@ -4,9 +4,7 @@ using Application.Areas.Participate.Queries;
 using Application.Areas.Participate.ViewModels;
 using Application.Areas.Suggestions.Queries;
 using Application.Areas.Suggestions.ViewModels;
-using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Participate;
-using Global.Settings;
 using Microsoft.AspNetCore.Authorization;
 using static Global.Settings.GlobalSettings;
 
@@ -20,30 +18,40 @@ public sealed class ParticipateController : BaseController
     {
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? calendarYear = null)
     {
-        if (AjaxRequest())
-            return await GiftingGroupsGrid();
+        calendarYear ??= CurrentYear;
 
-        var groups = await Send(new UserGiftingGroupYearsQuery());
-        return View(groups);
+        if (AjaxRequest())
+            return await GiftingGroupsGrid(calendarYear);
+
+        UserGiftingGroupYearsVm model = await GetUserGiftingGroupYearsModel(calendarYear);
+        return View(model);
     }
 
-    public async Task<IActionResult> GiftingGroupsGrid()
+    private async Task<UserGiftingGroupYearsVm> GetUserGiftingGroupYearsModel(int? calendarYear)
     {
-        var groups = await Send(new UserGiftingGroupYearsQuery());
-        return PartialView("_GiftingGroupsGrid", groups);
+        calendarYear ??= CurrentYear;
+        var groups = await Send(new UserGiftingGroupYearsQuery(calendarYear));
+        var model = new UserGiftingGroupYearsVm(calendarYear.Value, groups);
+        return model;
+    }
+
+    public async Task<IActionResult> GiftingGroupsGrid(int? calendarYear = null)
+    {
+        UserGiftingGroupYearsVm model = await GetUserGiftingGroupYearsModel(calendarYear);
+        return PartialView("_GiftingGroupsGrid", model);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Year(int giftingGroupKey)
+    public async Task<IActionResult> Year(int giftingGroupKey, int? calendarYear = null)
     {
-        return await EditYearParticipation(giftingGroupKey);
+        return await EditYearParticipation(giftingGroupKey, calendarYear);
     }
 
-    private async Task<IActionResult> EditYearParticipation(int giftingGroupKey)
+    private async Task<IActionResult> EditYearParticipation(int giftingGroupKey, int? calendarYear = null)
     {
-        IManageUserGiftingGroupYear year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey));
+        IManageUserGiftingGroupYear year = await Send(new ManageUserGiftingGroupYearQuery(giftingGroupKey, calendarYear));
         var model = Mapper.Map<ManageUserGiftingGroupYearVm>(year);
         model.IncludePreviousYears = model.PreviousYearsRequired > 0 && model.OtherMembersSelect.Count > 0;
 

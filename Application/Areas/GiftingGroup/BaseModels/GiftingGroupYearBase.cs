@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.GiftingGroup.BaseModels;
 
-public class GiftingGroupYearBase : IGiftingGroupYearBase
+public abstract class GiftingGroupYearBase : IGiftingGroupYearBase
 {
     public int GiftingGroupKey { get; set; }
     public string GiftingGroupName { get; set; } = string.Empty;
