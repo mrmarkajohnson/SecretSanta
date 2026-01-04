@@ -22,7 +22,7 @@ public sealed class GiftingGroupMappingProfile : Profile
                     .Where(x => x.DateArchived == null && x.DateDeleted == null)
                     .Where(x => !x.Blocked && x.ResponseBySantaUserKey == null).Count() : 0))
             .ForMember(dest => dest.CurrentYear, opt => opt.MapFrom(src => 
-                src.GiftingGroup.FirstYear > GlobalSettings.CurrentYear ? src.GiftingGroup.FirstYear : GlobalSettings.CurrentYear));
+                src.DateCreated.Year > GlobalSettings.CurrentYear ? src.DateCreated.Year : GlobalSettings.CurrentYear));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroup>().As<UserGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupApplication, ReviewJoinerApplication>()

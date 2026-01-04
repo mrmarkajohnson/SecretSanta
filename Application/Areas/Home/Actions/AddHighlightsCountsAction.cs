@@ -29,7 +29,7 @@ public sealed class AddHighlightsCountsAction : BaseAction<HomePageVm>
 
                 var dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks
                     .Where(x => x.DateDeleted == null && x.DateArchived == null)
-                    .Where(x => x.GiftingGroup.FirstYear <= GlobalSettings.CurrentYear);
+                    .Where(x => x.DateCreated.Year <= GlobalSettings.CurrentYear);
 
                 _item.GroupsNotInOrOutCount = dbGroupLinks
                     .Where(x => x.GiftingGroup.Years

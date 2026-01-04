@@ -83,6 +83,6 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 
     public int CurrentYear()
     {
-        return Math.Max(FirstYear, GlobalSettings.CurrentYear);
+        return Math.Max(DateCreated.Year, GlobalSettings.CurrentYear);
     }
 }
