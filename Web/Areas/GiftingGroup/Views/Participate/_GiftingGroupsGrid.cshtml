@@ -14,7 +14,7 @@
             @if (item.MemberStatus == GroupMemberStatus.Admin)
             {
                 <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
-                   data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @GlobalSettings.CurrentYear"
+                   asp-route-calendarYear="@item.CalendarYear" data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @item.CalendarYear"
                    data-bs-container="td"><i class="fa fa-list-check"></i></a>
             }
         }

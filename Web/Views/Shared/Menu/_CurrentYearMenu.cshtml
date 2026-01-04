@@ -1,0 +1,20 @@
+﻿@using Application.Areas.Home.ViewModels
+
+@model MainMenuVm
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var calendarYear = CurrentYear;
+    var giftingGroups = Model?.HomeModel?.GiftingGroups?.Where(x => x.CurrentYear == calendarYear).ToList();
+
+    if (giftingGroups?.Any() == true)
+    {
+        var yearModel = new YearMenuVm
+        {
+            CalendarYear = calendarYear,
+            GiftingGroups = giftingGroups
+        };
+
+        <partial name="Menu/_YearMenu" model="@yearModel" />
+    }
+}

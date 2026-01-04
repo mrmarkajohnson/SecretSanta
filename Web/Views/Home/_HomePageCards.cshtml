@@ -101,7 +101,7 @@
 
                     @if (CurrentYear < DateTime.Today.Year)
                     {
-                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index" asp-rout-calendarYear="@DateTime.Today.Year">
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Index" asp-route-calendarYear="@DateTime.Today.Year">
                             Participate for @DateTime.Today.Year
                         </a>
                     }

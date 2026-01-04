@@ -42,7 +42,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
 
         Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbCurrentSantaUser.SantaUserKey);
 
-        IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
+        IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper, CalendarYear);
 
         if (manageYear == null) // not created yet
         {

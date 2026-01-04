@@ -9,7 +9,8 @@ public sealed class MainMenuVm
     public List<string> LoggedInMenuItems =
     [
         "HelpMenu",
-        "YearMenu",
+        "CurrentYearMenu",
+        "NewYearMenu",
         "MessagesMenu",
         "GiftingMenu",
         "PartnersMenu",

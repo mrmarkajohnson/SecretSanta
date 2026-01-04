@@ -47,9 +47,9 @@ public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberSt
 
             if (dbCalculateYearLink != null)
             {
-                AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in this year's 'draw'. " +
+                AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in {dbCalculateYearLink.GiftingGroupYear.CalendarYear}'s 'draw'. " +
                     $"Please first go to " +
-                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {GlobalSettings.CurrentYear}", true)} " +
+                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {dbCalculateYearLink.GiftingGroupYear.CalendarYear}", true)} " +
                     $"to remove {dbGlobalUser.Gender.Indirect()} from this year, and recalculate givers and receivers.");
             }
             else

@@ -12,7 +12,7 @@ namespace Application.Areas.Participate.Mapping;
 /// </summary>
 internal static class ParticipateManualMappings
 {
-    public static UserGiftingGroupYear ToUserGiftingGroupYear(this Santa_YearGroupUser dbYearGroupUser, IMapper mapper)
+    public static UserGiftingGroupYear ToUserGiftingGroupYear(this Santa_YearGroupUser dbYearGroupUser, IMapper mapper, int? calendarYear)
     {
         var dbGiftingGroupYear = dbYearGroupUser.GiftingGroupYear;
 
@@ -30,13 +30,13 @@ internal static class ParticipateManualMappings
             Limit = dbGiftingGroupYear.Limit,
             CurrencyCode = dbGiftingGroupYear.CurrencyCode ?? dbGiftingGroupYear.GiftingGroup.GetCurrencyCode(),
             CurrencySymbol = dbGiftingGroupYear.CurrencySymbol ?? dbGiftingGroupYear.GiftingGroup.GetCurrencySymbol(),
-            CalendarYear = dbGiftingGroupYear.CalendarYear
+            CalendarYear = calendarYear ?? dbGiftingGroupYear.CalendarYear
         };
     }
 
-    public static ManageUserGiftingGroupYear ToManageUserGiftingGroupYear(this Santa_YearGroupUser dbYearGroupUser, IMapper mapper)
+    public static ManageUserGiftingGroupYear ToManageUserGiftingGroupYear(this Santa_YearGroupUser dbYearGroupUser, IMapper mapper, int? calendarYear)
     {
-        UserGiftingGroupYear userGiftingGroupYear = dbYearGroupUser.ToUserGiftingGroupYear(mapper);
+        UserGiftingGroupYear userGiftingGroupYear = dbYearGroupUser.ToUserGiftingGroupYear(mapper, calendarYear);
         var manageYear = mapper.Map<ManageUserGiftingGroupYear>(userGiftingGroupYear);
         SetPreviousYearDetails(manageYear, dbYearGroupUser.SantaUser, dbYearGroupUser.GiftingGroupYear.GiftingGroup, mapper);
 
