@@ -57,28 +57,28 @@ public sealed class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGr
 
     Guid? IGroupMembersGridVm.InvitationGuid => null;
 
+    public int CurrentYear => FirstYear <= 0 || FirstYear > GlobalSettings.CurrentYear ? DateTime.Today.Year : GlobalSettings.CurrentYear;
+
     private List<StandardSelectable> GetFirstYearSelection()
     {
-        int currentYear = FirstYear <= 0 || FirstYear > GlobalSettings.CurrentYear ? DateTime.Today.Year : GlobalSettings.CurrentYear;
-
-        if (FirstYear > 0 && FirstYear <= currentYear - 2)
+        if (FirstYear > 0 && FirstYear <= CurrentYear - 2)
             return new List<StandardSelectable> { new(FirstYear, FirstYear.ToString()) };
 
-        if (FirstYear <= 0 || FirstYear == currentYear)
+        if (FirstYear <= 0 || FirstYear == CurrentYear)
         {
             return new List<StandardSelectable>
             {
-                new(currentYear, currentYear.ToString()),
-                new(currentYear - 1, (currentYear - 1).ToString()),
-                new(currentYear - 2, $"{currentYear - 2} or before")
+                new(CurrentYear, CurrentYear.ToString()),
+                new(CurrentYear - 1, (CurrentYear - 1).ToString()),
+                new(CurrentYear - 2, $"{CurrentYear - 2} or before")
             };
         }
         else
         {
             return new List<StandardSelectable>
             {
-                new(currentYear - 1, (currentYear - 1).ToString()),
-                new(currentYear - 2, $"{currentYear - 2} or before")
+                new(CurrentYear - 1, (CurrentYear - 1).ToString()),
+                new(CurrentYear - 2, $"{CurrentYear - 2} or before")
             };
         }
     }

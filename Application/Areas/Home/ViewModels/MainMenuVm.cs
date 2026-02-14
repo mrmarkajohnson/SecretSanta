@@ -7,13 +7,13 @@ public sealed class MainMenuVm
     public string DropdownClass => Small ? "dropstart" : string.Empty;
 
     public List<string> LoggedInMenuItems =
-    [
-        "HelpMenu",
+    [        
         "CurrentYearMenu",
         "NewYearMenu",
-        "MessagesMenu",
         "GiftingMenu",
+        "MessagesMenu",
         "PartnersMenu",
+        "HelpMenu",
         "AccountMenu",
     ];
 }

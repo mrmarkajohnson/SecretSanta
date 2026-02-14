@@ -44,7 +44,7 @@ public static class GlobalSettings
         NotSure = 3
     }
 
-    public const int YearChangeMonth = 3;
+    public const int YearChangeMonth = 2;
     public static int CurrentYear = DateTime.Today.Year - (YearChangeMonth > DateTime.Today.Month ? 1 : 0);
 
     public const string CenterFlexWrapContainer = "d-flex flex-wrap text-center justify-content-center align-content-center";

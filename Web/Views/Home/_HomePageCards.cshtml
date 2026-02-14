@@ -15,7 +15,6 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">Manage your login and account details</h5>
-                @* <p class="card-text">Manage your login and account details</p> *@
                 <p>
                     <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="UpdateDetails">
                         Update Your Details
@@ -48,6 +47,26 @@
     <div class="@StandardCardWidth">
         <div class="card">
             <div class="card-header">
+                <span class="fa-solid fa-question fa-border float-start" style="color: #ffffff"></span>Help
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Get information and support</h5>
+                <p>
+                    <a asp-area="" asp-controller="Home" asp-action="About">About Secret Santa</a>
+                </p>
+                <p>
+                    <a asp-area="" asp-controller="Home" asp-action="FAQs">Frequently Asked Questions</a>
+                </p>
+                <p>
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy and Security</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="@StandardCardWidth">
+        <div class="card">
+            <div class="card-header">
                 <span class="fa-solid fa-heart fa-border float-start" style="color: #ff3333"></span>Your Partners
             </div>
             <div class="card-body">
@@ -60,6 +79,32 @@
                 <p>
                     <a asp-area="@AreaNames.Partners" asp-controller="Manage" asp-action="AddRelationship">
                         Add a Relationship
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="@StandardCardWidth">
+        <div class="card">
+            <div class="card-header">
+                <span class="fa-solid fa-envelope fa-border float-start" style="color: #eebb55"></span>Your Messages
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Read and reply to your messages</h5>
+                <p>
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="Index">
+                        Read Your Messages
+                    </a>
+                </p>
+                <p>
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="SentMessages">
+                        Sent Messages
+                    </a>
+                </p>
+                <p>
+                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="WriteMessage">
+                        Write a Message
                     </a>
                 </p>
             </div>
@@ -131,32 +176,6 @@
                         }
                     }
                 }
-            </div>
-        </div>
-    </div>
-
-    <div class="@StandardCardWidth">
-        <div class="card">
-            <div class="card-header">
-                <span class="fa-solid fa-envelope fa-border float-start" style="color: #eebb55"></span>Your Messages
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Read and reply to your messages</h5>
-                <p>
-                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="Index">
-                        Read Your Messages
-                    </a>
-                </p>
-                <p>
-                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="SentMessages">
-                        Sent Messages
-                    </a>
-                </p>
-                <p>
-                    <a asp-area="@AreaNames.Messages" asp-controller="Home" asp-action="WriteMessage">
-                        Write a Message
-                    </a>
-                </p>
             </div>
         </div>
     </div>

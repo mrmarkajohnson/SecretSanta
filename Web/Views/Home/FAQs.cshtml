@@ -9,6 +9,7 @@
 
         <div class="mt-4 mb-4">
             <h2>General questions</h2>
+
             <h3>Can I use Secret Santa for other occasions?</h3>
             <p class="mt-2 mb-4">
                 Not at the moment, sorry. Secret Santa is for life, but it's also just for Christmas.
@@ -43,6 +44,73 @@
             </p>
             <p class="mt-2 mb-4">
                 Huge thanks to my family for being the guinea pigs, especially my wife Monica for all her help and advice.
+            </p>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <h2>How To</h2>
+
+            <h3>Get started</h3>
+            <p class="mt-2">
+                If you don't yet have an account, first <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register">register</a> so Santa knows who you are.
+            </p>
+            <p class="mt-2">
+                You don't have to enter an e-mail address, although if you don't, you won't get e-mails! Don't worry about your information being secure, Santa takes a lot of 
+                care to protect it, as explained in the <a asp-area=@string.Empty asp-controller="Home" asp-action="Privacy">Privacy</a> page.
+            </p>
+            <p class="mt-2">
+                Once registered and logged in, you then need to set some security questions and answers, so you can reset your password if you forget it. You'll go to that page automatically.
+            </p>
+            <p class="mt-2 mb-4">
+                Make sure you remember the answers, and the greeting that appears at the top of the main page!
+            </p>
+
+            <h3>Join a group</h3>
+            <p class="mt-2 mb-4">
+                If someone you know has already created a group, there are three possible ways to join:
+                <ul>
+                    <li>if you've already registered with an e-mail address, a group administrator can send you an invitation, which should automatically link to your account
+                        <ol>
+                            <li>if nothing is blocking your e-mail messages, you'll get an e-mail with a link</li>
+                            <li>otherwise, you'll see a notification when you're logged in, and a link in the 'Groups' menu at the top</li>
+                        </ol>
+                    </li>
+                    <li>
+                        alternatively, a group administrator can tell you the group name and a 'joiner token', which you can enter in the 
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">Apply to Join a Gifting Group</a> page.
+                    </li>
+                </ul>
+            </p>
+
+            <h3>Create a group</h3>
+            <p class="mt-2">
+                To start a new group, go to the <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">Create a New Gifting Group</a>
+                page and follow the instructions there.
+            </p>
+            <p class="mt-2">
+                One you've saved the group, you can edit it and invite other people to join it, using the methods explained in the 'Join a group' section above.
+            </p>
+            <p class="mt-2 mb-4">
+                You'll then need to set up the group for the current year, e.g. to set the spend limit, manage who's included, and (eventually) calculate who is giving to whom.
+                Look out for a 'Set Up Group...' link on the edit page, in the menu or on the homepage.
+            </p>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <h2>Why?</h2>
+
+            <h3>Why do I have to set security questions?</h3>
+            <p class="mt-2 mb-4">
+                These are used to prove who you are if you forget your password, so you can reset it. Santa has made e-mail addresses optional, and some e-mails are blocked
+                by e-mail providers (especially Google) so this is a more reliable and inclusive method.
+            </p>
+            <h3>Why don't I get e-mails?</h3>
+            <p class="mt-2">
+                If you've set your e-mail address but the e-mails aren't coming through, unfortunately that's down to your e-mail provider. Please check all spam and junk folders
+                first, in case they're going there.
+            </p>
+            <p class="mt-2 mb-4">
+                Some providers allow you to 'white-list' an address so it doesn't get blocked in future.  Please search for help on your e-mail provider's site.
             </p>
         </div>
     </div>

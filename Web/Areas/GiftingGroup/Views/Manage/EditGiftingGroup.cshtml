@@ -168,10 +168,22 @@
                                 <partial name="_GiftingGroupMembersGrid" />
                             </div>                        
                         </div>
-                    
-                        <a class="modal-link" href="javascript:void(0);" 
-                            data-url="@Url.Action(Context, "SendGroupInvitation", "Manage", AreaNames.GiftingGroup, new { giftingGroupKey = Model.GiftingGroupKey })" 
-                            data-toggle="tooltip" data-bs-container="a" title="Invite someone to join the group">Invite a group member</a>
+
+                        <div class="row @CenterFlexNoWrapContainer mt-4">
+                            <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
+                                <div>
+                                    <a class="modal-link" href="javascript:void(0);"
+                                        data-url="@Url.Action(Context, "SendGroupInvitation", "Manage", AreaNames.GiftingGroup, new { giftingGroupKey = Model.GiftingGroupKey })" 
+                                        data-toggle="tooltip" data-bs-container="a" title="Invite someone to join the group">Invite a group member</a>
+                                </div>
+                                <div>
+                                    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+                                            asp-route-calendarYear="@Model.CurrentYear">
+                                        Set Up for @Model.CurrentYear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
 

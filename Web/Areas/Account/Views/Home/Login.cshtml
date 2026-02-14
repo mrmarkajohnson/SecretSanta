@@ -80,7 +80,6 @@
         </div>
 
         <div class="row @CenterFlexNoWrapContainer">
-
             <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
                 <div>
                     <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" data-toggle="tooltip" title="Register">Don't have an account?</a>
@@ -88,12 +87,8 @@
                 <div>
                     <a asp-area="@AreaNames.Account" asp-controller="Home" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl" data-toggle="tooltip" title="Reset Your Password">Forgot your password?</a>
                 </div>
-
-                @* <div>
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                </div> *@
             </div>
-
         </div>
+
     </form>
 </section>
