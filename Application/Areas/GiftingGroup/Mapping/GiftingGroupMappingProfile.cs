@@ -10,7 +10,10 @@ public sealed class GiftingGroupMappingProfile : Profile
 {
     public GiftingGroupMappingProfile()
     {
-        CreateMap<Santa_GiftingGroup, CoreGiftingGroup>();
+        CreateMap<Santa_GiftingGroup, CoreGiftingGroup>()
+            .ForMember(x => x.FirstYear, opt => opt.MapFrom(src => src.FirstYear == 0 && src.DateCreated.Year < DateTime.Now.Year 
+                ? src.DateCreated.Year
+                : src.FirstYear));
         CreateMap<Santa_GiftingGroup, IGiftingGroup>().As<CoreGiftingGroup>();
 
         CreateMap<Santa_GiftingGroupUser, UserGiftingGroup>()
