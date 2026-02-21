@@ -1,7 +1,14 @@
-﻿@inject SignInManager<IdentityUser> _signInManager
+﻿@using Global.Settings
+
+@inject SignInManager<IdentityUser> _signInManager
+@inject IConfiguration _configuration
+
+@model HomeVm
 @{
     ViewData["Title"] = "FAQs";
     bool signedIn = _signInManager.IsSignedIn(User);
+    string fromAddress = _configuration[ConfigurationSettings.EmailFromAddress];
+    bool emailConfirmationNeeded = Model?.EmailConfirmationNeeded == true;
 }
 
 <section class="@CenterFlexWrapContainer">
@@ -149,11 +156,32 @@
 
             <h3>Why don't I get e-mails?</h3>
             <p class="mt-2">
-                If you've set your e-mail address but the e-mails aren't coming through, unfortunately that's down to your e-mail provider. Please check all spam and junk folders
+                If you've set your e-mail address but the e-mails aren't coming through (including the confirmation request), unfortunately that's down to your e-mail provider. Please check all spam and junk folders
                 first, in case they're going there.
             </p>
-            <p class="mt-2 mb-4">
+            <p class="mt-2">
                 Some providers allow you to 'white-list' an address so it doesn't get blocked in future.  Please search for help on your e-mail provider's site.
+                You need to allow the address <b><i>@fromAddress</i></b>. Then try 
+                @if (emailConfirmationNeeded)
+                {
+                    <text>
+                        <a asp-action="SendEmailConfirmation" asp-controller="Manage" asp-area="@AreaNames.Account">resending the confirmation e-mail</a>.
+                    </text>
+                }
+                else
+                {
+                    <text>resending the confirmation e-mail, if you get a message saying your e-mail hasn't been confirmed.</text>
+                }
+            </p>
+            <p class="mt-2">
+                For GMail, go to Settings -> See All Settings -> Filters and Blocked Addresses -> Create a new filter. Enter the e-mail address above, click 'Create Filter' 
+                and then tick "Never send it to Spam".
+            </p>
+            <p class="mt-2">
+                The above methods should work even if the e-mail don't actually appear in your spam folder. More details are in <a href="https://youtu.be/g_KxDz9KJpY" target="_blank">this YouTube video</a>.
+            </p>
+            <p class="mt-2 mb-4">
+                For Yahoo, add the address above as a contact. If e-mails then go to your spam folder, find one and click 'More' -> 'Not Spam', and future e-mails should go to your inbox.
             </p>
 
             <h3>Why can't I pick a group to join from a list?</h3>

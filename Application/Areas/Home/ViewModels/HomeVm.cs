@@ -19,4 +19,6 @@ public class HomeVm : BasePageVm
     
     public string? InvitationWaitMessage { get; set; }
     public string? InvitationError { get; set; }
+
+    public bool EmailConfirmationNeeded => CurrentUser?.EmailConfirmed == false && CurrentUser.Email.IsNotEmpty();
 }

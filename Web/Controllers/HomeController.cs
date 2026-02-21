@@ -73,7 +73,7 @@ public sealed class HomeController : BaseController
 
     public IActionResult FAQs()
     {
-        return View();
+        return View(HomeModel);
     }
 
     public IActionResult Privacy()
