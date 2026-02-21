@@ -1,5 +1,7 @@
-﻿@{
+﻿@inject SignInManager<IdentityUser> _signInManager
+@{
     ViewData["Title"] = "FAQs";
+    bool signedIn = _signInManager.IsSignedIn(User);
 }
 
 <section class="@CenterFlexWrapContainer">
@@ -17,7 +19,7 @@
 
             <h3>Is Secret Santa secure? Will it protect my data?</h3>
             <p class="mt-2 mb-4">
-                Santa has put a lot of effort into keeping your information safe. Please see the <a href="@Url.Action("FAQs")">Privacy</a> page.
+                Santa has put a lot of effort into keeping your information safe. Please see the <a href="@Url.Action("Privacy")">Privacy</a> page.
             </p>
 
             <h3>Does it cost anything?</h3>
@@ -55,7 +57,7 @@
                 If you don't yet have an account, first <a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="Register">register</a> so Santa knows who you are.
             </p>
             <p class="mt-2">
-                You don't have to enter an e-mail address, although if you don't, you won't get e-mails! Don't worry about your information being secure, Santa takes a lot of 
+                You don't have to enter an e-mail address, although if you don't, you won't get e-mails! Don't worry about your information being secure, Santa takes a lot of
                 care to protect it, as explained in the <a asp-area=@string.Empty asp-controller="Home" asp-action="Privacy">Privacy</a> page.
             </p>
             <p class="mt-2">
@@ -66,25 +68,52 @@
             </p>
 
             <h3>Join a group</h3>
-            <p class="mt-2 mb-4">
+            <p class="mt-2">
                 If someone you know has already created a group, there are three possible ways to join:
-                <ul>
-                    <li>if you've already registered with an e-mail address, a group administrator can send you an invitation, which should automatically link to your account
-                        <ol>
+            </p>
+            <div class="@CenterFlexNoWrapContainer mb-4">
+                <ol style="margin-bottom: 0 !important">
+                    <li>
+                        if you've set an e-mail address, a group admin can send you an invitation, which automatically links to your account
+                        <ul class="bulleted" style="margin-bottom: 0 !important">
                             <li>if nothing is blocking your e-mail messages, you'll get an e-mail with a link</li>
                             <li>otherwise, you'll see a notification when you're logged in, and a link in the 'Groups' menu at the top</li>
-                        </ol>
+                        </ul>
                     </li>
                     <li>
-                        alternatively, a group administrator can tell you the group name and a 'joiner token', which you can enter in the 
-                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">Apply to Join a Gifting Group</a> page.
+                        if the group admin knows your e-mail address, they can send an invitation (as above), which links to your account
+                        when you add your e-mail address
                     </li>
-                </ul>
-            </p>
+                    <li>
+                        alternatively, a group admin can tell you the group name and a 'joiner token', to enter in the
+                        @if (signedIn)
+                        {
+                            <text>
+                                <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="JoinGiftingGroup">Apply to Join a Gifting Group</a>
+                            </text>
+                        }
+                        else
+                        {
+                            <text>'Apply to Join a Gifting Group'</text>
+                        }
+                        page.
+                    </li>
+                </ol>
+            </div>
 
             <h3>Create a group</h3>
             <p class="mt-2">
-                To start a new group, go to the <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">Create a New Gifting Group</a>
+                To start a new group, go to the
+                @if (signedIn)
+                {
+                    <text>
+                        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="CreateGiftingGroup">Create a New Gifting Group</a>
+                    </text>
+                }
+                else
+                {
+                    <text>'Create a New Gifting Group'</text>
+                }
                 page and follow the instructions there.
             </p>
             <p class="mt-2">
@@ -93,6 +122,19 @@
             <p class="mt-2 mb-4">
                 You'll then need to set up the group for the current year, e.g. to set the spend limit, manage who's included, and (eventually) calculate who is giving to whom.
                 Look out for a 'Set Up Group...' link on the edit page, in the menu or on the homepage.
+            </p>
+
+            <h3>Leave the system</h3>
+            <p class="mt-2 mb-4">
+                If you want to completely leave the system and erase all of your personal data, go to
+                @if (signedIn)
+                {
+                    <text><a asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="CloseAccount">Close Your Account</a>.</text>
+                }
+                else
+                {
+                    <text>'Close Your Account'.</text>
+                }
             </p>
         </div>
 
@@ -104,6 +146,7 @@
                 These are used to prove who you are if you forget your password, so you can reset it. Santa has made e-mail addresses optional, and some e-mails are blocked
                 by e-mail providers (especially Google) so this is a more reliable and inclusive method.
             </p>
+
             <h3>Why don't I get e-mails?</h3>
             <p class="mt-2">
                 If you've set your e-mail address but the e-mails aren't coming through, unfortunately that's down to your e-mail provider. Please check all spam and junk folders
@@ -111,6 +154,24 @@
             </p>
             <p class="mt-2 mb-4">
                 Some providers allow you to 'white-list' an address so it doesn't get blocked in future.  Please search for help on your e-mail provider's site.
+            </p>
+
+            <h3>Why can't I pick a group to join from a list?</h3>
+            <p class="mt-2">
+                This is a security and privacy measure, to protect both existing group members and the person trying to join the group, especially because
+                Santa can't force users to enter or validate their e-mail address.
+            </p>
+            <p class="mt-2">
+                Many groups may have the same name, so the only way to know would be to check the group membership, but that reveals personal details. The group
+                administrators reviewing a request to join can't necessarily verify that the requester is who they say they are.
+            </p>
+            <p class="mt-2">
+                Once someone has joined a group, they can message members of the group and could behave maliciously. Alternatively, someone could set up a
+                bogus group and invite people they don't know to join, and can then see their e-mail addresses and contact them.
+            </p>
+            <p class="mt-2 mb-4">
+                Using the methods provided means that you must have been invited by a group member, either directly by an administrator in the system, or
+                by someone passing on a joiner token, and the administrators approving the application.
             </p>
         </div>
     </div>

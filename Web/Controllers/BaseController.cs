@@ -255,9 +255,9 @@ public abstract class BaseController : Controller
         return View("NotFound", message);
     }
 
-    protected IActionResult RedirectHome()
+    protected IActionResult RedirectHome(object? values = null)
     {
-        return RedirectToLocalUrl<HomeController>(nameof(HomeController.Index), AreaNames.None);
+        return RedirectToLocalUrl<HomeController>(nameof(HomeController.Index), AreaNames.None, values);
     }
 
     protected string GetFullUrl<TController>(string action, string area, object? values = null) where TController : BaseController

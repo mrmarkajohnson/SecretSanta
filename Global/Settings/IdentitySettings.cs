@@ -13,4 +13,6 @@ public static class IdentitySettings
         Nickname = 2,
         Other = 3
     }
+
+    public const string PleaseCloseAccount = "Close my account";
 }
