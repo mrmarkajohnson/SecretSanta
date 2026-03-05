@@ -16,6 +16,7 @@ public sealed class WriteReplyVm : WriteMessageVm
     public override MessageRecipientType RecipientType { get; set; } = MessageRecipientType.OriginalSender;
 
     public override string? GroupName { get; set; }
+    protected override List<string> GetGuidance() => [];
 
     public override IList<StandardSelectable> GroupSelection => new List<StandardSelectable>();
     public override List<MessageRecipientType> AvailableRecipientTypes => GetReplyRecipientTypes();

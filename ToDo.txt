@@ -1,9 +1,10 @@
 IMMEDIATE
+* Bug reporting - handle empty path (for home page, just "/") and send failure
+* Bug reporting - report issue when not logged in?
 * Allow viewing previous years
 * Show 'Automated' status on messages sent as Santa, e.g. next to 'Sent' (date)
 * Show invitations sent to e-mails when in edit mode?
 * Allow invitations to be archived (rescinded) from _GiftingGroupMembersGrid
-* Add bug reporting
 * Add reporting abuse
 
 ACCEPTING INVITATIONS

@@ -1,4 +1,6 @@
-﻿<li>
+﻿@using Web.Helpers
+
+<li>
     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">About Secret Santa</a>
 </li>
 <li>
@@ -7,3 +9,13 @@
 <li>
     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy and Security</a>
 </li>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a class="dropdown-item modal-link" href="javascript:void(0);" 
+            data-url="@Url.Action(Context, "ReportIssue", "Home", AreaNames.Messages, new { path = Context.Request.Path })">
+            Report an Issue
+        </a>
+    </li>
+}

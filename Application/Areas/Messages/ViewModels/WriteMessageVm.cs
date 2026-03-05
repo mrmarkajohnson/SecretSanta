@@ -3,6 +3,7 @@ using Global.Abstractions.Areas.Messages;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GlobalSettings;
+using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.ViewModels;
 
@@ -30,7 +31,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
 
     public string AddSuggestionUrl { get; set; } = string.Empty;
 
-    public string PageTitle => IsReply ? "Reply to Message" : "Write a Message";
+    public virtual string PageTitle => IsReply ? "Reply to Message" : "Write a Message";
     public string ModalTitle => PageTitle;
     public string? SubTitle => null;
     public List<string> Guidance => GetGuidance();
@@ -45,7 +46,7 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
     public IList<ISantaMessage> PreviousMessages { get; set; }
     public IList<ISantaMessage> LaterMessages { get; set; }
 
-    private List<string> GetGuidance()
+    protected virtual List<string> GetGuidance()
     {
         if (IsReply)
             return [];
@@ -58,25 +59,29 @@ public class WriteMessageVm : ChooseMessageRecipientVm, IWriteSantaMessage, IOpt
 public class WriteMessageVmValidator : AbstractValidator<WriteMessageVm>
 {
     public WriteMessageVmValidator()
-    {
-        RuleFor(x => x.HeaderText).NotEmpty();
+    {        
         RuleFor(x => x.MessageText).NotEmpty();
 
-        RuleFor(x => x.GiftingGroupKey)
-            .IsInDropDownList(x => x.GroupSelection, false)
-            .When(x => x.GroupSelection.Any());
+        When(x => x.RecipientType != MessageRecipientType.SystemAdmins, () =>
+        {
+            RuleFor(x => x.HeaderText).NotEmpty();
 
-        RuleFor(x => x.GiftingGroupKey)
-            .NotNullOrEmpty()
-            .When(x => !x.GroupSelection.Any());
+            RuleFor(x => x.GiftingGroupKey)
+                .IsInDropDownList(x => x.GroupSelection, false)
+                .When(x => x.GroupSelection.Any());
 
-        RuleFor(x => x.RecipientType)
-            .IsInDropDownList(x => x.AvailableRecipientTypes, false)
-            .When(x => x.GiftingGroupKey > 0)
-            .WithName("recipient type");
+            RuleFor(x => x.GiftingGroupKey)
+                .NotNullOrEmpty()
+                .When(x => !x.GroupSelection.Any());
 
-        RuleFor(x => x.SpecificGroupMemberKey)
-            .NotNullOrEmpty()
-            .When(x => x.RecipientType.SpecificMember());
+            RuleFor(x => x.RecipientType)
+                .IsInDropDownList(x => x.AvailableRecipientTypes, false)
+                .When(x => x.GiftingGroupKey > 0)
+                .WithName("recipient type");
+
+            RuleFor(x => x.SpecificGroupMemberKey)
+                .NotNullOrEmpty()
+                .When(x => x.RecipientType.SpecificMember());
+        });
     }
 }

@@ -6,9 +6,12 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
+using MailKit;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
+using static Global.Settings.MessageSettings;
 
 namespace Web.Areas.Messages.Controllers;
 
@@ -291,9 +294,12 @@ public sealed class HomeController : BaseController
         {
             await SetUpReply(model, model.ReplyToMessageKey.Value, false);
         }
-
-        model.SetDisplayRecipientType();
-        model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);
+        
+        if (model.RecipientType != MessageRecipientType.SystemAdmins)
+        {
+            model.SetDisplayRecipientType();
+            model.AddSuggestionUrl = GetFullUrl<Suggestions.Controllers.HomeController>(nameof(Suggestions.Controllers.HomeController.AddSuggestion), AreaNames.Suggestions);
+        }
 
         if (model.IsModal)
         {
@@ -303,5 +309,26 @@ public sealed class HomeController : BaseController
         {
             return View("WriteMessage", model);
         }
+    }
+
+    [HttpGet]
+    public IActionResult ReportIssue(string path)
+    {
+        var model = new ReportIssueVm 
+        { 
+            IsModal = true,
+            HeaderText = $"Issue at {path}",
+            ReturnUrl = path
+        };
+
+        return PartialView("_WriteMessageModal", model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReportIssue(ReportIssueVm model)
+    {
+        model.IsModal = true; // just in case
+        return await SendMessage(model);
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using Application.Areas.Home.ViewModels
 @using Global.Abstractions.Areas.GiftingGroup
+@using Web.Helpers
 
 @model HomeVm
 @{
@@ -64,6 +65,12 @@
                 </p>
                 <p>
                     <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy and Security</a>
+                </p>
+                <p>
+                    <a class="modal-link" href="javascript:void(0);"
+                       data-url="@Url.Action(Context, "ReportIssue", "Home", AreaNames.Messages, new { path = Context.Request.Path })">
+                        Report an Issue
+                    </a>
                 </p>
             </div>
         </div>

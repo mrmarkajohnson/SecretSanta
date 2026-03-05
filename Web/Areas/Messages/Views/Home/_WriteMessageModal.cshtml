@@ -1,6 +1,7 @@
 ﻿@model WriteMessageVm
 @{
-    string action = Model is WriteReplyVm ? "Reply" : "WriteMessage";
+    string action = Model is ReportIssueVm ? "ReportIssue" 
+        : Model is WriteReplyVm ? "Reply" : "WriteMessage";
 }
 
 <div class="modal santa-modal" tabindex="-1" id="writeMessageModal">

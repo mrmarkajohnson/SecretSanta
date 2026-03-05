@@ -145,7 +145,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
     }
 
-    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear = null)
     {
         var dbMessage = new Santa_Message
         {
