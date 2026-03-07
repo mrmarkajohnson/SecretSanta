@@ -2,6 +2,10 @@ document.addEventListener('modalOpening', function (e) {
     suggestionsModalOpening(e);
 });
 
+document.addEventListener('modalSaveFailed', function (e) {
+    suggestionsModalOpening(e);
+});
+
 async function suggestionsModalOpening(e) {
     let modal = e.detail.modal;
 

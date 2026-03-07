@@ -6,9 +6,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Messages;
 using Global.Extensions.Exceptions;
 using Global.Helpers;
-using MailKit;
 using Microsoft.AspNetCore.Authorization;
-using System.IO;
 using static Global.Settings.GiftingGroupSettings;
 using static Global.Settings.GlobalSettings;
 using static Global.Settings.MessageSettings;
@@ -314,10 +312,12 @@ public sealed class HomeController : BaseController
     [HttpGet]
     public IActionResult ReportIssue(string path)
     {
+        path = path.Trim('/').Trim();
+        
         var model = new ReportIssueVm 
         { 
             IsModal = true,
-            HeaderText = $"Issue at {path}",
+            HeaderText = path.IsNotEmpty() ? $"Issue at {path}" : "Issue on homepage",
             ReturnUrl = path
         };
 

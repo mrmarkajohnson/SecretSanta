@@ -46,7 +46,7 @@
                     @if (!Model.IsReply && (!Model.GroupKeyPreset || Model.GiftingGroupKey.IsEmpty()))
                     {                        
                         <div class="mb-3">
-                            <label asp-for="GiftingGroupKey" class="control-label"></label>
+                            <label asp-for="GiftingGroupKey" class="control-label required"></label>
                             <div class="input-group input-info">
                                 <select asp-for="GiftingGroupKey" class="form-control gifting-group-select" aria-required="true"
                                     asp-items="Model.GroupSelection"
@@ -90,7 +90,7 @@
                 @if (Model.RecipientType != MessageRecipientType.SystemAdmins)
                 {
                     <div class="mb-3">
-                        <label asp-for="HeaderText" class="control-label"></label>
+                        <label asp-for="HeaderText" class="control-label required"></label>
                         <div class="input-group input-info">
                             <input asp-for="HeaderText" class="form-control" aria-required="true" />
                             <partial name="_InputQuestion" model="@headerExplanation" />
@@ -106,7 +106,7 @@
                 }
 
                 <div class="mb-3">
-                    <label asp-for="MessageText" class="control-label"></label>
+                    <label asp-for="MessageText" class="control-label required"></label>
                     <div class="input-group input-info">
                         <div class="flex-grow-1">
                             @* This is needed to handle the flex group *@

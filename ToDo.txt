@@ -1,5 +1,4 @@
 IMMEDIATE
-* Bug reporting - handle empty path (for home page, just "/") and send failure
 * Bug reporting - report issue when not logged in?
 * Allow viewing previous years
 * Show 'Automated' status on messages sent as Santa, e.g. next to 'Sent' (date)

@@ -21,6 +21,10 @@ document.addEventListener('modalOpening', function (e) {
     writeMessageModalOpening(e);
 });
 
+document.addEventListener('modalSaveFailed', function (e) {
+    writeMessageModalOpening(e);
+});
+
 document.addEventListener('modalClosed', function (e) {
     viewMessageModalClosed(e);
 });
