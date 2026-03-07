@@ -13,7 +13,6 @@ public class GiftingGroupYear : GiftingGroupYearBase, IGiftingGroupYear
     [Display(Name = "Assign givers and receivers")]
     public YearCalculationOption CalculationOption { get; set; }
 
-    public List<YearGroupUserBase> GroupMembers { get; set; } = new();
-
-    IList<IYearGroupUserBase> IGiftingGroupYear.GroupMembers => GroupMembers.ToList<IYearGroupUserBase>();
+    public List<YearGroupUser> GroupMembers { get; set; } = new();
+    IList<IYearGroupUser> IGiftingGroupYear.GroupMembers => GroupMembers.ToList<IYearGroupUser>();
 }

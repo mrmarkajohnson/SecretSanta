@@ -287,4 +287,28 @@ public sealed class ManageController : BaseController
 
         return View(model);
     }
+
+    [HttpGet]
+    [Authorize]
+    public IActionResult CloseAccount()
+    {
+        var model = new CloseAccountVm();
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> CloseAccount(CloseAccountVm model)
+    {
+        var commandResult = await Send(new CloseAccountCommand(model.Message), null);
+
+        if (commandResult.Success)
+        {
+            await SignInManager.SignOutAsync();
+            return RedirectHome(new { successMessage = "Account closed successfully." });
+        }
+
+        return View(model);
+    }
 }

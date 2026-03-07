@@ -3,11 +3,10 @@ using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using static Global.Settings.GiftingGroupSettings;
-using static Global.Settings.GlobalSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
+public sealed class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IFormVm, IGroupMembersGridVm
 {
     public OtherGroupMembersType MemberListType => OtherGroupMembersType.EditGroup;
     public bool Exists => GiftingGroupKey > 0;
@@ -37,7 +36,7 @@ public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IF
 
     public string? DefaultCurrency => Cultures?.FirstOrDefault(x => x.Name == CultureInfo)?.CurrencyString;
 
-    public IList<LocationSelectable> Cultures => AvailableCultures
+    public IList<LocationSelectable> Cultures => GlobalSettings.AvailableCultures
         .Select(x => x.CultureLocation())
         .OrderBy(x => x.Location)
         .ToList();
@@ -51,35 +50,35 @@ public class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGroup, IF
     public IList<StandardSelectable> FirstYears => GetFirstYearSelection();
     public IEnumerable<IGroupMember> OtherGroupMembers { get; set; } = new List<IGroupMember>();
 
-    public virtual string? ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
     public string? SuccessMessage { get; set; }
-    public virtual string SubmitButtonText { get; set; } = "Save";
-    public virtual string SubmitButtonIcon { get; set; } = "fa-save";
+    public string SubmitButtonText { get; set; } = "Save";
+    public string SubmitButtonIcon { get; set; } = "fa-save";
 
     Guid? IGroupMembersGridVm.InvitationGuid => null;
 
+    public int CurrentYear => FirstYear <= 0 || FirstYear > GlobalSettings.CurrentYear ? DateTime.Today.Year : GlobalSettings.CurrentYear;
+
     private List<StandardSelectable> GetFirstYearSelection()
     {
-        int thisYear = DateTime.Today.Year;
-
-        if (FirstYear > 0 && FirstYear <= thisYear - 2)
+        if (FirstYear > 0 && FirstYear <= CurrentYear - 2)
             return new List<StandardSelectable> { new(FirstYear, FirstYear.ToString()) };
 
-        if (FirstYear == 0 || FirstYear == thisYear)
+        if (FirstYear <= 0 || FirstYear == CurrentYear)
         {
             return new List<StandardSelectable>
             {
-                new(thisYear, thisYear.ToString()),
-                new(thisYear - 1, (thisYear - 1).ToString()),
-                new(thisYear - 2, $"{thisYear - 2} or before")
+                new(CurrentYear, CurrentYear.ToString()),
+                new(CurrentYear - 1, (CurrentYear - 1).ToString()),
+                new(CurrentYear - 2, $"{CurrentYear - 2} or before")
             };
         }
         else
         {
             return new List<StandardSelectable>
             {
-                new(thisYear - 1, (thisYear - 1).ToString()),
-                new(thisYear - 2, $"{thisYear - 2} or before")
+                new(CurrentYear - 1, (CurrentYear - 1).ToString()),
+                new(CurrentYear - 2, $"{CurrentYear - 2} or before")
             };
         }
     }

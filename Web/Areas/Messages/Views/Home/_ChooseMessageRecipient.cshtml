@@ -19,12 +19,15 @@
         @if (Model.AvailableRecipientTypes.Count > 1)
         {
             <div class="input-group input-info">
-                <select asp-for="RecipientType" class="form-control recipient-type-select" aria-required="true" disabled="@recipientTypeDisabled">
+                <select asp-for="RecipientType" class="form-control recipient-type-select required" aria-required="true" disabled="@recipientTypeDisabled">
                     <option value="@MessageRecipientType.TBC">@StandardPhrases.PleaseSelect</option>
 
                     @foreach (MessageRecipientType type in Model.AvailableRecipientTypes)
                     {
+                        bool fromSanta = type is MessageRecipientType.Gifter or MessageRecipientType.GiftRecipient;
+
                         <option value="@type" data-specific="@type.SpecificMember()"
+                            data-from-santa="@fromSanta"
                             data-future-label="@type.FutureLabel(Model.OriginalRecipientType)"
                             data-future-explanation="@type.FutureExplanation(Model.OriginalRecipientType)">
 

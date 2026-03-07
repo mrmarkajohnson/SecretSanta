@@ -3,7 +3,7 @@ using Application.Areas.GiftingGroup.Queries.Internal;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
+public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
 {
     public RemoveUserFromGroupCommand(ChangeGroupMemberStatus item, string participateUrl) : base(item)
     {
@@ -37,7 +37,7 @@ public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
         if (dbMemberLink != null && dbMemberLink.DateArchived == null)
         {
             Santa_YearGroupUser? dbCalculateYearLink = dbGiftingGroup.Years
-                .Where(x => x.CalendarYear == DateTime.Today.Year)
+                .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .SelectMany(x => x.Users)
                 .Where(y => y.SantaUserKey == Item.SantaUserKey)
                 .Where(y => y.RecipientSantaUserKey > 0)
@@ -47,9 +47,9 @@ public class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberStatus>
 
             if (dbCalculateYearLink != null)
             {
-                AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in this year's 'draw'. " +
+                AddGeneralValidationError($"{dbGlobalUser.DisplayName(false)} is already participating in {dbCalculateYearLink.GiftingGroupYear.CalendarYear}'s 'draw'. " +
                     $"Please first go to " +
-                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {DateTime.Today.Year}", true)} " +
+                    $"{DisplayLink(_participateUrl, $"Set Up Group '{dbGiftingGroup.Name}' for {dbCalculateYearLink.GiftingGroupYear.CalendarYear}", true)} " +
                     $"to remove {dbGlobalUser.Gender.Indirect()} from this year, and recalculate givers and receivers.");
             }
             else

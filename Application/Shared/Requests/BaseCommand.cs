@@ -145,7 +145,7 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         return SendMessage(messageDetails, dbSender, dbRecipients, dbYear);
     }
 
-    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear)
+    protected Santa_Message SendMessage(ISendSantaMessage messageDetails, Santa_User dbSender, IEnumerable<Santa_User> dbRecipients, Santa_GiftingGroupYear? dbYear = null)
     {
         var dbMessage = new Santa_Message
         {
@@ -187,29 +187,32 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
 
     #region Gifting Group Years
 
-    protected Santa_GiftingGroupYear GetOrCreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int year = 0)
+    protected Santa_GiftingGroupYear GetOrCreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int calendarYear = 0)
     {
-        if (year > 0 == false)
-            year = DateTime.Today.Year;
-        
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == year);
+        if (calendarYear > 0 == false)
+            calendarYear = dbGiftingGroup.CurrentYear();
+
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == calendarYear);
 
         if (dbGiftingGroupYear == null)
         {
-            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup, year);
+            dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup, calendarYear);
         }
 
         return dbGiftingGroupYear;
     }
 
-    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int year)
+    protected Santa_GiftingGroupYear CreateGiftingGroupYear(Santa_GiftingGroup dbGiftingGroup, int calendarYear)
     {
+        if (calendarYear <= 0)
+            calendarYear = dbGiftingGroup.CurrentYear();
+
         Santa_GiftingGroupYear? dbGiftingGroupYear;
 
         dbGiftingGroupYear = new Santa_GiftingGroupYear
         {
             GiftingGroup = dbGiftingGroup,
-            CalendarYear = year,
+            CalendarYear = calendarYear,
             CurrencyCode = dbGiftingGroup.GetCurrencyCode(),
             CurrencySymbol = dbGiftingGroup.GetCurrencySymbol()
         };

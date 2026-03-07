@@ -13,5 +13,5 @@ public class ViewMessagesVm
     public int? MessageKey { get; }
     public int? MessageRecipientKey { get; }
 
-    public IQueryable<ISantaMessage> Messages { get; set; }
+    public IQueryable<ISantaMessage> Messages { get; set; } = new List<ISantaMessage>().AsQueryable();
 }

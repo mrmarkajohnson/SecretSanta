@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public class SendTestEmailVm : IFormVm
+public sealed class SendTestEmailVm : IFormVm
 {
     [Display(Name = "Recipient Email Address")]
     public string? RecipientEmailAddress { get; set; }
@@ -15,7 +15,7 @@ public class SendTestEmailVm : IFormVm
     public string? SuccessMessage { get; set; }
 }
 
-public class SendTestEmailVmValidator : AbstractValidator<SendTestEmailVm>
+public sealed class SendTestEmailVmValidator : AbstractValidator<SendTestEmailVm>
 {
     public SendTestEmailVmValidator()
     {

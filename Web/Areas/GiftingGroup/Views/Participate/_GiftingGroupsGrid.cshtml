@@ -1,19 +1,20 @@
-﻿@using Global.Abstractions.Areas.Participate
+﻿@using Application.Areas.Participate.ViewModels
+@using Global.Abstractions.Areas.Participate
 @using Web.Extensions
 
-@model IQueryable<IUserGiftingGroupYear>
+@model UserGiftingGroupYearsVm
 @{
     Func<IUserGiftingGroupYear, object> actions =
     @<text>
         @if (item.MemberStatus >= GroupMemberStatus.Joined)
         {
             <a asp-action="Year" asp-controller="Participate" asp-area="@AreaNames.GiftingGroup" data-toggle="tooltip" title="View details and participate"
-               data-bs-container="td" asp-route-giftingGroupKey="@item.GiftingGroupKey"><i class="fa fa-eye"></i></a>
+               data-bs-container="td" asp-route-giftingGroupKey="@item.GiftingGroupKey" asp-route-calendarYear="@item.CalendarYear"><i class="fa fa-eye"></i></a>
 
             @if (item.MemberStatus == GroupMemberStatus.Admin)
             {
                 <a asp-action="SetupGiftingGroupYear" asp-controller="Manage" asp-area="@AreaNames.GiftingGroup" asp-route-giftingGroupKey="@item.GiftingGroupKey"
-                   data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @DateTime.Today.Year"
+                   asp-route-calendarYear="@item.CalendarYear" data-toggle="tooltip" title="Set Up Group '@item.GiftingGroupName' for @item.CalendarYear"
                    data-bs-container="td"><i class="fa fa-list-check"></i></a>
             }
         }
@@ -55,13 +56,14 @@
         : (item.MemberStatus <= GroupMemberStatus.Rejected ? "text-grey" : "");
 }
 
-@(Html
-    .Grid(Model)
+@(
+Html
+    .Grid(Model.UserGiftingGroupYears)
     .Build(columns =>
     {
         columns.Add(x => x.GiftingGroupName).Titled("Group Name");
         columns.Add(x => x.MemberStatus).RenderedAs(x => x.MemberStatus.DisplayName()).Titled(GiftingGroupNames.MemberStatus);
-        columns.Add(x => x.Included).RenderedAs(includedCheckbox).Titled($"Participating in {DateTime.Today.Year}");
+        columns.Add(x => x.Included).RenderedAs(includedCheckbox).Titled($"Participating in {GlobalSettings.CurrentYear}");
         columns.Add(x => x.Limit).RenderedAs(x => x.LimitString).Titled("Spending Limit");
         columns.Add().RenderedAs(recipientName).Titled("Recipient");
         columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
@@ -71,7 +73,7 @@
         pager.PageSizes = new Dictionary<int, string> { { 0, "All" }, { 10, "10" }, { 20, "20" }, { 50, "50" } };
         pager.ShowPageSizes = true;
     })
-    .UsingUrl(Url.Action("GiftingGroupsGrid") ?? "")
+    .UsingUrl(Url.Action("GiftingGroupsGrid", new { calendarYear = Model.CalendarYear }) ?? "")
     .Empty("No active applications found")
     .Id("gifting-groups-grid")
     .Filterable()

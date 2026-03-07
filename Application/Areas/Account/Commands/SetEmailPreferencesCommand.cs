@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Account.Commands;
 
-public class SetEmailPreferencesCommand<TItem> : UserBaseCommand<TItem> where TItem : IUserEmailDetails
+public sealed class SetEmailPreferencesCommand<TItem> : UserBaseCommand<TItem> where TItem : IUserEmailDetails
 {
     private IUserStore<IdentityUser> _userStore;
 

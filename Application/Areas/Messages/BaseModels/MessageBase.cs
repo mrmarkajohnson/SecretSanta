@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Messages.BaseModels;
 
-public class MessageBase : IMessageBase
+public abstract class MessageBase : IMessageBase
 {
     [Display(Name = "To")]
     public MessageSettings.MessageRecipientType RecipientType { get; set; }

@@ -3,7 +3,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class GiftingGroupMembersVm : IGroupMembersGridVm
+public sealed class GiftingGroupMembersVm : IGroupMembersGridVm
 {
     public int GiftingGroupKey { get; init; }
     public OtherGroupMembersType MemberListType { get; init; }

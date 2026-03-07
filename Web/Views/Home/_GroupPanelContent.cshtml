@@ -9,16 +9,19 @@
             Edit Gifting Group '@Model.GroupName'
         </a>
     </p>
+    
     <p>
-        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
-            Set Up Group '@Model.GroupName' for @DateTime.Today.Year
+        <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+                asp-route-calendarYear="@Model.CurrentYear">
+            Set Up Group '@Model.GroupName' for @Model.CurrentYear
         </a>
     </p>
 }
 
 <p>
-    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey">
-        View '@Model.GroupName' for @DateTime.Today.Year
+    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Participate" asp-action="Year" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+            asp-route-calendarYear="@Model.CurrentYear">
+        View '@Model.GroupName' for @Model.CurrentYear
     </a>
 </p>
 

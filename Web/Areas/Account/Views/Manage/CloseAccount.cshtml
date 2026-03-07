@@ -1,0 +1,54 @@
+﻿@model CloseAccountVm
+@{
+    ViewData["Title"] = "Close Account";
+}
+
+<h1>Close Your Account</h1>
+
+<section>
+    <form asp-area="@AreaNames.Account" asp-controller="Manage" asp-action="CloseAccount" method="post">
+        <partial name="_FormHiddenInputs" />
+        
+        <div class="row @CenterFlexNoWrapContainer">
+
+            <div class="mb-5">
+                <h2>Leave the system</h2>
+
+                <div class="mt-2 mb-4">
+                    <p>
+                        Closing your account will permanently disable your login, and clear all identifiable personal details
+                        from the database (to comply with data protection laws) including your e-mail address.
+                    </p>
+                    <p>
+                        Your messages and suggestions will remain in the system, but your name will always
+                        be shown as "Previous User". Your @UserDisplayNames.UserName will be set to 'PreviousUser'.
+                    </p>
+                    <p>
+                        To confirm you understand this and definitely want to permanently close your account, please type
+                        '<b>@IdentitySettings.PleaseCloseAccount'</b> below, and save.
+                    </p>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="@CenterFlexWrapContainer">
+                    <div class="@StandardGroupWidth">
+                        <div class="mb-3">
+                            <label asp-for="Message" class="control-label required"></label>
+                            <input asp-for="Message" class="form-control" autocomplete="off" aria-required="true"
+                                   placeholder="@IdentitySettings.PleaseCloseAccount" />
+                            <div>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="col-md-12">
+                    <partial name="_SubmitButton" />
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

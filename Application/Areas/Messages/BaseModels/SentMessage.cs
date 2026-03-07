@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Messages.BaseModels;
 
-public class SentMessage : SantaMessageBase, ISentMessage
+public sealed class SentMessage : SantaMessageBase, ISentMessage
 {
     public override bool IsSentMessage
     {

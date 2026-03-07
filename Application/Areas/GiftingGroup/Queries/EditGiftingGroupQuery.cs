@@ -14,9 +14,9 @@ public sealed class EditGiftingGroupQuery : GiftingGroupBaseQuery<IGiftingGroup>
 
     protected async override Task<IGiftingGroup> Handle()
     {
-        if (_giftingGroupKey == 0)
+        if (_giftingGroupKey <= 0)
         {
-            return new BaseModels.CoreGiftingGroup();
+            return new CoreGiftingGroup();
         }
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);

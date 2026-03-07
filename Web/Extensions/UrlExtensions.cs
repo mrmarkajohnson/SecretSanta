@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Web.Helpers;
+﻿namespace Web.Helpers;
 
 public static class UrlExtensions
 {

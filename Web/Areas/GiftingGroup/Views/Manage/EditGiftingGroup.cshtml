@@ -4,6 +4,7 @@
 @model EditGiftingGroupVm
 @{
     ViewData["Title"] = Model.Exists ? "Edit Group" : "Create Group";
+
     string heading = Model.Exists ? $"Edit Gifting Group '{Model.Name}'" : "Create a new Gifting Group";
     string groupNameExplanation = "Each group must have a unique name, to help members identify it.";
     string joinerTokenExplanation = "Give this token to members who want to join the group, to control membership.";
@@ -12,6 +13,8 @@
     string firstYearExplanation = "If you've been exchanging gifts for longer than a year, "
         + "this allows members to say who they bought for in the last year or two, to avoid "
         + "selecting them again if possible.";
+
+    bool firstYearReadOnly = Model.FirstYears.Count == 1;
 }
 
 <h1>@heading</h1>
@@ -126,9 +129,17 @@
                         <div class="mb-3">
                             <label asp-for="FirstYear" class="control-label required"></label>
                             <div class="input-group input-info">
-                                <select asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" 
-                                    asp-items="@Model.FirstYears" >
-                                </select>
+                                
+                                @if (firstYearReadOnly)
+                                {
+                                    <input asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" readonly="true" />
+                                }
+                                else
+                                {
+                                    <select asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" asp-items="@Model.FirstYears" >
+                                    </select>
+                                }
+
                                 <partial name="_InputQuestion" model="@firstYearExplanation" />
                             </div>
                             <div>
@@ -157,10 +168,22 @@
                                 <partial name="_GiftingGroupMembersGrid" />
                             </div>                        
                         </div>
-                    
-                        <a class="modal-link" href="javascript:void(0);" 
-                            data-url="@Url.Action(Context, "SendGroupInvitation", "Manage", AreaNames.GiftingGroup, new { giftingGroupKey = Model.GiftingGroupKey })" 
-                            data-toggle="tooltip" data-bs-container="a" title="Invite someone to join the group">Invite a group member</a>
+
+                        <div class="row @CenterFlexNoWrapContainer mt-4">
+                            <div class="@StandardGroupWidth @EvenSpacingFlexGroup">
+                                <div>
+                                    <a class="modal-link" href="javascript:void(0);"
+                                        data-url="@Url.Action(Context, "SendGroupInvitation", "Manage", AreaNames.GiftingGroup, new { giftingGroupKey = Model.GiftingGroupKey })" 
+                                        data-toggle="tooltip" data-bs-container="a" title="Invite someone to join the group">Invite a group member</a>
+                                </div>
+                                <div>
+                                    <a asp-area="@AreaNames.GiftingGroup" asp-controller="Manage" asp-action="SetupGiftingGroupYear" asp-route-giftingGroupKey="@Model.GiftingGroupKey"
+                                            asp-route-calendarYear="@Model.CurrentYear">
+                                        Set Up for @Model.CurrentYear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
 

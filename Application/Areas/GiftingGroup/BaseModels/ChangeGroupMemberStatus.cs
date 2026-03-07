@@ -1,6 +1,6 @@
 ﻿namespace Application.Areas.GiftingGroup.BaseModels;
 
-public class ChangeGroupMemberStatus
+public sealed class ChangeGroupMemberStatus
 {
 	public ChangeGroupMemberStatus(int giftingGroupKey, int santaUserKey)
 	{

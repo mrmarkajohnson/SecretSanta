@@ -2,8 +2,8 @@
 
 public static class DateHelper
 {
-    public static DateTime FirstDayOfNextYear(int year)
+    public static DateTime FirstDayOfNextYear(int calendarYear)
     {
-        return new DateTime(year + 1, 1, 1);
+        return new DateTime(calendarYear + 1, 1, 1);
     }
 }

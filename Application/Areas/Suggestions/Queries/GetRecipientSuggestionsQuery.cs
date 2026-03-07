@@ -3,15 +3,17 @@ using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
 namespace Application.Areas.Suggestions.Queries;
 
-public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase>>
+public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase>>
 {
     public int GiftingGroupKey { get; }
     public string HashedUserId { get; }
-    
-    public GetRecipientSuggestionsQuery(int giftingGroupKey, string hashedUserId)
+    public int CalendarYear { get; }
+
+    public GetRecipientSuggestionsQuery(int giftingGroupKey, string hashedUserId, int calendarYear)
 	{
         GiftingGroupKey = giftingGroupKey;
         HashedUserId = hashedUserId;
+        CalendarYear = calendarYear;
     }
 
     protected override Task<IQueryable<ISuggestionBase>> Handle()
@@ -28,7 +30,7 @@ public class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggestionBase
         Guid userId = UserHelper.GetGlobalUserId(HashedUserId) ?? new Guid();
 
         var dbYearGroupUser = dbGroup.Years
-            .Where(x => x.CalendarYear == DateTime.Today.Year)
+            .Where(x => x.CalendarYear == CalendarYear)
             .SelectMany(x => x.Users)
             .FirstOrDefault(y => y.SantaUser.GlobalUserId == userId.ToString())
         ?? throw new NotFoundException("User");

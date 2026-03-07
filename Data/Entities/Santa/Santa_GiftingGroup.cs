@@ -56,9 +56,9 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
         this.AddNewAuditEntry<Santa_GiftingGroup, Santa_GiftingGroup_Audit, Santa_GiftingGroup_AuditChange>(auditTrail, changes);
     }
 
-    public Santa_User? Recipient(int santaUserKey, int year)
+    public Santa_User? Recipient(int santaUserKey, int calendarYear)
     {
-        return Years.Where(x => x.CalendarYear == year)
+        return Years.Where(x => x.CalendarYear == calendarYear)
             .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
             .FirstOrDefault()?
             .SantaUser;
@@ -79,5 +79,10 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
         return Members.Where(x => x.DateDeleted == null 
                 && (x.DateArchived == null || (archivedAfter != null && x.DateArchived > archivedAfter)))
             .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null);
+    }
+
+    public int CurrentYear()
+    {
+        return Math.Max(DateCreated.Year, GlobalSettings.CurrentYear);
     }
 }

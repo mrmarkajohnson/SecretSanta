@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Partners.BaseModels;
 
-public class Relationships : IRelationships
+public sealed class Relationships : IRelationships
 {
     public Relationships()
     {

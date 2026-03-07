@@ -1,6 +1,6 @@
 ﻿namespace Application.Areas.Account.Commands;
 
-public class SendEmailConfirmationCommand : UserBaseCommand<bool>
+public sealed class SendEmailConfirmationCommand : UserBaseCommand<bool>
 {
     public SendEmailConfirmationCommand() : base(false)
     {

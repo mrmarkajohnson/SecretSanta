@@ -14,14 +14,12 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
     public ManageUserGiftingGroupYearQuery(int giftingGroupKey, int? calendarYear = null)
     {
         GiftingGroupKey = giftingGroupKey;
-        CalendarYear = calendarYear ?? DateTime.Today.Year;
+        CalendarYear = calendarYear ?? GlobalSettings.CurrentYear;
     }
 
     protected override Task<IManageUserGiftingGroupYear> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
-        IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
-
         ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
 
         if (dbGroupLinks?.Any() != true)
@@ -44,7 +42,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
 
         Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbCurrentSantaUser.SantaUserKey);
 
-        IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper);
+        IManageUserGiftingGroupYear? manageYear = dbYearGroupUser?.ToManageUserGiftingGroupYear(Mapper, CalendarYear);
 
         if (manageYear == null) // not created yet
         {

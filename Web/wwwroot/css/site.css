@@ -118,6 +118,11 @@ ul.bulleted li {
     list-style-type: disc;
 }
 
+ol li {
+    text-align: left;
+    list-style-type: decimal;
+}
+
 #toast-container > div {
     opacity: 0.8;
 }

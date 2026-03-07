@@ -5,7 +5,7 @@ using Global.Abstractions.Areas.GiftingGroup;
 
 namespace Application.Areas.Home.Actions;
 
-public class AddHighlightsCountsAction : BaseAction<HomePageVm>
+public sealed class AddHighlightsCountsAction : BaseAction<HomePageVm>
 {
     public AddHighlightsCountsAction(HomePageVm item)
     {
@@ -27,19 +27,20 @@ public class AddHighlightsCountsAction : BaseAction<HomePageVm>
             {
                 Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
 
-                var dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks.Where(x => x.DateDeleted == null && x.DateArchived == null);
-                int currentYear = DateTime.Today.Year;
+                var dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks
+                    .Where(x => x.DateDeleted == null && x.DateArchived == null)
+                    .Where(x => x.DateCreated.Year <= GlobalSettings.CurrentYear);
 
                 _item.GroupsNotInOrOutCount = dbGroupLinks
                     .Where(x => x.GiftingGroup.Years
-                        .Where(y => y.CalendarYear == currentYear && y.DateDeleted == null)
+                        .Where(y => y.CalendarYear == GlobalSettings.CurrentYear && y.DateDeleted == null)
                         .Where(y => y.Users.Any(z => z.SantaUserKey == dbCurrentSantaUser.SantaUserKey && z.Included != null))
                         .Count() == 0)
                     .Count();
 
                 _item.GroupsWithNoSuggestionsCount = dbGroupLinks
                     .Where(x => x.GiftingGroup.Years
-                        .Where(y => y.CalendarYear == currentYear && y.DateDeleted == null)
+                        .Where(y => y.CalendarYear == GlobalSettings.CurrentYear && y.DateDeleted == null)
                         .Where(y => y.Users.Any(z => z.SantaUserKey == dbCurrentSantaUser.SantaUserKey && z.Suggestions.Any()))
                         .Count() == 0)
                     .Count();
@@ -47,8 +48,8 @@ public class AddHighlightsCountsAction : BaseAction<HomePageVm>
                 var dbAdminGroupLinks = dbGroupLinks.Where(x => x.GroupAdmin);
 
                 _item.GroupsRequiringSetup = dbAdminGroupLinks
-                    .Where(x => x.GiftingGroup.Years
-                        .Where(y => y.CalendarYear == currentYear && y.DateDeleted == null)
+                    .Where(x => x.GiftingGroup.Years                        
+                        .Where(y => y.CalendarYear == GlobalSettings.CurrentYear && y.DateDeleted == null)
                         .Where(y => y.Limit > 0 && y.Users.Any(z => z.RecipientSantaUserKey > 0))
                         .Count() == 0)
                     .AsQueryable()

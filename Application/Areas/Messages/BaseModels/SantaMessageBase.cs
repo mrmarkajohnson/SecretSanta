@@ -5,7 +5,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.Messages.BaseModels;
 
-public class SantaMessageBase : MessageBase, ISantaMessageShared
+public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
 {
     private SantaMessage? _replyTo; // for mapping into only; usee notes on ReplyTo below    
     private UserNamesBase? _specificRecipient; // for mapping into only; usee notes on SpecificRecipient below

@@ -2,7 +2,7 @@
 
 namespace Application.Areas.Suggestions.ViewModels;
 
-public class RecipientSuggestionsVm
+public sealed class RecipientSuggestionsVm
 {
     public RecipientSuggestionsVm()
     {

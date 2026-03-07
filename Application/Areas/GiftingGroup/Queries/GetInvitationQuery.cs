@@ -3,7 +3,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
+public sealed class GetInvitationQuery : BaseQuery<IReviewGroupInvitation>
 {
     public GetInvitationQuery(string invitationId)
     {

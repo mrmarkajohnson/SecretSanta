@@ -3,7 +3,7 @@
 namespace Web.TagHelpers;
 
 [HtmlTargetElement("readonly-checkbox", TagStructure = TagStructure.WithoutEndTag)]
-public class ReadonlyCheckboxTagHelper : TagHelper
+public sealed class ReadonlyCheckboxTagHelper : TagHelper
 {
     [HtmlAttributeName("for")]    
     public bool For { get; set; }

@@ -7,4 +7,5 @@ public interface IUserGiftingGroup : IHaveAGroupKey
     string GroupName { get; }
     bool GroupAdmin { get; }
     int NewApplications { get; }
+    int CurrentYear { get; set; }
 }

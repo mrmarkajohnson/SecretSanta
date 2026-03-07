@@ -1,6 +1,6 @@
 window.addEventListener('pageshow', function () {
-    let messageKey = document.getElementById('messageKey').value;
-    let recipientKey = document.getElementById('messageRecipientKey').value;
+    let messageKey = document.getElementById('messageKey')?.value;
+    let recipientKey = document.getElementById('messageRecipientKey')?.value;
 
     if (messageKey > 0) {
         let viewMessageSelector = '.view-message-link[data-message-key="' + messageKey + '"]';
@@ -18,6 +18,10 @@ window.addEventListener('pageshow', function () {
 });
 
 document.addEventListener('modalOpening', function (e) {
+    writeMessageModalOpening(e);
+});
+
+document.addEventListener('modalSaveFailed', function (e) {
     writeMessageModalOpening(e);
 });
 
@@ -151,6 +155,15 @@ function initRecipientSection(form) {
                 specificRecipientSection.classList.remove('collapse');
             }
             else {
+                let fromSanta = selectedOption.getAttribute('data-from-santa');
+                let fromSantaSection = form.querySelector('.from-santa');
+
+                if (isTrueValue(fromSanta)) {
+                    fromSantaSection.classList.remove('collapse');
+                } else {
+                    fromSantaSection.classList.add('collapse');
+                }
+
                 toggleFutureMembers();
             }
 

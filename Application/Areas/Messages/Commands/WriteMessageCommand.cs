@@ -13,15 +13,37 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
+        Item.CanReply = true;
+
+        if (Item.RecipientType == MessageRecipientType.SystemAdmins)
+        {
+            return await ReportIssue();
+        }
+        else
+        {
+            return await SendNormalMessage();
+        }
+    }
+
+    private async Task<ICommandResult<TItem>> ReportIssue()
+    {
+        Item.IncludeFutureMembers = true;
+        Santa_User dbCurrentUser = GetCurrentSantaUser();
+        IList<Santa_User> dbRecipients = await Send(new GetPossibleMessageRecipientsQuery(dbCurrentUser, null, Item));
+
+        SendMessage(Item, dbCurrentUser, dbRecipients);
+        return await SaveAndReturnSuccess();
+    }
+
+    private async Task<ICommandResult<TItem>> SendNormalMessage()
+    {
         if (Item.GiftingGroupKey == null) // just in case
         {
             AddValidationError(nameof(Item.GiftingGroupKey), ValidationMessages.RequiredError);
             return await Result();
         }
 
-        Santa_User dbCurrentUser = GetCurrentSantaUser();
-
-        Item.CanReply = true;
+        Santa_User dbCurrentUser = GetCurrentSantaUser();        
 
         Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey.Value, false);
         Santa_GiftingGroupYear dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
@@ -40,16 +62,14 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             }
         }
 
-        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter;
-
         if (!Validation.IsValid)
             return await Result();
 
         Item.SetActualRecipientType();
 
-        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.PotentialPartner 
-            or MessageRecipientType.SingleNonGroupMember;
-        
+        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter or MessageRecipientType.GiftRecipient
+            or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember;
+
         var dbMessage = SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
 
         if (Item.ReplyToMessageKey > 0)

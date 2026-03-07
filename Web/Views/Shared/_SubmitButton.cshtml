@@ -2,9 +2,8 @@
 
 @model IFormVm
 @{
-    var defaultModel = new BaseFormVm();
-    string text = string.IsNullOrEmpty(Model?.SubmitButtonText) ? defaultModel.SubmitButtonText : Model.SubmitButtonText;
-    string icon = string.IsNullOrEmpty(Model?.SubmitButtonIcon) ? defaultModel.SubmitButtonIcon : Model.SubmitButtonIcon;
+    string text = string.IsNullOrEmpty(Model?.SubmitButtonText) ? "Save" : Model.SubmitButtonText;
+    string icon = string.IsNullOrEmpty(Model?.SubmitButtonIcon) ? "fa-save" : Model.SubmitButtonIcon;
 }
 
 <div class="@CenterFlexNoWrapContainer">

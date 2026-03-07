@@ -6,7 +6,7 @@ using static Global.Settings.MessageSettings;
 
 namespace Application.Areas.GiftingGroup.Commands;
 
-public class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : IReviewGroupInvitation
+public sealed class ReviewInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem> where TItem : IReviewGroupInvitation
 {
     private readonly string _participateUrl;
 

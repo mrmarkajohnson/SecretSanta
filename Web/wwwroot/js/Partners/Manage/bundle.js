@@ -128,6 +128,10 @@ document.addEventListener('modalOpening', function (e) {
     relationshipModalOpening(e);
 });
 
+document.addEventListener('modalSaveFailed', function (e) {
+    relationshipModalOpening(e);
+});
+
 async function relationshipModalOpening(e) {
     let modal = e.detail.modal;
     if (modal.id == 'manageRelationshipModal') {
@@ -180,9 +184,11 @@ function manageNowOptions(modal, nowOptionsSection) {
                 currentNowOptionYes = true;
             });
 
-            nowNotSureOption.addEventListener('click', function() {
-                nowNoOrNotSure();
-            });
+            if (nowNotSureOption) {
+                nowNotSureOption.addEventListener('click', function () {
+                    nowNoOrNotSure();
+                });
+            }
 
             function nowNoOrNotSure() {
                 showSection(everOptionsSection);
@@ -215,15 +221,18 @@ function manageNowOptions(modal, nowOptionsSection) {
 
                 currentNowOptionYes = true;
             });
-            nowNotSureOption.addEventListener('click', function() {
-                showSection(everOptionsSection);
 
-                if (currentNowOptionYes) {
-                    resetEverOptions();
-                }
+            if (nowNotSureOption) {
+                nowNotSureOption.addEventListener('click', function () {
+                    showSection(everOptionsSection);
 
-                currentNowOptionYes = false;
-            });
+                    if (currentNowOptionYes) {
+                        resetEverOptions();
+                    }
+
+                    currentNowOptionYes = false;
+                });
+            }
         }
 
         function resetEverOptions() {
@@ -252,15 +261,17 @@ function manageNowOptions(modal, nowOptionsSection) {
             currentNowOptionYes = true;
         });
 
-        nowNotSureOption.addEventListener('click', function() {
-            showSection(exchangeOptionsSection);
+        if (nowNotSureOption) {
+            nowNotSureOption.addEventListener('click', function () {
+                showSection(exchangeOptionsSection);
 
-            if (currentNowOptionYes) {
-                resetExchangeOptions();
-            }
+                if (currentNowOptionYes) {
+                    resetExchangeOptions();
+                }
 
-            currentNowOptionYes = false;
-        });
+                currentNowOptionYes = false;
+            });
+        }
 
         function resetExchangeOptions() {
             exchangeNoOption.checked = exchangeYesOption.checked = exchangeNotSureOption.checked = false;

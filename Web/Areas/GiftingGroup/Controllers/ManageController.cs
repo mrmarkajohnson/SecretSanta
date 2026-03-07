@@ -314,9 +314,9 @@ public sealed class ManageController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> SetupGiftingGroupYear(int giftingGroupKey)
+    public async Task<IActionResult> SetupGiftingGroupYear(int giftingGroupKey, int? calendarYear = null)
     {
-        IGiftingGroupYear giftingGroupYear = await Send(new SetupGiftingGroupYearQuery(giftingGroupKey));
+        IGiftingGroupYear giftingGroupYear = await Send(new SetupGiftingGroupYearQuery(giftingGroupKey, calendarYear));
         var model = Mapper.Map<SetupGiftingGroupYearVm>(giftingGroupYear);
 
         if (model.RecalculationRequired)

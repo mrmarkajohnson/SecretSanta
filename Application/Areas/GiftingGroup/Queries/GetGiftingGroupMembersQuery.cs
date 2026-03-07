@@ -6,7 +6,7 @@ using static Global.Settings.GiftingGroupSettings;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGroupMember>>
+public sealed class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGroupMember>>
 {
     private readonly int _giftingGroupKey;
     private readonly OtherGroupMembersType _memberListType;
@@ -21,7 +21,7 @@ public class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryable<IGro
 
     protected async override Task<IQueryable<IGroupMember>> Handle()
     {
-        if (_giftingGroupKey == 0)
+        if (_giftingGroupKey <= 0)
         {
             throw new NotFoundException("Gifting Group");
         }

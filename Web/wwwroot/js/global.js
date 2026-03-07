@@ -427,6 +427,7 @@ async function saveModalForm(modal, modalObject) {
                 handleSuccessfulSave(successMessage);
             } else {
                 initSaveButton(modal, modalObject);
+                document.dispatchEvent(new CustomEvent('modalSaveFailed', { detail: { modal: modal } }));
             }
         }
         else {

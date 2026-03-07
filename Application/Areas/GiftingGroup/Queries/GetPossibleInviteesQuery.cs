@@ -2,7 +2,7 @@
 
 namespace Application.Areas.GiftingGroup.Queries;
 
-public class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
+public sealed class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser>>
 {
     public GetPossibleInviteesQuery(int giftingGroupKey)
     {

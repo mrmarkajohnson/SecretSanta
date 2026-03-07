@@ -30,7 +30,9 @@
   {
     "outputFileName": "wwwroot/js/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Shared/showErrorToast.js"
+      "wwwroot/scripts/Shared/showErrorToast.js",
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,
@@ -41,7 +43,9 @@
   {
     "outputFileName": "wwwroot/js/Index/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Shared/showErrorToast.js"
+      "wwwroot/scripts/Shared/showErrorToast.js",
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,
@@ -52,7 +56,9 @@
   {
     "outputFileName": "wwwroot/js/Home/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Shared/showErrorToast.js"
+      "wwwroot/scripts/Shared/showErrorToast.js",
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,
@@ -63,7 +69,9 @@
   {
     "outputFileName": "wwwroot/js/Home/Index/bundle.js",
     "inputFiles": [
-      "wwwroot/scripts/Shared/showErrorToast.js"
+      "wwwroot/scripts/Shared/showErrorToast.js",
+      "wwwroot/scripts/Messages/viewMessages.js",
+      "wwwroot/scripts/Messages/sendMessageShared.js"
     ],
     "minify": {
       "enabled": true,

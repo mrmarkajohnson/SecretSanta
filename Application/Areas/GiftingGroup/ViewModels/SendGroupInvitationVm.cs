@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.GiftingGroup.ViewModels;
 
-public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, IModalVm
+public sealed class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, IModalVm
 {
     public SendGroupInvitationVm() : this(new List<IVisibleUser>().AsQueryable(), "")
     {        
@@ -50,7 +50,7 @@ public class SendGroupInvitationVm : BaseFormVm, ISendGroupInvitation, IFormVm, 
     public bool EmailConfirmed { get; set; }
 }
 
-public class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitationVm>
+public sealed class SendGroupInvitationVmValidator : AbstractValidator<SendGroupInvitationVm>
 {
     public SendGroupInvitationVmValidator()
     {

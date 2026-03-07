@@ -3,7 +3,7 @@ using Global.Abstractions.Areas.Suggestions;
 
 namespace Application.Areas.Suggestions.Queries;
 
-public class GetCurrentUserSuggestionsQuery : BaseQuery<IQueryable<ISuggestion>>
+public sealed class GetCurrentUserSuggestionsQuery : BaseQuery<IQueryable<ISuggestion>>
 {
     protected override Task<IQueryable<ISuggestion>> Handle()
     {

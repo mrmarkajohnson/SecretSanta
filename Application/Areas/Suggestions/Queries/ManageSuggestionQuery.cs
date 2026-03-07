@@ -1,10 +1,11 @@
 ﻿using Application.Areas.Suggestions.BaseModels;
+using Global.Abstractions.Areas.GiftingGroup;
 using Global.Abstractions.Areas.Suggestions;
 using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Suggestions.Queries;
 
-public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
+public sealed class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
 {
     private readonly int? _suggestionKey;
     private readonly int? _groupKey;
@@ -52,8 +53,14 @@ public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
             }
         }
 
+        suggestion.YearGroupUserLinks = suggestion.YearGroupUserLinks
+            .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
+            .OrderBy(x => x.CalendarYear)
+            .DistinctBy(x => x.GiftingGroupKey)
+            .ToList();
+
         var dbOtherGroupLinks = dbGiftingGroupLinks
-            .Where(x => suggestion.YearGroupUserLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
+            .Where(x => suggestion.YearGroupUserLinks.Any(y => y.CalendarYear >= GlobalSettings.CurrentYear && y.GiftingGroupKey == x.GiftingGroupKey) == false);
 
         foreach (Santa_GiftingGroupUser dbGroupUser in dbOtherGroupLinks)
         {
@@ -67,7 +74,7 @@ public class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
 
     private void AddGroupLink(ManageSuggestion suggestion, Santa_GiftingGroupUser dbGroupUser, bool applyToGroup)
     {
-        int calendarYear = DateTime.Today.Year;
+        int calendarYear = dbGroupUser.GiftingGroup.CurrentYear();
 
         Santa_YearGroupUser? dbYearGroupUser = dbGroupUser.SantaUser.GiftingGroupYears
             .Where(x => x.GiftingGroupYear.DateDeleted == null)

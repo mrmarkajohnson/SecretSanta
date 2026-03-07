@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Application.Areas.Home.Mapping;
 
-public class HomeMappingProfile : Profile
+public sealed class HomeMappingProfile : Profile
 {
 	public HomeMappingProfile()
 	{
