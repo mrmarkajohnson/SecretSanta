@@ -34,7 +34,6 @@ GIFTING GROUPS
 Show an 'i' symbol that has the group description etc. (and whether the user is an admin) next to group names, e.g. in case of duplicate names?
 Allow updating the currency for the current year, if the group currency has changed
 Set a deadline/target for members to be in/out and recipients chosen (after which, users can't declare themselves in or out)
-Tidy up available locations and currencies - add missing countries
 Close (archive) a group?
 
 RELATIONSHIPS
