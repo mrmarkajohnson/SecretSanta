@@ -34,14 +34,9 @@ public sealed class EditGiftingGroupVm : BaseModels.CoreGiftingGroup, IGiftingGr
         }
     }
 
-    public string? DefaultCurrency => Cultures?.FirstOrDefault(x => x.Name == CultureInfo)?.CurrencyString;
+    public string? DefaultCurrency => GlobalSettings.Locations?.FirstOrDefault(x => x.Name == CultureInfo)?.CurrencyString;
 
-    public IList<LocationSelectable> Cultures => GlobalSettings.AvailableCultures
-        .Select(x => x.CultureLocation())
-        .OrderBy(x => x.Location)
-        .ToList();
-
-    public IList<LocationSelectable> Currencies => Cultures
+    public IList<LocationSelectable> Currencies => GlobalSettings.Locations
         .Where(x => x.CurrencyString.IsNotEmpty())
         .DistinctBy(x => x.CurrencyString)
         .OrderBy(x => x.CurrencyString)
@@ -91,7 +86,7 @@ public sealed class EditGiftingGroupVmValidator : AbstractValidator<EditGiftingG
         RuleFor(x => x.Name).NotEmpty().Length(GiftingGroupVal.Name.MinLength, GiftingGroupVal.Name.MaxLength);
         RuleFor(x => x.Description).NotEmpty().Length(GiftingGroupVal.Description.MinLength, GiftingGroupVal.Description.MaxLength);
         RuleFor(x => x.JoinerToken).NotEmpty();
-        RuleFor(x => x.CultureInfo).IsInDropDownList(x => x.Cultures.Select(y => y.Name), false);
+        RuleFor(x => x.CultureInfo).IsInDropDownList(x => GlobalSettings.Locations.Select(y => y.Name), false);
         RuleFor(x => x.CurrencyOverride).IsInDropDownList(x => x.Currencies
             .Where(x => x.CurrencyString != null)
             .Select(y => y.CurrencyString ?? string.Empty), true);

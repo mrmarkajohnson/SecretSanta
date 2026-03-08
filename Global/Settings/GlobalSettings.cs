@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Immutable;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace Global.Settings;
@@ -14,10 +15,19 @@ public static class GlobalSettings
         public const string Partners = "Partners";
         public const string Suggestions = "Suggestions";
     }
-    
-    public static readonly IList<CultureInfo> AvailableCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-        .Where(x => x.Name.StartsWith("en"))
-        .Where(x => !x.Name.StartsWith("en-0") && !x.Name.StartsWith("en-1"))
+
+    private static readonly ImmutableList<string> CultureInfoNamesToAvoid = ["-Latn-", "-Cyrl-", "-POSIX", "Mong-", "-Arab-", "-0", "-1", "-2", "-3", "-4"];
+
+    private static readonly IList<CultureInfo> AvailableCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+        .Where(x => x.Name.StartsWith("en") || x.ThreeLetterWindowsLanguageName != "ZZZ")
+        .Where(x => !CultureInfoNamesToAvoid.Any(y => x.Name.Contains(y)))
+        .ToList();
+
+    public static IList<LocationSelectable> Locations => AvailableCultures
+        .Select(x => x.CultureLocation())
+        .OrderBy(x => !x.Name.StartsWith("en-"))
+        .DistinctBy(x => x.Location)
+        .OrderBy(x => x.Location)
         .ToList();
 
     public enum Gender

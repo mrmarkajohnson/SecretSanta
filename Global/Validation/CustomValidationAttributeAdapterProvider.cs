@@ -12,7 +12,7 @@ public sealed class CustomValidationAttributeAdapterProvider
         ValidationAttribute attribute,
         IStringLocalizer? stringLocalizer)
     {
-        IAttributeAdapter adapter = base.GetAttributeAdapter(attribute, stringLocalizer);
+        IAttributeAdapter? adapter = base.GetAttributeAdapter(attribute, stringLocalizer);
 
         var attributeType = attribute.GetType();
 

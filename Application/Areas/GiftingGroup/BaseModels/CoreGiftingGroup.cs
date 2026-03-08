@@ -25,10 +25,10 @@ public class CoreGiftingGroup : IGiftingGroup
     public string CultureInfo { get; set; } = "en-GB";
 
     [MaxLength(GiftingGroupVal.CurrencyCodeOverride.MaxLength)]
-    public string? CurrencyCodeOverride { get; set; } = "GBP";
+    public string? CurrencyCodeOverride { get; set; }
 
     [MaxLength(GiftingGroupVal.CurrencySymbolOverride.MaxLength)]
-    public string? CurrencySymbolOverride { get; set; } = "£";
+    public string? CurrencySymbolOverride { get; set; }
 
     [Display(Name = "First Year")]
     public int FirstYear { get; set; }

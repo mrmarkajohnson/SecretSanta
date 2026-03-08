@@ -32,7 +32,7 @@ public static class ValidationExtensions
     {
         return ruleBuilder
             .Must((root, x, context) => (allowEmpty && IsEmpty(x))
-                || ((IEnumerable<SelectListItem>?)list.DynamicInvoke(root))?.Any(y => y.Value == x.ToString()) == true)
+                || ((IEnumerable<SelectListItem>?)list.DynamicInvoke(root))?.Any(y => y.Value == x?.ToString()) == true)
             .WithMessage(ConvertMessageForFluentValidation(ValidationMessages.NotInDropDownError));
     }
 

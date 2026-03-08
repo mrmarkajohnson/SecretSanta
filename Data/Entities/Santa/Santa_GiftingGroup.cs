@@ -47,9 +47,9 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
     public virtual ICollection<Santa_GiftingGroup_Audit> AuditTrail { get; set; }
     public virtual ICollection<Santa_Invitation> Invitations { get; internal set; }
 
-    public CultureInfo? GetCultureInfo() => GlobalSettings.AvailableCultures.FirstOrDefault(x => x.Name == CultureInfo);
-    public string GetCurrencyCode() => CurrencyCodeOverride ?? GetCultureInfo()?.CultureLocation()?.CurrencyString ?? "GBP";
-    public string GetCurrencySymbol() => CurrencySymbolOverride ?? GetCultureInfo()?.CultureLocation()?.CurrencySymbol ?? "£";
+    public LocationSelectable? GetLocation() => GlobalSettings.Locations.FirstOrDefault(x => x.Name == CultureInfo);
+    public string GetCurrencyCode() => CurrencyCodeOverride ?? GetLocation()?.CurrencyString ?? "GBP";
+    public string GetCurrencySymbol() => CurrencySymbolOverride ?? GetLocation()?.CurrencySymbol ?? "£";
 
     public void AddAuditEntry(IAuditBase auditTrail, IList<IAuditBaseChange> changes)
     {

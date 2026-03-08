@@ -7,7 +7,7 @@
 @{
     ViewData["Title"] = "FAQs";
     bool signedIn = _signInManager.IsSignedIn(User);
-    string fromAddress = _configuration[ConfigurationSettings.EmailFromAddress];
+    string fromAddress = _configuration[ConfigurationSettings.EmailFromAddress] ?? string.Empty;
     bool emailConfirmationNeeded = Model?.EmailConfirmationNeeded == true;
 }
 

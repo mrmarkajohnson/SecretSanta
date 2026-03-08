@@ -84,7 +84,7 @@
                             <label asp-for="CultureInfo" class="control-label required"></label>
                             <div class="input-group input-info">
                                 <select asp-for="CultureInfo" class="form-control culture-info-select" aria-required="true">                                
-                                    @foreach (var ci in Model.Cultures)
+                                    @foreach (var ci in GlobalSettings.Locations)
                                     {
                                         <option value="@ci.Name" data-currency-string="@ci.CurrencyString">
                                             @ci.Location
@@ -132,7 +132,7 @@
                                 
                                 @if (firstYearReadOnly)
                                 {
-                                    <input asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" readonly="true" />
+                                    <input asp-for="FirstYear" class="form-control" autocomplete="off" aria-required="true" readonly />
                                 }
                                 else
                                 {
