@@ -39,6 +39,11 @@ public static class UserEncryptionHelper
                 ? EncryptionHelper.DecryptEmail(hashableUser.UserName) // use e-mail decryption to remove the e-mail suffix if necessary
                 : hashableUser.UserName;
 
+        if (userName == string.Empty)
+        {
+            userName = "Previous User";
+        }
+
         string? greeting = null;
 
         if (hashableUser is IIdentityUser identityUser)

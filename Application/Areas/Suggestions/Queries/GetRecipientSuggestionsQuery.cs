@@ -31,12 +31,13 @@ public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggest
 
         var dbYearGroupUser = dbGroup.Years
             .Where(x => x.CalendarYear == CalendarYear)
+            .Where(x => x.DateArchived == null)
             .SelectMany(x => x.Users)
             .FirstOrDefault(y => y.SantaUser.GlobalUserId == userId.ToString())
         ?? throw new NotFoundException("User");
 
         var dbSuggestions = dbYearGroupUser.Suggestions
-           .Where(x => x.DateDeleted == null && x.DateArchived == null)           
+           .Where(DbSuggestionLinkExpressions.IsActive(false))           
            .Select(x => x.Suggestion)
            .AsQueryable()
            .ProjectTo<ISuggestionBase>(Mapper.ConfigurationProvider);

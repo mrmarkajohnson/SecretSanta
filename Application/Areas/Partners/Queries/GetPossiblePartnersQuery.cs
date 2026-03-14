@@ -15,10 +15,10 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
             .Where(y => y.SantaUser != null && y.SantaUser.DateArchived == null && y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
             .Select(y => y.SantaUser)
             .Where(z => z.SuggestedRelationships
-                .Where(r => r.DateArchived == null && r.DateDeleted == null)
+                .Where(DbPartnerLinkExpressions.IsActive())
                 .Any(r => r.ConfirmingSantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Where(z => z.ConfirmingRelationships
-                .Where(r => r.DateArchived == null && r.DateDeleted == null)
+                .Where(DbPartnerLinkExpressions.IsActive())
                 .Any(r => r.SuggestedBySantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)

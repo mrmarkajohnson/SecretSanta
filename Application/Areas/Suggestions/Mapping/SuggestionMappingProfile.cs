@@ -19,17 +19,15 @@ public sealed class SuggestionMappingProfile : Profile
         CreateMap<Santa_Suggestion, Suggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(x => x.DateDeleted == null && x.DateArchived == null && x.YearGroupUser.GiftingGroupYear.DateArchived == null
-                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateArchived == null
-                    && x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
+                .Where(DbSuggestionLinkExpressions.IsActive(true))
+                .Where(x => x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, ISuggestion>().As<Suggestion>();
 
         CreateMap<Santa_Suggestion, ManageSuggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(x => x.DateDeleted == null && x.DateArchived == null && x.YearGroupUser.GiftingGroupYear.DateArchived == null
-                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateArchived == null
-                    && x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
+                .Where(DbSuggestionLinkExpressions.IsActive(true))
+                .Where(x => x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, IManageSuggestion>().As<ManageSuggestion>();
 
         CreateMap<Santa_SuggestionLink, SuggestionYearGroupUserLink>()

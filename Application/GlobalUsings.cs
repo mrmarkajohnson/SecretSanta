@@ -3,6 +3,7 @@ global using Application.Shared.Requests;
 
 global using Data.Entities.Santa;
 global using Data.Entities.Shared;
+global using Data.Expressions;
 
 global using Global.Abstractions.Shared;
 global using Global.Extensions.System;

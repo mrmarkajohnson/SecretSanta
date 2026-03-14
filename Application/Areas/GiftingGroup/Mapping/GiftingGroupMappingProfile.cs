@@ -81,8 +81,7 @@ public sealed class GiftingGroupMappingProfile : Profile
             .IncludeMembers(src => src.SantaUser)
             .ForMember(dest => dest.Included, opt => opt.MapFrom(src => src.Included))
             .ForMember(dest => dest.Suggestions, opt => opt.MapFrom(src => src.Suggestions
-                .Where(x => x.DateDeleted == null && x.DateArchived == null)
-                .Count()));
+                .Count(DbSuggestionLinkExpressions.IsActive(false))));
         CreateMap<Santa_YearGroupUser, IYearGroupUser>().As<YearGroupUser>();
 
         CreateMap<Santa_GiftingGroupUser, YearGroupUser>()

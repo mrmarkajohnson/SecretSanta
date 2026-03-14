@@ -140,7 +140,8 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private List<int> GetPartnerSantaUserKeys(Santa_YearGroupUser member)
     {
         var allActivePartnerLinks = DbContext.Santa_PartnerLinks
-            .Where(p => !p.ExchangeGifts && p.DateDeleted == null && p.DateArchived == null);
+            .Where(p => !p.ExchangeGifts)
+            .Where(DbPartnerLinkExpressions.IsActive());
 
         var suggestingPartnerSantaUserKeys = allActivePartnerLinks
             .Where(p => p.SuggestedBySantaUserKey == member.SantaUserKey)

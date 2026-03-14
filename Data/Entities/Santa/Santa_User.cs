@@ -58,10 +58,12 @@ public class Santa_User : ArchivableBaseEntity
         .ToList();
 
     public IList<int> UserKeysForVisibleEmail() => SuggestedRelationships
-        .Where(x => x.Confirmed == true && x.RelationshipEnded == null && x.DateDeleted == null && x.DateArchived == null)
+        .Where(x => x.Confirmed == true && x.RelationshipEnded == null)
+        .Where(DbPartnerLinkExpressions.IsActive())
         .Select(y => y.ConfirmingSantaUserKey)
         .Union(ConfirmingRelationships
-            .Where(x => x.RelationshipEnded == null && x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.RelationshipEnded == null)
+            .Where(DbPartnerLinkExpressions.IsActive())
             .Select(y => y.SuggestedBySantaUserKey))
         .Union(GiftingGroupLinks
             .Where(x => x.DateArchived == null)

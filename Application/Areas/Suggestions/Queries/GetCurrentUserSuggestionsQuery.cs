@@ -10,7 +10,7 @@ public sealed class GetCurrentUserSuggestionsQuery : BaseQuery<IQueryable<ISugge
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.Suggestions);
 
         var dbSuggestions = dbCurrentSantaUser.Suggestions
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(DbSuggestionExpressions.IsActive())
             .AsQueryable()
             .ProjectTo<ISuggestion>(Mapper.ConfigurationProvider);
 

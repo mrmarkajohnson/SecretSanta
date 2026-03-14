@@ -48,7 +48,7 @@ public sealed class AddHighlightsCountsAction : BaseAction<HomePageVm>
                 var dbAdminGroupLinks = dbGroupLinks.Where(x => x.GroupAdmin);
 
                 _item.GroupsRequiringSetup = dbAdminGroupLinks
-                    .Where(x => x.GiftingGroup.Years                        
+                    .Where(x => x.GiftingGroup.Years
                         .Where(y => y.CalendarYear == GlobalSettings.CurrentYear && y.DateArchived == null)
                         .Where(y => y.Limit > 0 && y.Users.Any(z => z.RecipientSantaUserKey > 0))
                         .Count() == 0)
@@ -57,7 +57,7 @@ public sealed class AddHighlightsCountsAction : BaseAction<HomePageVm>
                     .ToList();
 
                 _item.PartnersAwaitingConfirmationCount = dbCurrentSantaUser.ConfirmingRelationships
-                    .Where(x => x.DateDeleted == null && x.DateArchived == null)
+                    .Where(DbPartnerLinkExpressions.IsActive())
                     .Where(x => x.Confirmed == null)
                     .Count();
             }
