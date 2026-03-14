@@ -11,7 +11,7 @@ public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGrou
 
     protected override Task<IList<IUserGiftingGroup>> Handle()
     {
-        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser.GiftingGroupLinks);
+        Global_User dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser!.GiftingGroupLinks);
         IList<IUserGiftingGroup> userGroups = new List<IUserGiftingGroup>();
 
         if (dbCurrentUser?.SantaUser != null)

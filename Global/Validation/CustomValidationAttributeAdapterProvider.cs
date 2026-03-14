@@ -8,7 +8,7 @@ public sealed class CustomValidationAttributeAdapterProvider
 {
     public CustomValidationAttributeAdapterProvider() { }
 
-    IAttributeAdapter IValidationAttributeAdapterProvider.GetAttributeAdapter(
+    IAttributeAdapter? IValidationAttributeAdapterProvider.GetAttributeAdapter(
         ValidationAttribute attribute,
         IStringLocalizer? stringLocalizer)
     {

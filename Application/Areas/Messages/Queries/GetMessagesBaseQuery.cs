@@ -146,7 +146,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         return GetParticipants(dbGiftingGroupYear)
             .Where(x => x.SantaUserKey == dbSender.SantaUserKey)
             .Where(x => x.RecipientSantaUser != null)
-            .Select(x => x.RecipientSantaUser);
+            .Select(x => x.RecipientSantaUser!);
     }
 
     private static IEnumerable<Santa_User> GetGifter(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear, bool fromSanta)

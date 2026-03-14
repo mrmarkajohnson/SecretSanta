@@ -12,8 +12,7 @@ public sealed class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelatio
 
     protected async override Task<ICommandResult<IChangeRelationshipStatus>> HandlePostValidation()
     {
-        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser,
-            g => g.SantaUser.SuggestedRelationships, g => g.SantaUser.ConfirmingRelationships);
+        Global_User? dbCurrentUser = GetCurrentGlobalUser(g => g.SantaUser, g => g.SantaUser!.SuggestedRelationships, g => g.SantaUser!.ConfirmingRelationships);
 
         if (dbCurrentUser.SantaUser == null)
         {
