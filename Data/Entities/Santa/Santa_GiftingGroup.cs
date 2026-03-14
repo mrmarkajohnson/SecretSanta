@@ -2,11 +2,10 @@
 using Global.Abstractions.Areas.GiftingGroup;
 using Global.Settings;
 using Global.Validation;
-using System.Globalization;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftingGroup,
+public class Santa_GiftingGroup : ArchivableBaseEntity, IGiftingGroup,
     IAuditableEntity<Santa_GiftingGroup_Audit, Santa_GiftingGroup_AuditChange>
 {
     public Santa_GiftingGroup()
@@ -76,9 +75,8 @@ public class Santa_GiftingGroup : DeletableBaseEntity, IDeletableEntity, IGiftin
 
     public IEnumerable<Santa_GiftingGroupUser> ActiveMembers(DateTime? archivedAfter = null)
     {
-        return Members.Where(x => x.DateDeleted == null 
-                && (x.DateArchived == null || (archivedAfter != null && x.DateArchived > archivedAfter)))
-            .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null);
+        return Members.Where(x => x.DateArchived == null || (archivedAfter != null && x.DateArchived > archivedAfter))
+            .Where(x => x.SantaUser.DateArchived == null);
     }
 
     public int CurrentYear()

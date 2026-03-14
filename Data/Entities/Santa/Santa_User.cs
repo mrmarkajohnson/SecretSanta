@@ -1,10 +1,9 @@
 ﻿using Data.Entities.Shared;
-using Global.Abstractions.Shared;
 using Global.Settings;
 
 namespace Data.Entities.Santa;
 
-public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferences
+public class Santa_User : ArchivableBaseEntity
 {
     public Santa_User()
     {
@@ -54,7 +53,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferenc
     public virtual ICollection<Santa_Invitation> ReceivedInvitations { get; set; }
 
     public IList<string> GroupNames() => GiftingGroupLinks
-        .Where(x => x.DateArchived == null && x.DateDeleted == null)
+        .Where(x => x.DateArchived == null)
         .Select(x => x.GiftingGroup.Name)
         .ToList();
 
@@ -65,7 +64,7 @@ public class Santa_User : DeletableBaseEntity, IDeletableEntity, IEmailPreferenc
             .Where(x => x.RelationshipEnded == null && x.DateDeleted == null && x.DateArchived == null)
             .Select(y => y.SuggestedBySantaUserKey))
         .Union(GiftingGroupLinks
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null)
             .Where(x => x.GroupAdmin)
             .SelectMany(y => y.GiftingGroup.Members)
             .Select(z => z.SantaUserKey))

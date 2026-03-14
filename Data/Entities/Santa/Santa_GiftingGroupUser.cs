@@ -1,6 +1,6 @@
 ﻿namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroupUser : DeletableBaseEntity, IDeletableEntity
+public class Santa_GiftingGroupUser : ArchivableBaseEntity
 {
     [Key]
     public int GiftingGroupUserKey { get; set; }

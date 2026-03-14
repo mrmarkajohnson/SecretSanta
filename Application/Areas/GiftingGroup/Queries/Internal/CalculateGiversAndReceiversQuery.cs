@@ -144,12 +144,12 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
 
         var suggestingPartnerSantaUserKeys = allActivePartnerLinks
             .Where(p => p.SuggestedBySantaUserKey == member.SantaUserKey)
-            .Where(p => p.ConfirmingSantaUser.DateDeleted == null && p.ConfirmingSantaUser.DateArchived == null)
+            .Where(p => p.ConfirmingSantaUser.DateArchived == null)
             .Select(p => p.ConfirmingSantaUserKey).ToList(); // relationships where this member 'suggested' the partnership
 
         var confirmedPartnerSantaUserKeys = allActivePartnerLinks
             .Where(p => p.ConfirmingSantaUserKey == member.SantaUserKey)
-            .Where(p => p.SuggestedBySantaUser.DateDeleted == null && p.SuggestedBySantaUser.DateArchived == null)
+            .Where(p => p.SuggestedBySantaUser.DateArchived == null)
             .Select(p => p.SuggestedBySantaUserKey).ToList(); // relationships where this member 'confirmed' the partnership
 
         List<int> partnerSantaUserKeys = suggestingPartnerSantaUserKeys.Union(confirmedPartnerSantaUserKeys).ToList();

@@ -26,7 +26,7 @@ public sealed class ToggleUserAdminStatusCommand : BaseCommand<ChangeGroupMember
         }
 
         var dbMemberLink = dbGiftingGroupLink.GiftingGroup.Members
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.DateArchived == null)
             .FirstOrDefault(x => x.SantaUserKey == Item.SantaUserKey);
 
         if (dbMemberLink != null)

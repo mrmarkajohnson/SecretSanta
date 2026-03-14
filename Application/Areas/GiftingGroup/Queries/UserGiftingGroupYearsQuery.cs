@@ -23,7 +23,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
         if (dbGroupLinks?.Any() == true)
         {
             var dbActiveLinks = dbGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null)
+                .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null)
                 .Where(x => CalendarYear > GlobalSettings.CurrentYear 
                     ? x.GiftingGroup.DateCreated.Year == CalendarYear 
                     : x.GiftingGroup.DateCreated.Year <= CalendarYear);
@@ -62,7 +62,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetJoinerRequests(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         IEnumerable<Santa_GiftingGroupApplication> dbJoinerRequests = dbSantaUser.GiftingGroupApplications
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.DateArchived == null)
             .Where(x => x.Accepted == null)
             .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
 

@@ -70,7 +70,7 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
 
     private bool IsAGroupMember(Santa_User dbToSantaUser)
     {
-        return dbToSantaUser.GiftingGroupLinks.Where(x => x.DateArchived == null && x.DateDeleted == null).Any(x => x.GiftingGroupKey == Item.GiftingGroupKey);
+        return dbToSantaUser.GiftingGroupLinks.Where(x => x.DateArchived == null).Any(x => x.GiftingGroupKey == Item.GiftingGroupKey);
     }
 
     private async Task<ICommandResult<TItem>> ProcessEmailAddress(Santa_User dbCurrentSantaUser, Santa_GiftingGroupUser dbGiftingGroupLink)

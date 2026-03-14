@@ -2,7 +2,7 @@
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroupApplication : DeletableBaseEntity, IDeletableEntity
+public class Santa_GiftingGroupApplication : ArchivableBaseEntity
 {
     [Key]
     public int GroupApplicationKey { get; set; }

@@ -21,9 +21,9 @@ public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggest
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupYears);
 
         Santa_GiftingGroup dbGroup = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.DateArchived == null)
             .Select(x => x.GiftingGroup)
-            .Where(y => y.DateDeleted == null && y.DateArchived == null)
+            .Where(y => y.DateArchived == null)
             .FirstOrDefault(y => y.GiftingGroupKey == GiftingGroupKey)
         ?? throw new NotFoundException("Group");
 

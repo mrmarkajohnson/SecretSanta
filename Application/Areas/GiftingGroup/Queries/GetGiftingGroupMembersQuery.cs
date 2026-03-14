@@ -42,8 +42,8 @@ public sealed class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryab
         IList<int> userKeysForVisibleEmail = [];
 
         IEnumerable<Santa_GiftingGroupUser> groupMembers = dbGiftingGroup.Members
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
-            .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null);
+            .Where(x => x.DateArchived == null)
+            .Where(x => x.SantaUser.DateArchived == null);
         
         if (SignedIn())
         {
@@ -81,7 +81,7 @@ public sealed class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryab
 
         var invitees = dbGiftingGroup.Invitations
             .Where(x => x.DateArchived == null)
-            .Where(x => x.ToSantaUser != null && x.ToSantaUser.DateDeleted == null && x.ToSantaUser.DateArchived == null)
+            .Where(x => x.ToSantaUser != null && x.ToSantaUser.DateArchived == null)
             .Where(x => x.ToSantaUserKey != null && !santaUserKeys.Contains(x.ToSantaUserKey.Value))
             .AsQueryable()
             .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)
@@ -90,8 +90,8 @@ public sealed class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryab
         result.AddRange(invitees);
 
         var applicants = dbGiftingGroup.MemberApplications
-            .Where(x => x.DateArchived == null && x.DateDeleted == null && x.Accepted == null)
-            .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null)
+            .Where(x => x.DateArchived == null && x.Accepted == null)
+            .Where(x => x.SantaUser.DateArchived == null)
             .Where(x => !santaUserKeys.Contains(x.SantaUserKey))
             .AsQueryable()
             .ProjectTo<IGroupMember>(Mapper.ConfigurationProvider, parameters)

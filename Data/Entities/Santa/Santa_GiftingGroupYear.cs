@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities.Santa;
 
-public class Santa_GiftingGroupYear : DeletableBaseEntity, IGiftingGroupYearBase,
+public class Santa_GiftingGroupYear : ArchivableBaseEntity, IGiftingGroupYearBase,
     IAuditableEntity<Santa_GiftingGroupYear_Audit, Santa_GiftingGroupYear_AuditChange>
 {
     public Santa_GiftingGroupYear()

@@ -31,7 +31,7 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
         dbOpenInvitations.ForEach(x => x.DateArchived = DateTime.Now);
 
         var dbOpenApplications = dbGiftingGroup.MemberApplications
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null)
             .Where(x => x.SantaUserKey == dbSantaUser.SantaUserKey)
             .ToList();
 
@@ -41,7 +41,7 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
     private static void AddToCurrentYear(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)
     {        
         var dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear >= GlobalSettings.CurrentYear 
-            && x.Users.Any(x => x.SantaUser.DateDeleted == null && x.RecipientSantaUserKey != null));
+            && x.Users.Any(x => x.RecipientSantaUserKey != null));
 
         if (dbGiftingGroupYear != null)
         {

@@ -87,9 +87,9 @@ public sealed class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<T
                     MessageGifter(dbSantaUser, dbYearGroupUser);
                 }
             }
-            else if (link.ApplyToGroup && dbLink.DateDeleted != null)
+            else if (link.ApplyToGroup && (dbLink.DateDeleted != null || dbLink.DateArchived != null))
             {
-                dbLink.DateDeleted = null;
+                dbLink.DateDeleted = dbLink.DateArchived = null;
                 MessageGifter(dbSantaUser, dbLink.YearGroupUser);
             }
             else if (!link.ApplyToGroup)

@@ -9,7 +9,7 @@ public abstract class GiftingGroupBaseQuery<TItem> : BaseQuery<TItem>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+            .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
             .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey);
 
         if (dbGiftingGroupLink != null)

@@ -26,7 +26,7 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
             throw new NotFoundException("Gifting Group");
 
         var dbActiveLinks = dbGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null);
+                .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
             .FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey);

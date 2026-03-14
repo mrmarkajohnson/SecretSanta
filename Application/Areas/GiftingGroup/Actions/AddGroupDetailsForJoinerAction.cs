@@ -42,7 +42,7 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var existingGroupLinks = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+            .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
             .Where(x => x.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey);
 
         Item.GiftingGroupKey = dbGiftingGroup.GiftingGroupKey;
@@ -55,7 +55,7 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
         }
 
         var previousApplications = dbCurrentSantaUser.GiftingGroupApplications
-            .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+            .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
             .Where(x => x.GiftingGroupKey == dbGiftingGroup.GiftingGroupKey)
             .ToList();
 

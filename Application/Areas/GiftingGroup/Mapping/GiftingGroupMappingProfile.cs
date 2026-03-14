@@ -22,8 +22,8 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src =>
                 src.GroupAdmin ? src.GiftingGroup.MemberApplications
-                    .Where(x => x.DateArchived == null && x.DateDeleted == null)
-                    .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null)
+                    .Where(x => x.DateArchived == null)
+                    .Where(x => x.SantaUser.DateArchived == null)
                     .Count(x => !x.Blocked && x.ResponseBySantaUserKey == null) : 0))
             .ForMember(dest => dest.CurrentYear, opt => opt.MapFrom(src => 
                 src.DateCreated.Year > GlobalSettings.CurrentYear ? src.DateCreated.Year : GlobalSettings.CurrentYear));
@@ -60,14 +60,14 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCode))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbol))
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users
-                .Where(x => x.SantaUser.DateDeleted == null && x.SantaUser.DateArchived == null)
-                .Where(x => x.SantaUser.GiftingGroupLinks.Any(x => x.GiftingGroupKey == src.GiftingGroupKey && x.DateDeleted == null && x.DateArchived == null))))
+                .Where(x => x.SantaUser.DateArchived == null)
+                .Where(x => x.SantaUser.GiftingGroupLinks.Any(x => x.GiftingGroupKey == src.GiftingGroupKey && x.DateArchived == null))))
             .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)))
             .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)
                 && src.Users.Any(x => x.Included == true && x.RecipientSantaUserKey == null 
                 && x.SantaUser.GiftingGroupLinks.Any(y => y.GiftingGroupKey == src.GiftingGroupKey 
-                && y.DateDeleted == null && y.DateArchived == null
-                && y.SantaUser.DateDeleted == null && y.SantaUser.DateArchived == null))));
+                && y.DateArchived == null
+                && y.SantaUser.DateArchived == null))));
         CreateMap<Santa_GiftingGroupYear, IGiftingGroupYear>().As<GiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroup, GiftingGroupYear>()

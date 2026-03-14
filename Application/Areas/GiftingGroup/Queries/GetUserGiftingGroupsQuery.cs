@@ -21,7 +21,7 @@ public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGrou
             if (dbGroupLinks?.Any() == true)
             {
                 userGroups = dbGroupLinks
-                    .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null)
+                    .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null)
                     .AsQueryable()
                     .ProjectTo<IUserGiftingGroup>(Mapper.ConfigurationProvider)
                     .ToList();

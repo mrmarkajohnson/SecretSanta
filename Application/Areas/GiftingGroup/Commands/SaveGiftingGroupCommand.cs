@@ -19,7 +19,7 @@ public sealed class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TI
         if (Item.GiftingGroupKey > 0)
         {
             Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
-                .Where(x => x.DateDeleted == null && x.GiftingGroup.DateDeleted == null)
+                .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
                 .FirstOrDefault(x => x.GiftingGroupKey == Item.GiftingGroupKey);
 
             if (dbGiftingGroupLink != null)

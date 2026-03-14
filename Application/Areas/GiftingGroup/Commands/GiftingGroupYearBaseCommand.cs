@@ -25,7 +25,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         string giftingGroupName, bool included)
     {
         var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-            .FirstOrDefault(x => x.DateDeleted == null && x.GiftingGroupKey == giftingGroupKey && x.GiftingGroup.DateDeleted == null);
+            .FirstOrDefault(x => x.DateArchived == null && x.GiftingGroupKey == giftingGroupKey && x.GiftingGroup.DateArchived == null);
 
         if (dbGiftingGroupLink == null)
             throw new NotFoundException($"Gifting Group '{giftingGroupName}'");

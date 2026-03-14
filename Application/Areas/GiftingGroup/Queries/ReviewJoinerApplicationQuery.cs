@@ -1,5 +1,6 @@
 ﻿using Global.Abstractions.Areas.GiftingGroup;
 using Global.Extensions.Exceptions;
+using Microsoft.AspNetCore.Builder;
 
 namespace Application.Areas.GiftingGroup.Queries;
 
@@ -17,17 +18,19 @@ public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbApplication = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
+            .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null)
             .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
         if (dbApplication == null)
         {
-            dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
+            dbApplication = DbContext.Santa_GiftingGroupApplications
+                .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
+                .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
-            if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
+            if (dbApplication != null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
                     .Where(x => x.GiftingGroupKey == dbApplication.GiftingGroupKey && x.GroupAdmin)

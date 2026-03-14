@@ -31,7 +31,7 @@ public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberSt
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         Santa_GiftingGroupUser? dbMemberLink = dbGiftingGroup.Members
-            .Where(x => x.DateDeleted == null && x.DateArchived == null)
+            .Where(x => x.DateArchived == null)
             .FirstOrDefault(x => x.SantaUserKey == Item.SantaUserKey);
 
         if (dbMemberLink != null && dbMemberLink.DateArchived == null)

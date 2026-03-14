@@ -19,16 +19,16 @@ public sealed class SuggestionMappingProfile : Profile
         CreateMap<Santa_Suggestion, Suggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(x => x.DateDeleted == null && x.YearGroupUser.GiftingGroupYear.DateDeleted == null
-                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateDeleted == null
+                .Where(x => x.DateDeleted == null && x.DateArchived == null && x.YearGroupUser.GiftingGroupYear.DateArchived == null
+                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateArchived == null
                     && x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, ISuggestion>().As<Suggestion>();
 
         CreateMap<Santa_Suggestion, ManageSuggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(x => x.DateDeleted == null && x.YearGroupUser.GiftingGroupYear.DateDeleted == null
-                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateDeleted == null
+                .Where(x => x.DateDeleted == null && x.DateArchived == null && x.YearGroupUser.GiftingGroupYear.DateArchived == null
+                    && x.YearGroupUser.GiftingGroupYear.GiftingGroup.DateArchived == null
                     && x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, IManageSuggestion>().As<ManageSuggestion>();
 
@@ -41,7 +41,7 @@ public sealed class SuggestionMappingProfile : Profile
             .IncludeMembers(src => src.YearGroupUser)
             .IncludeBase<Santa_SuggestionLink, SuggestionYearGroupUserLink>()
             .ForMember(dest => dest.ApplyToGroup, opt => opt.MapFrom(src => src.DateDeleted == null && src.DateArchived == null
-                && src.Suggestion.DateDeleted == null));
+                && src.Suggestion.DateDeleted == null && src.Suggestion.DateArchived == null));
         CreateMap<Santa_SuggestionLink, IManageSuggestionLink>().As<ManageSuggestionLink>();
 
         CreateMap<Santa_YearGroupUser, SuggestionYearGroupUserLink>()

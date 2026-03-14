@@ -8,10 +8,10 @@ public static class RelationshipPredicates
     {
         return src =>
             src.ConfirmingSantaUser.GiftingGroupLinks
-                .Where(x => x.DateArchived == null && x.DateDeleted == null)
-                .Where(x => x.GiftingGroup.DateArchived == null && x.GiftingGroup.DateDeleted == null)
+                .Where(x => x.DateArchived == null)
+                .Where(x => x.GiftingGroup.DateArchived == null)
                 .Where(x => src.SuggestedBySantaUser.GiftingGroupLinks
-                    .Where(y => y.DateArchived == null && y.DateDeleted == null)
+                    .Where(y => y.DateArchived == null)
                     .Any(y => y.GiftingGroupKey == x.GiftingGroupKey))
                 .Select(x => x.GiftingGroup.Name);
     }

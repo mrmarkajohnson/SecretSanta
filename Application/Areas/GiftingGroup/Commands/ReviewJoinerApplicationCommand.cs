@@ -19,17 +19,17 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbApplication = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateDeleted == null && x.GiftingGroup != null && x.GiftingGroup.DateDeleted == null && x.GroupAdmin)
+            .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null && x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.DateArchived == null)
             .FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
         if (dbApplication == null)
         {
             dbApplication = DbContext.Santa_GiftingGroupApplications.FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
-            if (dbApplication != null && dbApplication.GiftingGroup.DateDeleted == null)
+            if (dbApplication != null && dbApplication.GiftingGroup.DateArchived == null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
                     .Where(x => x.GiftingGroupKey == dbApplication.GiftingGroupKey && x.GroupAdmin)
