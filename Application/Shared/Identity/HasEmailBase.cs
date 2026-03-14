@@ -9,4 +9,5 @@ public abstract class HasEmailBase : IHaveAnEmail
     public virtual string? Email { get; set; }
 
     public bool ShowEmail { get; set; }
+    public bool EmailConfirmed { get; set; }
 }

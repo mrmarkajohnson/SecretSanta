@@ -18,6 +18,12 @@
         @item.ApplicantName
         <partial name="_UserInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
     </text>;
+
+    Func<IUserNamesBase, object> displayEmail =
+    @<text>
+        @item.UserDisplayName
+        <partial name="_EmailInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
+    </text>;
 }
 
 @(Html
@@ -27,7 +33,7 @@
         columns.Add(x => x.GroupName).Titled("Group Name");
         columns.Add(x => x.ApplicantName).RenderedAs(applicant).Titled("Applicant Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
-        columns.Add(x => x.NonNullableEmail).Titled(UserDisplayNames.Email);
+        columns.Add(x => x.Email).RenderedAs(displayEmail).Titled(UserDisplayNames.Email);
         columns.Add().RenderedAs(actions).Titled("Actions").Encoded(false).Css("nowrap");
     })
     .Pageable(pager =>

@@ -22,11 +22,13 @@ public sealed class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelatio
         string? itemUserId = Item.GetStringUserId();
 
         List<Santa_PartnerLink> dbPossibleRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null
-                && x.ConfirmingSantaUser.GlobalUserId == itemUserId)
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.SuggestedBySantaUser.DateDeleted == null && x.SuggestedBySantaUser.DateArchived == null)
+            .Where(x => x.ConfirmingSantaUser.GlobalUserId == itemUserId)
             .Union(dbCurrentUser.SantaUser.ConfirmingRelationships
-                .Where(x => x.DateArchived == null && x.DateDeleted == null
-                    && x.SuggestedBySantaUser.GlobalUserId == itemUserId))
+                .Where(x => x.DateArchived == null && x.DateDeleted == null)
+                .Where(x => x.ConfirmingSantaUser.DateDeleted == null && x.ConfirmingSantaUser.DateArchived == null)
+                .Where(x => x.SuggestedBySantaUser.GlobalUserId == itemUserId))
             .ToList();
 
         Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);

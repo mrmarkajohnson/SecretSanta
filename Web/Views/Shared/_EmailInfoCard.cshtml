@@ -1,0 +1,42 @@
+﻿@model IHaveAnEmail
+@{
+    string container = ViewData["data-bs-container"]?.ToString() ?? "body";    
+    string eMail = Model.EmailForDisplay();
+}
+
+@if (Model.EmailConfirmed)
+{
+    @if (eMail.IsNotEmpty())
+    {
+        <text>@eMail</text>
+        <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="@container" 
+              title="This e-mail address has been confirmed as genuine" style="font-size: 13px !important">
+            <i class="fa fa-circle-check" style="font-size: 13px !important"></i>
+        </span>
+    }
+    else
+    {
+        <i>(Confirmed)</i>
+        <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="@container" 
+              title="This e-mail address is hidden, but has been confirmed as genuine"
+              style="font-size: 13px !important">
+            <i class="fa fa-circle-info fa-border" style="font-size: 13px !important"></i>
+        </span>
+    }
+}
+else if (eMail.IsNotEmpty())
+{
+    <text>@eMail</text>
+    <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="@container"
+          title="This e-mail address has not been confirmed as genuine" style="font-size: 13px !important">
+        <i class="fa fa-triangle-exclamation" style="font-size: 13px !important"></i>
+    </span>
+}
+else if (Model.Email.IsNotEmpty())
+{
+    <i>(Not confirmed)</i>
+    <span data-toggle="tooltip" data-html="true" data-bs-html="true" data-bs-container="@container"
+          title="This e-mail address is hidden, but has not been confirmed as genuine" style="font-size: 13px !important">
+        <i class="fa fa-triangle-exclamation" style="font-size: 13px !important"></i>
+    </span>
+}

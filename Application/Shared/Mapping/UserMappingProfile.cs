@@ -20,7 +20,8 @@ public sealed class UserMappingProfile : Profile
             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.ShowEmail, opt => opt.MapFrom(src => src.SantaUser != null 
-                && UserKeysForVisibleEmail.Contains(src.SantaUser.SantaUserKey)));
+                && UserKeysForVisibleEmail.Contains(src.SantaUser.SantaUserKey)))
+            .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed));
 
         CreateMap<Global_User, IUserNamesBase>().As<UserNamesBase>();
         CreateMap<Global_User, IHashableUser>().As<UserNamesBase>();

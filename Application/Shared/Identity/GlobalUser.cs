@@ -31,7 +31,6 @@ public class GlobalUser : CoreIdentityUser, IGlobalUser
 
     public bool SecurityQuestionsSet { get; set; }
     public bool SystemAdmin { get; set; }
-    public bool EmailConfirmed { get; set; }
 
     public string UserDisplayName
     {

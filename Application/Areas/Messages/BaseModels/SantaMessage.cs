@@ -6,9 +6,23 @@ namespace Application.Areas.Messages.BaseModels;
 
 public class SantaMessage : SantaMessageBase, ISantaMessage
 {
+    private IUserNamesBase? _sender = new UserNamesBase(); // must be initialised for the mapping
+    
     public int MessageRecipientKey { get; set; }
 
-    public IUserNamesBase? Sender { get; set; } = new UserNamesBase(); // must be initialised for the mapping    
+    public IUserNamesBase? Sender
+    {
+        get
+        {
+            if (!IsSentMessage && !ShowAsFromSanta && _sender != null && _sender.IdentificationHashed)
+            {
+                _sender.UnHash();
+            }
+
+            return _sender;
+        }
+        set => _sender = value; 
+    }
 
     [Display(Name = "From")]
     public string SenderName => IsSentMessage 

@@ -12,13 +12,16 @@ public sealed class GetRelationshipsQuery : BaseQuery<IRelationships>
             g => g.SuggestedRelationships, g => g.ConfirmingRelationships);
 
         IEnumerable<IRelationship> suggestedRelationships = dbCurrentSantaUser.SuggestedRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null
-                && (x.SuggestedByIgnoreOld == false || x.Confirmed == true)) // exclude unconfirmed ignored relationships
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.SuggestedBySantaUser.DateDeleted == null && x.SuggestedBySantaUser.DateArchived == null)
+            .Where(x => x.SuggestedByIgnoreOld == false || x.Confirmed == true) // exclude unconfirmed ignored relationships
             .AsQueryable()
             .ProjectTo<SuggestedRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 
         IEnumerable<IRelationship> confirmingRelationships = dbCurrentSantaUser.ConfirmingRelationships
-            .Where(x => x.DateArchived == null && x.DateDeleted == null && (x.Confirmed != false || !x.ConfirmingUserIgnore))
+            .Where(x => x.DateArchived == null && x.DateDeleted == null)
+            .Where(x => x.ConfirmingSantaUser.DateDeleted == null && x.ConfirmingSantaUser.DateArchived == null)
+            .Where(x => x.Confirmed != false || !x.ConfirmingUserIgnore)
             .AsQueryable()
             .ProjectTo<ConfirmingRelationship>(Mapper.ConfigurationProvider, new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() });
 

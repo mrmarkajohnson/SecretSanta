@@ -8,8 +8,7 @@ public interface IHaveAnEmail
     string? Email { get; set; }
 
     bool ShowEmail { get; set; }
-
-    string NonNullableEmail => this.EmailForDisplay();
+    bool EmailConfirmed { get; set; }
 }
 
 public static class HaveAnEmailExtensions

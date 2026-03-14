@@ -9,6 +9,12 @@
         @item.UserDisplayName
         <partial name="_UserInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
     </text>;
+
+    Func<IUserNamesBase, object> displayEmail =
+    @<text>
+        @item.UserDisplayName
+        <partial name="_EmailInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
+    </text>;
     
     Func<IGroupMember, object> actions =
     @<text>
@@ -60,7 +66,7 @@ Html
     {
         columns.Add(x => x.UserDisplayName).RenderedAs(displayName).Titled("Name");
         columns.Add(x => x.UserName).Titled(UserDisplayNames.UserName);
-        columns.Add(x => x.Email).RenderedAs(x => x.EmailForDisplay()).Titled(UserDisplayNames.Email);
+        columns.Add(x => x.Email).RenderedAs(displayEmail).Titled(UserDisplayNames.Email);
         columns.Add(x => x.MemberStatus);
 
         if (Model.MemberListType == OtherGroupMembersType.EditGroup)

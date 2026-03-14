@@ -16,9 +16,11 @@ public sealed class GetPossiblePartnersQuery : BaseQuery<IQueryable<IVisibleUser
             .Select(y => y.SantaUser)
             .Where(z => z.SuggestedRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
+                .Where(r => r.SuggestedBySantaUser.DateDeleted == null && r.SuggestedBySantaUser.DateArchived == null)
                 .Any(r => r.ConfirmingSantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Where(z => z.ConfirmingRelationships
                 .Where(r => r.DateArchived == null && r.DateDeleted == null)
+                .Where(r => r.ConfirmingSantaUser.DateDeleted == null && r.ConfirmingSantaUser.DateArchived == null)
                 .Any(r => r.SuggestedBySantaUserKey == dbCurrentSantaUser.SantaUserKey && r.RelationshipEnded == null) == false)
             .Select(z => z.GlobalUser)
             .DistinctBy(g => g.Id)

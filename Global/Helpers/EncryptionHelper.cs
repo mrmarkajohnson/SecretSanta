@@ -130,7 +130,7 @@ public static class EncryptionHelper
             }
             catch
             {
-                return _hashedString ?? string.Empty;
+                return string.Empty;
             }
         }
     }
