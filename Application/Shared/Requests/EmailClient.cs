@@ -27,17 +27,18 @@ internal class EmailClient : IEmailClient
 
     public ValidationResult SendMessage(Santa_Message dbMessage)
     {
-        if (!dbMessage.Recipients.Any())
+        var recipients = dbMessage.Recipients
+            .Where(MessageRecipientExpressions.IsActive())
+            .AsQueryable()
+            .ProjectTo<IEmailRecipient>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        if (!recipients.Any())
         {
             var result = new ValidationResult();
             result.AddError("No recipients were found.");
             return result;
         }
-
-        var recipients = dbMessage.Recipients
-            .AsQueryable()
-            .ProjectTo<IEmailRecipient>(_mapper.ConfigurationProvider)
-            .ToList();
 
         recipients.ForEach(x => x.UnHash());
         var message = _mapper.Map<ISantaMessage>(dbMessage);

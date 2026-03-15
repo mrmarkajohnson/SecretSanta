@@ -62,7 +62,10 @@ public sealed class SaveGiftingGroupCommand<TItem> : BaseCommand<TItem> where TI
 
         if (Item.Name != dbGiftingGroup.Name)
         {
-            List<string> existingNames = DbContext.Santa_GiftingGroups.Select(x => x.Name).ToList();
+            List<string> existingNames = DbContext.Santa_GiftingGroups
+                .Where(GroupExpressions.IsActive())
+                .Select(x => x.Name).ToList();
+
             if (existingNames.Contains(Item.Name.Trim()))
             {
                 AddValidationError(nameof(Item.Name), $"Another group with name '{Item.Name}' already exists. Names must be unique.");

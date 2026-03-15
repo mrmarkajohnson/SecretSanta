@@ -17,10 +17,10 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
             .Where(GroupUserExpressions.IsActive(true))
             .Where(x => x.GroupAdmin)
             .Select(x => x.GiftingGroup)
-            .SelectMany(x => x.MemberApplications)
-                .Where(GroupApplicationExpressions.IsActive(false))
-                .Where(y => y.ResponseBySantaUserKey == null)
-                .AsQueryable();
+                .SelectMany(y => y.MemberApplications)
+                    .Where(GroupApplicationExpressions.IsActive(false))
+                    .Where(z => z.ResponseBySantaUserKey == null)
+                    .AsQueryable();
 
         var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();
         applications.ForEach(x => x.UnHash());

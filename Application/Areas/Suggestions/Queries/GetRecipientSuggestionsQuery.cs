@@ -32,7 +32,8 @@ public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggest
             .Where(GroupYearExpressions.IsActive(false))
             .Where(x => x.CalendarYear == CalendarYear)
             .SelectMany(x => x.Users)
-            .FirstOrDefault(y => y.SantaUser.GlobalUserId == userId.ToString())
+                .Where(YearGroupUserExpressions.IsActive(true))
+                .FirstOrDefault(y => y.SantaUser.GlobalUserId == userId.ToString())
         ?? throw new NotFoundException("User");
 
         var dbSuggestions = dbYearGroupUser.Suggestions

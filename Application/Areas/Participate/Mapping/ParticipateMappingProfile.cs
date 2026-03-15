@@ -25,11 +25,10 @@ public sealed class ParticipateMappingProfile : Profile
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.GiftingGroup.Years
                 .Where(GroupYearExpressions.IsActive(false))
                 .Where(x => x.CalendarYear == CalendarYear)
-                .Select(y => y.CurrencyCode).FirstOrDefault()
-                    ?? src.GiftingGroup.CurrencyCodeOverride))
+                .Select(y => y.CurrencyCode).FirstOrDefault()?? src.GiftingGroup.CurrencyCodeOverride))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.CalendarYear == CalendarYear).Select(y => y.CurrencySymbol).FirstOrDefault()
-                    ?? src.GiftingGroup.CurrencySymbolOverride));
+                .Where(x => x.CalendarYear == CalendarYear)
+                .Select(y => y.CurrencySymbol).FirstOrDefault() ?? src.GiftingGroup.CurrencySymbolOverride));
         CreateMap<Santa_GiftingGroupUser, IUserGiftingGroupYear>().As<UserGiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroupApplication, UserGiftingGroupYear>()

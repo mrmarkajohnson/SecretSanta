@@ -18,9 +18,9 @@ public sealed class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser
         var dbOtherGroupMembers = dbCurrentSantaUser.GiftingGroupLinks
             .Where(GroupUserExpressions.IsActive(true))
             .Select(x => x.GiftingGroup)
-            .SelectMany(y => y.Members)
-            .Where(GroupUserExpressions.IsActive(false))
-            .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey);
+                .SelectMany(y => y.Members)
+                    .Where(GroupUserExpressions.IsActive(false))
+                    .Where(z => z.SantaUserKey != dbCurrentSantaUser.SantaUserKey);
 
         List<int> groupMemberKeys = dbOtherGroupMembers
             .Where(x => x.GiftingGroupKey == _giftingGroupKey)            
@@ -31,11 +31,11 @@ public sealed class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser
             .Where(x => x.GiftingGroupKey != _giftingGroupKey)
             .Where(x => !groupMemberKeys.Contains(x.SantaUserKey))
             .Select(x => x.SantaUser.GlobalUser)
-            .DistinctBy(x => x.Id)
-            .AsQueryable()
-            .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
-                new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
-            .ToList();
+                .DistinctBy(y => y.Id)
+                .AsQueryable()
+                .ProjectTo<IVisibleUser>(Mapper.ConfigurationProvider, 
+                    new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() })
+                .ToList();
 
         visibleUsers.ForEach(x => x.UnHash());
 

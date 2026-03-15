@@ -50,7 +50,7 @@ public sealed class JoinGiftingGroupCommand<TItem> : BaseCommand<TItem> where TI
 
         if (Validation.IsValid)
         {
-            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.GiftingGroupKey == Item.GiftingGroupKey).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == Item.GiftingGroupKey);
 
             if (dbGiftingGroup == null) // just in case
             {

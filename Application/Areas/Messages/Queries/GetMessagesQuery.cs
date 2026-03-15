@@ -15,7 +15,6 @@ public sealed class GetMessagesQuery : GetMessagesBaseQuery<IQueryable<ISantaMes
             .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider);
 
         IQueryable<ISantaMessage> otherAvailableMessages = IndirectMessages(dbCurrentSantaUser)
-            .Where(MessageExpressions.IsActive())
             .AsQueryable()
             .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider);
 

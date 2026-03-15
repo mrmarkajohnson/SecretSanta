@@ -26,13 +26,13 @@ public sealed class ReviewJoinerApplicationCommand<TItem> : GiftingGroupBaseComm
                     .Where(GroupApplicationExpressions.IsActive(false))
                     .FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
-        if (dbApplication == null)
+        if (dbApplication == null) // then check if it exists but the user doesn't have admin access
         {
             dbApplication = DbContext.Santa_GiftingGroupApplications
                 .Where(GroupApplicationExpressions.IsActive(true))
                 .FirstOrDefault(x => x.GroupApplicationKey == Item.GroupApplicationKey);
 
-            if (dbApplication != null) // then check if it exists but the user doesn't have admin access
+            if (dbApplication != null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
                     .Where(GroupUserExpressions.IsActive(true))

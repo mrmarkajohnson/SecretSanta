@@ -31,6 +31,7 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
         if (dbGiftingGroup == null)
         {
             dbGiftingGroup = DbContext.Santa_GiftingGroups
+                .Where(GroupExpressions.IsActive())
                 .FirstOrDefault(x => x.Name == Item.Name && x.JoinerToken == Item.JoinerToken);
         }
 

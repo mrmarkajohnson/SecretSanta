@@ -13,8 +13,6 @@ public sealed class DeleteSuggestionCommand : BaseCommand<int>
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.Suggestions);
 
-        var suggestion = new ManageSuggestion();
-
         if (Item > 0)
         {
             Santa_Suggestion? dbSuggestion = dbCurrentSantaUser.Suggestions.FirstOrDefault(x => x.SuggestionKey == Item);
@@ -23,11 +21,11 @@ public sealed class DeleteSuggestionCommand : BaseCommand<int>
             {
                 if (dbSuggestion.DateCreated.Year < GlobalSettings.CurrentYear && dbSuggestion.YearGroupUserLinks.Any())
                 {
-                    dbSuggestion.DateArchived = DateTime.Now;
+                    dbSuggestion.DateArchived ??= DateTime.Now;
                 }
                 else
                 {
-                    dbSuggestion.DateDeleted = DateTime.Now;
+                    dbSuggestion.DateDeleted ??= DateTime.Now;
                 }
             }
             else

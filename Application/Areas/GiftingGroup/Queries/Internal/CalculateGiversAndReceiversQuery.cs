@@ -31,6 +31,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
         List<int> participatingMemberKeys = _participatingMembers.Select(y => y.SantaUserKey).ToList();
 
         List<Santa_YearGroupUser> _activeCombinationsInOtherGroups = DbContext.Santa_YearGroupUsers
+            .Where(YearGroupUserExpressions.IsActive(true))
             .Where(x => x.RecipientSantaUserKey != null)
             .Where(x => x.GiftingGroupYearKey == _dbGiftingGroupYear.GiftingGroupYearKey)
             .Where(x => x.GiftingGroupYear.GiftingGroupKey != _dbGiftingGroupYear.GiftingGroupKey)
@@ -87,8 +88,9 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
             .Where(x => x.CalendarYear < _dbGiftingGroupYear.CalendarYear)
             .Where(x => x.CalendarYear >= _dbGiftingGroupYear.CalendarYear - previousYears)
             .SelectMany(y => y.Users)
-            .Where(z => z.Included == true)
-            .ToList();
+                .Where(YearGroupUserExpressions.IsActive(true))
+                .Where(z => z.Included == true)
+                .ToList();
 
         foreach (Santa_YearGroupUser member in _participatingMembers)
         {

@@ -145,17 +145,16 @@ public abstract class BaseRequest<TResult>
 
     protected Santa_User? GetSantalUser(string globalUserId, params Expression<Func<Santa_User, object?>>[] includes)
     {
+        var query = DbContext.Santa_Users
+            .Where(SantaUserExpressions.IsActive())
+            .Where(x => x.GlobalUserId == globalUserId);
+
         if (includes != null && includes.Any())
         {
-            var query = DbContext.Santa_Users;
-            return includes
-                .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
-                .FirstOrDefault(x => x.GlobalUserId == globalUserId);
+            query = includes.Aggregate(query.AsQueryable(), (current, include) => current.Include(include));
         }
-        else
-        {
-            return DbContext.Santa_Users.FirstOrDefault(x => x.GlobalUserId == globalUserId);
-        }
+        
+        return query.FirstOrDefault();
     }
 
     protected Global_User GetCurrentGlobalUser(params Expression<Func<Global_User, object?>>[] includes)
@@ -185,17 +184,16 @@ public abstract class BaseRequest<TResult>
 
     protected Global_User? GetGlobalUser(string globalUserId, params Expression<Func<Global_User, object?>>[] includes)
     {
+        var query = DbContext.Global_Users
+            .Where(GlobalUserExpressions.IsActive())
+            .Where(x => x.Id == globalUserId);
+
         if (includes != null && includes.Any())
         {
-            var query = DbContext.Global_Users;
-            return includes
-                .Aggregate(query.AsQueryable(), (current, include) => current.Include(include))
-                .FirstOrDefault(x => x.Id == globalUserId);
+            query = includes.Aggregate(query.AsQueryable(), (current, include) => current.Include(include));
         }
-        else
-        {
-            return DbContext.Global_Users.FirstOrDefault(x => x.Id == globalUserId);
-        }
+        
+        return query.FirstOrDefault();        
     }
 
     protected async Task<bool> AccessFailed(UserManager<IdentityUser> userManager, IIdentityUser identityUser)

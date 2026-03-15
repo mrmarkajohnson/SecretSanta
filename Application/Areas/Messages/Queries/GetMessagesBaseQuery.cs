@@ -67,9 +67,11 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     protected IEnumerable<Santa_Message> IndirectMessages(Santa_User dbSantaUser)
     {
         return dbSantaUser.GiftingGroupYears
+            .Where(YearGroupUserExpressions.IsActive(false))
             .SelectMany(x => x.GiftingGroupYear.Messages)
-            .ToList()
-            .Where(y => IsIndirectRecipient(dbSantaUser, y));
+                .Where(MessageExpressions.IsActive())
+                .ToList() // enables using a method
+                .Where(y => IsIndirectRecipient(dbSantaUser, y));
     }
 
     protected bool IsIndirectRecipient(Santa_User dbSantaUser, Santa_Message dbOriginalMessage)
@@ -82,7 +84,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     #region Possible recipients
 
     protected IList<Santa_User> GetPossibleRecipients(Santa_GiftingGroupYear? dbGiftingGroupYear, Santa_User dbSender,
-        int? replyToMessageKey, MessageRecipientType recipientType, bool fromSanta, int? specificSantaUserKey, bool checkReplySecurity)
+        int? replyToMessageKey, MessageRecipientType recipientType, bool fromSanta, int? firstRecipientKey, bool checkReplySecurity)
     {
         IEnumerable<Santa_User> dbPossibleRecipients = recipientType switch // may include the current user, who is removed below
         {
@@ -105,9 +107,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
             MessageRecipientType.PotentialPartner
                 => [], // should be handled elsewhere
             MessageRecipientType.SingleGroupMember
-                => GetSpecificGroupMember(dbSender, specificSantaUserKey, dbGiftingGroupYear),
+                => GetSpecificGroupMember(dbSender, firstRecipientKey, dbGiftingGroupYear),
             MessageRecipientType.SingleNonGroupMember
-                => GetSpecificNonGroupMember(specificSantaUserKey),
+                => GetSpecificNonGroupMember(firstRecipientKey),
             _ => []
         };
 
@@ -127,7 +129,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
 
     private IEnumerable<Santa_User> GetSystemAdmins(Santa_User dbSender)
     {
-        return DbContext.Santa_Users.Where(x => x.SantaUserKey != dbSender.SantaUserKey && x.GlobalUser.SystemAdmin);
+        return DbContext.Santa_Users
+            .Where(SantaUserExpressions.IsActive())
+            .Where(x => x.SantaUserKey != dbSender.SantaUserKey && x.GlobalUser.SystemAdmin);
     }
 
     private static IEnumerable<Santa_User> GetGroupAdmins(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
@@ -177,7 +181,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     private IEnumerable<Santa_User> GetOriginalRecipients(int? replyToMessageKey, Santa_User dbSantaUser, bool checkReplySecurity)
     {
         return GetOriginalMessage(replyToMessageKey ?? 0, dbSantaUser, false, checkReplySecurity)
-            .Recipients.Select(x => x.RecipientSantaUser);
+            .Recipients
+            .Where(MessageRecipientExpressions.IsActive())
+            .Select(x => x.RecipientSantaUser);
     }
 
     private static IEnumerable<Santa_User> GetGroupMembers(Santa_User dbSender, Santa_GiftingGroupYear? dbGiftingGroupYear)
@@ -204,12 +210,15 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     protected static IEnumerable<Santa_Message> GetAllGroupMessages(Santa_User dbSantaUser)
     {
         return dbSantaUser.GiftingGroupYears
-            .SelectMany(x => x.GiftingGroupYear.Messages);
+            .Where(YearGroupUserExpressions.IsActive(false))
+            .SelectMany(x => x.GiftingGroupYear.Messages)
+                .Where(MessageExpressions.IsActive());
     }
 
     protected IQueryable<T> GetSentMessages<T>(Santa_User dbSantaUser)
     {
         return dbSantaUser.SentMessages
+            .Where(MessageExpressions.IsActive())
             .Where(x => x.RecipientType is not MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember)
             .OrderByDescending(x => x.DateCreated)
             .AsQueryable()
@@ -232,7 +241,9 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         allGroupMessages ??= GetAllGroupMessages(dbSantaUser);
 
         List<Santa_Message> previousMessages = allGroupMessages
-            .Where(x => x.Replies.Any(y => y.MessageKey == messageKey))
+            .Where(x => x.Replies
+                .Where(MessageExpressions.IsActive())
+                .Any(y => y.MessageKey == messageKey))
             .ToList();
 
         var olderMessages = previousMessages;

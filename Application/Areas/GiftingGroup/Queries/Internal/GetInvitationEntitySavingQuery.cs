@@ -121,7 +121,9 @@ internal class GetInvitationEntitySavingQuery : BaseQuery<Santa_Invitation?>
 
     private bool NameMatchesWithNoEmail(Santa_Invitation dbInvitation)
     {
-        var matchingUser = DbContext.Users.FirstOrDefault(x => x.Email == dbInvitation.ToEmailAddress); // both should be hashed
+        var matchingUser = DbContext.Santa_Users
+            .Where(SantaUserExpressions.IsActive())
+            .FirstOrDefault(x => x.GlobalUser.Email == dbInvitation.ToEmailAddress); // both should be hashed
 
         if (matchingUser != null)
         {

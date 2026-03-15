@@ -61,8 +61,7 @@ public class Santa_GiftingGroup : ArchivableBaseEntity, IGiftingGroup,
             .Where(GroupYearExpressions.IsActive(false))
             .Where(x => x.CalendarYear == calendarYear)
             .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
-            .FirstOrDefault()?
-            .SantaUser;
+                .FirstOrDefault()?.SantaUser;
     }
 
     public IEnumerable<Santa_User> GroupAdministrators()

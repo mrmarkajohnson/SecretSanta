@@ -31,7 +31,9 @@ public sealed class GetGiftingGroupMembersQuery : GiftingGroupBaseQuery<IQueryab
             : await GetGiftingGroupUserLink(_giftingGroupKey, false);
         
         Santa_GiftingGroup? dbGiftingGroup = _memberListType == OtherGroupMembersType.ReviewInvitation
-            ? DbContext.Santa_GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == _giftingGroupKey)
+            ? DbContext.Santa_GiftingGroups
+                .Where(GroupExpressions.IsActive())
+                .FirstOrDefault(x => x.GiftingGroupKey == _giftingGroupKey)
             : dbGiftingGroupLink?.GiftingGroup;
 
         if (dbGiftingGroup == null)

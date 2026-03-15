@@ -11,7 +11,9 @@ public sealed class GetUniqueJoinerTokenQuery : BaseQuery<string>
 
     protected override Task<string> Handle()
     {
-        List<string> existingTokens = DbContext.Santa_GiftingGroups.Select(x => x.JoinerToken).ToList();
+        List<string> existingTokens = DbContext.Santa_GiftingGroups
+            .Where(GroupExpressions.IsActive())
+            .Select(x => x.JoinerToken).ToList();
 
         if (_existingToken.IsNotEmpty() && IsUnique(_existingToken, existingTokens))
         {

@@ -29,6 +29,7 @@ public sealed class GetUserQuery : BaseQuery<ISantaUser?>
             bool isEmail = EmailHelper.IsEmail(_userNameOrEmail);
 
             var dbPossibleUsers = DbContext.Global_Users
+                .Where(GlobalUserExpressions.IsActive())
                 .Where(x => x.Forename.Trim().ToLower() == _foreName.Trim().ToLower());
 
             var dbGlobalUser = dbPossibleUsers.FirstOrDefault(x => hashedId.UserNameHash != null && x.UserName == hashedId.UserNameHash)

@@ -70,8 +70,8 @@ public class Santa_User : ArchivableBaseEntity
             .Where(GroupUserExpressions.IsActive(true))
             .Where(x => x.GroupAdmin)
             .SelectMany(y => y.GiftingGroup.Members)
-            .Where(GroupUserExpressions.IsActive(false))
-            .Select(z => z.SantaUserKey))
+                .Where(GroupUserExpressions.IsActive(false))
+                .Select(z => z.SantaUserKey))
         .Union(ReceivedInvitations
             .Where(GroupInvitationExpressions.IsActive(true))
             .Select(x => x.FromSantaUserKey))

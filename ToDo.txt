@@ -10,12 +10,9 @@ ACCEPTING INVITATIONS
 * Allow a preview before registering?
 
 GENERAL
-* Show a 'Shortcuts' section for suggested actions at the top e.g. if someone hasn't yet joined a group, needs to add suggestions, etc.
 Handle index pages etc. in bundles/routing
-Create shared 'IsActive' predicates for IDeletableEntity and IArchiveableEntity
 Add back buttons to relevant pages?
 Add more auditing and make audit trails visible
-Ensure all deletions and archives are handled
 Add middle names (or initials?) to UserDisplayName only when the list has more than one with the same name 
 	(or replace it with a boolean to display middle names, and use DisplayName() based on that)
 Log unhandled exceptions from GlobalRequestProcessor into a database table

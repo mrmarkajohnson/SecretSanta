@@ -37,7 +37,9 @@ public sealed class AddHighlightsCountsAction : BaseAction<HomePageVm>
                     .Count(x => x.GiftingGroup.Years
                         .Where(GroupYearExpressions.IsActive(false))
                         .Where(y => y.CalendarYear == GlobalSettings.CurrentYear)
-                        .Where(y => y.Users.Any(z => z.SantaUserKey == dbCurrentSantaUser.SantaUserKey && z.Included != null))
+                        .Where(y => y.Users
+                            .Where(YearGroupUserExpressions.IsActive(false))
+                            .Any(z => z.SantaUserKey == dbCurrentSantaUser.SantaUserKey && z.Included != null))
                         .Count() == 0);
 
                 _item.GroupsWithNoSuggestionsCount = dbGroupLinks

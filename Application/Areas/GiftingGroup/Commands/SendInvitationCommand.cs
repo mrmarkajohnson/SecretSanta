@@ -48,12 +48,12 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
         Santa_User? dbToSantaUser = dbCurrentSantaUser.GiftingGroupLinks
             .Where(GroupUserExpressions.IsActive(true))
             .Select(x => x.GiftingGroup)
-            .Where(x => x.GiftingGroupKey != Item.GiftingGroupKey)
-            .SelectMany(x => x.Members)
-                .Where(GroupUserExpressions.IsActive(false))
-                .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
-                .Select(y => y.SantaUser)
-                    .FirstOrDefault(z => z.GlobalUser.Id == unhashedUserId);
+                .Where(y => y.GiftingGroupKey != Item.GiftingGroupKey)
+                .SelectMany(y => y.Members)
+                    .Where(GroupUserExpressions.IsActive(false))
+                    .Where(z => z.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
+                    .Select(z => z.SantaUser)
+                        .FirstOrDefault(u => u.GlobalUser.Id == unhashedUserId);
 
         if (dbToSantaUser == null)
         {
@@ -87,8 +87,10 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
         string tidiedName = Item.ToName.Tidy();
 
         IQueryable<Global_User> dbPossibleToUsers = DbContext.Global_Users
+            .Where(GlobalUserExpressions.IsActive())
             .Where(x => x.SantaUser != null && x.SantaUser.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
-            .Where(x => x.Email == hashedEmail);
+            .Where(x => x.Email == hashedEmail)
+            .AsQueryable();
 
         Santa_User? dbToSantaUser = dbPossibleToUsers
             .Where(x => x.Forename == tidiedName || x.PreferredFirstName == tidiedName)

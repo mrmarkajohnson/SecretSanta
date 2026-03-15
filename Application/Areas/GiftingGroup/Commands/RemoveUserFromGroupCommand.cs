@@ -40,8 +40,8 @@ public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberSt
                 .Where(GroupYearExpressions.IsActive(false))
                 .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .SelectMany(x => x.Users)
-                .Where(y => y.SantaUserKey == Item.SantaUserKey)
-                .FirstOrDefault(y => y.RecipientSantaUserKey > 0);
+                    .Where(y => y.SantaUserKey == Item.SantaUserKey)
+                    .FirstOrDefault(y => y.RecipientSantaUserKey > 0);
 
             Global_User dbGlobalUser = dbMemberLink.SantaUser.GlobalUser;
 

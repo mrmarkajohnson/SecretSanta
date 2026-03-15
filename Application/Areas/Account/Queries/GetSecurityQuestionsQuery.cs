@@ -32,7 +32,9 @@ public sealed class GetSecurityQuestionsQuery : BaseQuery<ISecurityQuestions?>
 
         if (dbCurrentUser == null && !string.IsNullOrEmpty(_hashedUserName)) // second constructor
         {
-            dbCurrentUser = DbContext.Global_Users.FirstOrDefault(x => x.UserName == _hashedUserName);
+            dbCurrentUser = DbContext.Global_Users
+                .Where(GlobalUserExpressions.IsActive())
+                .FirstOrDefault(x => x.UserName == _hashedUserName);
         }
 
         if (dbCurrentUser != null)

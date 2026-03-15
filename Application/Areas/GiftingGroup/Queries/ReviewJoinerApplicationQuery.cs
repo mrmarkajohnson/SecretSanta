@@ -21,9 +21,9 @@ public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
             .Where(GroupUserExpressions.IsActive(true))
             .Where(x => x.GroupAdmin)
             .Select(x => x.GiftingGroup)
-                .SelectMany(x => x.MemberApplications)
+                .SelectMany(y => y.MemberApplications)
                     .Where(GroupApplicationExpressions.IsActive(false))
-                    .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
+                    .FirstOrDefault(z => z.GroupApplicationKey == _groupApplicationKey);
 
         if (dbApplication == null) // then check if it exists but the user doesn't have admin access
         {
