@@ -20,8 +20,7 @@ public sealed class MarkMessageReadCommand : BaseCommand<int>
         Santa_MessageRecipient? dbRecipient = null;
 
         var receivedMessages = dbCurrentSantaUser.ReceivedMessages
-            .Where(x => x.DateArchived == null)
-            .Where(x => x.Message.DateArchived == null)
+            .Where(MessageRecipientExpressions.IsActive())
             .Where(x => x.MessageKey == MessageKey);
 
         if (MessageRecipientKey > 0)

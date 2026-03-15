@@ -27,11 +27,16 @@ public sealed class ParticipateInYearCommand<TItem> : GiftingGroupYearBaseComman
         if (string.IsNullOrWhiteSpace(recipientId) || dbGiftingGroup.Recipient(dbSantaUser.SantaUserKey, oldYear) != null)
             return; // TODO: Return a validation failure
 
-        var dbMatchedGroupUser = dbGiftingGroup.Members.FirstOrDefault(x => x.SantaUser.GlobalUserId == recipientId);
+        var dbMatchedGroupUser = dbGiftingGroup.Members
+            .Where(GroupUserExpressions.IsActive(false))
+            .FirstOrDefault(x => x.SantaUser.GlobalUserId == recipientId);
+        
         if (dbMatchedGroupUser == null)
             return; // TODO: Return a validation failure
 
-        Santa_GiftingGroupYear? dbOldYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == oldYear);
+        Santa_GiftingGroupYear? dbOldYear = dbGiftingGroup.Years
+            .Where(GroupYearExpressions.IsActive(false))
+            .FirstOrDefault(x => x.CalendarYear == oldYear);
 
         if (dbOldYear == null)
         {

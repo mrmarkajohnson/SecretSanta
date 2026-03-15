@@ -57,9 +57,10 @@ public class CloseAccountCommand : BaseCommand<string>
         {
             foreach (var dbGroupLink in dbCurrentUser.SantaUser.GiftingGroupLinks.ToList())
             {
-                dbGroupLink.DateArchived = now;
+                dbGroupLink.DateArchived ??= now;
 
                 var dbActiveYears = dbGroupLink.GiftingGroup.Years
+                    .Where(GroupYearExpressions.IsActive(false))
                     .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                     .ToList();
 

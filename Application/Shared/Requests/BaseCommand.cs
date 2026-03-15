@@ -198,6 +198,10 @@ public abstract class BaseCommand<TItem> : BaseRequest<ICommandResult<TItem>>
         {
             dbGiftingGroupYear = CreateGiftingGroupYear(dbGiftingGroup, calendarYear);
         }
+        else
+        {
+            dbGiftingGroupYear.DateArchived = null;
+        }
 
         return dbGiftingGroupYear;
     }

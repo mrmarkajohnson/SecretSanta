@@ -19,14 +19,14 @@ public sealed class SuggestionMappingProfile : Profile
         CreateMap<Santa_Suggestion, Suggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(DbSuggestionLinkExpressions.IsActive(true))
+                .Where(SuggestionLinkExpressions.IsActive(true))
                 .Where(x => x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, ISuggestion>().As<Suggestion>();
 
         CreateMap<Santa_Suggestion, ManageSuggestion>()
             .IncludeBase<Santa_Suggestion, SuggestionBase>()
             .ForMember(dest => dest.YearGroupUserLinks, opt => opt.MapFrom(src => src.YearGroupUserLinks
-                .Where(DbSuggestionLinkExpressions.IsActive(true))
+                .Where(SuggestionLinkExpressions.IsActive(true))
                 .Where(x => x.YearGroupUser.GiftingGroupYear.CalendarYear >= GlobalSettings.CurrentYear)));
         CreateMap<Santa_Suggestion, IManageSuggestion>().As<ManageSuggestion>();
 

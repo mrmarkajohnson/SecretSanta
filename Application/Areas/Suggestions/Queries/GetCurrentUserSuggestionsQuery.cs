@@ -10,7 +10,7 @@ public sealed class GetCurrentUserSuggestionsQuery : BaseQuery<IQueryable<ISugge
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.Suggestions);
 
         var dbSuggestions = dbCurrentSantaUser.Suggestions
-            .Where(DbSuggestionExpressions.IsActive())
+            .Where(SuggestionExpressions.IsActive())
             .AsQueryable()
             .ProjectTo<ISuggestion>(Mapper.ConfigurationProvider);
 

@@ -31,17 +31,17 @@ public sealed class RemoveUserFromGroupCommand : BaseCommand<ChangeGroupMemberSt
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         Santa_GiftingGroupUser? dbMemberLink = dbGiftingGroup.Members
-            .Where(x => x.DateArchived == null)
+            .Where(GroupUserExpressions.IsActive(false))
             .FirstOrDefault(x => x.SantaUserKey == Item.SantaUserKey);
 
-        if (dbMemberLink != null && dbMemberLink.DateArchived == null)
+        if (dbMemberLink != null)
         {
             Santa_YearGroupUser? dbCalculateYearLink = dbGiftingGroup.Years
+                .Where(GroupYearExpressions.IsActive(false))
                 .Where(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 .SelectMany(x => x.Users)
                 .Where(y => y.SantaUserKey == Item.SantaUserKey)
-                .Where(y => y.RecipientSantaUserKey > 0)
-                .FirstOrDefault();
+                .FirstOrDefault(y => y.RecipientSantaUserKey > 0);
 
             Global_User dbGlobalUser = dbMemberLink.SantaUser.GlobalUser;
 

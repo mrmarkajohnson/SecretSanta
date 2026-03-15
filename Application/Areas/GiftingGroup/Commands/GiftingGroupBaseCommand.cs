@@ -24,14 +24,14 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
     private static void ClearOpenInvitationsAndApplications(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)
     {
         var dbOpenInvitations = dbGiftingGroup.Invitations
-            .Where(x => x.DateArchived == null)
+            .Where(GroupInvitationExpressions.IsActive(false))
             .Where(x => x.ToSantaUserKey == dbSantaUser.SantaUserKey)
             .ToList();
 
         dbOpenInvitations.ForEach(x => x.DateArchived = DateTime.Now);
 
         var dbOpenApplications = dbGiftingGroup.MemberApplications
-            .Where(x => x.DateArchived == null)
+            .Where(GroupApplicationExpressions.IsActive(false))
             .Where(x => x.SantaUserKey == dbSantaUser.SantaUserKey)
             .ToList();
 
@@ -40,8 +40,9 @@ public abstract class GiftingGroupBaseCommand<TItem> : BaseCommand<TItem>
 
     private static void AddToCurrentYear(Santa_GiftingGroup dbGiftingGroup, Santa_User dbSantaUser)
     {        
-        var dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear >= GlobalSettings.CurrentYear 
-            && x.Users.Any(x => x.RecipientSantaUserKey != null));
+        var dbGiftingGroupYear = dbGiftingGroup.Years
+            .Where(GroupYearExpressions.IsActive(false))
+            .FirstOrDefault(x => x.CalendarYear >= GlobalSettings.CurrentYear && x.Users.Any(x => x.RecipientSantaUserKey != null));
 
         if (dbGiftingGroupYear != null)
         {

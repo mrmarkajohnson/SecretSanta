@@ -20,15 +20,9 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
     protected override Task<IManageUserGiftingGroupYear> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
-        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
-
-        if (dbGroupLinks?.Any() != true)
-            throw new NotFoundException("Gifting Group");
-
-        var dbActiveLinks = dbGroupLinks
-                .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
             .FirstOrDefault(x => x.GiftingGroupKey == GiftingGroupKey);
 
         if (dbGiftingGroupLink == null)
@@ -37,8 +31,8 @@ public sealed class ManageUserGiftingGroupYearQuery : BaseQuery<IManageUserGifti
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         Santa_GiftingGroupYear? dbYear = dbGiftingGroup.Years
-            .Where(x => x.CalendarYear == CalendarYear)
-            .FirstOrDefault();
+            .Where(GroupYearExpressions.IsActive(false))
+            .FirstOrDefault(x => x.CalendarYear == CalendarYear);
 
         Santa_YearGroupUser? dbYearGroupUser = dbYear?.Users.FirstOrDefault(u => u.SantaUserKey == dbCurrentSantaUser.SantaUserKey);
 

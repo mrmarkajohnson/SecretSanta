@@ -57,7 +57,9 @@ public class Santa_GiftingGroup : ArchivableBaseEntity, IGiftingGroup,
 
     public Santa_User? Recipient(int santaUserKey, int calendarYear)
     {
-        return Years.Where(x => x.CalendarYear == calendarYear)
+        return Years
+            .Where(GroupYearExpressions.IsActive(false))
+            .Where(x => x.CalendarYear == calendarYear)
             .SelectMany(y => y.Users.Where(u => u.SantaUserKey == santaUserKey && u.RecipientSantaUserKey > 0))
             .FirstOrDefault()?
             .SantaUser;
@@ -75,8 +77,16 @@ public class Santa_GiftingGroup : ArchivableBaseEntity, IGiftingGroup,
 
     public IEnumerable<Santa_GiftingGroupUser> ActiveMembers(DateTime? archivedAfter = null)
     {
-        return Members.Where(x => x.DateArchived == null || (archivedAfter != null && x.DateArchived > archivedAfter))
-            .Where(x => x.SantaUser.DateArchived == null);
+        if (archivedAfter == null)
+        {
+            return Members.Where(GroupUserExpressions.IsActive(false));
+        }
+        else
+        {
+            return Members
+                .Where(x => x.DateArchived == null || x.DateArchived > archivedAfter)
+                .Where(x => x.SantaUser.DateArchived == null);
+        }
     }
 
     public int CurrentYear()

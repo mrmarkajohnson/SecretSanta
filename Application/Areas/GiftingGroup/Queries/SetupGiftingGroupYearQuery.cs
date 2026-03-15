@@ -24,7 +24,10 @@ public sealed class SetupGiftingGroupYearQuery : GiftingGroupBaseQuery<IGiftingG
 
         Santa_GiftingGroupUser dbGiftingGroupLink = await GetGiftingGroupUserLink(_giftingGroupKey, true);
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
-        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years.FirstOrDefault(x => x.CalendarYear == _calendarYear);
+
+        Santa_GiftingGroupYear? dbGiftingGroupYear = dbGiftingGroup.Years
+            .Where(GroupYearExpressions.IsActive(false))
+            .FirstOrDefault(x => x.CalendarYear == _calendarYear);
 
         GiftingGroupYear giftingGroupYear = new();
         DateTime firstDayOfNextYear = DateHelper.FirstDayOfNextYear(_calendarYear);

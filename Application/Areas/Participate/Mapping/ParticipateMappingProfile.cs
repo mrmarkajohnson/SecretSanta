@@ -19,9 +19,13 @@ public sealed class ParticipateMappingProfile : Profile
             .ForMember(dest => dest.Recipient, opt => opt.Ignore())
             .ForMember(dest => dest.CalendarYear, opt => opt.MapFrom(src => CalendarYear))
             .ForMember(dest => dest.Limit, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.CalendarYear == CalendarYear).Select(y => y.Limit).FirstOrDefault()))
+                .Where(GroupYearExpressions.IsActive(false))
+                .Where(x => x.CalendarYear == CalendarYear)
+                .Select(y => y.Limit).FirstOrDefault()))
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.GiftingGroup.Years
-                .Where(x => x.CalendarYear == CalendarYear).Select(y => y.CurrencyCode).FirstOrDefault()
+                .Where(GroupYearExpressions.IsActive(false))
+                .Where(x => x.CalendarYear == CalendarYear)
+                .Select(y => y.CurrencyCode).FirstOrDefault()
                     ?? src.GiftingGroup.CurrencyCodeOverride))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.GiftingGroup.Years
                 .Where(x => x.CalendarYear == CalendarYear).Select(y => y.CurrencySymbol).FirstOrDefault()

@@ -18,21 +18,23 @@ public sealed class ReviewJoinerApplicationQuery : BaseQuery<IReviewApplication>
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbApplication = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null && x.GroupAdmin)
+            .Where(GroupUserExpressions.IsActive(true))
+            .Where(x => x.GroupAdmin)
             .Select(x => x.GiftingGroup)
-            .SelectMany(x => x.MemberApplications)
-            .Where(x => x.DateArchived == null)
-            .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
+                .SelectMany(x => x.MemberApplications)
+                    .Where(GroupApplicationExpressions.IsActive(false))
+                    .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
-        if (dbApplication == null)
+        if (dbApplication == null) // then check if it exists but the user doesn't have admin access
         {
             dbApplication = DbContext.Santa_GiftingGroupApplications
-                .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null)
+                .Where(GroupApplicationExpressions.IsActive(true))
                 .FirstOrDefault(x => x.GroupApplicationKey == _groupApplicationKey);
 
             if (dbApplication != null)
             {
                 var dbLinks = dbCurrentSantaUser.GiftingGroupLinks
+                    .Where(GroupUserExpressions.IsActive(true))
                     .Where(x => x.GiftingGroupKey == dbApplication.GiftingGroupKey && x.GroupAdmin)
                     .ToList();
 

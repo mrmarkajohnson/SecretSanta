@@ -19,6 +19,7 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         Santa_GiftingGroupUser? dbGiftingGroupLink = dbCurrentSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
             .FirstOrDefault(x => x.GiftingGroupKey == Item.GiftingGroupKey);
 
         if (dbGiftingGroupLink == null || !dbGiftingGroupLink.GroupAdmin)
@@ -45,12 +46,14 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
         var unhashedUserId = EncryptionHelper.Decrypt(Item.ToHashedUserId);
 
         Santa_User? dbToSantaUser = dbCurrentSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
             .Select(x => x.GiftingGroup)
             .Where(x => x.GiftingGroupKey != Item.GiftingGroupKey)
             .SelectMany(x => x.Members)
-            .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
-            .Select(y => y.SantaUser)
-            .FirstOrDefault(y => y.GlobalUser.Id == unhashedUserId);
+                .Where(GroupUserExpressions.IsActive(false))
+                .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey)
+                .Select(y => y.SantaUser)
+                    .FirstOrDefault(z => z.GlobalUser.Id == unhashedUserId);
 
         if (dbToSantaUser == null)
         {
@@ -70,7 +73,9 @@ public sealed class SendInvitationCommand<TItem> : GiftingGroupBaseCommand<TItem
 
     private bool IsAGroupMember(Santa_User dbToSantaUser)
     {
-        return dbToSantaUser.GiftingGroupLinks.Where(x => x.DateArchived == null).Any(x => x.GiftingGroupKey == Item.GiftingGroupKey);
+        return dbToSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
+            .Any(x => x.GiftingGroupKey == Item.GiftingGroupKey);
     }
 
     private async Task<ICommandResult<TItem>> ProcessEmailAddress(Santa_User dbCurrentSantaUser, Santa_GiftingGroupUser dbGiftingGroupLink)

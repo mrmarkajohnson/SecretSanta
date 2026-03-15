@@ -15,8 +15,7 @@ public sealed class SharedMappingProfile : Profile
             .IncludeBase<Global_User, UserNamesBase>()
             .ForMember(dest => dest.SharedGroupNames, opt => opt.MapFrom(src =>
                 src.SantaUser.GiftingGroupLinks
-                    .Where(x => x.DateArchived == null)
-                    .Where(x => x.GiftingGroup.DateArchived == null)
+                    .Where(GroupUserExpressions.IsActive(true))
                     .Where(x => GroupNames.Contains(x.GiftingGroup.Name))
                     .Select(x => x.GiftingGroup.Name)));
         CreateMap<Global_User, IVisibleUser>().As<VisibleUser>();

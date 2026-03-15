@@ -20,7 +20,7 @@ public sealed class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.Suggestions);
         var dbGiftingGroupLinks = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateArchived == null && x.GiftingGroup.DateArchived == null);
+            .Where(GroupUserExpressions.IsActive(true));
 
         var suggestion = new ManageSuggestion();
 
@@ -77,7 +77,7 @@ public sealed class ManageSuggestionQuery : BaseQuery<IManageSuggestion>
         int calendarYear = dbGroupUser.GiftingGroup.CurrentYear();
 
         Santa_YearGroupUser? dbYearGroupUser = dbGroupUser.SantaUser.GiftingGroupYears
-            .Where(x => x.GiftingGroupYear.DateArchived == null)
+            .Where(YearGroupUserExpressions.IsActive(false))
             .FirstOrDefault(x => x.GiftingGroupYear.GiftingGroupKey == dbGroupUser.GiftingGroupKey
                 && x.GiftingGroupYear.CalendarYear == calendarYear);
 

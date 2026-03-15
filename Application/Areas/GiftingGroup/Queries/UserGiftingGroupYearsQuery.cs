@@ -18,16 +18,14 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
         IQueryable<IUserGiftingGroupYear> userGroups = new List<IUserGiftingGroupYear>().AsQueryable();
 
-        ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentSantaUser.GiftingGroupLinks;
+        var dbActiveLinks = dbCurrentSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
+            .Where(x => CalendarYear > GlobalSettings.CurrentYear
+                ? x.GiftingGroup.DateCreated.Year == CalendarYear
+                : x.GiftingGroup.DateCreated.Year <= CalendarYear);
 
-        if (dbGroupLinks?.Any() == true)
+        if (dbActiveLinks?.Any() == true)
         {
-            var dbActiveLinks = dbGroupLinks
-                .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null)
-                .Where(x => CalendarYear > GlobalSettings.CurrentYear 
-                    ? x.GiftingGroup.DateCreated.Year == CalendarYear 
-                    : x.GiftingGroup.DateCreated.Year <= CalendarYear);
-
             userGroups = GetYearsWithMemberSet(dbCurrentSantaUser, dbActiveLinks)
                 .Union(GetYearsWithMemberNotSet(dbCurrentSantaUser, dbActiveLinks))
                 .Union(GetJoinerRequests(dbCurrentSantaUser, dbActiveLinks))
@@ -41,6 +39,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     {
         IEnumerable<Santa_YearGroupUser> dbYearGroupUsers = dbActiveLinks
             .SelectMany(x => x.GiftingGroup.Years
+                .Where(GroupYearExpressions.IsActive(false))
                 .Where(x => x.CalendarYear == CalendarYear)
                 .SelectMany(y => y.Users.Where(u => u.SantaUserKey == dbSantaUser.SantaUserKey)));
 
@@ -53,7 +52,9 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetYearsWithMemberNotSet(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         return dbActiveLinks
-            .Where(x => x.GiftingGroup.Years.Where(x => x.CalendarYear == CalendarYear)
+            .Where(x => x.GiftingGroup.Years
+                .Where(GroupYearExpressions.IsActive(false))
+                .Where(x => x.CalendarYear == CalendarYear)
                 .Any(y => y.Users.Any(u => u.SantaUserKey == dbSantaUser.SantaUserKey)) == false)
             .AsQueryable()
             .ProjectTo<IUserGiftingGroupYear>(Mapper.ConfigurationProvider, new { CalendarYear });
@@ -62,7 +63,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetJoinerRequests(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         IEnumerable<Santa_GiftingGroupApplication> dbJoinerRequests = dbSantaUser.GiftingGroupApplications
-            .Where(x => x.DateArchived == null)
+            .Where(GroupApplicationExpressions.IsActive(true))
             .Where(x => x.Accepted == null)
             .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
 
@@ -74,7 +75,7 @@ public sealed class UserGiftingGroupYearsQuery : BaseQuery<IQueryable<IUserGifti
     private IQueryable<IUserGiftingGroupYear> GetInvites(Santa_User dbSantaUser, IEnumerable<Santa_GiftingGroupUser> dbActiveLinks)
     {
         IEnumerable<Santa_Invitation> dbGroupInvitations = dbSantaUser.ReceivedInvitations
-            .Where(x => x.DateArchived == null)
+            .Where(GroupInvitationExpressions.IsActive(true))
             .Where(x => dbActiveLinks.Any(y => y.GiftingGroupKey == x.GiftingGroupKey) == false);
 
         return dbGroupInvitations

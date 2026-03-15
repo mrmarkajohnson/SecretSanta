@@ -17,7 +17,7 @@ public sealed class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<T
 
     protected async override Task<ICommandResult<TItem>> HandlePostValidation()
     {
-        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.Suggestions);
+        Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.Suggestions);
         Santa_Suggestion? dbSuggestion = null;
 
         if (Item.SuggestionKey > 0)
@@ -67,6 +67,7 @@ public sealed class SaveSuggestionCommand<TItem> : GiftingGroupYearBaseCommand<T
                 if (link.ApplyToGroup)
                 {
                     Santa_YearGroupUser? dbYearGroupUser = dbSantaUser.GiftingGroupYears
+                        .Where(YearGroupUserExpressions.IsActive(false))
                         .FirstOrDefault(x => x.YearGroupUserKey == link.YearGroupUserKey);
 
                     if (dbYearGroupUser == null)

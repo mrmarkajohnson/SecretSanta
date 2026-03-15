@@ -16,8 +16,10 @@ public sealed class GetPossibleInviteesQuery : BaseQuery<IQueryable<IVisibleUser
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbOtherGroupMembers = dbCurrentSantaUser.GiftingGroupLinks
+            .Where(GroupUserExpressions.IsActive(true))
             .Select(x => x.GiftingGroup)
             .SelectMany(y => y.Members)
+            .Where(GroupUserExpressions.IsActive(false))
             .Where(y => y.SantaUserKey != dbCurrentSantaUser.SantaUserKey);
 
         List<int> groupMemberKeys = dbOtherGroupMembers

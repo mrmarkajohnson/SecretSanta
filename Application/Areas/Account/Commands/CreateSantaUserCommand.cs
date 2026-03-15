@@ -89,7 +89,8 @@ public sealed class CreateSantaUserCommand<TItem> : IdentityBaseCommand<TItem> w
             try
             {
                 var dbOpenInvitations = DbContext.Santa_Invitations
-                    .Where(x => x.DateArchived == null && x.ToSantaUserKey == null)
+                    .Where(GroupInvitationExpressions.IsActive(true))
+                    .Where(x => x.ToSantaUserKey == null)
                     .Where(x => x.ToEmailAddress != null && x.ToEmailAddress == dbGlobalUser.Email) // both e-mail addresses are hashed
                     .Where(x => x.ToName != null && (x.ToName.Trim().ToLower() == dbGlobalUser.Forename.Trim().ToLower()
                         || (dbGlobalUser.PreferredFirstName != null && x.ToName.Trim().ToLower() == dbGlobalUser.PreferredFirstName.Trim().ToLower())))

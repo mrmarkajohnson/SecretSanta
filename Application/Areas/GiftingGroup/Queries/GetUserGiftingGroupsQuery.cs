@@ -16,16 +16,11 @@ public sealed class GetUserGiftingGroupsQuery : BaseQuery<IList<IUserGiftingGrou
 
         if (dbCurrentUser?.SantaUser != null)
         {
-            ICollection<Santa_GiftingGroupUser> dbGroupLinks = dbCurrentUser.SantaUser.GiftingGroupLinks;
-
-            if (dbGroupLinks?.Any() == true)
-            {
-                userGroups = dbGroupLinks
-                    .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null)
-                    .AsQueryable()
-                    .ProjectTo<IUserGiftingGroup>(Mapper.ConfigurationProvider)
-                    .ToList();
-            }
+            userGroups = dbCurrentUser.SantaUser.GiftingGroupLinks
+                .Where(GroupUserExpressions.IsActive(true))
+                .AsQueryable()
+                .ProjectTo<IUserGiftingGroup>(Mapper.ConfigurationProvider)
+                .ToList();
         }
 
         return Result(userGroups);

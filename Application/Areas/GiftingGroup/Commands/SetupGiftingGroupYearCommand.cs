@@ -66,8 +66,10 @@ public sealed class SetupGiftingGroupYearCommand<TItem> : GiftingGroupYearBaseCo
         else if (Item.CalculationOption == YearCalculationOption.Calculate)
         {
             var missingGroupMembers = dbGiftingGroupYear.ValidGroupMembers()
-                .Where(x => dbGiftingGroup.Members.Any(y => y.SantaUserKey == x.SantaUserKey) == false
-                    || Item.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false);
+                .Where(x => dbGiftingGroup.Members
+                    .Where(GroupUserExpressions.IsActive(false))
+                    .Any(y => y.SantaUserKey == x.SantaUserKey) == false
+                        || Item.GroupMembers.Any(y => y.SantaUserKey == x.SantaUserKey) == false);
 
             if (missingGroupMembers.Any())
             {

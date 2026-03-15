@@ -24,8 +24,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
         IEnumerable<Santa_Message> allGroupMessages = GetAllGroupMessages(dbCurrentSantaUser);
 
         var receivedMessages = dbCurrentSantaUser.ReceivedMessages
-            .Where(x => x.DateArchived == null)
-            .Where(x => x.Message.DateArchived == null)
+            .Where(MessageRecipientExpressions.IsActive())
             .Where(x => x.MessageKey == MessageKey);
 
         if (MessageRecipientKey > 0)

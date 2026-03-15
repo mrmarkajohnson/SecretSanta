@@ -1,5 +1,4 @@
 ﻿using Application.Areas.Partners.BaseModels;
-using Application.Areas.Partners.Predicates;
 using AutoMapper;
 using static Global.Settings.PartnerSettings;
 
@@ -19,7 +18,7 @@ public sealed class PartnersMappingProfile : Profile
                 : src.Confirmed == null ? RelationshipStatus.ToBeConfirmed
                 : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
-                opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
+                opt.MapFrom(PartnerLinkExpressions.RelationshipSharedGroupNames()));
         //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => true)); // set automatically on the class
 
         CreateMap<Santa_PartnerLink, ConfirmingRelationship>()
@@ -32,7 +31,7 @@ public sealed class PartnersMappingProfile : Profile
                 : src.Confirmed == null ? RelationshipStatus.ToConfirm
                 : RelationshipStatus.Avoid))
             .ForMember(dest => dest.SharedGroupNames, opt =>
-                opt.MapFrom(RelationshipPredicates.RelationshipSharedGroupNames()));
+                opt.MapFrom(PartnerLinkExpressions.RelationshipSharedGroupNames()));
         //.ForMember(dest => dest.SuggestedByCurrentUser, opt => opt.MapFrom(src => false)); // set automatically on the class
 
     }

@@ -83,6 +83,7 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     private void SetPossibleCombinations(int previousYears) // TODO: Keep a count of previousYearParticipants, and if it doesn't change, stop 
     {
         var previousParticipants = _dbGiftingGroup.Years
+            .Where(GroupYearExpressions.IsActive(true))
             .Where(x => x.CalendarYear < _dbGiftingGroupYear.CalendarYear)
             .Where(x => x.CalendarYear >= _dbGiftingGroupYear.CalendarYear - previousYears)
             .SelectMany(y => y.Users)
@@ -141,16 +142,16 @@ internal class CalculateGiversAndReceiversQuery : BaseQuery<List<GiverAndReceive
     {
         var allActivePartnerLinks = DbContext.Santa_PartnerLinks
             .Where(p => !p.ExchangeGifts)
-            .Where(DbPartnerLinkExpressions.IsActive());
+            .Where(PartnerLinkExpressions.IsActive(false));
 
         var suggestingPartnerSantaUserKeys = allActivePartnerLinks
             .Where(p => p.SuggestedBySantaUserKey == member.SantaUserKey)
-            .Where(p => p.ConfirmingSantaUser.DateArchived == null)
+            .Where(PartnerLinkExpressions.ConfirmingUserIsActive())
             .Select(p => p.ConfirmingSantaUserKey).ToList(); // relationships where this member 'suggested' the partnership
 
         var confirmedPartnerSantaUserKeys = allActivePartnerLinks
             .Where(p => p.ConfirmingSantaUserKey == member.SantaUserKey)
-            .Where(p => p.SuggestedBySantaUser.DateArchived == null)
+            .Where(PartnerLinkExpressions.SuggestingUserIsActive())
             .Select(p => p.SuggestedBySantaUserKey).ToList(); // relationships where this member 'confirmed' the partnership
 
         List<int> partnerSantaUserKeys = suggestingPartnerSantaUserKeys.Union(confirmedPartnerSantaUserKeys).ToList();

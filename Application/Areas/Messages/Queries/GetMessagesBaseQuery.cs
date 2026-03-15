@@ -86,7 +86,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     {
         IEnumerable<Santa_User> dbPossibleRecipients = recipientType switch // may include the current user, who is removed below
         {
-            MessageRecipientType.SystemAdmins 
+            MessageRecipientType.SystemAdmins
                 => GetSystemAdmins(dbSender),
             MessageRecipientType.GroupAdmins
                 => GetGroupAdmins(dbSender, dbGiftingGroupYear),
@@ -112,8 +112,8 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         };
 
         IList<Santa_User> dbRecipients = dbPossibleRecipients
-            .Where(x => x.SantaUserKey != dbSender.SantaUserKey)
-            .Where(x => x.DateArchived == null)
+            .Where(SantaUserExpressions.IsActive())
+            .Where(x => x.SantaUserKey != dbSender.SantaUserKey)            
             .ToList();
 
         return dbRecipients;

@@ -20,9 +20,11 @@ internal static class ParticipateManualMappings
         {
             GiftingGroupKey = dbGiftingGroupYear.GiftingGroupKey,
             GiftingGroupName = dbGiftingGroupYear.GiftingGroup.Name,
-            MemberStatus = dbGiftingGroupYear.GiftingGroup.Members.First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin
-                ? GroupMemberStatus.Admin 
-                : GroupMemberStatus.Joined,
+            MemberStatus = dbGiftingGroupYear.GiftingGroup.Members
+                .Where(GroupUserExpressions.IsActive(false))
+                .First(u => dbYearGroupUser.SantaUserKey == u.SantaUserKey).GroupAdmin
+                    ? GroupMemberStatus.Admin 
+                    : GroupMemberStatus.Joined,
             Included = dbYearGroupUser.Included ?? false,
             Recipient = dbYearGroupUser.RecipientSantaUserKey > 0
                 ? mapper.Map<UserNamesBase>(dbYearGroupUser.RecipientSantaUser).UnHash()
@@ -49,6 +51,7 @@ internal static class ParticipateManualMappings
         manageYear.PreviousYearsRequired = dbSantaUser.PreviousYearsRequired(dbGiftingGroup, manageYear.CalendarYear);
 
         manageYear.OtherGroupMembers = dbGiftingGroup.Members
+            .Where(GroupUserExpressions.IsActive(false))
             .Where(x => x.SantaUserKey != dbSantaUser.SantaUserKey)
             .Select(x => x.SantaUser)
             .AsQueryable()

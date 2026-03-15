@@ -21,15 +21,17 @@ public sealed class ChangeRelationshipStatusCommand : BaseCommand<IChangeRelatio
 
         string? itemUserId = Item.GetStringUserId();
 
-        List<Santa_PartnerLink> dbPossibleRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
-            .Where(DbPartnerLinkExpressions.IsActive())
-            .Where(x => x.SuggestedBySantaUser.DateArchived == null)
-            .Where(x => x.ConfirmingSantaUser.GlobalUserId == itemUserId)
-            .Union(dbCurrentUser.SantaUser.ConfirmingRelationships
-                .Where(DbPartnerLinkExpressions.IsActive())
-                .Where(x => x.ConfirmingSantaUser.DateArchived == null)
-                .Where(x => x.SuggestedBySantaUser.GlobalUserId == itemUserId))
-            .ToList();
+        var dbSuggestedRelationships = dbCurrentUser.SantaUser.SuggestedRelationships
+            .Where(PartnerLinkExpressions.IsActive(false))
+            .Where(PartnerLinkExpressions.ConfirmingUserIsActive())
+            .Where(x => x.ConfirmingSantaUser.GlobalUserId == itemUserId);
+
+        var dbConfirmingRelationships = dbCurrentUser.SantaUser.ConfirmingRelationships
+            .Where(PartnerLinkExpressions.IsActive(false))
+            .Where(PartnerLinkExpressions.SuggestingUserIsActive())
+            .Where(x => x.SuggestedBySantaUser.GlobalUserId == itemUserId);
+
+        List<Santa_PartnerLink> dbPossibleRelationships = dbSuggestedRelationships.Union(dbConfirmingRelationships).ToList();
 
         Santa_PartnerLink? dbRelationship = dbPossibleRelationships.FirstOrDefault(x => x.PartnerLinkKey == Item.PartnerLinkKey);
 

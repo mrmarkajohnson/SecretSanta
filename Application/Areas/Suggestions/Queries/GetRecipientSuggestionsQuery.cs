@@ -21,23 +21,22 @@ public sealed class GetRecipientSuggestionsQuery : BaseQuery<IQueryable<ISuggest
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks, s => s.GiftingGroupYears);
 
         Santa_GiftingGroup dbGroup = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateArchived == null)
+            .Where(GroupUserExpressions.IsActive(true))
             .Select(x => x.GiftingGroup)
-            .Where(y => y.DateArchived == null)
             .FirstOrDefault(y => y.GiftingGroupKey == GiftingGroupKey)
         ?? throw new NotFoundException("Group");
 
         Guid userId = UserHelper.GetGlobalUserId(HashedUserId) ?? new Guid();
 
         var dbYearGroupUser = dbGroup.Years
+            .Where(GroupYearExpressions.IsActive(false))
             .Where(x => x.CalendarYear == CalendarYear)
-            .Where(x => x.DateArchived == null)
             .SelectMany(x => x.Users)
             .FirstOrDefault(y => y.SantaUser.GlobalUserId == userId.ToString())
         ?? throw new NotFoundException("User");
 
         var dbSuggestions = dbYearGroupUser.Suggestions
-           .Where(DbSuggestionLinkExpressions.IsActive(false))           
+           .Where(SuggestionLinkExpressions.IsActive(false))           
            .Select(x => x.Suggestion)
            .AsQueryable()
            .ProjectTo<ISuggestionBase>(Mapper.ConfigurationProvider);

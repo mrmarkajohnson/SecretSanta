@@ -2,6 +2,7 @@
 using Application.Areas.GiftingGroup.Queries.Internal;
 using Data.Entities.Santa;
 using Data.Entities.Shared;
+using Data.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using UnitTests.Context;
 using Xunit;
@@ -81,10 +82,12 @@ public sealed class GiverReceiverCalculationTest : EntityBasedTestBase
     private static void EnsureNobodyIsGivingToAPartner(List<Santa_YearGroupUser> participatingMembers)
     {
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.SuggestedRelationships
+            .Where(PartnerLinkExpressions.ConfirmingUserIsActive())
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmingUserIgnore))
             .Any(y => y.ConfirmingSantaUserKey == x.RecipientSantaUserKey));
 
         Assert.DoesNotContain(participatingMembers, x => x.SantaUser.ConfirmingRelationships
+            .Where(PartnerLinkExpressions.SuggestingUserIsActive())
             .Where(y => y.RelationshipEnded == null || (y.SuggestedByIgnoreOld && y.ConfirmingUserIgnore))
             .Any(y => y.SuggestedBySantaUserKey == x.RecipientSantaUserKey));
     }

@@ -25,7 +25,8 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         string giftingGroupName, bool included)
     {
         var dbGiftingGroupLink = dbSantaUser.GiftingGroupLinks
-            .FirstOrDefault(x => x.DateArchived == null && x.GiftingGroupKey == giftingGroupKey && x.GiftingGroup.DateArchived == null);
+            .Where(GroupUserExpressions.IsActive(true))
+            .FirstOrDefault(x => x.GiftingGroupKey == giftingGroupKey);
 
         if (dbGiftingGroupLink == null)
             throw new NotFoundException($"Gifting Group '{giftingGroupName}'");
@@ -38,6 +39,7 @@ public abstract class GiftingGroupYearBaseCommand<TItem> : BaseCommand<TItem> wh
         Santa_GiftingGroup dbGiftingGroup = dbGiftingGroupLink.GiftingGroup;
 
         var dbGiftingGroupYear = dbGiftingGroup.Years
+            .Where(GroupYearExpressions.IsActive(false))
             .FirstOrDefault(y => y.CalendarYear == Item.CalendarYear);
 
         if (dbGiftingGroupYear == null)

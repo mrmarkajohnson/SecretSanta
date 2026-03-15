@@ -10,7 +10,7 @@ public sealed class GetGroupInvitationsQuery : BaseQuery<IQueryable<IReviewGroup
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
 
         var dbOpenInvitations = dbCurrentSantaUser.ReceivedInvitations
-            .Where(x => x.DateArchived == null)
+            .Where(GroupInvitationExpressions.IsActive(true))
             .ToList();
 
         return Result(dbOpenInvitations.AsQueryable().ProjectTo<IReviewGroupInvitation>(Mapper.ConfigurationProvider));

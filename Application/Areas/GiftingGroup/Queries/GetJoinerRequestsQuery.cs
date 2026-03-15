@@ -14,12 +14,13 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
 
         var dbApplications = dbCurrentSantaUser.GiftingGroupLinks
-            .Where(x => x.DateArchived == null && x.GiftingGroup != null && x.GiftingGroup.DateArchived == null && x.GroupAdmin)
+            .Where(GroupUserExpressions.IsActive(true))
+            .Where(x => x.GroupAdmin)
             .Select(x => x.GiftingGroup)
             .SelectMany(x => x.MemberApplications)
-            .Where(x => x.DateArchived == null)
-            .Where(y => y.ResponseBySantaUserKey == null)
-            .AsQueryable();
+                .Where(GroupApplicationExpressions.IsActive(false))
+                .Where(y => y.ResponseBySantaUserKey == null)
+                .AsQueryable();
 
         var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();
         applications.ForEach(x => x.UnHash());

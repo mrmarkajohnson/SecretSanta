@@ -22,8 +22,7 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.GroupAdmin, opt => opt.MapFrom(src => src.GroupAdmin))
             .ForMember(dest => dest.NewApplications, opt => opt.MapFrom(src =>
                 src.GroupAdmin ? src.GiftingGroup.MemberApplications
-                    .Where(x => x.DateArchived == null)
-                    .Where(x => x.SantaUser.DateArchived == null)
+                    .Where(GroupApplicationExpressions.IsActive(false))
                     .Count(x => !x.Blocked && x.ResponseBySantaUserKey == null) : 0))
             .ForMember(dest => dest.CurrentYear, opt => opt.MapFrom(src => 
                 src.DateCreated.Year > GlobalSettings.CurrentYear ? src.DateCreated.Year : GlobalSettings.CurrentYear));
@@ -37,7 +36,9 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.PreviousRequestCount, opt => opt.MapFrom(src => src.SantaUser.GiftingGroupApplications
                 .Where(x => x.GiftingGroupKey == src.GiftingGroupKey && x.GroupApplicationKey != src.GroupApplicationKey)
                 .Count()))
-            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years.Any(x => x.CalendarYear >= GlobalSettings.CurrentYear)
+            .ForMember(dest => dest.CurrentYearCalculated, opt => opt.MapFrom(src => src.GiftingGroup.Years
+                .Where(GroupYearExpressions.IsActive(false))
+                .Any(x => x.CalendarYear >= GlobalSettings.CurrentYear)
                 ? src.GiftingGroup.Years.First(x => x.CalendarYear >= GlobalSettings.CurrentYear).Users.Any(x => x.RecipientSantaUserKey != null)
                 : false))
             .ForMember(dest => dest.Accepted, opt => opt.MapFrom(src => src.Accepted))
@@ -60,14 +61,16 @@ public sealed class GiftingGroupMappingProfile : Profile
             .ForMember(dest => dest.CurrencyCode, opt => opt.MapFrom(src => src.CurrencyCode))
             .ForMember(dest => dest.CurrencySymbol, opt => opt.MapFrom(src => src.CurrencySymbol))
             .ForMember(dest => dest.GroupMembers, opt => opt.MapFrom(src => src.Users
-                .Where(x => x.SantaUser.DateArchived == null)
-                .Where(x => x.SantaUser.GiftingGroupLinks.Any(x => x.GiftingGroupKey == src.GiftingGroupKey && x.DateArchived == null))))
+                .Where(YearGroupUserExpressions.IsActive(true))
+                .Where(x => x.SantaUser.GiftingGroupLinks
+                    .Where(GroupUserExpressions.IsActive(true))
+                    .Any(x => x.GiftingGroupKey == src.GiftingGroupKey))))
             .ForMember(dest => dest.Calculated, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)))
             .ForMember(dest => dest.RecalculationRequired, opt => opt.MapFrom(src => src.Users.Any(x => x.RecipientSantaUserKey != null)
                 && src.Users.Any(x => x.Included == true && x.RecipientSantaUserKey == null 
-                && x.SantaUser.GiftingGroupLinks.Any(y => y.GiftingGroupKey == src.GiftingGroupKey 
-                && y.DateArchived == null
-                && y.SantaUser.DateArchived == null))));
+                    && x.SantaUser.GiftingGroupLinks
+                        .Where(GroupUserExpressions.IsActive(true))
+                        .Any(y => y.GiftingGroupKey == src.GiftingGroupKey))));
         CreateMap<Santa_GiftingGroupYear, IGiftingGroupYear>().As<GiftingGroupYear>();
 
         CreateMap<Santa_GiftingGroup, GiftingGroupYear>()
@@ -81,7 +84,7 @@ public sealed class GiftingGroupMappingProfile : Profile
             .IncludeMembers(src => src.SantaUser)
             .ForMember(dest => dest.Included, opt => opt.MapFrom(src => src.Included))
             .ForMember(dest => dest.Suggestions, opt => opt.MapFrom(src => src.Suggestions
-                .Count(DbSuggestionLinkExpressions.IsActive(false))));
+                .Count(SuggestionLinkExpressions.IsActive(false))));
         CreateMap<Santa_YearGroupUser, IYearGroupUser>().As<YearGroupUser>();
 
         CreateMap<Santa_GiftingGroupUser, YearGroupUser>()

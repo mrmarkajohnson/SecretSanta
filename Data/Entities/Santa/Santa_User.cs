@@ -53,24 +53,27 @@ public class Santa_User : ArchivableBaseEntity
     public virtual ICollection<Santa_Invitation> ReceivedInvitations { get; set; }
 
     public IList<string> GroupNames() => GiftingGroupLinks
-        .Where(x => x.DateArchived == null)
+        .Where(GroupUserExpressions.IsActive(true))
         .Select(x => x.GiftingGroup.Name)
         .ToList();
 
     public IList<int> UserKeysForVisibleEmail() => SuggestedRelationships
-        .Where(x => x.Confirmed == true && x.RelationshipEnded == null)
-        .Where(DbPartnerLinkExpressions.IsActive())
+        .Where(x => x.Confirmed == true)
+        .Where(PartnerLinkExpressions.IsActive(true))
+        .Where(PartnerLinkExpressions.ConfirmingUserIsActive())
         .Select(y => y.ConfirmingSantaUserKey)
         .Union(ConfirmingRelationships
-            .Where(x => x.RelationshipEnded == null)
-            .Where(DbPartnerLinkExpressions.IsActive())
+            .Where(PartnerLinkExpressions.IsActive(true))
+            .Where(PartnerLinkExpressions.SuggestingUserIsActive())
             .Select(y => y.SuggestedBySantaUserKey))
         .Union(GiftingGroupLinks
-            .Where(x => x.DateArchived == null)
+            .Where(GroupUserExpressions.IsActive(true))
             .Where(x => x.GroupAdmin)
             .SelectMany(y => y.GiftingGroup.Members)
+            .Where(GroupUserExpressions.IsActive(false))
             .Select(z => z.SantaUserKey))
         .Union(ReceivedInvitations
+            .Where(GroupInvitationExpressions.IsActive(true))
             .Select(x => x.FromSantaUserKey))
         .ToList();
 }

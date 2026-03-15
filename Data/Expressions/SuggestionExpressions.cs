@@ -2,7 +2,7 @@
 
 namespace Data.Expressions;
 
-public static class DbSuggestionExpressions
+public static class SuggestionExpressions
 {
     public static Func<Santa_Suggestion, bool> IsActive()
     {

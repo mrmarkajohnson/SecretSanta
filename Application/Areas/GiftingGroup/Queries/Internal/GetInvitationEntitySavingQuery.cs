@@ -24,7 +24,7 @@ internal class GetInvitationEntitySavingQuery : BaseQuery<Santa_Invitation?>
     protected override async Task<Santa_Invitation?> Handle()
     {
         var dbOpenInvitations = DbContext.Santa_Invitations
-            .Where(x => x.DateArchived == null)
+            .Where(GroupInvitationExpressions.IsActive(true))
             .ToList();
 
         Santa_Invitation? dbInvitation = null;
