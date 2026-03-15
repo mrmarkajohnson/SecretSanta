@@ -33,6 +33,12 @@ public class CloseAccountCommand : BaseCommand<string>
         dbCurrentUser.UserName = EncryptionHelper.OneWayEncrypt("PreviousUser", dbCurrentUser, false);
         dbCurrentUser.PreferredNameType = IdentitySettings.PreferredNameOption.Forename;
         dbCurrentUser.PreferredFirstName = null;
+
+        if (dbCurrentUser.SantaUser != null)
+        {
+            dbCurrentUser.SantaUser.DateArchived ??= now;
+        }
+
         dbCurrentUser.AuditTrail.Clear();
 
         ClearSecurityQuestions(dbCurrentUser);
