@@ -26,8 +26,7 @@ public sealed class MarkMessageReadCommand : BaseCommand<int>
         if (MessageRecipientKey > 0)
         {
             dbRecipient = receivedMessages
-                .Where(x => x.MessageRecipientKey == MessageRecipientKey)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.MessageRecipientKey == MessageRecipientKey);
         }
 
         dbRecipient ??= receivedMessages.FirstOrDefault();

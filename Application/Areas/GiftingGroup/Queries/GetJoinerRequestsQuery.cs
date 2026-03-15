@@ -12,6 +12,7 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
     protected override Task<IQueryable<IReviewApplication>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.GiftingGroupLinks);
+        object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
         var dbApplications = dbCurrentSantaUser.GiftingGroupLinks
             .Where(GroupUserExpressions.IsActive(true))
@@ -22,7 +23,7 @@ public sealed class GetJoinerRequestsQuery : BaseQuery<IQueryable<IReviewApplica
                     .Where(z => z.ResponseBySantaUserKey == null)
                     .AsQueryable();
 
-        var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider).ToList();
+        var applications = dbApplications.ProjectTo<IReviewApplication>(Mapper.ConfigurationProvider, parameters).ToList();
         applications.ForEach(x => x.UnHash());
 
         return Result(applications.AsQueryable());

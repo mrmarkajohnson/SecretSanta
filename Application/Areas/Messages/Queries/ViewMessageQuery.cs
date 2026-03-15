@@ -18,9 +18,9 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
     protected override Task<IReadMessage> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
+        object parameters = new { UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
         IReadMessage? message = null;
-
         IEnumerable<Santa_Message> allGroupMessages = GetAllGroupMessages(dbCurrentSantaUser);
 
         var receivedMessages = dbCurrentSantaUser.ReceivedMessages
@@ -32,13 +32,13 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
             message = receivedMessages
                 .Where(x => x.MessageRecipientKey == MessageRecipientKey)
                 .AsQueryable()
-                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider, parameters)
                 .FirstOrDefault();
         }
 
         message ??= receivedMessages
             .AsQueryable()
-            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+            .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider, parameters)
             .FirstOrDefault();
 
         if (message == null)
@@ -48,7 +48,7 @@ public sealed class ViewMessageQuery : GetMessagesBaseQuery<IReadMessage>
                 .ToList()
                 .Where(y => IsIndirectRecipient(dbCurrentSantaUser, y))
                 .AsQueryable()
-                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider)
+                .ProjectTo<IReadMessage>(Mapper.ConfigurationProvider, parameters)
                 .FirstOrDefault();
         }
 

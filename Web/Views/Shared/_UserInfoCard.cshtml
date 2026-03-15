@@ -9,7 +9,10 @@
         string displayName = Model.DisplayName(false);
         string fullName = Model.FullName();
         string? userName = Model is IHashableUserBase userNamesBase ? userNamesBase.UserName : null;
-        string? eMail = Model is IHaveAnEmail hasEmail && hasEmail.ShowEmail ? hasEmail.Email : null;
+        string? eMail = Model is IHaveAnEmail hasEmail && hasEmail.Email.IsNotEmpty()
+            ? (hasEmail.ShowEmail ? hasEmail.Email + " " + (hasEmail.EmailConfirmed ? "(<i>confirmed</i>)" : "(<i>not confirmed</i>)")
+                : (hasEmail.EmailConfirmed ? "<i>Confirmed</i>" : "<i>Not confirmed</i>"))
+            : null;
 
         info = Line("Name", displayName);
 
@@ -25,7 +28,7 @@
 
         if (eMail != null && eMail != userName)
         {
-            info += "<br/>" + Line(UserDisplayNames.Email, eMail);
+            info += "<br/>" + Line("E-mail", eMail);
         }
     }
 }

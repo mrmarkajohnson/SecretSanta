@@ -19,7 +19,7 @@ public sealed class AddGroupDetailsForJoinerAction : BaseAction<IJoinGiftingGrou
 
         if (Item.GiftingGroupKey > 0)
         {
-            dbGiftingGroup = DbContext.Santa_GiftingGroups.Where(x => x.GiftingGroupKey == Item.GiftingGroupKey).FirstOrDefault();
+            dbGiftingGroup = DbContext.Santa_GiftingGroups.FirstOrDefault(x => x.GiftingGroupKey == Item.GiftingGroupKey);
 
             if (dbGiftingGroup?.Name != Item.Name || dbGiftingGroup?.JoinerToken != Item.JoinerToken) // held on to an old ID?
             {

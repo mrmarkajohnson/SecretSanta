@@ -14,8 +14,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
     protected Santa_Message GetOriginalMessage(int messageKey, Santa_User dbSantaUser, bool getFirstMessageIfSent, bool checkReplySecurity)
     {
         Santa_Message? dbOriginalMessage = DbContext.Santa_Messages
-            .Where(x => x.MessageKey == messageKey)
-            .FirstOrDefault();
+            .FirstOrDefault(x => x.MessageKey == messageKey);
 
         if (dbOriginalMessage != null)
         {
@@ -215,23 +214,26 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
                 .Where(MessageExpressions.IsActive());
     }
 
-    protected IQueryable<T> GetSentMessages<T>(Santa_User dbSantaUser)
+    protected IQueryable<T> GetSentMessages<T>(Santa_User dbCurrentSantaUser)
     {
-        return dbSantaUser.SentMessages
+        object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
+
+        return dbCurrentSantaUser.SentMessages
             .Where(MessageExpressions.IsActive())
             .Where(x => x.RecipientType is not MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember)
             .OrderByDescending(x => x.DateCreated)
             .AsQueryable()
-            .ProjectTo<T>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey });
+            .ProjectTo<T>(Mapper.ConfigurationProvider, parameters);
     }
 
-    protected void AddPreviousMessages(IReadMessage message, Santa_User dbSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
+    protected void AddPreviousMessages(IReadMessage message, Santa_User dbCurrentSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
     {
-        List<Santa_Message> previousMessages = GetPreviousMessages(message.MessageKey, dbSantaUser, allGroupMessages);
+        List<Santa_Message> previousMessages = GetPreviousMessages(message.MessageKey, dbCurrentSantaUser, allGroupMessages);
+        object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
         message.PreviousMessages = previousMessages
             .AsQueryable()
-            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey })
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters })
             .OrderByDescending(x => x.Sent)
             .ToList();
     }
@@ -263,13 +265,14 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         return previousMessages.DistinctBy(x => x.MessageKey).ToList();
     }
 
-    protected void AddLaterMessages(IReadMessage message, Santa_User dbSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
+    protected void AddLaterMessages(IReadMessage message, Santa_User dbCurrentSantaUser, IEnumerable<Santa_Message>? allGroupMessages = null)
     {
-        List<Santa_Message> laterMessages = GetLaterMessages(message.MessageKey, dbSantaUser, allGroupMessages);
+        List<Santa_Message> laterMessages = GetLaterMessages(message.MessageKey, dbCurrentSantaUser, allGroupMessages);
+        object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
         message.LaterMessages = laterMessages
             .AsQueryable()
-            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { CurrentSantaUserKey = dbSantaUser.SantaUserKey })
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters })
             .OrderByDescending(x => x.Sent)
             .ToList();
     }

@@ -8,11 +8,12 @@ public sealed class GetGroupInvitationsQuery : BaseQuery<IQueryable<IReviewGroup
     protected override Task<IQueryable<IReviewGroupInvitation>> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser();
+        object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
         var dbOpenInvitations = dbCurrentSantaUser.ReceivedInvitations
             .Where(GroupInvitationExpressions.IsActive(true))
             .ToList();
 
-        return Result(dbOpenInvitations.AsQueryable().ProjectTo<IReviewGroupInvitation>(Mapper.ConfigurationProvider));
+        return Result(dbOpenInvitations.AsQueryable().ProjectTo<IReviewGroupInvitation>(Mapper.ConfigurationProvider, parameters));
     }
 }
