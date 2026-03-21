@@ -231,9 +231,17 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         List<Santa_Message> previousMessages = GetPreviousMessages(message.MessageKey, dbCurrentSantaUser, allGroupMessages);
         object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
-        message.PreviousMessages = previousMessages
+        var previousReceivedMessages = previousMessages
+            .Where(x => x.SenderKey != dbCurrentSantaUser.SantaUserKey)
             .AsQueryable()
-            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters })
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters });
+
+        var previousSentMessages = previousMessages
+            .Where(x => x.SenderKey == dbCurrentSantaUser.SantaUserKey)
+            .AsQueryable()
+            .ProjectTo<IReadSentMessage>(Mapper.ConfigurationProvider, new { parameters });
+
+        message.PreviousMessages = previousReceivedMessages.Union(previousSentMessages)
             .OrderByDescending(x => x.Sent)
             .ToList();
     }
@@ -270,9 +278,17 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
         List<Santa_Message> laterMessages = GetLaterMessages(message.MessageKey, dbCurrentSantaUser, allGroupMessages);
         object parameters = new { CurrentSantaUserKey = dbCurrentSantaUser.SantaUserKey, UserKeysForVisibleEmail = dbCurrentSantaUser.UserKeysForVisibleEmail() };
 
-        message.LaterMessages = laterMessages
+        var laterReceivedMessages = laterMessages
+            .Where(x => x.SenderKey != dbCurrentSantaUser.SantaUserKey)
             .AsQueryable()
-            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters })
+            .ProjectTo<ISantaMessage>(Mapper.ConfigurationProvider, new { parameters });
+
+        var laterSentMessages = laterMessages
+            .Where(x => x.SenderKey == dbCurrentSantaUser.SantaUserKey)
+            .AsQueryable()
+            .ProjectTo<IReadSentMessage>(Mapper.ConfigurationProvider, new { parameters });
+
+        message.LaterMessages = laterReceivedMessages.Union(laterSentMessages)
             .OrderByDescending(x => x.Sent)
             .ToList();
     }

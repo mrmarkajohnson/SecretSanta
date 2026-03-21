@@ -1,0 +1,18 @@
+﻿@using Web.Extensions
+
+@model ISentMessage
+@{
+    string recipient = Model.SenderToDescription();
+}
+
+<span>@recipient</span>
+
+@if (Model.SentTo != null)
+{
+    string? name = Model.ReplyToName ?? Model.SpecificRecipientName;
+                
+    @if (!Model.ShowAsToSanta && name.IsNotEmpty() && recipient.Contains(name) && Model.SentTo != null && !name.Contains("Santa"))
+    {
+        <partial name="_UserInfoCard" model="@Model.SentTo" view-data="@ViewData.TooltipContainerVd("td")" />
+    }
+}

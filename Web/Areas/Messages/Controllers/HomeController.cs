@@ -91,9 +91,8 @@ public sealed class HomeController : BaseController
     {
         try
         {
-            IReadMessage message = await Send(new ViewSentMessageQuery(messageKey));
-            var model = Mapper.Map<ReadMessageVm>(message);
-            model.IsSentMessage = true; // just in case
+            IReadSentMessage message = await Send(new ViewSentMessageQuery(messageKey));
+            var model = Mapper.Map<ReadSentMessageVm>(message);
             return PartialView("_ViewMessageModal", model);
         }
         catch (NotFoundException ex)

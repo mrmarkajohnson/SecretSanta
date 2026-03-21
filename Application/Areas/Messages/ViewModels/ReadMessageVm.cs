@@ -4,7 +4,7 @@ using Global.Abstractions.ViewModels;
 
 namespace Application.Areas.Messages.ViewModels;
 
-public sealed class ReadMessageVm : ReadMessage, IReadMessage, IModalVm
+public class ReadMessageVm : ReadMessage, IReadMessage, IModalVm
 {
     public string ModalTitle => HeaderText;
     public bool ShowSaveButton => false;

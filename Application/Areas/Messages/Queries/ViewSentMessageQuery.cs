@@ -3,7 +3,7 @@ using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Messages.Queries;
 
-public sealed class ViewSentMessageQuery : GetMessagesBaseQuery<IReadMessage>
+public sealed class ViewSentMessageQuery : GetMessagesBaseQuery<IReadSentMessage>
 {
     public int MessageKey { get; }
 
@@ -12,17 +12,17 @@ public sealed class ViewSentMessageQuery : GetMessagesBaseQuery<IReadMessage>
         MessageKey = messageKey;
     }
 
-    protected override Task<IReadMessage> Handle()
+    protected override Task<IReadSentMessage> Handle()
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
-        IQueryable<IReadMessage> sentMessages = GetSentMessages<IReadMessage>(dbCurrentSantaUser);
+        IQueryable<IReadSentMessage> sentMessages = GetSentMessages<IReadSentMessage>(dbCurrentSantaUser);
 
-        IReadMessage? message = sentMessages.FirstOrDefault(x => x.MessageKey == MessageKey);
+        IReadSentMessage? message = sentMessages.FirstOrDefault(x => x.MessageKey == MessageKey);
 
         if (message == null)
             throw new NotFoundException("Message");
 
-        message.IsSentMessage = true;
+        message.IsSentMessage = true; // just in case!
 
         IEnumerable<Santa_Message> allGroupMessages = GetAllGroupMessages(dbCurrentSantaUser);
         AddPreviousMessages(message, dbCurrentSantaUser, allGroupMessages);

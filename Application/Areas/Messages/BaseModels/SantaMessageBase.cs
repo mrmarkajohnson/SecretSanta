@@ -8,8 +8,9 @@ namespace Application.Areas.Messages.BaseModels;
 public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
 {
     private SantaMessage? _replyTo; // for mapping into only; usee notes on ReplyTo below    
-    private UserNamesBase? _specificRecipient; // for mapping into only; usee notes on SpecificRecipient below
+    private UserNamesBase? _specificRecipient; // for mapping into only; see notes on SpecificRecipient below
     private bool _useSpecificRecipient; // for mapping into only; use UseSpecificRecipient otherwise
+    private bool _showAsToSanta; // for mapping into only
 
     public int MessageKey { get; set; }
     public DateTime Sent { get; set; }
@@ -30,7 +31,7 @@ public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
 
     public virtual string? ReplyToName
     {
-        get => ReplyTo?.SenderName;
+        get => ShowAsToSanta ? "Santa" : ReplyTo?.SenderName;
         set { } // allows override for the ViewModel via mapping
     }
 
@@ -56,5 +57,19 @@ public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
         set { } // allows override for the ViewModel via mapping
     }
 
-    private bool ShowAsToSanta => IsSentMessage && RecipientType == MessageRecipientType.Gifter;
+    public bool ShowAsToSanta
+    {
+        get
+        {
+            if (IsSentMessage && RecipientType == MessageRecipientType.Gifter)
+                _showAsToSanta = true;
+
+            return _showAsToSanta;
+        }
+        set
+        {
+            if (value == true)
+                _showAsToSanta = true;
+        }
+    }
 }

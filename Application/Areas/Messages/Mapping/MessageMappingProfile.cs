@@ -44,6 +44,13 @@ public sealed class MessageMappingProfile : Profile
                 : src.GiftingGroupYear.GiftingGroup.GiftingGroupKey));
         CreateMap<Santa_Message, IReadMessage>().As<ReadMessage>();
 
+        CreateMap<Santa_Message, ReadSentMessage>()
+            .IncludeBase<Santa_Message, SentMessage>()
+            .ForMember(dest => dest.GiftingGroupKey, opt => opt.MapFrom(src => src.GiftingGroupYear == null
+                ? (int?)null
+                : src.GiftingGroupYear.GiftingGroup.GiftingGroupKey));
+        CreateMap<Santa_Message, IReadSentMessage>().As<ReadSentMessage>();
+
         CreateMap<Santa_Message, SantaMessage>()
             .IncludeBase<Santa_Message, SantaMessageBase>()
             .ForMember(dest => dest.Sender, opt => opt.MapFrom(src => src.ShowAsFromSanta ? null : src.Sender));
@@ -53,7 +60,6 @@ public sealed class MessageMappingProfile : Profile
             .ForMember(dest => dest.MessageKey, opt => opt.MapFrom(src => src.MessageKey))
             .ForMember(dest => dest.Sent, opt => opt.MapFrom(src => src.DateCreated))
             .ForMember(dest => dest.ShowAsFromSanta, opt => opt.MapFrom(src => src.ShowAsFromSanta
-                || src.RecipientType == MessageRecipientType.Gifter
                 || src.RecipientType == MessageRecipientType.GiftRecipient))
             .ForMember(dest => dest.RecipientType, opt => opt.MapFrom(src => src.RecipientType))
             .ForMember(dest => dest.UseSpecificRecipient, opt => opt.MapFrom(src => src.Recipients.Count() == 1
@@ -79,7 +85,16 @@ public sealed class MessageMappingProfile : Profile
 
         CreateMap<Santa_Message, SentMessage>()
             .IncludeBase<Santa_Message, SantaMessageBase>()            
-            .ForMember(dest => dest.CanReply, opt => opt.MapFrom(src => true));
+            .ForMember(dest => dest.CanReply, opt => opt.MapFrom(src => !src.ShowAsFromSanta 
+                || src.RecipientType == MessageRecipientType.Gifter 
+                || src.RecipientType == MessageRecipientType.GiftRecipient))
+            .ForMember(dest => dest.SentTo, opt => opt.MapFrom(src => src.Recipients.Count() == 1
+                && (src.RecipientType == MessageRecipientType.OriginalSender || src.RecipientType == MessageRecipientType.GiftRecipient 
+                    || src.RecipientType == MessageRecipientType.SingleGroupMember || src.RecipientType == MessageRecipientType.SingleNonGroupMember
+                    || src.RecipientType == MessageRecipientType.PotentialPartner)
+                ? src.Recipients.First().RecipientSantaUser 
+                : null))
+            .ForMember(dest => dest.ShowAsToSanta, opt => opt.MapFrom(src => src.RecipientType == MessageRecipientType.Gifter));
         CreateMap<Santa_Message, ISentMessage>().As<SentMessage>();
     }
 }

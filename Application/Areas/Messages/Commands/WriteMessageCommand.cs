@@ -53,6 +53,7 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
         if (dbRecipients.Count == 0 && !Item.IncludeFutureMembers)
         {
             string futureLabel = Item.RecipientType.FutureLabel();
+            
             if (futureLabel.IsNotEmpty())
             {
                 string othersDescription = Item.RecipientType.SenderToDescription(dbGiftingGroup.Name).Replace("All ", "").Replace("other ", "");
@@ -67,7 +68,7 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
 
         Item.SetActualRecipientType();
 
-        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.Gifter or MessageRecipientType.GiftRecipient
+        Item.ShowAsFromSanta = Item.RecipientType is MessageRecipientType.GiftRecipient
             or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember;
 
         var dbMessage = SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
@@ -81,6 +82,25 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             if (dbOriginalMessage.SenderKey == dbCurrentUser.SantaUserKey)
             {
                 dbMessage.OriginalMessageKey = dbOriginalMessage.OriginalMessageKey ?? dbOriginalMessage.ReplyToMessageKey;
+
+                if (dbOriginalMessage.RecipientType == MessageRecipientType.GiftRecipient)
+                {
+                    dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.GiftRecipient;
+                    dbMessage.ShowAsFromSanta = Item.ShowAsFromSanta = true;
+                }
+                else if (dbOriginalMessage.RecipientType == MessageRecipientType.Gifter)
+                {
+                    dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.Gifter;
+                }
+            }
+            else if (dbOriginalMessage.RecipientType == MessageRecipientType.GiftRecipient)
+            {
+                dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.Gifter;
+            }
+            else if (dbOriginalMessage.RecipientType == MessageRecipientType.Gifter)
+            {
+                dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.GiftRecipient;
+                dbMessage.ShowAsFromSanta = Item.ShowAsFromSanta = true;
             }
         }
 

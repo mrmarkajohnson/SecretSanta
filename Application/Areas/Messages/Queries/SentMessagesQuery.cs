@@ -12,6 +12,7 @@ public sealed class SentMessagesQuery : GetMessagesBaseQuery<IQueryable<ISentMes
     {
         Santa_User dbCurrentSantaUser = GetCurrentSantaUser(s => s.ReceivedMessages);
         IQueryable<ISentMessage> sentMessages = GetSentMessages<ISentMessage>(dbCurrentSantaUser);
+
         return Result(sentMessages);
     }
 }

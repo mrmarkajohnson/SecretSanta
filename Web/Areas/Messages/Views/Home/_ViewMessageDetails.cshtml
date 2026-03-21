@@ -27,7 +27,14 @@
         <div class="form-group-ib col-6">
             <label asp-for="RecipientType" class="control-label"></label>
             <div class="control-label fw-normal">
-                @Model.ToDescription()
+                @if (Model is ISentMessage)
+                {
+                    <partial name="_SentToDetails" />
+                }
+                else
+                {
+                    @Model.ToDescription()
+                }
             </div>
         </div>
     </div>

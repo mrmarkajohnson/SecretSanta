@@ -46,17 +46,15 @@ Allow users to choose one other person they don't want to exchange gifts with
 
 MESSAGES
 * Allow users to mark messages as important when sending
-* Show the sender's name when replying, and when viewing replies (done??)
-* Show actual recipients when viewing, from an 'i' symbol, except when it's the gifter/recipient (or it's obvious)
 * Allow archiving read (received) messages
 * Allow marking as read and archiving from the list
 Save draft?
 Use the modal version for writing messages from the index or sent pages?
 Add other standard messages e.g. 
-- SetupGiftingGroupYearCommand to group members if limit (or currency?) changes - important
-- password commands when password changes - important
-- ReviewJoinerApplicationCommand to other group admins (not the approver)? - non-important
-- ParticipateInYearCommand if in/out status changes? - non-important (unless recipients already chosen - shouldn't happen)
+- from SetupGiftingGroupYearCommand to group members if limit (or currency?) changes - important
+- from password commands when password changes - important
+- from ReviewJoinerApplicationCommand to other group admins (not the approver)? - non-important
+- from ParticipateInYearCommand if in/out status changes? - non-important (unless recipients already chosen - shouldn't happen)
 Add automatic message options, e.g.
 - reply to suggestions
 - message group admin

@@ -10,6 +10,7 @@ public interface ISantaMessageShared: ISantaMessageBase
     bool IsSentMessage { get; set; }
     string? ReplyToName { get; }
     string? SpecificRecipientName { get; }
+    public bool ShowAsToSanta { get; set; }
 }
 
 public static class SantaMessageSharedExtensions
