@@ -1,0 +1,10 @@
+﻿@using Web.Extensions
+
+@model ISantaMessage
+
+@Model.SenderName
+                
+@if (!Model.IsSentMessage && !Model.ShowAsFromSanta && Model.Sender != null)
+{
+    <partial name="_UserInfoCard" model="@Model.Sender" view-data="@ViewData.TooltipContainerVd("td")" />
+}

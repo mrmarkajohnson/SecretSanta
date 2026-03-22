@@ -11,7 +11,7 @@ public sealed class ReadSentMessage : SentMessage, IReadSentMessage
     }
 
     public int GiftingGroupKey { get; set; }
-    public string SenderName => ShowAsFromSanta ? "You (as Santa)" : "You";
+    public string SenderName => FromDescriptionForSentMessage();
 
     public IList<ISantaMessage> PreviousMessages { get; set; }
     public IList<ISantaMessage> LaterMessages { get; set; }

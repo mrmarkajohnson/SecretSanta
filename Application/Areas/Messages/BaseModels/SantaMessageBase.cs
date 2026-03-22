@@ -53,7 +53,7 @@ public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
     {
         get => ShowAsToSanta
         ? "Santa"
-        : SpecificRecipient?.DisplayName();
+        : SpecificRecipient?.UserDisplayName;
         set { } // allows override for the ViewModel via mapping
     }
 
@@ -71,5 +71,15 @@ public abstract class SantaMessageBase : MessageBase, ISantaMessageShared
             if (value == true)
                 _showAsToSanta = true;
         }
+    }
+
+    protected string FromDescriptionForSentMessage()
+    {
+        return RecipientType switch
+        {
+            MessageRecipientType.Gifter => "You (as gift recipient)",
+            MessageRecipientType.GiftRecipient => "You (as gift giver)",
+            _ => ShowAsFromSanta ? "You (as Santa)" : "You"
+        };
     }
 }

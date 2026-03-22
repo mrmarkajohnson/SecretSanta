@@ -16,12 +16,7 @@
         <div class="form-group-ib col-6">
             <label asp-for="SenderName" class="control-label"></label>
             <div class="control-label fw-normal">
-                @Model.SenderName
-                
-                @if (!Model.IsSentMessage && !Model.ShowAsFromSanta && Model.Sender != null)
-                {
-                    <partial name="_UserInfoCard" model="@Model.Sender" view-data="@ViewData.TooltipContainerVd("div.modal")" />
-                }
+                <partial name="_FromDetails" />
             </div>
         </div>
         <div class="form-group-ib col-6">

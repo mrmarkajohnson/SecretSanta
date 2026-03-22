@@ -43,7 +43,7 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             return await Result();
         }
 
-        Santa_User dbCurrentUser = GetCurrentSantaUser();        
+        Santa_User dbCurrentUser = GetCurrentSantaUser();
 
         Santa_GiftingGroup dbGiftingGroup = await GetGiftingGroup(Item.GiftingGroupKey.Value, false);
         Santa_GiftingGroupYear dbGiftingGroupYear = GetOrCreateGiftingGroupYear(dbGiftingGroup);
@@ -53,7 +53,7 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
         if (dbRecipients.Count == 0 && !Item.IncludeFutureMembers)
         {
             string futureLabel = Item.RecipientType.FutureLabel();
-            
+
             if (futureLabel.IsNotEmpty())
             {
                 string othersDescription = Item.RecipientType.SenderToDescription(dbGiftingGroup.Name).Replace("All ", "").Replace("other ", "");
@@ -72,38 +72,40 @@ public sealed class WriteMessageCommand<TItem> : GiftingGroupYearBaseCommand<TIt
             or MessageRecipientType.PotentialPartner or MessageRecipientType.SingleNonGroupMember;
 
         var dbMessage = SendMessage(Item, dbCurrentUser, dbRecipients, dbGiftingGroupYear);
+        await HandleReply(dbCurrentUser, dbMessage);
 
+        return await SaveAndReturnSuccess();
+    }
+
+    private async Task HandleReply(Santa_User dbCurrentUser, Santa_Message dbMessage)
+    {
         if (Item.ReplyToMessageKey > 0)
         {
-            Santa_Message dbOriginalMessage = await Send(new GetOriginalMessageQuery(Item.ReplyToMessageKey.Value, dbCurrentUser, false));
-            dbMessage.ReplyToMessage = dbOriginalMessage;
-            dbMessage.ReplyToMessageKey = dbOriginalMessage.MessageKey;
+            Santa_Message dbReplyToMessage = await Send(new GetOriginalMessageQuery(Item.ReplyToMessageKey.Value, dbCurrentUser, false));
+            dbMessage.ReplyToMessage = dbReplyToMessage;
+            dbMessage.ReplyToMessageKey = dbReplyToMessage.MessageKey;
 
-            if (dbOriginalMessage.SenderKey == dbCurrentUser.SantaUserKey)
+            if (dbReplyToMessage.SenderKey == dbCurrentUser.SantaUserKey) // only set the original message when replying to sent messaes, as someone may have replied to a group message who wan't the first sender
             {
-                dbMessage.OriginalMessageKey = dbOriginalMessage.OriginalMessageKey ?? dbOriginalMessage.ReplyToMessageKey;
+                dbMessage.OriginalMessageKey = dbReplyToMessage.OriginalMessageKey ?? dbReplyToMessage.ReplyToMessageKey;
+            }
 
-                if (dbOriginalMessage.RecipientType == MessageRecipientType.GiftRecipient)
+            Santa_Message dbFirstMessage = dbReplyToMessage.OriginalMessage ?? dbReplyToMessage.ReplyToMessage ?? dbReplyToMessage;
+
+            if (dbFirstMessage.RecipientType is MessageRecipientType.GiftRecipient or MessageRecipientType.Gifter)
+            {
+                bool firstMessageWasSentMessage = dbFirstMessage.SenderKey == dbCurrentUser.SantaUserKey;
+
+                if ((dbFirstMessage.RecipientType == MessageRecipientType.GiftRecipient) != firstMessageWasSentMessage) // first message was from the recipient, or to the giver...
+                {
+                    dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.Gifter; // ... so this must be to the giver (can't reply to yourself)
+                }
+                else
                 {
                     dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.GiftRecipient;
                     dbMessage.ShowAsFromSanta = Item.ShowAsFromSanta = true;
                 }
-                else if (dbOriginalMessage.RecipientType == MessageRecipientType.Gifter)
-                {
-                    dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.Gifter;
-                }
-            }
-            else if (dbOriginalMessage.RecipientType == MessageRecipientType.GiftRecipient)
-            {
-                dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.Gifter;
-            }
-            else if (dbOriginalMessage.RecipientType == MessageRecipientType.Gifter)
-            {
-                dbMessage.RecipientType = Item.RecipientType = MessageRecipientType.GiftRecipient;
-                dbMessage.ShowAsFromSanta = Item.ShowAsFromSanta = true;
             }
         }
-
-        return await SaveAndReturnSuccess();
     }
 }

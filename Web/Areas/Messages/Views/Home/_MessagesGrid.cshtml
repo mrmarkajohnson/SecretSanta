@@ -18,15 +18,7 @@
 
     Func<ISantaMessage, object> from =
     @<text>
-        @if (item.Sender != null)
-        {
-            @item.SenderName
-            <partial name="_UserInfoCard" model="@item.Sender" view-data="@ViewData.TooltipContainerVd("td")" />
-        }
-        else
-        {
-            @item.SenderName
-        }
+        <partial name="_FromDetails" model="@item" />
     </text>;
 }
 

@@ -25,7 +25,7 @@ public abstract class GetMessagesBaseQuery<TItem> : BaseQuery<TItem>
                 if (getFirstMessageIfSent)
                 {
                     if (dbOriginalMessage.OriginalMessage != null && dbOriginalMessage.OriginalMessage.SenderKey != dbSantaUser.SantaUserKey)
-                        return dbOriginalMessage;
+                        return dbOriginalMessage.OriginalMessage;
 
                     if (dbOriginalMessage.ReplyToMessage != null && dbOriginalMessage.ReplyToMessage.SenderKey != dbSantaUser.SantaUserKey)
                         return dbOriginalMessage.ReplyToMessage;
