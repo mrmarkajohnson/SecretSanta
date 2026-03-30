@@ -12,7 +12,6 @@
 
     Func<IUserNamesBase, object> displayEmail =
     @<text>
-        @item.UserDisplayName
         <partial name="_EmailInfoCard" model="@item" view-data="@ViewData.TooltipContainerVd("td")" />
     </text>;
     
