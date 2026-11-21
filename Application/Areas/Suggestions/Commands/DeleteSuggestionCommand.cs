@@ -1,5 +1,4 @@
-﻿using Application.Areas.Suggestions.BaseModels;
-using Global.Extensions.Exceptions;
+﻿using Global.Extensions.Exceptions;
 
 namespace Application.Areas.Suggestions.Commands;
 

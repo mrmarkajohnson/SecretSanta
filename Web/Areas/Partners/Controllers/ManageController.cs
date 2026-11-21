@@ -133,7 +133,6 @@ public sealed class ManageController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteRelationship(int partnerLinkKey, string hashedUserId)
     {
         string manageRelationshipsLink = GetFullUrl<ManageController>(nameof(Index), AreaNames.Partners);

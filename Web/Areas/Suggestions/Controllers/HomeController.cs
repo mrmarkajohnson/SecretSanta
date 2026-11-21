@@ -96,7 +96,6 @@ public sealed class HomeController : BaseController
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteSuggestion(int suggestionKey)
     {
         var commandResult = await Send(new DeleteSuggestionCommand(suggestionKey), null);
