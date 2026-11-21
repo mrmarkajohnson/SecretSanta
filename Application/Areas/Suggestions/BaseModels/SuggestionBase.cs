@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Areas.Suggestions.BaseModels;
 
-public abstract class SuggestionBase : ISuggestionBase
+public class SuggestionBase : ISuggestionBase // can't be abstract, as it is used directly in mappings for queries
 {
     public int SuggestionKey { get; set; }
     public int SantaUserKey { get; set; }
